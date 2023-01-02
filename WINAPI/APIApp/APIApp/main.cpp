@@ -17,7 +17,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// 윈도우 생성
 	GameEngineWindow::WindowCreate(hInstance, "MainWindow");
 	
-	// 윈도우 생성 이후 프로그램이 실행된 상태로 있을 수 있도록 루프함수 호출
+	// 프로그램 동작, 무한루프
 	GameEngineWindow::WindowLoop();
 
 	return 0;
