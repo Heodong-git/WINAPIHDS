@@ -6,7 +6,7 @@ class CMonster
 public:
 	// constrcuter destructer
 	CMonster();
-	~CMonster();
+	virtual ~CMonster() = 0;
 
 	// delete Function
 	CMonster(const CMonster& _Other) = delete;
