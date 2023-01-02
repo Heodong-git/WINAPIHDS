@@ -1,22 +1,13 @@
 #pragma once
 
-// 설명 :
-class GameEngineMath
+class float4
 {
 public:
-	// constrcuter destructer
-	GameEngineMath();
-	~GameEngineMath();
+	float x = 0.0f;
+	float y = 0.0f;
+	float z = 0.0f;
 
-	// delete Function
-	GameEngineMath(const GameEngineMath& _Other) = delete;
-	GameEngineMath(GameEngineMath&& _Other) noexcept = delete;
-	GameEngineMath& operator=(const GameEngineMath& _Other) = delete;
-	GameEngineMath& operator=(GameEngineMath&& _Other) noexcept = delete;
 
-protected:
-
-private:
-
+	// w 축만 왜 1.0 인지는 3d 때. ( 제발 3d까지 가자 ) 
+	float w = 1.0f;
 };
-
