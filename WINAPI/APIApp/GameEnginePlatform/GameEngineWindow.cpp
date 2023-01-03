@@ -196,6 +196,7 @@ void GameEngineWindow::SettingWindowSize(float4 _Size)
     // 0을 넣어주면 기존의 크기를 유지한다.
     // 내가 원하는 창의 크기가 WindowSize 변수에 저장되어 있기 때문에
     // 해당 변수를 활용하여 윈도우창을 다시 세팅해준다. 
+    // ZORDER : 윈도우창의 정렬 기준을 의미
     SetWindowPos(HWnd, nullptr, WindowPos.ix(), WindowPos.iy(), WindowSize.ix(), WindowSize.iy(), SWP_NOZORDER);  
 }
 

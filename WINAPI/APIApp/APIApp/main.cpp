@@ -20,7 +20,7 @@ void TestGameLoop()
 
 	++x;
 
-	Rectangle(GameEngineWindow::GetDrawHdc(), 0 + x, 0, 100 + x, 100);
+	Rectangle(GameEngineWindow::GetDrawHdc(), x, 0, 100 + x, 100);
 
 	// 몬스터가 움직이게 만들고
 	// 플레이어가 움직이게 만들어야 한다.
@@ -48,6 +48,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	GameEngineWindow::WindowCreate(hInstance, "MainWindow", {1360, 768}, { 0, 0});
 	
 	// 프로그램 동작, 무한루프
+	// 인자로 함수포인터를 받아서 내부에서 함수를 실행시킨다. 
+	// 이런 형태의 동작방식을 callback 이라고 한다.
+	// callback 의 정의: 호출될 함수를 인자로 넘겨주고 ( 알려주고 )
+	// 다른 프로그램 혹은 다른 모듈에서 함수를 호출하여 실행하는 방법 
+	// 원하는 시점에 호출할 수 도 있고, 특정 시점에 호출할 수도 있다. 
 	GameEngineWindow::WindowLoop(TestGameStart,TestGameLoop,TestGameEnd);
 
 	return 0;
@@ -61,6 +66,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 // 3. 공부 <
 
 // 20230103
-// 1. Math , Window
+// 1. Math , Window 변경 [완료] 
 
 

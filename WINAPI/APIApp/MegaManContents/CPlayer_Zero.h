@@ -1,7 +1,8 @@
 #pragma once
+#include "CPlayer.h"
 
 // Ό³Έν :
-class CPlayer_Zero
+class CPlayer_Zero : public CPlayer
 {
 public:
 	// constrcuter destructer
