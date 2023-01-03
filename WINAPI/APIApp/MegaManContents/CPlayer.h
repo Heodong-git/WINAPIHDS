@@ -6,7 +6,10 @@ class CPlayer
 public:
 	// constrcuter destructer
 	CPlayer();
-	~CPlayer();
+	// 소멸자를 순수 가상함수로 선언해줌으로써 
+	// 해당 클래스를 상속받는 자식 클래스는 반드시 소멸자를 구현해주어야 하며
+	// 구현하지 않을 경우 추상클래스가 되어 객체 생성이 불가능
+	virtual ~CPlayer() = 0;
 
 	// delete Function
 	// 복사생성자 
@@ -19,6 +22,8 @@ public:
 	CPlayer& operator=(CPlayer&& _Other) noexcept = delete;
 
 protected:
+
+
 
 private:
 

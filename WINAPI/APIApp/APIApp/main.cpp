@@ -1,10 +1,38 @@
 #include <Windows.h>
-// 앞쪽의 폴더를 통해서 어느 프로젝트까지 연관이 있는지 알 수 있게 작성
+// 이전
+// 현재 포함 디렉터리가 경로 + ..\ 로 설정되어 있기 때문에 
+// 이전폴더에 있는 어떠한 폴더 / 헤더파일로 include 가 가능
 #include <GameEngineBase/GameEngineDebug.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
 
+void TestGameStart()
+{
+	int a = 0;
+}
 
-// 속성 : 하위스시템 -> 창으로 바꿔주면 윈도우식 WinMain 으로 진입점함수 변경
+int x = 0;
+
+void TestGameLoop()
+{
+	// 화면에 그림을 그려주는 함수입니다.
+
+	++x;
+
+	Rectangle(GameEngineWindow::GetDrawHdc(), 0 + x, 0, 100 + x, 100);
+
+	// 몬스터가 움직이게 만들고
+	// 플레이어가 움직이게 만들어야 한다.
+	int a = 0;
+}
+
+void TestGameEnd()
+{
+	int a = 0;
+}
+
+
+// 속성 : 하위시스템 -> 창으로 바꿔주면 윈도우식 WinMain 으로 진입점함수 변경
+// 진입점인자(메인파라미터) , OS가 인자를 채워주게 된다.
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPWSTR    lpCmdLine,
@@ -15,14 +43,22 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	GameEngineDebug::LeakCheck();
 
 	// 윈도우 생성
-	GameEngineWindow::WindowCreate(hInstance, "MainWindow");
+	GameEngineWindow::WindowCreate(hInstance, "MainWindow", {1360, 768}, { 0, 0});
 	
 	// 프로그램 동작, 무한루프
-	GameEngineWindow::WindowLoop();
+	GameEngineWindow::WindowLoop(TestGameStart,TestGameLoop,TestGameEnd);
 
 	return 0;
 }
 
 
-// 1. 포함디렉터리 ..\ 로 변경
-// 2. GameEngineWindow , Math 코드작성
+
+// 20230102
+// 1. 포함디렉터리 ..\ 로 변경 [완료]
+// 2. GameEngineWindow , Math 코드작성 [완료]
+// 3. 공부 <
+
+// 20230103
+// 1. Math , Window
+
+

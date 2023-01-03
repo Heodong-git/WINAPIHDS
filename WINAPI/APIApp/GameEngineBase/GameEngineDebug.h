@@ -1,5 +1,4 @@
 #pragma once
-#include <Windows.h>
 #include <assert.h>
 
 // 설명 : 게임의 디버그와 관련된 부분들을 모두 이 클래스에서 해결한다. 
@@ -26,4 +25,5 @@ private:
 
 };
 
+// 입력한 문자열을 창에 띄워주고 assert(false) 
 #define MsgAssert(MsgText) MessageBoxA(nullptr, MsgText, "Error", MB_OK);	assert(false);

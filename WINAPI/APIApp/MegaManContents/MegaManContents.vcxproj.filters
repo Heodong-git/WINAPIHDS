@@ -3,9 +3,11 @@
   <ItemGroup>
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CMonster.h" />
+    <ClInclude Include="CPlayer_Zero.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CMonster.cpp" />
+    <ClCompile Include="CPlayer_Zero.cpp" />
   </ItemGroup>
 </Project>
