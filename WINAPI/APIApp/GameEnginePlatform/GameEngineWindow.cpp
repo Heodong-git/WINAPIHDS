@@ -116,8 +116,8 @@ void GameEngineWindow::WindowCreate(HINSTANCE _hInstance, const std::string_view
     UpdateWindow(HWnd);
 
     // 윈도우창이 생성될 위치, 해상도설정
-    SettingWindowPos(_Pos);
     SettingWindowSize(_Size);
+    SettingWindowPos(_Pos);
 
     return;
 }
