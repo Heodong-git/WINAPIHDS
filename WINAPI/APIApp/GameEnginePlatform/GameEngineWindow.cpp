@@ -190,6 +190,7 @@ void GameEngineWindow::SettingWindowSize(float4 _Size)
     // ex) 800, 600 을 넣었다면 타이틀바까지 고려한 윈도우창 전체의 크기를 구해서 반환함.
     AdjustWindowRect(&Rc, WS_OVERLAPPEDWINDOW, FALSE);
 
+    // 실제로 생성되는 윈도우의 크기 ( 메뉴바 등이 포함된 크기 ) 
     WindowSize = { static_cast<float>(Rc.right - Rc.left), static_cast<float>(Rc.bottom - Rc.top) };
     
     // 0을 넣어주면 기존의 크기를 유지한다.

@@ -5,6 +5,8 @@
 #include <GameEngineBase/GameEngineDebug.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
 
+// 이부분은 이제 내 게임을 만들기시작하면
+// 게임시작시 호출될 함수, 게임루프, 게임종료시 호출될 함수로 대체. 
 void TestGameStart()
 {
 	int a = 0;

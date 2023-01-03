@@ -5,8 +5,7 @@
 #include <Windows.h>
 #include <GameEngineBase/GameEngineMath.h>
 
-
-// 설명 : 윈도우창을 생성시켜주는 클래스
+// 설명 : 프로그램을 동작시킬 윈도우창을 생성하는 클래스 
 class GameEngineWindow
 {
 public:
