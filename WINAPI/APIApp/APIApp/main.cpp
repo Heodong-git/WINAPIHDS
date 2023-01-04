@@ -4,34 +4,7 @@
 // 이전폴더에 있는 어떠한 폴더 / 헤더파일로 include 가 가능
 #include <GameEngineBase/GameEngineDebug.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
-
-// 이부분은 이제 내 게임을 만들기시작하면
-// 게임시작시 호출될 함수, 게임루프, 게임종료시 호출될 함수로 대체. 
-void TestGameStart()
-{
-	int a = 0;
-}
-
-int x = 0;
-
-void TestGameLoop()
-{
-	// 화면에 그림을 그려주는 함수입니다.
-
-	++x;
-
-	Rectangle(GameEngineWindow::GetDrawHdc(), x, 0, 100 + x, 100);
-
-	// 몬스터가 움직이게 만들고
-	// 플레이어가 움직이게 만들어야 한다.
-	int a = 0;
-}
-
-void TestGameEnd()
-{
-	int a = 0;
-}
-
+#include <MegaManContents/MegaManCore.h>
 
 // 속성 : 하위시스템 -> 창으로 바꿔주면 윈도우식 WinMain 으로 진입점함수 변경
 // 진입점인자(메인파라미터) , OS가 인자를 채워주게 된다.
@@ -40,25 +13,30 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_ LPWSTR    lpCmdLine,
 	_In_ int       nCmdShow)
 
+	// static 변수는 데이터영역에 메모리가 만들어지고 프로그램 실행시에 메모리가 생성된다.
+	// 이미 이 시점에 Core 는 데이터 영역에 만들어진다. 
 {
-	// 릭체크
-	GameEngineDebug::LeakCheck();
-
-	// 윈도우 생성
-	GameEngineWindow::WindowCreate(hInstance, "MainWindow", {1360, 768}, { 0, 0});
-	
-	// 프로그램 동작, 무한루프
-	// 인자로 함수포인터를 받아서 내부에서 함수를 실행시킨다. 
-	// 이런 형태의 동작방식을 callback 이라고 한다.
-	// callback 의 정의: 호출될 함수를 인자로 넘겨주고 ( 알려주고 )
-	// 다른 프로그램 혹은 다른 모듈에서 함수를 호출하여 실행하는 방법 
-	// 원하는 시점에 호출할 수 도 있고, 특정 시점에 호출할 수도 있다. 
-	GameEngineWindow::WindowLoop(TestGameStart,TestGameLoop,TestGameEnd);
-
+	// 실행
+	// 내부에서 원하는 해상도로 윈도우 생성
+	// 루프 실행
+	MegaManCore::GetInst().CoreStart(hInstance);
 	return 0;
 }
 
+// 릭체크
+//GameEngineDebug::LeakCheck();
 
+// 윈도우 생성
+//GameEngineWindow::WindowCreate(hInstance, "MainWindow", { 1360, 768 }, { 0, 0 });
+
+// 프로그램 동작, 무한루프
+// 인자로 함수포인터를 받아서 내부에서 함수를 실행시킨다. 
+// 이런 형태의 동작방식을 callback 이라고 한다.
+// callback 의 정의: 호출될 함수를 인자로 넘겨주고
+// 다른 프로그램 혹은 다른 모듈에서 함수를 호출하여 실행하는 방법 
+// 원하는 시점에 호출할 수 도 있고, 특정 시점에 호출할 수도 있다. 
+// ( 특정 이벤트 발생시 호출 ) 
+//GameEngineWindow::WindowLoop(TestGameStart, TestGameLoop, TestGameEnd);
 
 // 20230102
 // 1. 포함디렉터리 ..\ 로 변경 [완료]
@@ -68,4 +46,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 // 20230103
 // 1. Math , Window 변경 [완료] 
 
+// 20230104
+// 1. GetMessage -> PickMessage 
+// 2. Window
+// 3. main 
+// 4. Core + MegaManCore
+// 5. Level 생성 
 
+// 20230104 현재 동작방식
+// static 으로 구현되어 있는 MegaManCore 클래스가 프로그램 실행시 데이터 영역에 만들어지고 
+// 진입점함수에서 Core클래스의 CoreStart 함수를 통해
+// 윈도우를 생성, 윈도우 루프를 동작시킨다. 
+// 루프를 동작시킬 때 에는 생성된 Core 클래스의 부모인 클래스의 
+// GlobalStart, Update, End 함수를 인자로 넣어주고 
+// (글로벌 함수는 생성된 코어의 Start, Update, End 함수를 호출함)
+// 내부에서 원하는 시점에 동작시키게 된다. ( call back 방식이라고 함 ) 
+// 이렇게 작성하는 이유는 엔진과 컨텐츠를 완전하게 분리시키기 위함이다.
+// Start 함수 동작시 , 현재 소유하고 있는 map 에 컨텐츠 Level 들을 모두 생성 후 저장하고
+// 화면에 보여줄 MainLevel 을 선택한다. 

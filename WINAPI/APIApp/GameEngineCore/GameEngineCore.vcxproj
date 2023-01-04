@@ -152,10 +152,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineActor.h" />
+    <ClInclude Include="GameEngineCore.h" />
     <ClInclude Include="GameEngineLevel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineActor.cpp" />
+    <ClCompile Include="GameEngineCore.cpp" />
     <ClCompile Include="GameEngineLevel.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

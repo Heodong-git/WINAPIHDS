@@ -111,6 +111,7 @@ void GameEngineWindow::WindowCreate(HINSTANCE _hInstance, const std::string_view
     // 윈도우 핸들값을 인자로 넣어주게 되면 그 윈도우의 DC를 받아올 수 있다. 
     DrawHdc = GetDC(HWnd);
 
+    
     // 윈도우창을 화면에 보여줄 것인지 ( 창을 띄우지 않고 백그라운드에서 동작하도록 설정도 가능 )
     ShowWindow(HWnd, SW_SHOW);
     UpdateWindow(HWnd);
@@ -118,7 +119,7 @@ void GameEngineWindow::WindowCreate(HINSTANCE _hInstance, const std::string_view
     // 윈도우창이 생성될 위치, 해상도설정
     SettingWindowSize(_Size);
     SettingWindowPos(_Pos);
-
+  
     return;
 }
 
@@ -154,9 +155,12 @@ int GameEngineWindow::WindowLoop(void(*_Start)(), void(*_Loop)(), void(*_End)())
         // => 게임은 쉴새없이 돌아야 하는데
         // GetMessage라는 함수는 => 윈도우에 무슨일이 생기면 리턴되는 함수
         // 윈도우에 무슨일이 생기게 만들어야 한다.
-        if (GetMessage(&msg, nullptr, 0, 0))
-        {
-            // 실행할 게임의 Loop
+
+        // PeekMessage 함수의 경우 메세지의 존재여부에 상관없이 반드시 값이 반환된다. 
+        // PM_REMOVE <-- 쌓여있는 메세지를 삭제하라는 명령
+
+        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+        { 
             if (nullptr != _Loop)
             {
                 _Loop();
@@ -164,6 +168,12 @@ int GameEngineWindow::WindowLoop(void(*_Start)(), void(*_Loop)(), void(*_End)())
 
             TranslateMessage(&msg);
             DispatchMessage(&msg);
+        }
+
+        // 현시점 잘못된 코드, 내일 쌤이 변경해주시는거 보고 수정
+        if (nullptr != _Loop)
+        {
+            _Loop();
         }
     }
 

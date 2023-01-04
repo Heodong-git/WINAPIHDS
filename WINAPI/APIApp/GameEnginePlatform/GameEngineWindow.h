@@ -9,7 +9,6 @@
 class GameEngineWindow
 {
 public:
-
 	// 객체없이 해당 함수를 호출할 수 있게 설계하기 위해서 static 으로 선언
 	static void WindowCreate(HINSTANCE _hInstance, const std::string_view& _TitleName, float4 _Size, float4 _Pos);
 
@@ -56,3 +55,7 @@ private:
 	static HDC DrawHdc;			    // HDC : 윈도우에 그림을 그릴수 있게 해주는 권한
 };
 
+
+
+// 1. GameEngineWindow 클래스에서 게임을 실행시키기 위한 윈도우창을 생성하고
+// 윈도우창에서 필요한 동작들을 수행한다. ex) 화면에 그리기, 창의크기 변경 이동 등 

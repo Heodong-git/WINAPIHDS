@@ -26,4 +26,4 @@ private:
 };
 
 // 입력한 문자열을 창에 띄워주고 assert(false) 
-#define MsgAssert(MsgText) MessageBoxA(nullptr, MsgText, "Error", MB_OK);	assert(false);
+#define MsgAssert(MsgText) std::string ErrorText = MsgText; MessageBoxA(nullptr, ErrorText.c_str(), "Error", MB_OK); assert(false);

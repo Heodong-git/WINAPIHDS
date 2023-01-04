@@ -151,14 +151,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CMonster.h" />
-    <ClInclude Include="CPlayer.h" />
-    <ClInclude Include="CPlayer_Zero.h" />
+    <ClInclude Include="EndTitleLevel.h" />
+    <ClInclude Include="MegaManCore.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Player_Zero.h" />
+    <ClInclude Include="SelectLevel.h" />
+    <ClInclude Include="SigmaStageLevel.h" />
+    <ClInclude Include="TitleLevel.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CMonster.cpp" />
-    <ClCompile Include="CPlayer.cpp" />
-    <ClCompile Include="CPlayer_Zero.cpp" />
+    <ClCompile Include="EndTitleLevel.cpp" />
+    <ClCompile Include="MegaManCore.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Player_Zero.cpp" />
+    <ClCompile Include="SelectLevel.cpp" />
+    <ClCompile Include="SigmaStageLevel.cpp" />
+    <ClCompile Include="TitleLevel.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
