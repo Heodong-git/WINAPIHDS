@@ -36,8 +36,9 @@ void GameEngineCore::GlobalEnd()
 GameEngineCore::GameEngineCore()
 {
 	GameEngineDebug::LeakCheck();
+
 	// 이 때 대입되는 this 는 
-	// MegaManCore가 된다. 
+	// 프로그램 실행시 데이터 영역에 메모리가 만들어지는 MegaManCore가 된다. 
 	Core = this;
 }
 
