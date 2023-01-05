@@ -55,19 +55,20 @@ public:
 	{
 		return { x * 0.5f, y * 0.5f , z * 0.f, w };
 	}
+
 	// 오퍼레이터 *
 	// const 객체도 이 함수를 호출 할 수 있도록 하기 위해 뒤에 const 키워드를 붙여준다. 
-	float4 operator*(const float4& _Value) const
+	float4 operator *(const float& _Value) const
 	{
 		float4 Return;
-		Return.x = x * _Value.x;
-		Return.y = y * _Value.y;
-		Return.z = z * _Value.z;
+		Return.x = x * _Value;
+		Return.y = y * _Value;
+		Return.z = z * _Value;
 
 		return Return;
 	}
 	// 오퍼레이터 +=
-	float4 operator+=(const float4& _Other)
+	float4 operator +=(const float4& _Other)
 	{
 		x += _Other.x;
 		y += _Other.y;

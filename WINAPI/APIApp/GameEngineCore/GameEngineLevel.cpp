@@ -8,15 +8,31 @@ GameEngineLevel::GameEngineLevel()
 
 GameEngineLevel::~GameEngineLevel()
 {
-	// 메모리에서 제거 될 때 소유한 액터리스트를 모두 비워준다.
-	// 레인지드포 문법 ranged for? 
-	for (GameEngineActor* Actor : Actors)
+	
+	// ranged for (레인지드 포) 
+	// 범위기반
+	// 데이터타입 : 데이터리스트명
+	// 문법 사용시 주의점 : 반복실행시 데이터를 하나만 지운다거나 하는 행동을 하면 안됨!! 
+	//for (GameEngineActor* Actor : Actors)
+	//{
+	//	// Actors.erase()
+	//	if (nullptr != Actor)
+	//	{
+	//		delete Actor;
+	//		Actor = nullptr;
+	//	}
+	//}
+
+	// iterator 를 사용한 제거 연습
+	std::list<GameEngineActor*>::iterator StartIter = Actors.begin();
+	std::list<GameEngineActor*>::iterator EndIter = Actors.end();
+	
+	for (; StartIter != EndIter; ++StartIter)
 	{
-		// Actors.erase()
-		if (nullptr != Actor)
+		if (nullptr != *StartIter)
 		{
-			delete Actor;
-			Actor = nullptr;
+			delete *StartIter;
+			*StartIter = nullptr;
 		}
 	}
 

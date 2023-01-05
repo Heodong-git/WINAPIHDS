@@ -2,10 +2,11 @@
 #include <GameEngineBase/GameEngineMath.h>
 #include <Windows.h>
 
-// 설명 : level 에 표현되는, 화면에 존재하는 모든 것 
+// 어떠한 Level에 속해있는 화면에 표현되는 모든것 --- Actor
 class GameEngineLevel;
 class GameEngineActor
 {
+	// GameEngineLevl 에서 GameEngineActor 클래스 내부에 접근 가능
 	friend GameEngineLevel;
 
 public:
@@ -19,32 +20,36 @@ public:
 	GameEngineActor& operator=(const GameEngineActor& _Other) = delete;
 	GameEngineActor& operator=(GameEngineActor&& _Other) noexcept = delete;
 
+	// 위치반환
 	float4 GetPos()
 	{
 		return Pos;
 	}
 
+	// 위치세팅
 	void SetPos(const float4& _MovePos)
 	{
 		Pos = _MovePos;
 	}
 
+	// 위치이동, 기존의 자신의 좌표 + 인자로 들어온 값 
 	void SetMove(const float4& _MovePos)
 	{
 		Pos += _MovePos;
 	}
 
 protected:
-	// 시작하기전에 뭔가 준비해야할것이 있으면 여기서 해라.
+	// 클래스 생성 후 바로 해주어야할 일
 	virtual void Start() {}
 
-	// 키입력을 받거나 인공지능을 점수를 계산하거나 하는 것들을 여기서 처리
+	// 키입력 + 논리적인 연산 수행
 	virtual void Update() {}
 
-	// 화면에 그려지는 기능들을 여기서 처리
+	// 연산 수행 후 화면에 출력되는 부분을 수행 
 	virtual void Render() {}
 
 private:
+	// 좌표
 	float4 Pos = { 0.0f, 0.0f };
 };
 

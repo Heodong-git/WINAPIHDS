@@ -1,25 +1,19 @@
 #pragma once
 #include <string>
-
-// window 기능사용
 #include <Windows.h>
 #include <GameEngineBase/GameEngineMath.h>
 
-// 설명 : 프로그램을 동작시킬 윈도우창을 생성하는 클래스 
 class GameEngineWindow
 {
 public:
-	// 객체없이 해당 함수를 호출할 수 있게 설계하기 위해서 static 으로 선언
+	// 윈도우 생성함수 
 	static void WindowCreate(HINSTANCE _hInstance, const std::string_view& _TitleName, float4 _Size, float4 _Pos);
-
-	// 윈도우 크기설정
-	static void SettingWindowSize(float4 _Size);
 	
-	// 창 생성시 좌표설정
+	// 창의크기, 좌표설정
+	static void SettingWindowSize(float4 _Size);
 	static void SettingWindowPos(float4 _Pos);
 
-	// 스크린사이즈 반환  
-	// static 으로 만들어주어 객체 없이 전역함수처럼 사용할 수 있다.
+	// 스크린사이즈 반환
 	static float4 GetScreenSize()
 	{
 		return ScreenSize;
@@ -40,15 +34,13 @@ public:
 	// 윈도우 무한루프 ( 클라이언트 창을 종료하지 않고 계속해서 실행되도록 )
 	// 함수포인터의 인자를 받아주는 이유는 한가지의 종류가 아닌 
 	// 다른 프로그램의 로직이 작성된 함수를 넣어주기만 하면 실행시켜줄 수 있도록 하기 위함이다.
-	// 즉, WindowLoop 는 실행을 원하는 프로그램의 로직을 작성하여 넣어주기만 하면
-	// 실행만 해주는 녀석일 뿐.
+	// 즉, WindowLoop 는 실행을 원하는 프로그램의 로직을 작성하여 넣어주기만 하면 실행만 해줌. 
+	// callback 기반 
 	static int WindowLoop(void(*_Start)(), void(*_Loop)(), void(*_End)());
 
-	// constrcuter destructer
 	GameEngineWindow();
 	~GameEngineWindow();
 
-	// delete Function
 	GameEngineWindow(const GameEngineWindow& _Other) = delete;
 	GameEngineWindow(GameEngineWindow&& _Other) noexcept = delete;
 	GameEngineWindow& operator=(const GameEngineWindow& _Other) = delete;
@@ -64,7 +56,8 @@ private:
 	static HDC DrawHdc;			    // HDC : 윈도우에 그림을 그릴수 있게 해주는 권한
 };
 
-
-
-// 1. GameEngineWindow 클래스에서 게임을 실행시키기 위한 윈도우창을 생성하고
-// 윈도우창에서 필요한 동작들을 수행한다. ex) 화면에 그리기, 창의크기 변경 이동 등 
+// 현재까지 기능
+// 윈도우크기, 윈도우생성좌표 설정
+// 핸들값 반환 
+// 스크린 사이즈 반환
+// 윈도우 Dc 반환 

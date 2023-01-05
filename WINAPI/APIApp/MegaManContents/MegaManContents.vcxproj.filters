@@ -8,6 +8,8 @@
     <ClInclude Include="MegaManCore.h" />
     <ClInclude Include="Monster_Sigma.h" />
     <ClInclude Include="Player_Zero.h" />
+    <ClInclude Include="Monster_NightMareVirus.h" />
+    <ClInclude Include="Monster_MetalT.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndTitleLevel.cpp" />
@@ -17,5 +19,7 @@
     <ClCompile Include="MegaManCore.cpp" />
     <ClCompile Include="Monster_Sigma.cpp" />
     <ClCompile Include="Player_Zero.cpp" />
+    <ClCompile Include="Monster_NightMareVirus.cpp" />
+    <ClCompile Include="Monster_MetalT.cpp" />
   </ItemGroup>
 </Project>
