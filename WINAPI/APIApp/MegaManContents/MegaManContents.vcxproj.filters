@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="MegaManCore.h" />
-    <ClInclude Include="TitleLevel.h" />
+    <ClInclude Include="EndTitleLevel.h" />
     <ClInclude Include="SelectLevel.h" />
     <ClInclude Include="SigmaStageLevel.h" />
-    <ClInclude Include="Player.h" />
+    <ClInclude Include="TitleLevel.h" />
+    <ClInclude Include="MegaManCore.h" />
+    <ClInclude Include="Monster_Sigma.h" />
     <ClInclude Include="Player_Zero.h" />
-    <ClInclude Include="EndTitleLevel.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MegaManCore.cpp" />
-    <ClCompile Include="TitleLevel.cpp" />
+    <ClCompile Include="EndTitleLevel.cpp" />
     <ClCompile Include="SelectLevel.cpp" />
     <ClCompile Include="SigmaStageLevel.cpp" />
-    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="TitleLevel.cpp" />
+    <ClCompile Include="MegaManCore.cpp" />
+    <ClCompile Include="Monster_Sigma.cpp" />
     <ClCompile Include="Player_Zero.cpp" />
-    <ClCompile Include="EndTitleLevel.cpp" />
   </ItemGroup>
 </Project>

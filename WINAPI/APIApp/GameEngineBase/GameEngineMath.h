@@ -48,4 +48,31 @@ public:
 	int iw() {
 		return static_cast<int>(w);
 	}
+
+	// 절반
+	// half 함수를 호출하면 this 의 x, y, z 값을 절반으로 하여 그 값을 반환한다. 
+	float4 half()
+	{
+		return { x * 0.5f, y * 0.5f , z * 0.f, w };
+	}
+	// 오퍼레이터 *
+	// const 객체도 이 함수를 호출 할 수 있도록 하기 위해 뒤에 const 키워드를 붙여준다. 
+	float4 operator*(const float4& _Value) const
+	{
+		float4 Return;
+		Return.x = x * _Value.x;
+		Return.y = y * _Value.y;
+		Return.z = z * _Value.z;
+
+		return Return;
+	}
+	// 오퍼레이터 +=
+	float4 operator+=(const float4& _Other)
+	{
+		x += _Other.x;
+		y += _Other.y;
+		z += _Other.z;
+
+		return *this;
+	}
 };

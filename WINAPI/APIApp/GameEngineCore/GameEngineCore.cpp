@@ -14,7 +14,7 @@ void GameEngineCore::GlobalStart()
 // 생성된 코어클래스의 Update 함수 동작
 void GameEngineCore::GlobalUpdate()
 {
-	// 코어업데이트 
+	// 코어 업데이트 ( 필요한 연산 ) 
 	Core->Update();
 
 	// 만약 코어의 메인레벨이 선택되어 있지 않다면 
@@ -24,6 +24,11 @@ void GameEngineCore::GlobalUpdate()
 		MsgAssert("레벨을 지정해주지 않은 상태로 코어를 실행했습니다");
 		return;
 	}
+
+	// 액터 연산
+	Core->MainLevel->ActorsUpdate();
+	// 연산이 이루어졌기 때문에 연산된 값을 토대로 화면에 출력
+	Core->MainLevel->ActorsRender();
 }
 
 // 생성된 코어클래스의 End 함수 동작
@@ -92,4 +97,18 @@ void GameEngineCore::ChangeLevel(const std::string_view& _Name)
 
 	// 그게 아니라면 메인레벨을 저장되어 있는 레벨로 지정해준다.
 	MainLevel = FindIter->second;
+}
+
+// 헤더에 다른 헤더를 인클루드 하지 않기 위해 기능을 분리
+void GameEngineCore::LevelLoading(GameEngineLevel* _Level)
+{
+	if (nullptr == _Level)
+	{
+		MsgAssert("nullptr 인 레벨을 로딩하려고 했습니다.");
+		return;
+	}
+
+	// GameEngineLevel 클래스의 friend class 로 Core를 선언하여 
+	// Core 클래스에서는 Level 클래스의 내부에 접근이 가능하도록 작성해준다.
+	_Level->Loading();
 }

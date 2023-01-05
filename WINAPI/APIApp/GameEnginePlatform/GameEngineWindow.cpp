@@ -161,15 +161,19 @@ int GameEngineWindow::WindowLoop(void(*_Start)(), void(*_Loop)(), void(*_End)())
 
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         { 
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+
+            // 메세지가 있을 때도 게임을 실행 
             if (nullptr != _Loop)
             {
                 _Loop();
             }
 
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
+            continue;
         }
 
+        // 윈도우 데드타임
         // 현시점 잘못된 코드, 내일 쌤이 변경해주시는거 보고 수정
         if (nullptr != _Loop)
         {

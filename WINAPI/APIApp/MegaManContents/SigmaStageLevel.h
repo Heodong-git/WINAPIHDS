@@ -17,6 +17,8 @@ public:
 	SigmaStageLevel& operator=(SigmaStageLevel&& _Other) noexcept = delete;
 
 protected:
+	virtual void Loading() override;
+	virtual void Update() override;
 
 private:
 

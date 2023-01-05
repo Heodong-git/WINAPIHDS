@@ -46,7 +46,11 @@ protected:
 		}
 
 		// 그게 아니라면 키값으로 데이터를 저장해준다. 
+		// 인자로 들어온 레벨을 생성한다. 
 		GameEngineLevel* Level = new LevelType();
+		// 레벨을 생성한 후에는 해당하는 레벨에서 필요한 데이터를 로딩한다.
+		LevelLoading(Level);
+		// 데이터를 맵에 저장해준다. 
 		Levels.insert(std::make_pair(_Name.data(), Level));
 	}
 
@@ -64,5 +68,9 @@ private:
 
 	// 현재 선택되어 있는 메인레벨
 	GameEngineLevel* MainLevel = nullptr;
+
+	// Core 헤더에서 Level 헤더를 인클루드 하지 않기 위해 기능을 분리
+	void LevelLoading(GameEngineLevel* _Level);
 };
 
+// 수정

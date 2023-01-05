@@ -153,7 +153,7 @@
   <ItemGroup>
     <ClInclude Include="EndTitleLevel.h" />
     <ClInclude Include="MegaManCore.h" />
-    <ClInclude Include="Player.h" />
+    <ClInclude Include="Monster_Sigma.h" />
     <ClInclude Include="Player_Zero.h" />
     <ClInclude Include="SelectLevel.h" />
     <ClInclude Include="SigmaStageLevel.h" />
@@ -162,7 +162,7 @@
   <ItemGroup>
     <ClCompile Include="EndTitleLevel.cpp" />
     <ClCompile Include="MegaManCore.cpp" />
-    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Monster_Sigma.cpp" />
     <ClCompile Include="Player_Zero.cpp" />
     <ClCompile Include="SelectLevel.cpp" />
     <ClCompile Include="SigmaStageLevel.cpp" />

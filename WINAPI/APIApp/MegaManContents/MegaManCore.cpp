@@ -15,23 +15,24 @@ MegaManCore::~MegaManCore()
 {
 }
 
+// 게임이 실행될 때는 필요한 레벨을 만들어서 Core 클래스의 맵에 모두 저장해둔다.
 void MegaManCore::Start()
-{
-	// 게임이 실행될 때는 필요한 레벨을 만들어서 Core 클래스의 맵에 모두 저장해둔다. 
+{ 
+	// 윈도우가 생성될 때 이미 해상도를 맞춰둠. 
+	
 	CreateLevel<TitleLevel>("TitleLevel");
 	CreateLevel<SelectLevel>("SelectLevel");
 	CreateLevel<SigmaStageLevel>("SigmaStageLevel");
 	CreateLevel<EndTitleLevel>("EndTitleLevel");
 	
 	// 실행 시에 반드시 어떤 레벨을 보여줄 것인지 지정한다. 
-	ChangeLevel("TitleLevel");
+	ChangeLevel("SigmaStageLevel");
 }
 
 
 void MegaManCore::Update()
 {
-
-
+	
 }
 void MegaManCore::End()
 {

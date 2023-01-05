@@ -18,11 +18,20 @@ public:
 	// 창 생성시 좌표설정
 	static void SettingWindowPos(float4 _Pos);
 
+	// 스크린사이즈 반환  
+	// static 으로 만들어주어 객체 없이 전역함수처럼 사용할 수 있다.
+	static float4 GetScreenSize()
+	{
+		return ScreenSize;
+	}
+
+	// 윈도우 핸들값 반환 
 	static HWND GetHWnd()
 	{
 		return HWnd;
 	}
 
+	// 윈도우DC 반환 
 	static HDC GetDrawHdc()
 	{
 		return DrawHdc;

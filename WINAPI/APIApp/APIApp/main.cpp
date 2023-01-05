@@ -1,7 +1,7 @@
-#include <Windows.h>
 // 이전
 // 현재 포함 디렉터리가 경로 + ..\ 로 설정되어 있기 때문에 
-// 이전폴더에 있는 어떠한 폴더 / 헤더파일로 include 가 가능
+// 이전폴더에 있는 어떠한 폴더 / 헤더파일로 include 가능
+#include <Windows.h>
 #include <GameEngineBase/GameEngineDebug.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <MegaManContents/MegaManCore.h>
@@ -53,7 +53,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 // 4. Core + MegaManCore
 // 5. Level 생성 
 
-// 20230104 현재 동작방식
+// 20230104 시점까지의 동작방식
 // static 으로 구현되어 있는 MegaManCore 클래스가 프로그램 실행시 데이터 영역에 만들어지고 
 // 진입점함수에서 Core클래스의 CoreStart 함수를 통해
 // 윈도우를 생성, 윈도우 루프를 동작시킨다. 
@@ -64,3 +64,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 // 이렇게 작성하는 이유는 엔진과 컨텐츠를 완전하게 분리시키기 위함이다.
 // Start 함수 동작시 , 현재 소유하고 있는 map 에 컨텐츠 Level 들을 모두 생성 후 저장하고
 // 화면에 보여줄 MainLevel 을 선택한다. 
+
+// 20230105 
+// 1. Core, Level , Actor, Player ,  Math 
+// 2. 포인터를 인자로 받는다면 반드시 null 검사 

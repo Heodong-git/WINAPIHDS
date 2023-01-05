@@ -1,5 +1,7 @@
 #pragma once
+#include <windows.h>
 #include <assert.h>
+#include <string>
 
 // 설명 : 게임의 디버그와 관련된 부분들을 모두 이 클래스에서 해결한다. 
 class GameEngineDebug

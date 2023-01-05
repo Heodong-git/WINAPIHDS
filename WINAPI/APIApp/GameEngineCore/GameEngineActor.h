@@ -1,8 +1,13 @@
 #pragma once
+#include <GameEngineBase/GameEngineMath.h>
+#include <Windows.h>
 
-// 설명 : 게임내부에서 움직이는 물체들 , Level 에 속해있으며 타이틀이미지, 계속하기 버튼 등을 말한다. 
+// 설명 : level 에 표현되는, 화면에 존재하는 모든 것 
+class GameEngineLevel;
 class GameEngineActor
 {
+	friend GameEngineLevel;
+
 public:
 	// constrcuter destructer
 	GameEngineActor();
@@ -14,9 +19,32 @@ public:
 	GameEngineActor& operator=(const GameEngineActor& _Other) = delete;
 	GameEngineActor& operator=(GameEngineActor&& _Other) noexcept = delete;
 
+	float4 GetPos()
+	{
+		return Pos;
+	}
+
+	void SetPos(const float4& _MovePos)
+	{
+		Pos = _MovePos;
+	}
+
+	void SetMove(const float4& _MovePos)
+	{
+		Pos += _MovePos;
+	}
+
 protected:
+	// 시작하기전에 뭔가 준비해야할것이 있으면 여기서 해라.
+	virtual void Start() {}
+
+	// 키입력을 받거나 인공지능을 점수를 계산하거나 하는 것들을 여기서 처리
+	virtual void Update() {}
+
+	// 화면에 그려지는 기능들을 여기서 처리
+	virtual void Render() {}
 
 private:
-
+	float4 Pos = { 0.0f, 0.0f };
 };
 
