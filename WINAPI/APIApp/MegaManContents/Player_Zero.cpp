@@ -20,7 +20,7 @@ void Player_Zero::Start()
 void Player_Zero::Update()
 {
 	// 업데이트, 화면에서 보여질 플레이어의 위치 등을 연산한다.
-	SetMove({ float4::Right * 0.0001f});
+	SetMove({ float4::Right * 0.001f});
 
 }
 
