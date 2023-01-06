@@ -15,7 +15,6 @@ void GameEngineDirectory::MoveParentToDirectory(const std::string_view& _String)
 	std::string MovePath = "\\";
 	MovePath += _String;
 
-	// 
 	Path.MoveParentToChildPath(MovePath.c_str());
 }
 
@@ -50,7 +49,7 @@ bool GameEngineDirectory::MoveParent()
 		return false;
 	}
 	
-	// 예외에 걸리지 않았다면 이동!
+	// 예외에 걸리지 않았다면 현재 경로중 마지막 경로를 잘라낸다. 
 	Path.MoveParent();
 
 	// 이동했기 때문에 true 반환

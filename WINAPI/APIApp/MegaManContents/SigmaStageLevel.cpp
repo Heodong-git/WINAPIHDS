@@ -36,7 +36,7 @@ void SigmaStageLevel::Loading()
 	Directory.Move("ContentsResources");
 	Directory.Move("Image");
 
-	// 최종경로에 있는 해당 파일명을 붙여준다. 
+	// 최종경로에 있는 해당 파일명을 붙여준다. 수정필요함수
 	//Directory.GetPlusFileName("player_recall.bmp");
 
 	CreateActor<Player_Zero>();

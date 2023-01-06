@@ -37,7 +37,7 @@ public:
 	// 현재 경로가 마지막 경로라면 true, 아니라면 false 를 반환
 	bool IsRoot();
 	
-	// 현재 경로에 추가 경로를 이어붙이고 현재 경로를 추가된 경로로 변경한다.
+	// 현재 경로에 다음 경로를 추가한다. 
 	bool Move(const std::string_view& _Path);
 protected:
 
