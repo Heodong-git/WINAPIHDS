@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="Monster_Sigma.h" />
-    <ClInclude Include="Player_Zero.h" />
-    <ClInclude Include="Monster_NightMareVirus.h" />
-    <ClInclude Include="Monster_MetalT.h" />
     <ClInclude Include="EndTitleLevel.h">
       <Filter>Level</Filter>
     </ClInclude>
@@ -20,12 +16,20 @@
     <ClInclude Include="MegaManCore.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Player_Zero.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster_MetalT.h">
+      <Filter>Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster_NightMareVirus.h">
+      <Filter>Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster_Sigma.h">
+      <Filter>Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Monster_Sigma.cpp" />
-    <ClCompile Include="Player_Zero.cpp" />
-    <ClCompile Include="Monster_NightMareVirus.cpp" />
-    <ClCompile Include="Monster_MetalT.cpp" />
     <ClCompile Include="EndTitleLevel.cpp">
       <Filter>Level</Filter>
     </ClCompile>
@@ -41,6 +45,18 @@
     <ClCompile Include="MegaManCore.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="Player_Zero.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster_MetalT.cpp">
+      <Filter>Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster_NightMareVirus.cpp">
+      <Filter>Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster_Sigma.cpp">
+      <Filter>Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Level">
@@ -48,6 +64,12 @@
     </Filter>
     <Filter Include="Core">
       <UniqueIdentifier>{38c206c9-97a8-49cb-9e86-08e12c75a79b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{052169b6-aa9d-4a98-8e9e-211ae487df5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Monster">
+      <UniqueIdentifier>{d5bf4f6f-b1c7-4d9a-8b56-07a204720c1f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
