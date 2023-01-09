@@ -29,15 +29,16 @@ bool GameEngineDirectory::Move(const std::string_view& _String)
 	return Path.Move(MovePath.c_str());
 }
 
-//GameEnginePath GameEngineDirectory::GetPlusFileName(const std::string_view& _String)
-//{
-//	/*std::string PathString = Path.GetPathToString();
-//	PathString += "\\";
-//	PathString += _String;
-//	GameEnginePath NewPath = PathString;
-//
-//	return NewPath;*/	
-//}
+// 파일명을 경로에 이어붙여준다. 
+GameEnginePath GameEngineDirectory::GetPlusFileName(const std::string_view& _String)
+{
+	std::string PathString = Path.GetPathToString();
+	PathString += "\\";
+	PathString += _String;
+
+	// 이어붙인 파일명을 반환한다. 
+	return GameEnginePath(PathString);	
+}
 
 // 상위폴더로 
 bool GameEngineDirectory::MoveParent()

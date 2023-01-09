@@ -1,5 +1,6 @@
 #include "Monster_NightMareVirus.h"
 #include <GameEnginePlatform/GameEngineWindow.h>
+#include <GameEngineCore/GameEngineResources.h>
 
 Monster_NightMareVirus::Monster_NightMareVirus()
 {
@@ -27,9 +28,6 @@ void Monster_NightMareVirus::Render()
 {
 	float4 MonsterPos = GetPos();
 
-	Rectangle(GameEngineWindow::GetDrawHdc(),
-		MonsterPos.ix() - 40,
-		MonsterPos.iy() - 40,
-		MonsterPos.ix() + 40,
-		MonsterPos.iy() + 40);
+	GameEngineImage* Image = GameEngineResources::GetInst().ImageFind("Monster_NightMare_Virus_Left.bmp");
+	GameEngineWindow::GetBackBufferImage()->BitCopy(Image, MonsterPos - float4{ 50, 50 }, { 200, 200 });
 }

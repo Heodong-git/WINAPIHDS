@@ -1,5 +1,6 @@
 #include "Monster_Sigma.h"
 #include <GameEnginePlatform/GameEngineWindow.h>
+#include <GameEngineCore/GameEngineResources.h>
 
 Monster_Sigma::Monster_Sigma()
 {
@@ -24,9 +25,8 @@ void Monster_Sigma::Update()
 void Monster_Sigma::Render()
 {
 	float4 MonsterPos = GetPos();
-	Rectangle(GameEngineWindow::GetDrawHdc(),
-		MonsterPos.ix() - 50,
-		MonsterPos.iy() - 50,
-		MonsterPos.ix() + 50,
-		MonsterPos.iy() + 50);
+	
+	GameEngineImage* Image = GameEngineResources::GetInst().ImageFind("Sigma_Left.bmp");
+
+	GameEngineWindow::GetBackBufferImage()->BitCopy(Image, MonsterPos - float4{ 50, 50 }, { 200, 200 });
 }

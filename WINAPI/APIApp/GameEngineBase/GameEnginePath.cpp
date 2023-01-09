@@ -33,6 +33,12 @@ GameEnginePath::~GameEnginePath()
 {
 }
 
+// 경로가 가진 파일명 반환
+std::string GameEnginePath::GetFileName() const
+{
+	return Path.filename().string();
+}
+
 // Path 가 가진 문자열 반환
 std::string GameEnginePath::GetPathToString() const
 {

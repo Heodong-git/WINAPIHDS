@@ -1,25 +1,53 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="EndTitleLevel.h" />
-    <ClInclude Include="SelectLevel.h" />
-    <ClInclude Include="SigmaStageLevel.h" />
-    <ClInclude Include="TitleLevel.h" />
-    <ClInclude Include="MegaManCore.h" />
     <ClInclude Include="Monster_Sigma.h" />
     <ClInclude Include="Player_Zero.h" />
     <ClInclude Include="Monster_NightMareVirus.h" />
     <ClInclude Include="Monster_MetalT.h" />
+    <ClInclude Include="EndTitleLevel.h">
+      <Filter>Level</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectLevel.h">
+      <Filter>Level</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleLevel.h">
+      <Filter>Level</Filter>
+    </ClInclude>
+    <ClInclude Include="SigmaStageLevel.h">
+      <Filter>Level</Filter>
+    </ClInclude>
+    <ClInclude Include="MegaManCore.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="EndTitleLevel.cpp" />
-    <ClCompile Include="SelectLevel.cpp" />
-    <ClCompile Include="SigmaStageLevel.cpp" />
-    <ClCompile Include="TitleLevel.cpp" />
-    <ClCompile Include="MegaManCore.cpp" />
     <ClCompile Include="Monster_Sigma.cpp" />
     <ClCompile Include="Player_Zero.cpp" />
     <ClCompile Include="Monster_NightMareVirus.cpp" />
     <ClCompile Include="Monster_MetalT.cpp" />
+    <ClCompile Include="EndTitleLevel.cpp">
+      <Filter>Level</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectLevel.cpp">
+      <Filter>Level</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleLevel.cpp">
+      <Filter>Level</Filter>
+    </ClCompile>
+    <ClCompile Include="SigmaStageLevel.cpp">
+      <Filter>Level</Filter>
+    </ClCompile>
+    <ClCompile Include="MegaManCore.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Level">
+      <UniqueIdentifier>{3071afff-ad9a-40d9-8ed4-f3c9d046ac17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{38c206c9-97a8-49cb-9e86-08e12c75a79b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

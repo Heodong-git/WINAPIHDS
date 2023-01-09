@@ -1,12 +1,14 @@
 #include "GameEngineWindow.h"
 #include <GameEngineBase/GameEngineDebug.h>
+#include <GameEngineCore/GameEngineResources.h>
 
 // static : 반드시 cpp 상단에 구현해주어야함. 
 HWND GameEngineWindow::HWnd = nullptr;
-HDC GameEngineWindow::DrawHdc = nullptr;
+HDC GameEngineWindow::WindowBackBufferHdc = nullptr;
 float4 GameEngineWindow::WindowSize = { 800, 600 };
 float4 GameEngineWindow::WindowPos = { 100, 100 };
 float4 GameEngineWindow::ScreenSize = { 800, 600 };
+GameEngineImage* GameEngineWindow::BackBufferImage = nullptr;
 
 // 현재 윈도우 업데이트 상태를 전역으로 나타냄. 
 // false 가 된다면 더이상 윈도우루프 반복 X 
@@ -101,9 +103,12 @@ void GameEngineWindow::WindowCreate(HINSTANCE _hInstance, const std::string_view
     }
 
     // 윈도우 핸들을 넣어주면 그 핸들값을 가진 윈도우에 그림을 그릴 수 있는 권한을 받아온다. (도화지) 
-    DrawHdc = GetDC(HWnd);
+    WindowBackBufferHdc = GetDC(HWnd);
 
-    
+    // 백버퍼 이미지 생성
+    BackBufferImage = new GameEngineImage();
+    BackBufferImage->ImageCreate(WindowBackBufferHdc);
+
     // 윈도우창을 화면에 보여줄 것인지 ( 창을 띄우지 않고 백그라운드에서 동작하도록 설정도 가능 )
     ShowWindow(HWnd, SW_SHOW);
     UpdateWindow(HWnd);
@@ -144,6 +149,8 @@ int GameEngineWindow::WindowLoop(void(*_Start)(), void(*_Loop)(), void(*_End)())
                 _Loop();
             }
             
+            // 메세지가 있었을 때 루프를 실행했다면
+            // 아래쪽 코드가 실행되지 않도록 while 문의 시작으로.
             continue;
         }
 
@@ -158,6 +165,13 @@ int GameEngineWindow::WindowLoop(void(*_Start)(), void(*_Loop)(), void(*_End)())
     if (nullptr != _End)
     {
         _End();
+    }
+
+    // 백버퍼이미지가 nullptr이 아니라면 제거
+    if (nullptr != BackBufferImage)
+    {
+        delete BackBufferImage;
+        BackBufferImage = nullptr;
     }
 
     return (int)msg.wParam;

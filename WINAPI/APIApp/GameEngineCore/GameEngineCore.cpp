@@ -1,7 +1,9 @@
 #include "GameEngineCore.h"
 #include <GameEngineBase/GameEngineDebug.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
+#include <GameEngineCore/GameEngineResources.h>
 #include "GameEngineLevel.h"
+
 
 GameEngineCore* Core;
 
@@ -25,9 +27,9 @@ void GameEngineCore::GlobalUpdate()
 		return;
 	}
 
-	// 액터 연산
+	// 현재 레벨이 소유한 액터연산
 	Core->MainLevel->ActorsUpdate();
-	// 연산이 이루어졌기 때문에 연산된 값을 토대로 화면에 출력
+	// 연산된 값을 토대로 화면에 출력
 	Core->MainLevel->ActorsRender();
 }
 
@@ -35,6 +37,9 @@ void GameEngineCore::GlobalUpdate()
 void GameEngineCore::GlobalEnd()
 {
 	Core->End();
+
+	// 게임이 종료될 때 리소스가 생성한 이미지들을 모두 제거해준다. 
+	GameEngineResources::GetInst().Relase();
 }
 
 // 코어가 생성될 때 릭체크 함수 동작 + 생성된 코어의 주소값을 가진다. 
@@ -71,7 +76,7 @@ GameEngineCore::~GameEngineCore()
 void GameEngineCore::CoreStart(HINSTANCE _instance)
 {
 	// 윈도우 생성 
-	GameEngineWindow::WindowCreate(_instance, "MainWindow", { 1360, 768 }, { 0, 0 });
+	GameEngineWindow::WindowCreate(_instance, "MainWindow", { 1360.0f, 768.0f }, { 0, 0 });
 	
 	// 윈도우 루프
 	// 이러한 방식을 callback 방식이라고 하며 

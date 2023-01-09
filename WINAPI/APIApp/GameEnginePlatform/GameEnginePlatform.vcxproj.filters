@@ -2,12 +2,10 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="GameEngineWindow.h" />
-    <ClInclude Include="GameEngineResources.h" />
     <ClInclude Include="GameEngineImage.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineWindow.cpp" />
-    <ClCompile Include="GameEngineResources.cpp" />
     <ClCompile Include="GameEngineImage.cpp" />
   </ItemGroup>
   <ItemGroup>

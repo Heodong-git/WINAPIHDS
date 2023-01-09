@@ -21,6 +21,9 @@ public:
 	// 패스의 문자열 반환 
 	std::string GetPathToString() const;
 
+	// 파일명 반환
+	std::string GetFileName() const;
+
 	// 나를 소유하고 있는 이전 경로로 이동
 	// 즉, 현재경로의 가장마지막 경로를 삭제하는것.
 	void MoveParent();

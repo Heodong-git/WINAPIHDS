@@ -1,13 +1,15 @@
 #pragma once
+#include <string>
+#include <string_view>
 
 // 설명 :
 class GameEngineString
 {
 public:
-	// constrcuter destructer
-	GameEngineString();
-	~GameEngineString();
-
+	// 대소문자 실수를 방지하기 위해 인자로 들어온 문자열을
+	// 모두 대문자로 변경하여 반환
+	static std::string ToUpper(const std::string_view& _Str);
+	
 	// delete Function
 	GameEngineString(const GameEngineString& _Other) = delete;
 	GameEngineString(GameEngineString&& _Other) noexcept = delete;
@@ -17,6 +19,9 @@ public:
 protected:
 
 private:
+	// constrcuter destructer
+	GameEngineString();
+	~GameEngineString();
 
 };
 

@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <GameEngineBase/GameEngineMath.h>
 
+class GameEngineImage;
 class GameEngineWindow
 {
 public:
@@ -26,11 +27,16 @@ public:
 	}
 
 	// 윈도우DC 반환 
-	static HDC GetDrawHdc()
+	static HDC GetWindowBackBufferHdc()
 	{
-		return DrawHdc;
+		return WindowBackBufferHdc;
 	}
 
+	// 백버퍼의 이미지 반환
+	static GameEngineImage* GetBackBufferImage()
+	{
+		return BackBufferImage;
+	}
 	// 윈도우 무한루프 ( 클라이언트 창을 종료하지 않고 계속해서 실행되도록 )
 	// 함수포인터의 인자를 받아주는 이유는 한가지의 종류가 아닌 
 	// 다른 프로그램의 로직이 작성된 함수를 넣어주기만 하면 실행시켜줄 수 있도록 하기 위함이다.
@@ -53,7 +59,8 @@ private:
 	static float4 ScreenSize;		// 생성하고자 하는 윈도우의 크기
 	static float4 WindowPos;		// 윈도우창을 생성할 좌상단 좌표 
 	static HWND HWnd;				// 윈도우 핸들값
-	static HDC DrawHdc;			    // HDC : 윈도우에 그림을 그릴수 있게 해주는 권한
+	static HDC WindowBackBufferHdc; // HDC : 윈도우에 그림을 그릴수 있게 해주는 권한
+	static GameEngineImage* BackBufferImage;
 };
 
 // 현재까지 기능

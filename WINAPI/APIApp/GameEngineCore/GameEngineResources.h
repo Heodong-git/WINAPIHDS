@@ -1,10 +1,11 @@
 #pragma once
 #include <map>
 #include <string>
-#include "GameEngineImage.h"
+#include <GameEnginePlatform/GameEngineImage.h>
 
 // 싱글톤으로 작성
 // 게임내의 사운드, 이미지를 모두 관리한다. 
+class GameEnginePath;
 class GameEngineResources
 {
 public:
@@ -19,10 +20,15 @@ public:
 		return Inst;
 	}
 
-protected:
+	bool ImageLoad(const GameEnginePath& _Path);
 
-	// 이미지 로드 함수
-	void ImageLoad(const std::string_view& _Path);
+	bool ImageLoad(const std::string_view& _Path, const std::string_view& _Name);
+
+	GameEngineImage* ImageFind(const std::string_view& _Name);
+
+	void Relase();
+
+protected:
 
 private:
 	static GameEngineResources Inst;
