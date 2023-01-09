@@ -87,7 +87,7 @@ void GameEngineImage::BitCopy(GameEngineImage* _OtherImage, float4 _Pos, float4 
 	// 현시점을 기준으로 현재 윈도우창의 DC 에 
 	// 인자로 들어온 복사될 이미지를 복사한다. 
 	// 즉, 윈도우 창의 특정 위치에 
-	// 인자로 들어온 이미지의 x , y 의 크기만큼 복사 
+	// 인자로 들어온 이미지를 x , y 의 크기로 복사
 	BitBlt(
 		ImageDC, // 복사 당할 이미지
 		_Pos.ix(), // 위치 
