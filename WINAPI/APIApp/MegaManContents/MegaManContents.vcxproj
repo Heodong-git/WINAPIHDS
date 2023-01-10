@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="EndTitleLevel.h" />
+    <ClInclude Include="Map_BackGround.h" />
     <ClInclude Include="MegaManCore.h" />
     <ClInclude Include="Monster_MetalT.h" />
     <ClInclude Include="Monster_NightMareVirus.h" />
@@ -163,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndTitleLevel.cpp" />
+    <ClCompile Include="Map_BackGround.cpp" />
     <ClCompile Include="MegaManCore.cpp" />
     <ClCompile Include="Monster_MetalT.cpp" />
     <ClCompile Include="Monster_NightMareVirus.cpp" />

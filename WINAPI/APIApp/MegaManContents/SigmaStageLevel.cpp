@@ -5,6 +5,7 @@
 #include "Monster_Sigma.h"
 #include "Monster_NightMareVirus.h"
 #include "Monster_MetalT.h"
+#include "Map_BackGround.h"
 
 SigmaStageLevel::SigmaStageLevel()
 {
@@ -40,13 +41,15 @@ void SigmaStageLevel::Loading()
 	GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Sigma_Left.bmp"));
 	GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Monster_Metal_T_Left.bmp"));
 	GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Monster_NightMare_Virus_Left.bmp"));
-
+	GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Sigma_Stage.bmp"));
+	GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Mr_X_Stage.bmp"));
 	// 해당 레벨에서 사용할 액터 생성
 	// 액터 생성시에 인자로 넣어주는 값은 업데이트,렌더링 순서이며 값이 높을 수록 나중에 연산,렌더링이 된다. 
 	CreateActor<Player_Zero>(10);
-	CreateActor<Monster_Sigma>();
-	CreateActor<Monster_NightMareVirus>();
-	CreateActor<Monster_MetalT>();
+	CreateActor<Map_BackGround>();
+	CreateActor<Monster_Sigma>(0);
+	CreateActor<Monster_NightMareVirus>(0);
+	CreateActor<Monster_MetalT>(0);
 }
 
 void SigmaStageLevel::Update()
@@ -61,3 +64,9 @@ void SigmaStageLevel::Update()
 // 코어 : 소유한 레벨의 Update, Render 수행 후, 백버퍼에 더블버퍼에 출력된 이미지를 옮겨준다. 
 // 레벨 : 소유한 액터의 Update, Render 수행을 담당
 // 액터 : 
+
+// 액터생성시 
+// 백그라운드 0
+// 맵 1
+// 몬스터 2
+// 플레이어 일단 10 

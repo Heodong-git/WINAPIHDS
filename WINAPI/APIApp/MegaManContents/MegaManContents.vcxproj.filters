@@ -7,9 +7,6 @@
     <ClInclude Include="SelectLevel.h">
       <Filter>Level</Filter>
     </ClInclude>
-    <ClInclude Include="TitleLevel.h">
-      <Filter>Level</Filter>
-    </ClInclude>
     <ClInclude Include="SigmaStageLevel.h">
       <Filter>Level</Filter>
     </ClInclude>
@@ -27,6 +24,12 @@
     </ClInclude>
     <ClInclude Include="Monster_Sigma.h">
       <Filter>Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Map_BackGround.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleLevel.h">
+      <Filter>Level</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -57,6 +60,9 @@
     <ClCompile Include="Monster_Sigma.cpp">
       <Filter>Monster</Filter>
     </ClCompile>
+    <ClCompile Include="Map_BackGround.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Level">
@@ -70,6 +76,12 @@
     </Filter>
     <Filter Include="Monster">
       <UniqueIdentifier>{d5bf4f6f-b1c7-4d9a-8b56-07a204720c1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{9072cbd8-510e-4143-9308-3000a14720f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{a53696ce-b964-4cb9-9425-3c4874f91ad2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

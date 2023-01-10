@@ -1,4 +1,4 @@
-#include "EndTitleLevel.h"|
+#include "EndTitleLevel.h"
 #include <GameEngineBase/GameEngineDirectory.h>
 
 EndTitleLevel::EndTitleLevel()

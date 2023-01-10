@@ -52,8 +52,8 @@ protected:
 	virtual void Render() {}
 
 private:
-	int	Order;		// 업데이트, 렌더링 순서 값이 작을 수록 먼저 수행 
-	float4 Pos = { 0.0f, 0.0f };
+	int		Order = 0;						// 업데이트, 렌더링 순서 값이 작을 수록 먼저 수행 
+	float4  Pos = { 0.0f, 0.0f };    // 객체의 위치를 저장할 변수
 
 	void SetOrder(int _Order)
 	{
