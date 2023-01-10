@@ -1,5 +1,6 @@
 #pragma once
 #include <list>
+#include <map>
 
 // 윈도우창에 보여지는 화면을 Level 또는 Sceen 이라고 한다. 
 class GameEngineCore;
@@ -20,16 +21,18 @@ public:
 
 	// 레벨에서 사용할 액터 생성
 	template <typename ActorType>
-	void CreateActor()
+	void CreateActor(int _Order = 0)
 	{
 		GameEngineActor* Actor = new ActorType;
 
 		// 생성한 액터의 필요한 부분 로딩
-		ActorStart(Actor);
+		ActorStart(Actor , _Order);
 
-		// Level 은 자신이 소유한 Acotor 들의 리스트 가지고 있기 때문에
-		// 그 리스트에 생성한 액터를 저장 
-		Actors.push_back(Actor);
+		// 맵의 새로운 문법
+		// 해당하는 키값으로, 데이터를 저장한다.
+		// 데이터가 없을 경우, 그 키값으로 데이터를 저장한다.
+		// 데이터가 있을 경우, 그 키값에 해당하는 데이터를 레퍼런스로 반환해준다. 
+		Actors[_Order].push_back(Actor);
 	}
 
 protected:
@@ -37,14 +40,12 @@ protected:
 	virtual void Update() = 0;
 	
 private:
-	
-	// Level 에 표현되는 모든 물체는 
-	// GameEngineActor 를 상속받기 때문에 이 list 하나로 관리가 가능
-	std::list<GameEngineActor*> Actors;
+	// Order 값을 키값으로 하는 액터리스트를 저장한다. 
+	std::map<int, std::list<GameEngineActor*>> Actors;
 
 	void ActorsUpdate();
 	void ActorsRender();
 
 	// 액터 생성 후 액터 로딩
-	void ActorStart(GameEngineActor* _Actor);
+	void ActorStart(GameEngineActor* _Actor, int _Order);
 };

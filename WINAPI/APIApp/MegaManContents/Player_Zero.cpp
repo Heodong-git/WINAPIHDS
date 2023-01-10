@@ -14,14 +14,14 @@ Player_Zero::~Player_Zero()
 void Player_Zero::Start()
 {
 	// 플레이어의 위치를 세팅한다.
-	SetPos({ 50, 50 });
+	SetPos({ 350, 400 });
 	
 }
 
+// 플레이어 연산
 void Player_Zero::Update()
 {
-	// 업데이트, 화면에서 보여질 플레이어의 위치 등을 연산한다.
-	// SetMove({ float4::Right * 0.001f});
+	SetMove({ float4::Left * 0.1f});
 }
 
 void Player_Zero::Render()
@@ -32,7 +32,9 @@ void Player_Zero::Render()
 	// 1. 이미지를 찾는다. 
 	GameEngineImage* Image = GameEngineResources::GetInst().ImageFind("player_recall.bmp");
 	
-	// 2.  현재 백버퍼의 이미지의 BitCopy 함수를 호출하여
+	// 2.  현재 백버퍼의 이미지의 TransCopy 함수를 호출하여
 	// 백버퍼의  특정 위치에 플레이어의 이미지를 복사한다. 
-	GameEngineWindow::GetBackBufferImage()->BitCopy(Image, PlayerPos - float4{ 50, 50 }, { 200.0f, 200.0f });
+	
+	// TransCopy (이미지, 복사될 위치, 복사될 크기, 이미지의 어느위치부터 복사할건지, 그 위치부터 얼만큼의 크기로 복사될건지
+	GameEngineWindow::GetDoubleBufferImage()->TransCopy(Image, PlayerPos - float4{ 50, 50 }, { 130, 130 }, {526 , 293}, {145, 141});
 }

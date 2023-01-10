@@ -1,10 +1,10 @@
+#include <GameEngineBase/GameEngineDirectory.h>
+#include <GameEngineCore/GameEngineResources.h>
 #include "SigmaStageLevel.h"
 #include "Player_Zero.h"
 #include "Monster_Sigma.h"
 #include "Monster_NightMareVirus.h"
 #include "Monster_MetalT.h"
-#include <GameEngineBase/GameEngineDirectory.h>
-#include <GameEngineCore/GameEngineResources.h>
 
 SigmaStageLevel::SigmaStageLevel()
 {
@@ -26,7 +26,7 @@ SigmaStageLevel::~SigmaStageLevel()
 void SigmaStageLevel::Loading()
 {
 	// 이미지로딩
-	// 디렉터리 객체생성 , 디렉터리는 Path 클래스를 소유
+	// 디렉터리 객체생성 , 디렉터리는 경로를 가지고 있음.
 	GameEngineDirectory Directory;
 	
 	// 1. 상위폴더에 해당 디렉터리가 있는지 확인
@@ -41,7 +41,8 @@ void SigmaStageLevel::Loading()
 	GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Monster_Metal_T_Left.bmp"));
 	GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Monster_NightMare_Virus_Left.bmp"));
 
-	CreateActor<Player_Zero>();
+	// 해당 레벨에서 사용할 액터 생성
+	CreateActor<Player_Zero>(1);
 	CreateActor<Monster_Sigma>();
 	CreateActor<Monster_NightMareVirus>();
 	CreateActor<Monster_MetalT>();

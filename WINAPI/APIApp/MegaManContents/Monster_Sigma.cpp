@@ -28,5 +28,5 @@ void Monster_Sigma::Render()
 	
 	GameEngineImage* Image = GameEngineResources::GetInst().ImageFind("Sigma_Left.bmp");
 
-	GameEngineWindow::GetBackBufferImage()->BitCopy(Image, MonsterPos - float4{ 50, 50 }, { 200, 200 });
+	GameEngineWindow::GetDoubleBufferImage()->TransCopy(Image, MonsterPos - float4{ 50, 50 }, { 150, 150 }, float4::Zero, {103, 100 });
 }

@@ -29,5 +29,5 @@ void Monster_NightMareVirus::Render()
 	float4 MonsterPos = GetPos();
 
 	GameEngineImage* Image = GameEngineResources::GetInst().ImageFind("Monster_NightMare_Virus_Left.bmp");
-	GameEngineWindow::GetBackBufferImage()->BitCopy(Image, MonsterPos - float4{ 50, 50 }, { 200, 200 });
+	GameEngineWindow::GetDoubleBufferImage()->TransCopy(Image, MonsterPos - float4{ 50, 50 }, { 100, 100 }, {60, 0}, { 140, 140 });
 }

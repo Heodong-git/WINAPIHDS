@@ -1,6 +1,6 @@
 #include "GameEngineWindow.h"
 #include <GameEngineBase/GameEngineDebug.h>
-#include <GameEngineCore/GameEngineResources.h>
+#include <GameEnginePlatform/GameEngineImage.h>
 
 // static : 반드시 cpp 상단에 구현해주어야함. 
 HWND GameEngineWindow::HWnd = nullptr;
@@ -9,6 +9,7 @@ float4 GameEngineWindow::WindowSize = { 800, 600 };
 float4 GameEngineWindow::WindowPos = { 100, 100 };
 float4 GameEngineWindow::ScreenSize = { 800, 600 };
 GameEngineImage* GameEngineWindow::BackBufferImage = nullptr;
+GameEngineImage* GameEngineWindow::DoubleBufferImage = nullptr;
 
 // 현재 윈도우 업데이트 상태를 전역으로 나타냄. 
 // false 가 된다면 더이상 윈도우루프 반복 X 
@@ -102,13 +103,8 @@ void GameEngineWindow::WindowCreate(HINSTANCE _hInstance, const std::string_view
         return;
     }
 
-    // 윈도우 핸들을 넣어주면 그 핸들값을 가진 윈도우에 그림을 그릴 수 있는 권한을 받아온다. (도화지) 
+    // 윈도우 핸들을 넣어주면 그 핸들값을 가진 윈도우에 그림을 그릴 수 있는 권한을 받아온다. 
     WindowBackBufferHdc = GetDC(HWnd);
-
-    // 백버퍼 이미지 생성
-    BackBufferImage = new GameEngineImage();
-    BackBufferImage->ImageCreate(WindowBackBufferHdc);
-
     // 윈도우창을 화면에 보여줄 것인지 ( 창을 띄우지 않고 백그라운드에서 동작하도록 설정도 가능 )
     ShowWindow(HWnd, SW_SHOW);
     UpdateWindow(HWnd);
@@ -116,8 +112,26 @@ void GameEngineWindow::WindowCreate(HINSTANCE _hInstance, const std::string_view
     // 윈도우창의 크기, 위치설정
     SettingWindowSize(_Size);
     SettingWindowPos(_Pos);
+
+    // 백버퍼 이미지 생성
+    BackBufferImage = new GameEngineImage();
+    BackBufferImage->ImageCreate(WindowBackBufferHdc);
   
     return;
+}
+
+// 더블버퍼 클리어
+void GameEngineWindow::DoubleBufferClear()
+{
+    DoubleBufferImage->ImageClear();
+}
+
+// 현재 더블버퍼에 그려져있는 이미지를 백버퍼에 출력한다. 
+void GameEngineWindow::DoubleBufferRender()
+{
+    //static GameEngineImage* BackBufferImage;
+    //static GameEngineImage* DoubleBufferImage;
+    BackBufferImage->BitCopy(DoubleBufferImage, { 0,0 }, WindowSize);
 }
 
 int GameEngineWindow::WindowLoop(void(*_Start)(), void(*_Loop)(), void(*_End)())
@@ -170,6 +184,9 @@ int GameEngineWindow::WindowLoop(void(*_Start)(), void(*_Loop)(), void(*_End)())
     // 백버퍼이미지가 nullptr이 아니라면 제거
     if (nullptr != BackBufferImage)
     {
+        delete DoubleBufferImage;
+        DoubleBufferImage = nullptr;
+
         delete BackBufferImage;
         BackBufferImage = nullptr;
     }
@@ -198,6 +215,17 @@ void GameEngineWindow::SettingWindowSize(float4 _Size)
     // ZORDER : 윈도우창의 정렬 기준을 의미
     // 실제 생성될 윈도우의 크기를 넣어주고 창을 다시 설정한다. 
     SetWindowPos(HWnd, nullptr, WindowPos.ix(), WindowPos.iy(), WindowSize.ix(), WindowSize.iy(), SWP_NOZORDER);  
+
+    // 화면크기가 조정된다면 더블버퍼도 다시 만들어주어야한다. 
+    if (nullptr != DoubleBufferImage)
+    {
+        delete DoubleBufferImage;
+        DoubleBufferImage = nullptr;
+    }
+
+    DoubleBufferImage = new GameEngineImage();
+    DoubleBufferImage->ImageCreate(ScreenSize);
+
 }
 
 void GameEngineWindow::SettingWindowPos(float4 _Pos)

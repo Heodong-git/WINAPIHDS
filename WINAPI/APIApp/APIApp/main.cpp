@@ -2,8 +2,6 @@
 // 현재 포함 디렉터리가 경로 + ..\ 로 설정되어 있기 때문에 
 // 이전폴더에 있는 어떠한 폴더 / 헤더파일로 include 가능
 #include <Windows.h>
-#include <GameEngineBase/GameEngineDebug.h>
-#include <GameEnginePlatform/GameEngineWindow.h>
 #include <MegaManContents/MegaManCore.h>
 
 // 속성 : 하위시스템 -> 창으로 바꿔주면 윈도우식 WinMain 으로 진입점함수 변경

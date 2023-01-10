@@ -45,11 +45,19 @@ protected:
 	// 키입력 + 논리적인 연산 수행
 	virtual void Update() {}
 
+	// 최종연산수행, 사용하기 전 이걸 꼭 써야하나? 라고 생각해봐야함.
+	virtual void LateUpdate() {}
+
 	// 연산 수행 후 화면에 출력되는 부분을 수행 
 	virtual void Render() {}
 
 private:
-	// 좌표
+	int	Order;		// 업데이트, 렌더링 순서 값이 작을 수록 먼저 수행 
 	float4 Pos = { 0.0f, 0.0f };
+
+	void SetOrder(int _Order)
+	{
+		Order = _Order;
+	}
 };
 

@@ -29,8 +29,13 @@ void GameEngineCore::GlobalUpdate()
 
 	// 현재 레벨이 소유한 액터연산
 	Core->MainLevel->ActorsUpdate();
+	// 더블버퍼 클리어
+	GameEngineWindow::DoubleBufferClear();
 	// 연산된 값을 토대로 화면에 출력
 	Core->MainLevel->ActorsRender();
+	// 더블버퍼 렌더링 
+	GameEngineWindow::DoubleBufferRender();
+	
 }
 
 // 생성된 코어클래스의 End 함수 동작

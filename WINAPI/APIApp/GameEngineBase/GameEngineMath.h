@@ -23,6 +23,8 @@ public:
 	static const float4 Down;
 	static const float4 Forward;
 	static const float4 Back;
+	static const float4 Zero;
+	static const float4 Null;
 
 public:
 	float x = 0.0f;
@@ -33,27 +35,37 @@ public:
 
 
 	// float 타입의 x,y,z,w 축의 값을 static_cast로 int 타입으로 형변환하여 반환한다. 
-	int ix() {
+	int ix() const  
+	{
 		return static_cast<int>(x);
 	}
 
-	int iy() {
+	int iy() const 
+	{
 		return static_cast<int>(y);
 	}
 
-	int iz() {
+	int iz() const  
+	{
 		return static_cast<int>(z);
 	}
 
-	int iw() {
+	int iw() const  
+	{
 		return static_cast<int>(w);
 	}
 
 	// 절반
 	// half 함수를 호출하면 this 의 x, y, z 값을 절반으로 하여 그 값을 반환한다. 
-	float4 half()
+	float4 half() const
 	{
 		return { x * 0.5f, y * 0.5f , z * 0.f, w };
+	}
+
+	// 모든 축의 값이 0인지 체크
+	bool IsZero() const
+	{
+		return x == 0.0f && y == 0.0f && z == 0.0f;
 	}
 
 	// 오퍼레이터 *
