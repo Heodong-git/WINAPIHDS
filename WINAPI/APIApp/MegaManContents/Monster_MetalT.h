@@ -20,6 +20,7 @@ protected:
 	void Render() override;
 
 private:
-
+	static int Time;
+	float4 Dir;
 };
 

@@ -31,9 +31,9 @@ void GameEngineCore::GlobalUpdate()
 	Core->MainLevel->ActorsUpdate();
 	// 더블버퍼 클리어
 	GameEngineWindow::DoubleBufferClear();
-	// 연산된 값을 토대로 화면에 출력
+	// 연산된 값을 토대로 더블버퍼에 출력
 	Core->MainLevel->ActorsRender();
-	// 더블버퍼 렌더링 
+	// 더블버퍼에 이미지가 모두 그려졌기 때문에 백버퍼에 옮겨그려준다. 
 	GameEngineWindow::DoubleBufferRender();
 	
 }

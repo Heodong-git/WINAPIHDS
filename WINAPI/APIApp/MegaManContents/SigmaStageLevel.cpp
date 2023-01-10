@@ -42,7 +42,8 @@ void SigmaStageLevel::Loading()
 	GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Monster_NightMare_Virus_Left.bmp"));
 
 	// 해당 레벨에서 사용할 액터 생성
-	CreateActor<Player_Zero>(1);
+	// 액터 생성시에 인자로 넣어주는 값은 업데이트,렌더링 순서이며 값이 높을 수록 나중에 연산,렌더링이 된다. 
+	CreateActor<Player_Zero>(10);
 	CreateActor<Monster_Sigma>();
 	CreateActor<Monster_NightMareVirus>();
 	CreateActor<Monster_MetalT>();
@@ -52,3 +53,11 @@ void SigmaStageLevel::Update()
 {
 
 }
+
+// 코어 -> 레벨생성
+// 레벨 -> 레벨 안에서 사용할 액터 생성, 생성 후 AcotrStart
+// 액터 -> 액터가 생성되고 나서 기본적으로 필요한 부분 수행
+
+// 코어 : 소유한 레벨의 Update, Render 수행 후, 백버퍼에 더블버퍼에 출력된 이미지를 옮겨준다. 
+// 레벨 : 소유한 액터의 Update, Render 수행을 담당
+// 액터 : 

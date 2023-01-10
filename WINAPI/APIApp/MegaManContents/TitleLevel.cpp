@@ -17,16 +17,15 @@ TitleLevel::~TitleLevel()
 // 3. Sound ?
 void TitleLevel::Loading()
 {
-	// 나중에 배경화면 적용할 때 다시 해볼 것 
-	//GameEngineDirectory Directory;
-	//// 상위폴더에 해당 디렉터리가 있는지 확인
-	//Directory.MoveParentToDirectory("ContentsResources");
+	GameEngineDirectory Directory;
+	// 상위폴더에 해당 디렉터리가 있는지 확인
+	Directory.MoveParentToDirectory("ContentsResources");
 
-	//// 디렉터리가 있다면 경로를 설정해준다.  
-	//Directory.Move("ContentsResources");
-	//Directory.Move("Image");
+	// 디렉터리가 있다면 경로를 설정해준다.  
+	Directory.Move("ContentsResources");
+	Directory.Move("Image");
 
-	//GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Main_Title.bmp"));
+	GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Main_Title.bmp"));
 }
 
 void TitleLevel::Update()

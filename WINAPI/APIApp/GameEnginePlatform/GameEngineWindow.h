@@ -58,17 +58,11 @@ public:
 protected:
 
 private:
-	static float4 WindowSize;       // 실제 생성되는 윈도우의 크기 ( 메뉴바 등이 포함된 크기 ) 
-	static float4 ScreenSize;		// 생성하고자 하는 윈도우의 크기
-	static float4 WindowPos;		// 윈도우창을 생성할 좌상단 좌표 
-	static HWND HWnd;				// 윈도우 핸들값
-	static HDC WindowBackBufferHdc; // HDC : 윈도우에 그림을 그릴수 있게 해주는 권한
-	static GameEngineImage* BackBufferImage;
-	static GameEngineImage* DoubleBufferImage;	
+	static float4 WindowSize;					// 실제 생성되는 윈도우의 크기 ( 메뉴바 등이 포함된 크기 ) 
+	static float4 ScreenSize;					// 생성하고자 하는 윈도우의 크기
+	static float4 WindowPos;					// 윈도우창을 생성할 좌상단 좌표 
+	static HWND HWnd;							// 윈도우 핸들값
+	static HDC WindowBackBufferHdc;				// HDC : 윈도우에 그림을 그릴수 있게 해주는 권한
+	static GameEngineImage* BackBufferImage;    // 화면에 보여지는 이미지 최종본
+	static GameEngineImage* DoubleBufferImage;	// 여기에 모든 이미지를 그려내고, 후에 함수를 활용하여 그려진 이미지를 BackBuffer에 그려낸다.
 };
-
-// 현재까지 기능
-// 윈도우크기, 윈도우생성좌표 설정
-// 핸들값 반환 
-// 스크린 사이즈 반환
-// 윈도우 Dc 반환 
