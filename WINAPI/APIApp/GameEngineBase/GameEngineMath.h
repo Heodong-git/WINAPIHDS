@@ -55,6 +55,27 @@ public:
 		return static_cast<int>(w);
 	}
 
+	// 내부의 각 축의 절반의 값을 반환
+	int hix() const
+	{
+		return static_cast<int>(x * 0.5f);
+	}
+
+	int hiy() const
+	{
+		return static_cast<int>(y * 0.5f);
+	}
+
+	int hiz() const
+	{
+		return static_cast<int>(z * 0.5f);
+	}
+
+	int hiw() const
+	{
+		return static_cast<int>(w * 0.5f);
+	}
+
 	// 절반
 	// half 함수를 호출하면 this 의 x, y, z 값을 절반으로 하여 그 값을 반환한다. 
 	float4 half() const

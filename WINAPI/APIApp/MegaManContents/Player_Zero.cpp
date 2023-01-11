@@ -21,7 +21,7 @@ void Player_Zero::Start()
 // 플레이어 연산
 void Player_Zero::Update()
 {
-	SetMove({ float4::Right * 0.1f});
+	//SetMove({ float4::Right * 0.1f});
 }
 
 void Player_Zero::Render()
@@ -32,11 +32,10 @@ void Player_Zero::Render()
 
 	// 1. 이미지를 찾는다. 
 	GameEngineImage* Image = GameEngineResources::GetInst().ImageFind("player_recall.bmp");
+	Image->Cut(10, 2);
 	
-	// 2.  현재 백버퍼의 이미지의 TransCopy 함수를 호출하여
-	// 백버퍼의  특정 위치에 플레이어의 이미지를 복사한다. 
-	
+	// 2.  백버퍼 이미지의 TransCopy 함수를 호출하여
+	// 백버퍼의 특정 위치에 플레이어의 이미지를 복사한다. 
 	// TransCopy ( 복사될 위치, 복사될 크기 / 이미지의 어느위치부터 복사할건지, 이미지의 어디까지 복사할건지 ) 
-	GameEngineWindow::GetDoubleBufferImage()->TransCopy(Image, PlayerPos -	float4::Zero, { 130, 130 }, 
-		                                                                   float4{526 , 293}, {145, 141});
+	GameEngineWindow::GetDoubleBufferImage()->TransCopy(Image, 10, PlayerPos, { 160, 250 });
 }

@@ -154,17 +154,12 @@ void GameEngineImage::ImageScaleCheck()
 }
 
 // Copy
-void GameEngineImage::BitCopy(const GameEngineImage* _OtherImage, float4 _Pos, float4 _Scale)
+void GameEngineImage::BitCopy(const GameEngineImage* _OtherImage, float4 _CenterPos, float4 _Scale)
 {
-	// 특정한 HDC를 다른 HDC에 복사하는 함수
-	// 현시점을 기준으로 현재 윈도우창의 DC 에 
-	// 인자로 들어온 복사될 이미지를 복사한다. 
-	// 즉, 윈도우 창의 특정 위치에 
-	// 인자로 들어온 이미지를 x , y 의 크기로 복사
 	BitBlt(
 		ImageDC, // 복사 당할 이미지
-		_Pos.ix(), // 위치 
-		_Pos.iy(),
+		_CenterPos.ix() - _Scale.hix(), // 위치 
+		_CenterPos.iy() - _Scale.hiy(),
 		_Scale.ix(),
 		_Scale.iy(),
 		_OtherImage->GetImageDC(), // 복사할 이미지
@@ -174,30 +169,79 @@ void GameEngineImage::BitCopy(const GameEngineImage* _OtherImage, float4 _Pos, f
 	);
 }
 
-// TransCopy(이미지, 복사될 위치, 복사될 크기, 이미지의 어느위치부터 복사할건지, 그 위치부터 얼만큼의 크기로 복사될건지) 
-void GameEngineImage::TransCopy(const GameEngineImage* _OtherImage, float4 _CopyPos, float4 _CopySize, 
-	                                         float4 _OtherImagePos, float4 _OtherImageSize, int _Color)
+// 디폴트인자의 경우 구현쪽에서는 생략하여 인자의타입과 변수명만 써주어야한다. 
+// 1번인자 : 출력할 이미지
+// 2번인자 : 몇번째 인덱스의 컷인지
+// 3번인자 : 그려질 위치의 중심점
+// 4번인자 : 복사될 크기 
+// 5번인자 : 제외할 컬러 
+void GameEngineImage::TransCopy(const GameEngineImage* _OtherImage, int _CutIndex, float4 _CopyCenterPos, float4 _CopySize, int _Color/* = RGB(255, 0, 255)*/)
 {
-	// 1번인자 : 복사될 DC
-	// 2번인자 : 복사될 백버퍼의 x 위치
-	// 3번인자 : 복사될 백버퍼의 y 위치 
-	// 4번인자 : 복사될 x 사이즈
-	// 5번인자 : 복사될 y 사이즈
-	// 6번인자 : 복사할 이미지의 DC
-	// 7번인자 : 이미지의 어느 x좌표부터 복사할건지
-	// 8번인자 : 이미지의 어느 y좌표부터 복사할건지 
-	// 9번인자 : 그 이미지의 x좌표부터 어디까지 복사할건지
-	// 10번인자 : 그 이미지의 y좌표부터 어디까지 복사할건지 
-	// 11번인자 : 화면에 보여주지 않을 색상
-	TransparentBlt(ImageDC,
-		_CopyPos.ix(),
-		_CopyPos.iy(),
-		_CopySize.ix(),
+	// 현재 컷상태인 이미지가 아니라면 assert 
+	if (false == _OtherImage->IsCut)
+	{
+		MsgAssert(" 잘리지 않은 이미지로 cut출력 함수를 사용하려고 했습니다.");
+		return;
+	}
+
+	// 컷상태인 이미지라면 벡터에 저장되어있는 인덱스에 해당하는 컷데이터를 반환한다. 
+	ImageCutData Data = _OtherImage->GetCutData(_CutIndex);
+
+	// Transparentsblt 
+	TransCopy(_OtherImage, _CopyCenterPos, _CopySize, Data.GetStartPos(), Data.GetScale(), _Color);
+}
+
+// 1번인자 : 출력할이미지
+// 2번인자 : 출력될 좌표의 중심점
+// 3번인자 : 복사할 크기
+// 4번인자 : 출력될 이미지의 좌표
+// 5번인자 : 출력될 이미지의 크기 
+// 6번인자 : 출력시 제외할 컬러 
+void GameEngineImage::TransCopy(const GameEngineImage* _OtherImage, float4 _CopyCenterPos, float4 _CopySize, float4 _OtherImagePos, float4 _OtherImageSize, int _Color)
+{
+	TransparentBlt(ImageDC, // 여기에 그려라.
+		_CopyCenterPos.ix() - _CopySize.hix(), // 여기를 시작으로
+		_CopyCenterPos.iy() - _CopySize.hiy(),
+		_CopySize.ix(), // 이 크기로
 		_CopySize.iy(),
-		_OtherImage->GetImageDC(),
-		_OtherImagePos.ix(),
+		_OtherImage->GetImageDC(), // 복사할 이미지 DC 
+		_OtherImagePos.ix(),// 이미지의 x y에서부터
 		_OtherImagePos.iy(),
-		_OtherImageSize.ix(),
+		_OtherImageSize.ix(), // 이미지의 x y까지의 위치를
 		_OtherImageSize.iy(),
 		_Color);
+}
+
+// 이미지를 잘라서 그 데이터를 소유한 vector에 저장 
+void GameEngineImage::Cut(int X, int Y)
+{
+	// ImageCutData 클래스 생성
+	ImageCutData Data;
+
+	// 이미지 크기저장
+	Data.SizeX = static_cast<float>(GetImageScale().ix() / X);
+	Data.SizeY = static_cast<float>(GetImageScale().iy() / Y);
+
+	// X,Y 축으로 각각 어느위치까지 출력할 것인지 for문을 활용하여 저장한다. 
+	for (size_t i = 0; i < Y; i++)
+	{
+		for (size_t i = 0; i < X; i++)
+		{
+			// 기본시작위치 0,0 으로 저장되어 있고
+			// 위쪽에서 어디까지 출력할지 저장했기 때문에
+			// 첫번째 데이터는 바로 저장해준 후 
+			// X축의 값을 더해준다. 
+			ImageCutDatas.push_back(Data);
+			Data.StartX += Data.SizeX;
+		}
+
+		// X축 작업이 모두완료 되었다면
+		// 다음 Y축작업이 진행되어야 하기 때문에 시작위치의 X축의 값을 0으로 초기화 하고
+		// Y축의 값을 추가해준다. 
+		Data.StartX = 0.0f;
+		Data.StartY += Data.SizeY;
+	}
+
+	// 모든 작업이 완료 되었다면 Cut 상태가 되기 때문에 true 로 변경
+	IsCut = true;
 }

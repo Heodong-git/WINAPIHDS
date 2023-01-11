@@ -13,7 +13,7 @@ Map_BackGround::~Map_BackGround()
 
 void Map_BackGround::Start()
 {
-	SetPos(float4{ 0 , 0 });
+	SetPos(GameEngineWindow::GetScreenSize().half());
 }
 
 void Map_BackGround::Update()
@@ -29,8 +29,6 @@ void Map_BackGround::Render()
 
 	// 2.  현재 백버퍼의 이미지의 TransCopy 함수를 호출하여
 	// 백버퍼의  특정 위치에 플레이어의 이미지를 복사한다. 
-
-	// TransCopy ( 복사될 위치, 복사될 크기 / 이미지의 어느위치부터 복사할건지, 이미지의 어디까지 복사할건지 ) 
 	GameEngineWindow::GetDoubleBufferImage()->TransCopy(Image, MapPos, { 1360, 768 },
-														float4{ 8 , 1284 }, { 517, 250 });
+														float4{ 6 , 1285 }, { 511, 254 });
 }

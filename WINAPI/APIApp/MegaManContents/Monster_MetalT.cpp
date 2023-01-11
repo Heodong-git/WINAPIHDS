@@ -45,5 +45,5 @@ void Monster_MetalT::Render()
 	// 이미지를 찾는다. 
 	GameEngineImage* Image = GameEngineResources::GetInst().ImageFind("Monster_Metal_T_Left.bmp");
 
-	GameEngineWindow::GetDoubleBufferImage()->TransCopy(Image, MonsterPos - float4{ 50, 50 }, { 100, 100 }, { 446, 14 }, {80, 93});
+	GameEngineWindow::GetDoubleBufferImage()->TransCopy(Image, MonsterPos, { 100, 100 }, { 446, 14 }, {80, 93});
 }

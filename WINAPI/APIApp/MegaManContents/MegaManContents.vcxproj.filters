@@ -42,9 +42,6 @@
     <ClCompile Include="TitleLevel.cpp">
       <Filter>Level</Filter>
     </ClCompile>
-    <ClCompile Include="SigmaStageLevel.cpp">
-      <Filter>Level</Filter>
-    </ClCompile>
     <ClCompile Include="MegaManCore.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -62,6 +59,9 @@
     </ClCompile>
     <ClCompile Include="Map_BackGround.cpp">
       <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="SigmaStageLevel.cpp">
+      <Filter>Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
