@@ -41,6 +41,12 @@
     <ClInclude Include="Select_BackGround.h">
       <Filter>BackGround</Filter>
     </ClInclude>
+    <ClInclude Include="UI_SelectZero.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_SelectX.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndTitleLevel.cpp">
@@ -81,6 +87,12 @@
     </ClCompile>
     <ClCompile Include="Select_BackGround.cpp">
       <Filter>BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_SelectZero.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_SelectX.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
