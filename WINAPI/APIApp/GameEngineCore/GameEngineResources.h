@@ -6,6 +6,7 @@
 // 싱글톤으로 작성
 // 게임내의 사운드, 이미지를 모두 관리한다. 
 class GameEnginePath;
+class GameEngineImage;
 class GameEngineResources
 {
 public:
@@ -20,13 +21,13 @@ public:
 		return Inst;
 	}
 
-	bool ImageLoad(const GameEnginePath& _Path);
+	GameEngineImage* ImageLoad(const GameEnginePath& _Path);
 
-	bool ImageLoad(const std::string_view& _Path, const std::string_view& _Name);
+	GameEngineImage* ImageLoad(const std::string_view& _Path, const std::string_view& _Name);
 
 	GameEngineImage* ImageFind(const std::string_view& _Name);
 
-	void Relase();
+	void Release();
 
 protected:
 

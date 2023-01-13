@@ -3,14 +3,23 @@
   <ItemGroup>
     <ClInclude Include="GameEngineWindow.h" />
     <ClInclude Include="GameEngineImage.h" />
+    <ClInclude Include="GameEngineInput.h">
+      <Filter>Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineWindow.cpp" />
     <ClCompile Include="GameEngineImage.cpp" />
+    <ClCompile Include="GameEngineInput.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resources">
       <UniqueIdentifier>{4cb88469-834f-46ee-b601-fec37791a6fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{b2a4d7ce-846f-42ae-94fe-d683e2f80cf5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

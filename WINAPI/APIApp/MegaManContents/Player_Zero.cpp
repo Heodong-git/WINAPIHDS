@@ -2,6 +2,11 @@
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineBase/GameEngineMath.h>
 #include <GameEngineCore/GameEngineResources.h>
+#include <GameEngineCore/GameEngineRender.h>
+#include <GameEnginePlatform/GameEngineInput.h>
+#include "ContentsEnum.h"
+
+float Player_Zero::Time = 0.0f;
 
 Player_Zero::Player_Zero()
 {
@@ -13,29 +18,73 @@ Player_Zero::~Player_Zero()
 
 void Player_Zero::Start()
 {
-	// 플레이어의 위치를 세팅한다.
-	SetPos({ 100, 400 });
-	
+	// 플레이어의 위치
+
+	// 키생성
+	if (false == GameEngineInput::IsKey("LeftMove"))
+	{
+		// 아스키코드 
+		// 방향키 왼쪽 37
+		// 방향키 오른쪽 39
+		// 방향키 아래 40
+		// 방향키 위 38 
+		GameEngineInput::CreateKey("Left", 37);
+		GameEngineInput::CreateKey("Right", 39);
+		GameEngineInput::CreateKey("Up", 38);
+		GameEngineInput::CreateKey("Down", 40);
+		GameEngineInput::CreateKey("Dash", 'Z');
+		GameEngineInput::CreateKey("Attack", 'X');
+		GameEngineInput::CreateKey("Jump", 'C');
+	}
+
+	SetPos({ 300, 600 });
+	// 렌더생성 , 생성시 사용할 이미지, Zorder 값 입력
+	GameEngineRender* Render = CreateRender("player_recall.bmp", RENDERORDER::PLAYER);
+	// 렌더링시 x축 y축의 크기설정
+	// 165, 200 <-- 현재까지봤을 때 양호함 
+	Render->SetScale({ 165, 200 });
 }
 
 // 플레이어 연산
-void Player_Zero::Update()
+void Player_Zero::Update(float _DeltaTime)
 {
-	//SetMove({ float4::Right * 0.1f});
+	if (true == GameEngineInput::IsPress("Left"))
+	{
+		SetMove(float4::Left * MoveSpeed * _DeltaTime);
+	}
+
+	if (true == GameEngineInput::IsPress("Right"))
+	{
+		SetMove(float4::Right * MoveSpeed * _DeltaTime);
+	}
+
+	if (true == GameEngineInput::IsPress("Up"))
+	{
+		SetMove(float4::Up * MoveSpeed * _DeltaTime);
+	}
+
+	if (true == GameEngineInput::IsPress("Down"))
+	{
+		SetMove(float4::Down * MoveSpeed * _DeltaTime);
+	}
+
+	if (true == GameEngineInput::IsDown("Dash"))
+	{
+		
+	}
+
+	if (true == GameEngineInput::IsDown("Attack"))
+	{
+		int a = 0;
+	}
+
+	if (true == GameEngineInput::IsDown("Jump"))
+	{
+		SetMove(float4{ 0 , -200 } *MoveSpeed * _DeltaTime);
+	}
 }
 
-void Player_Zero::Render()
+void Player_Zero::Render(float _DeltaTime)
 {
-	// Update에서 연산된 값을 활용하여 화면에 출력한다.
-	// 플레이어의 현재 위치를 받아온다. 
-	float4 PlayerPos = GetPos();
-
-	// 1. 이미지를 찾는다. 
-	GameEngineImage* Image = GameEngineResources::GetInst().ImageFind("player_recall.bmp");
-	Image->Cut(10, 2);
-	
-	// 2.  백버퍼 이미지의 TransCopy 함수를 호출하여
-	// 백버퍼의 특정 위치에 플레이어의 이미지를 복사한다. 
-	// TransCopy ( 복사될 위치, 복사될 크기 / 이미지의 어느위치부터 복사할건지, 이미지의 어디까지 복사할건지 ) 
-	GameEngineWindow::GetDoubleBufferImage()->TransCopy(Image, 10, PlayerPos, { 160, 250 });
+	// 디버깅용
 }

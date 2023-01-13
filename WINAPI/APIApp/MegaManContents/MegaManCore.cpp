@@ -27,7 +27,7 @@ void MegaManCore::Start()
 	CreateLevel<EndTitleLevel>("EndTitleLevel");
 	
 	// 실행 시에 반드시 어떤 레벨을 보여줄 것인지 지정한다. 
-	ChangeLevel("SigmaStageLevel");
+	ChangeLevel("TitleLevel");
 }
 
 

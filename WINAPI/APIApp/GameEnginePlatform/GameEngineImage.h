@@ -103,7 +103,12 @@ public:
 		return ImageCutDatas[_Index];
 	}
 
-	void Cut(int X, int Y);
+
+	// 기준점을 잡고 그기준점을 기준으로 하는 CUT
+	void Cut(float4 _Start, float4 _End, int _X, int _Y);
+	
+	// 이미지의 크기를 기준으로 하는 Cut
+	void Cut(int _X, int _Y);
 
 	// BitBlt
 	void BitCopy(const GameEngineImage* _OtherImage, float4 _Pos, float4 _Scale);

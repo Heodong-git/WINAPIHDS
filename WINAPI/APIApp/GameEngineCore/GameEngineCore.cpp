@@ -1,21 +1,65 @@
 #include "GameEngineCore.h"
 #include <GameEngineBase/GameEngineDebug.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
-#include <GameEngineCore/GameEngineResources.h>
+#include <GameEnginePlatform/GameEngineInput.h>
 #include "GameEngineLevel.h"
-
+#include "GameEngineResources.h"
+#include <GameEngineBase/GameEngineTime.h>
 
 GameEngineCore* Core;
+
+GameEngineCore* GameEngineCore::GetInst()
+{
+	return Core;
+}
 
 // 생성된 코어클래스의 Start 함수 동작
 void GameEngineCore::GlobalStart()
 {
 	Core->Start();
+	
+	// 코어스타트 함수 호출시에 시간리셋
+	GameEngineTime::GlobalTime.Reset();
 }
 
 // 생성된 코어클래스의 Update 함수 동작
 void GameEngineCore::GlobalUpdate()
 {
+	// 업데이트가 시작 될 때 바로 진행
+	// NextLevel 이 nullptr 이 아니라면 ChangeLevel 된다는 뜻이다. 
+	if (nullptr != Core->NextLevel)
+	{
+		GameEngineLevel* PrevLevel = Core->MainLevel;
+		GameEngineLevel* NextLevel = Core->NextLevel;
+
+		// 이전 레벨이 nullptr 이 아니라면
+		if (nullptr != PrevLevel)
+		{
+			// 이전레벨의 마무리 작업을 수행
+			PrevLevel->LevelChangeEnd(NextLevel);
+		}
+
+		// 레벨을 다음 레벨로 변경한다. 
+		Core->MainLevel = NextLevel;
+		// 다음레벨을 nullptr 로 초기화
+		Core->NextLevel = nullptr;
+
+		// 다음레벨이 nullptr 이 아니라면 레벨이 변경된다는 의미
+		if (nullptr != NextLevel)
+		{
+			// 다음레벨로 변경될때 해야할 작업을 수행한다. 
+			NextLevel->LevelChangeStart(PrevLevel);
+		}
+	}
+
+	// 한프레임의 시작시에 델타타임을 정한다.
+	float TimeDeltaTime = GameEngineTime::GlobalTime.TimeCheck();
+
+	// 다른 클래스들의 Update 와 Render가 이루어지기 전에 
+	// KeyUpdate 를 통해 현재 키가 눌렸는지 체크하고 
+	// 이후 연산에서 반영한다. 
+	GameEngineInput::Update(TimeDeltaTime);
+
 	// 코어 업데이트 ( 필요한 연산 ) 
 	Core->Update();
 
@@ -27,12 +71,14 @@ void GameEngineCore::GlobalUpdate()
 		return;
 	}
 
+	// 메인레벨의 업데이트를 먼저 수행 
+	Core->MainLevel->Update(TimeDeltaTime);
 	// 현재 레벨이 소유한 액터연산
-	Core->MainLevel->ActorsUpdate();
+	Core->MainLevel->ActorsUpdate(TimeDeltaTime);
 	// 더블버퍼 클리어
 	GameEngineWindow::DoubleBufferClear();
 	// 연산된 값을 토대로 더블버퍼에 출력
-	Core->MainLevel->ActorsRender();
+	Core->MainLevel->ActorsRender(TimeDeltaTime);
 	// 더블버퍼에 이미지가 모두 그려졌기 때문에 백버퍼에 옮겨그려준다. 
 	GameEngineWindow::DoubleBufferRender();
 	
@@ -44,7 +90,7 @@ void GameEngineCore::GlobalEnd()
 	Core->End();
 
 	// 게임이 종료될 때 리소스가 생성한 이미지들을 모두 제거해준다. 
-	GameEngineResources::GetInst().Relase();
+	GameEngineResources::GetInst().Release();
 }
 
 // 코어가 생성될 때 릭체크 함수 동작 + 생성된 코어의 주소값을 가진다. 
@@ -81,7 +127,7 @@ GameEngineCore::~GameEngineCore()
 void GameEngineCore::CoreStart(HINSTANCE _instance)
 {
 	// 윈도우 생성 
-	GameEngineWindow::WindowCreate(_instance, "MainWindow", { 1360.0f, 768.0f }, { 0, 0 });
+	GameEngineWindow::WindowCreate(_instance, "MainWindow", { 1600.0f, 900.0f }, { 0, 0 });
 	
 	// 윈도우 루프
 	// 이러한 방식을 callback 방식이라고 하며 
@@ -106,8 +152,10 @@ void GameEngineCore::ChangeLevel(const std::string_view& _Name)
 	}
 
 	// 그게 아니라면 메인레벨을 저장되어 있는 레벨로 지정해준다.
-	MainLevel = FindIter->second;
+	NextLevel = FindIter->second;
 }
+
+
 
 // 헤더에 다른 헤더를 인클루드 하지 않기 위해 기능을 분리
 void GameEngineCore::LevelLoading(GameEngineLevel* _Level)

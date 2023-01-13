@@ -151,8 +151,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="EndTitleLevel.h" />
-    <ClInclude Include="Map_BackGround.h" />
+    <ClInclude Include="Select_BackGround.h" />
+    <ClInclude Include="SigmaStage_BackGround.h" />
     <ClInclude Include="MegaManCore.h" />
     <ClInclude Include="Monster_MetalT.h" />
     <ClInclude Include="Monster_NightMareVirus.h" />
@@ -161,10 +163,13 @@
     <ClInclude Include="SelectLevel.h" />
     <ClInclude Include="SigmaStageLevel.h" />
     <ClInclude Include="TitleLevel.h" />
+    <ClInclude Include="Title_BackGround.h" />
+    <ClInclude Include="UI_PlayerHpBar.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndTitleLevel.cpp" />
-    <ClCompile Include="Map_BackGround.cpp" />
+    <ClCompile Include="Select_BackGround.cpp" />
+    <ClCompile Include="SigmaStage_BackGround.cpp" />
     <ClCompile Include="MegaManCore.cpp" />
     <ClCompile Include="Monster_MetalT.cpp" />
     <ClCompile Include="Monster_NightMareVirus.cpp" />
@@ -173,6 +178,8 @@
     <ClCompile Include="SelectLevel.cpp" />
     <ClCompile Include="SigmaStageLevel.cpp" />
     <ClCompile Include="TitleLevel.cpp" />
+    <ClCompile Include="Title_BackGround.cpp" />
+    <ClCompile Include="UI_PlayerHpBar.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

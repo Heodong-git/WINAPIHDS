@@ -213,19 +213,19 @@ void GameEngineImage::TransCopy(const GameEngineImage* _OtherImage, float4 _Copy
 }
 
 // 이미지를 잘라서 그 데이터를 소유한 vector에 저장 
-void GameEngineImage::Cut(int X, int Y)
+void GameEngineImage::Cut(int _X, int _Y)
 {
 	// ImageCutData 클래스 생성
 	ImageCutData Data;
 
 	// 이미지 크기저장
-	Data.SizeX = static_cast<float>(GetImageScale().ix() / X);
-	Data.SizeY = static_cast<float>(GetImageScale().iy() / Y);
+	Data.SizeX = static_cast<float>(GetImageScale().ix() / _X);
+	Data.SizeY = static_cast<float>(GetImageScale().iy() / _Y);
 
 	// X,Y 축으로 각각 어느위치까지 출력할 것인지 for문을 활용하여 저장한다. 
-	for (size_t i = 0; i < Y; i++)
+	for (size_t i = 0; i < _Y; i++)
 	{
-		for (size_t i = 0; i < X; i++)
+		for (size_t i = 0; i < _X; i++)
 		{
 			// 기본시작위치 0,0 으로 저장되어 있고
 			// 위쪽에서 어디까지 출력할지 저장했기 때문에
@@ -243,5 +243,43 @@ void GameEngineImage::Cut(int X, int Y)
 	}
 
 	// 모든 작업이 완료 되었다면 Cut 상태가 되기 때문에 true 로 변경
+	IsCut = true;
+}
+
+
+void GameEngineImage::Cut(float4 _Start, float4 _End, int _X, int _Y)
+{
+	// 컷데이터(구조체) 생성
+	ImageCutData Data;
+
+	// 컷데이터의 X, Y 사이즈 (크기설정) 
+	// 끝 X , Y 좌표에서 시작 X, Y 좌표를 빼게 되면 사이의 거리가 구해지게 되고
+	// 이 거리가 곧 X 의 크기, Y의 크기이다. 그 값을 static_cast ( 값대값 형변환 ) 을 통해 저장한다. 
+	Data.SizeX = static_cast<float>((_End.x - _Start.x) / _X);
+	Data.SizeY = static_cast<float>((_End.y - _Start.y) / _Y);
+
+	// 컷시작위치 저장
+	Data.StartX = _Start.x;
+	Data.StartY = _Start.y;
+
+	// 행반복 (y축)
+	for (size_t i = 0; i < _Y; i++)
+	{
+		// 열반복 (x축)
+		for (size_t i = 0; i < _X; i++)
+		{
+			// 시작좌표, X Y 축의 크기가 저장된 구조체를 push_back
+			ImageCutDatas.push_back(Data);
+			// 첫번째 X축 시작좌표를 저장했기 때문에 그 값만큼 더해준다. 
+			Data.StartX += Data.SizeX;
+		}
+
+		// X축 작업이 완료되면 시작 X축의 크기를 처음 값으로 변경
+		// 다음 행 (다음 Y축) 으로 이동해서 작업해야하기 때문
+		Data.StartX = _Start.x;
+		Data.StartY += Data.SizeY;
+	}
+
+	// 완료되었다면 true 
 	IsCut = true;
 }

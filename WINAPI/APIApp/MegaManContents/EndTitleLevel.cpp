@@ -23,6 +23,6 @@ void EndTitleLevel::Loading()
 	Directory.Move("Image");
 }
 
-void EndTitleLevel::Update()
+void EndTitleLevel::Update(float _DeltaTime)
 {
 }

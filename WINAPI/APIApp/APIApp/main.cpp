@@ -3,6 +3,7 @@
 // 이전폴더에 있는 어떠한 폴더 / 헤더파일로 include 가능
 #include <Windows.h>
 #include <MegaManContents/MegaManCore.h>
+#include <GameEngineBase/GameEngineTime.h>
 
 // 속성 : 하위시스템 -> 창으로 바꿔주면 윈도우식 WinMain 으로 진입점함수 변경
 // 진입점인자(메인파라미터) , OS가 인자를 채워주게 된다.

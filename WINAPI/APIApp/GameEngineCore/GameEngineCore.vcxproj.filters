@@ -11,6 +11,12 @@
     <ClInclude Include="GameEngineResources.h">
       <Filter>Resources</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineRender.h">
+      <Filter>Object\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -23,6 +29,12 @@
     <ClCompile Include="GameEngineResources.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineRender.cpp">
+      <Filter>Object\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineObject.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -30,6 +42,9 @@
     </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{4d105a49-6d50-47d8-88df-76ee92304d0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Rendering">
+      <UniqueIdentifier>{bbd6c05e-dd09-4217-84e3-5422918a025f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

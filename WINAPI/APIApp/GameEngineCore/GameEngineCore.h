@@ -27,7 +27,11 @@ public:
 
 	// 프로그램을 동작
 	void CoreStart(HINSTANCE _instance);
+	
+	// 인자로 들어온 키값으로 장면을 변경한다. 
+	void ChangeLevel(const std::string_view& _Name);
 
+	static GameEngineCore* GetInst();
 protected:
 	// 템플릿함수로 작성하여 함수호출시 데이터타입을 입력받는다. 
 	// 내부에서 상속받은 클래스들이 동적할당 후 업캐스팅 되어 부모클래스 타입 포인터 변수에
@@ -52,10 +56,7 @@ protected:
 		// 생성한 레벨을 저장
 		Levels.insert(std::make_pair(_Name.data(), Level));
 	}
-
-	// 인자로 들어온 키값으로 장면을 변경한다. 
-	void ChangeLevel(const std::string_view& _Name);
-
+	
 	// 상속받는 클래스는 반드시 이 함수들을 구현해야 한다. 
 	// 부모클래스가 추상클래스일 경우 , 자식클래스에서 구현하지 않는다면
 	// 자식클래스도 추상클래스가 되어 객체를 생성하지 못하게 된다. 
@@ -66,7 +67,7 @@ protected:
 private:
 	// 문자열 키값으로 레벨포인터 저장
 	std::map<std::string, GameEngineLevel*> Levels;
-
+	GameEngineLevel* NextLevel = nullptr;
 	GameEngineLevel* MainLevel = nullptr;
 	
 	// 레벨로딩함수 (순환참조방지, 기능분리)

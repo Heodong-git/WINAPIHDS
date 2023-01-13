@@ -1,11 +1,15 @@
 #include <GameEngineBase/GameEngineDirectory.h>
+#include <GameEngineBase/GameEngineTime.h>
+#include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineResources.h>
+#include <GameEngineCore/GameEngineCore.h>
 #include "SigmaStageLevel.h"
 #include "Player_Zero.h"
 #include "Monster_Sigma.h"
 #include "Monster_NightMareVirus.h"
 #include "Monster_MetalT.h"
-#include "Map_BackGround.h"
+#include "SigmaStage_BackGround.h"
+#include "UI_PlayerHpBar.h"
 
 SigmaStageLevel::SigmaStageLevel()
 {
@@ -27,7 +31,6 @@ SigmaStageLevel::~SigmaStageLevel()
 void SigmaStageLevel::Loading()
 {
 	// 이미지로딩
-	// 디렉터리 객체생성 , 디렉터리는 경로를 가지고 있음.
 	GameEngineDirectory Directory;
 	
 	// 1. 상위폴더에 해당 디렉터리가 있는지 확인
@@ -35,28 +38,55 @@ void SigmaStageLevel::Loading()
 	// 2. 디렉터리가 있다면 경로를 설정해준다.  
 	Directory.Move("ContentsResources");
 	Directory.Move("Image");
+	Directory.Move("SigmaStage");
 
-	// 3. 완성된 경로에 파일명을 붙여 최종경로를 완성한다. 
-	GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_recall.bmp"));
-	GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Sigma_Left.bmp"));
-	GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Monster_Metal_T_Left.bmp"));
-	GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Monster_NightMare_Virus_Left.bmp"));
-	GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Sigma_Stage.bmp"));
-	GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Mr_X_Stage.bmp"));
+	{
+		//// 3. 사용할 이미지 로드 후 Cut, 잠깐 주석 
+		//GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_recall.bmp"));
+		//Image->Cut({ 56, 279 }, { 1211,440 }, 9, 1);
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_recall.bmp"));
+		Image->Cut({ 536, 291 }, { 662,439 }, 1, 1);
+	}
+	
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Sigma_left.bmp"));
+		Image->Cut({ 7, 11 }, { 500, 100 }, 5, 1);
+	}
+
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("monster_metal_t_left.bmp"));
+		Image->Cut({ 71, 22 }, { 520, 90 }, 6, 1);
+	}
+
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Sigma_Stage.bmp"));
+		Image->Cut({ 7, 1543 }, { 294, 1794 }, 1, 1);
+	}
+
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("ui_hp_bar.bmp"));
+		Image->Cut({ 40, 28 }, { 96 , 212 }, 1, 1);
+	}
+
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Monster_NightMare_Virus_left.bmp"));
+		Image->Cut({ 45, 6 }, { 215 , 138 }, 1, 1);
+	}
+
 	// 해당 레벨에서 사용할 액터 생성
 	// 액터 생성시에 인자로 넣어주는 값은 업데이트,렌더링 순서이며 값이 높을 수록 나중에 연산,렌더링이 된다. 
-	CreateActor<Player_Zero>(10);
-	CreateActor<Map_BackGround>();
-	CreateActor<Monster_Sigma>(0);
-	CreateActor<Monster_NightMareVirus>(0);
-	CreateActor<Monster_MetalT>(0);
+	CreateActor<Player_Zero>();
+	CreateActor<SigmaStage_BackGround>();
+	CreateActor<Monster_Sigma>();
+	CreateActor<Monster_NightMareVirus>();
+	CreateActor<Monster_MetalT>();
+	CreateActor<UI_PlayerHpBar>();
 }
 
-void SigmaStageLevel::Update()
+void SigmaStageLevel::Update(float _DeltaTime)
 {
-
+	
 }
-
 // 코어 -> 레벨생성
 // 레벨 -> 레벨 안에서 사용할 액터 생성, 생성 후 AcotrStart
 // 액터 -> 액터가 생성되고 나서 기본적으로 필요한 부분 수행

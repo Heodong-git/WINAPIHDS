@@ -25,11 +25,21 @@
     <ClInclude Include="Monster_Sigma.h">
       <Filter>Monster</Filter>
     </ClInclude>
-    <ClInclude Include="Map_BackGround.h">
-      <Filter>Map</Filter>
-    </ClInclude>
     <ClInclude Include="TitleLevel.h">
       <Filter>Level</Filter>
+    </ClInclude>
+    <ClInclude Include="ContentsEnum.h" />
+    <ClInclude Include="UI_PlayerHpBar.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SigmaStage_BackGround.h">
+      <Filter>BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Title_BackGround.h">
+      <Filter>BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Select_BackGround.h">
+      <Filter>BackGround</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -57,11 +67,20 @@
     <ClCompile Include="Monster_Sigma.cpp">
       <Filter>Monster</Filter>
     </ClCompile>
-    <ClCompile Include="Map_BackGround.cpp">
-      <Filter>Map</Filter>
-    </ClCompile>
     <ClCompile Include="SigmaStageLevel.cpp">
       <Filter>Level</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_PlayerHpBar.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SigmaStage_BackGround.cpp">
+      <Filter>BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Title_BackGround.cpp">
+      <Filter>BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Select_BackGround.cpp">
+      <Filter>BackGround</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +101,9 @@
     </Filter>
     <Filter Include="Map">
       <UniqueIdentifier>{a53696ce-b964-4cb9-9425-3c4874f91ad2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BackGround">
+      <UniqueIdentifier>{85d0a1e8-cebd-494f-91dd-bb1994ba963d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

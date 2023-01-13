@@ -16,7 +16,7 @@ GameEngineResources::~GameEngineResources()
 }
 
 // 어디서 릴리즈했더라? 확인할것
-void GameEngineResources::Relase()
+void GameEngineResources::Release()
 {
 	// 내가 원하는 시점에 원하는 순간 정확하게 
 	for (std::pair<std::string, GameEngineImage*> Pair : AllImage)
@@ -33,12 +33,12 @@ void GameEngineResources::Relase()
 
 // 경로를 인자로 받아서 경로, 경로에 있는 파일명을
 // 오버로딩된 함수의 인자로 넣어 호출하여 이미지를 로드. 
-bool GameEngineResources::ImageLoad(const GameEnginePath& _Path)
+GameEngineImage* GameEngineResources::ImageLoad(const GameEnginePath& _Path)
 {
 	return ImageLoad(_Path.GetPathToString().c_str(), _Path.GetFileName().c_str());
 }
 
-bool GameEngineResources::ImageLoad(const std::string_view& _Path, const std::string_view& _Name)
+GameEngineImage* GameEngineResources::ImageLoad(const std::string_view& _Path, const std::string_view& _Name)
 {
 	// GameEngineString 클래스의 함수를 호출하여
 	// 인자로 들어온 파일이름을 대문자로 변경한다. 
@@ -48,7 +48,7 @@ bool GameEngineResources::ImageLoad(const std::string_view& _Path, const std::st
 	if (AllImage.end() != AllImage.find(UpperName))
 	{
 		MsgAssert("이미 로드한 이미지를 또 로드하려고 했습니다." + UpperName);
-		return false;
+		return nullptr;
 	}
 
 	// 이미지 클래스 동적할당
@@ -59,7 +59,7 @@ bool GameEngineResources::ImageLoad(const std::string_view& _Path, const std::st
 	AllImage.insert(std::make_pair(UpperName, NewImage));
 
 	// 정상적으로 이미지로드가 완료 되었기 때문에 true 반환
-	return true;
+	return NewImage;
 }
 
 GameEngineImage* GameEngineResources::ImageFind(const std::string_view& _Name)
