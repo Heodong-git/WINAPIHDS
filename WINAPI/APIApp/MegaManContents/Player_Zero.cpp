@@ -40,9 +40,9 @@ void Player_Zero::Start()
 	AnimationRender = CreateRender(RENDERORDER::PLAYER);
 	AnimationRender->SetScale({ 165,200 });
 	
-	// 구조체를 넣어주는데 원하는 변수의 값만 수정하여 넣어줄 수 있음
+	// 구조체를 넣어주는데 원하는 변수의 값만 수정하여 넣어줄 수 있다.
 	// 단, 순서는 지켜서 넣어주어야 빨간줄이 그이지 않는다. 
-	AnimationRender->CreateAnimation({ .AnimationName = "player_recall",  .ImageName = "player_recall.bmp", .Start = 0, .End = 8 });
+	AnimationRender->CreateAnimation({ .AnimationName = "player_recall",  .ImageName = "player_recall.bmp", .Start = 0, .End = 0 });
 	AnimationRender->ChangeAnimation("player_recall");
 	
 }
@@ -72,17 +72,17 @@ void Player_Zero::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("Dash"))
 	{
-		
+		// 대쉬 버튼이 눌렸을 때 동작할 애니메이션과 로직
 	}
 
 	if (true == GameEngineInput::IsDown("Attack"))
 	{
-		int a = 0;
+		// 공격 버튼이 눌렸을 때 동작할 애니메이션과 로직
 	}
 
 	if (true == GameEngineInput::IsDown("Jump"))
 	{
-		SetMove(float4{ 0 , -200 } *MoveSpeed * _DeltaTime);
+		// 점프 버튼이 눌렸을 때 동작할 애니메이션과 로직
 	}
 }
 

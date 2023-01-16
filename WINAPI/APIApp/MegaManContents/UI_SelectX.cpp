@@ -20,7 +20,7 @@ void UI_SelectX::Start()
 	Render->SetScale({ size * 0.62f });
 
 	Render = CreateRender("select_ui_text_x.bmp", RENDERORDER::UI_Text);
-	Render->SetScale({ 500, 150 });
+	Render->SetScale({ 600 * 0.8f, 150 *0.8f });
 	Render->SetPosition({ -50 , 200 });
 }
 

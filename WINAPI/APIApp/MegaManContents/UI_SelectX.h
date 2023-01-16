@@ -20,6 +20,6 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
-
+	
 };
 

@@ -8,6 +8,7 @@
 #include "UI_SelectZero.h"
 #include "UI_TopText_PlayerSelect.h"
 #include "UI_BottomText_PlayerSelect.h"
+#include "Player_Zero.h"
 
 SelectLevel::SelectLevel()
 {
@@ -43,8 +44,10 @@ void SelectLevel::Loading()
 	Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_UI_text_x.bmp"));
 	Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_UI_text_zero.bmp"));
 
+	Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_player_attack_left.bmp"));
+	Image->Cut({ 124, 15 }, { 1557, 151 }, 8, 1);
+
 	CreateActor<Select_BackGround>();
-	// 이미지 편집해야할듯 
 	CreateActor<UI_SelectX>();
 	CreateActor<UI_SelectZero>();
 	CreateActor<UI_TopText_PlayerSelect>();

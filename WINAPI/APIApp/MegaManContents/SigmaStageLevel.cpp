@@ -73,6 +73,7 @@ void SigmaStageLevel::Loading()
 		Image->Cut({ 57, 11 }, { 534 , 124 }, 3, 1);
 	}
 
+
 	// 해당 레벨에서 사용할 액터 생성
 	// 액터 생성시에 인자로 넣어주는 값은 업데이트,렌더링 순서이며 값이 높을 수록 나중에 연산,렌더링이 된다. 
 	CreateActor<Player_Zero>();

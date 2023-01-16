@@ -21,7 +21,7 @@ protected:
 
 private:
 	static float Time;
-	float	     MoveSpeed = 100.0f;
+	float	     MoveSpeed = 300.0f;
 
 	GameEngineRender* AnimationRender = nullptr;
 };
