@@ -8,7 +8,8 @@
 
 float Player_Zero::Time = 0.0f;
 
-Player_Zero::Player_Zero()
+Player_Zero::Player_Zero() :
+	AnimationRender(nullptr)
 {
 }
 
@@ -23,26 +24,27 @@ void Player_Zero::Start()
 	// 키생성
 	if (false == GameEngineInput::IsKey("LeftMove"))
 	{
-		// 아스키코드 
-		// 방향키 왼쪽 37
-		// 방향키 오른쪽 39
-		// 방향키 아래 40
-		// 방향키 위 38 
-		GameEngineInput::CreateKey("Left", 37);
-		GameEngineInput::CreateKey("Right", 39);
-		GameEngineInput::CreateKey("Up", 38);
-		GameEngineInput::CreateKey("Down", 40);
+		GameEngineInput::CreateKey("Left", VK_LEFT);
+		GameEngineInput::CreateKey("Right", VK_RIGHT);
+		GameEngineInput::CreateKey("Up", VK_UP);
+		GameEngineInput::CreateKey("Down", VK_DOWN);
 		GameEngineInput::CreateKey("Dash", 'Z');
 		GameEngineInput::CreateKey("Attack", 'X');
 		GameEngineInput::CreateKey("Jump", 'C');
 	}
 
+	// 플레이어 크기 165 , 200 
 	SetPos({ 300, 600 });
-	// 렌더생성 , 생성시 사용할 이미지, Zorder 값 입력
-	GameEngineRender* Render = CreateRender("player_recall.bmp", RENDERORDER::PLAYER);
-	// 렌더링시 x축 y축의 크기설정
-	// 165, 200 <-- 현재까지봤을 때 양호함 
-	Render->SetScale({ 165, 200 });
+	
+	// 렌더러생성, 생성시 zorder 값 입력 
+	AnimationRender = CreateRender(RENDERORDER::PLAYER);
+	AnimationRender->SetScale({ 165,200 });
+	
+	// 구조체를 넣어주는데 원하는 변수의 값만 수정하여 넣어줄 수 있음
+	// 단, 순서는 지켜서 넣어주어야 빨간줄이 그이지 않는다. 
+	AnimationRender->CreateAnimation({ .AnimationName = "player_recall",  .ImageName = "player_recall.bmp", .Start = 0, .End = 8 });
+	AnimationRender->ChangeAnimation("player_recall");
+	
 }
 
 // 플레이어 연산

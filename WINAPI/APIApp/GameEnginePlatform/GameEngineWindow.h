@@ -6,6 +6,8 @@
 class GameEngineImage;
 class GameEngineWindow
 {
+	static LRESULT CALLBACK MessageFunction(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lParam);
+
 public:
 	// 윈도우 생성함수 
 	static void WindowCreate(HINSTANCE _hInstance, const std::string_view& _TitleName, float4 _Size, float4 _Pos);
@@ -38,6 +40,11 @@ public:
 		return DoubleBufferImage;
 	}
 
+	static void AppOff()
+	{
+		IsWindowUpdate = false;
+	}
+
 	static void DoubleBufferClear();
 	static void DoubleBufferRender();
 	// 윈도우 무한루프 ( 클라이언트 창을 종료하지 않고 계속해서 실행되도록 )
@@ -65,4 +72,5 @@ private:
 	static HDC WindowBackBufferHdc;				// HDC : 윈도우에 그림을 그릴수 있게 해주는 권한
 	static GameEngineImage* BackBufferImage;    // 화면에 보여지는 이미지 최종본
 	static GameEngineImage* DoubleBufferImage;	// 여기에 모든 이미지를 그려내고, 후에 함수를 활용하여 그려진 이미지를 BackBuffer에 그려낸다.
+	static bool IsWindowUpdate;
 };

@@ -6,7 +6,8 @@
 #include "Select_BackGround.h"
 #include "UI_SelectX.h"
 #include "UI_SelectZero.h"
-
+#include "UI_TopText_PlayerSelect.h"
+#include "UI_BottomText_PlayerSelect.h"
 
 SelectLevel::SelectLevel()
 {
@@ -36,14 +37,18 @@ void SelectLevel::Loading()
 	// 백그라운드	
 	GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_background.bmp"));
 	// UI X 
-	Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_UI_X.bmp"));
-	Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_UI_Zero.bmp"));
-	
+	Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_UI_x.bmp"));
+	Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_UI_zero.bmp"));
+	Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_UI_text_playerselect.bmp"));
+	Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_UI_text_x.bmp"));
+	Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_UI_text_zero.bmp"));
 
 	CreateActor<Select_BackGround>();
 	// 이미지 편집해야할듯 
 	CreateActor<UI_SelectX>();
 	CreateActor<UI_SelectZero>();
+	CreateActor<UI_TopText_PlayerSelect>();
+	CreateActor<UI_BottomText_PlayerSelect>();
 }
 
 void SelectLevel::Update(float _DeltaTime)

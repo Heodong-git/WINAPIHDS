@@ -1,6 +1,7 @@
 #include "GameEngineWindow.h"
 #include <GameEngineBase/GameEngineDebug.h>
 #include <GameEnginePlatform/GameEngineImage.h>
+#include "GameEngineInput.h"
 
 // static : 반드시 cpp 상단에 구현해주어야함. 
 HWND GameEngineWindow::HWnd = nullptr;
@@ -13,10 +14,10 @@ GameEngineImage* GameEngineWindow::DoubleBufferImage = nullptr;
 
 // 현재 윈도우 업데이트 상태를 전역으로 나타냄. 
 // false 가 된다면 더이상 윈도우루프 반복 X 
-bool IsWindowUpdate = true;
+bool GameEngineWindow::IsWindowUpdate = true;
 
 // 윈도우에 들어온 메세지에 따라 분기처리하는 함수
-LRESULT CALLBACK MessageFunction(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lParam)
+LRESULT CALLBACK GameEngineWindow::MessageFunction(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lParam)
 {
     switch (_message)
     {
@@ -34,6 +35,11 @@ LRESULT CALLBACK MessageFunction(HWND _hWnd, UINT _message, WPARAM _wParam, LPAR
     case WM_KILLFOCUS:
     {
         int a = 0;
+        break;
+    }
+    case WM_KEYDOWN:
+    {
+        GameEngineInput::IsAnyKeyOn();
         break;
     }
     case WM_DESTROY:
@@ -68,7 +74,7 @@ void GameEngineWindow::WindowCreate(HINSTANCE _hInstance, const std::string_view
 
     wcex.style = CS_HREDRAW | CS_VREDRAW;
     // 메세지처리함수 
-    wcex.lpfnWndProc = MessageFunction;
+    wcex.lpfnWndProc = &GameEngineWindow::MessageFunction;
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
     wcex.hInstance = _hInstance;
@@ -163,6 +169,8 @@ int GameEngineWindow::WindowLoop(void(*_Start)(), void(*_Loop)(), void(*_End)())
                 _Loop();
             }
             
+            GameEngineInput::IsAnyKeyOff();
+
             // 메세지가 있었을 때 루프를 실행했다면
             // 아래쪽 코드가 실행되지 않도록 while 문의 시작으로.
             continue;
@@ -173,6 +181,8 @@ int GameEngineWindow::WindowLoop(void(*_Start)(), void(*_Loop)(), void(*_End)())
         {
             _Loop();
         }
+
+        GameEngineInput::IsAnyKeyOff();
     }
 
     // 프로그램 종료시 호출될 함수

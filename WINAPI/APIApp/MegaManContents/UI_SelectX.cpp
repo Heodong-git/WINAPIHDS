@@ -13,11 +13,15 @@ UI_SelectX::~UI_SelectX()
 
 void UI_SelectX::Start()
 {
+	SetPos({ 480,450 });
 	float4 size = GameEngineWindow::GetScreenSize();
 	
 	GameEngineRender* Render = CreateRender("select_UI_X.bmp", RENDERORDER::UI);
 	Render->SetScale({ size * 0.62f });
-	Render->SetPosition({ 480, 450 });
+
+	Render = CreateRender("select_ui_text_x.bmp", RENDERORDER::UI_Text);
+	Render->SetScale({ 500, 150 });
+	Render->SetPosition({ -50 , 200 });
 }
 
 void UI_SelectX::Update(float _DeltaTime)

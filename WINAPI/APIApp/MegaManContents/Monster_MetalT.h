@@ -22,5 +22,6 @@ protected:
 private:
 	static float Time;
 	float4 Dir;
+	GameEngineRender* AnimationRender = nullptr;
 };
 

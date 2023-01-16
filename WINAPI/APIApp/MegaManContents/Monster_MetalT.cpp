@@ -6,7 +6,8 @@
 #include "ContentsEnum.h"
 
 float Monster_MetalT::Time = 0.0f;
-Monster_MetalT::Monster_MetalT()
+Monster_MetalT::Monster_MetalT() :
+	AnimationRender(nullptr)
 {
 }
 
@@ -20,9 +21,13 @@ void Monster_MetalT::Start()
 	Dir = float4::Left;
 
 	// 렌더생성 , 생성시 사용할 이미지, Zorder 값 입력
-	GameEngineRender* Render = CreateRender("monster_metal_t_left.bmp", RENDERORDER::MONSTER);
+	AnimationRender = CreateRender(RENDERORDER::MONSTER);
 	// 렌더링시 x축 y축의 크기설정
-	Render->SetScale({ 100, 100 });
+	AnimationRender->SetScale({ 100, 100 });
+	AnimationRender->CreateAnimation({ .AnimationName = "monster_metal_t_leftIdle", 
+		                               .ImageName = "monster_metal_t_left.bmp",
+		                               .Start = 0, .End = 7 });
+	AnimationRender->ChangeAnimation("monster_metal_t_leftIdle");
 	
 }
 

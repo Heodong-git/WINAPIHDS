@@ -47,6 +47,12 @@
     <ClInclude Include="UI_SelectX.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="UI_TopText_PlayerSelect.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_BottomText_PlayerSelect.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndTitleLevel.cpp">
@@ -92,6 +98,12 @@
       <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="UI_SelectX.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_TopText_PlayerSelect.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_BottomText_PlayerSelect.cpp">
       <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>

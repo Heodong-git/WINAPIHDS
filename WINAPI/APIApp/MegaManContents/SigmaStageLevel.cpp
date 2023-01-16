@@ -45,7 +45,7 @@ void SigmaStageLevel::Loading()
 		//GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_recall.bmp"));
 		//Image->Cut({ 56, 279 }, { 1211,440 }, 9, 1);
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_recall.bmp"));
-		Image->Cut({ 536, 291 }, { 662,439 }, 1, 1);
+		Image->Cut({ 56, 276 }, { 1208, 440 }, 9, 1);
 	}
 	
 	{
@@ -55,7 +55,7 @@ void SigmaStageLevel::Loading()
 
 	{
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("monster_metal_t_left.bmp"));
-		Image->Cut({ 71, 22 }, { 520, 90 }, 6, 1);
+		Image->Cut({ 18, 118 }, { 605, 196 }, 8, 1);
 	}
 
 	{
@@ -70,7 +70,7 @@ void SigmaStageLevel::Loading()
 
 	{
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Monster_NightMare_Virus_left.bmp"));
-		Image->Cut({ 45, 6 }, { 215 , 138 }, 1, 1);
+		Image->Cut({ 57, 11 }, { 534 , 124 }, 3, 1);
 	}
 
 	// 해당 레벨에서 사용할 액터 생성

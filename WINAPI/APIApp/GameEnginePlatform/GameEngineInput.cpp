@@ -4,6 +4,7 @@
 
 // 편하게 사용하기 위해 static 
 std::map<std::string, GameEngineInput::GameEngineKey> GameEngineInput::Keys;
+bool GameEngineInput::IsAnyKeyValue = false;
 
 void GameEngineInput::GameEngineKey::Update(float _DeltaTime)
 {
@@ -11,6 +12,9 @@ void GameEngineInput::GameEngineKey::Update(float _DeltaTime)
 	// 키체크함수 내부에서 어싱크키스테이트 함수로 확인
 	if (true == KeyCheck())
 	{
+		// 눌린 상태이기 때문에 델타타임 누적
+		PressTime += _DeltaTime;
+
 		// 만약 키가 아무런 상태가 아니라면 ( 눌리지도, 눌려져 있지도 않음 ) 
 		if (true == Free)
 		{
@@ -22,7 +26,6 @@ void GameEngineInput::GameEngineKey::Update(float _DeltaTime)
 			Up = false;
 			// 현재 눌린상태이기 때문에 false 
 			Free = false;
-			PressTime = _DeltaTime;
 		}
 		// 키가 눌렸을 때 Down 상태가 true 라면 이전 프레임에서도 눌려 있던 것이다. 
 		else if (true == Down)
@@ -35,8 +38,6 @@ void GameEngineInput::GameEngineKey::Update(float _DeltaTime)
 			Up = false;
 			// 눌린 상태이기 때문에 false 
 			Free = false;
-			// 눌려있는 상태이기 때문에 델타타임 누적
-			PressTime += _DeltaTime;
 		}
 	}
 
@@ -55,7 +56,7 @@ void GameEngineInput::GameEngineKey::Update(float _DeltaTime)
 			Press = false;
 			// 이전 프레임에 키가 눌려있었고 현재 눌린상태가 아니라면 키를 뗐다는 의미
 			Up = true;
-			Free = false;
+			Free = true;
 		}
 
 		// 키가 눌린 상태가 아닐때 현재 UP 이 true라면 

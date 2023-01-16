@@ -4,7 +4,10 @@
 #include <GameEngineCore/GameEngineRender.h>
 #include "ContentsEnum.h"
 
-Monster_NightMareVirus::Monster_NightMareVirus()
+float Monster_NightMareVirus::Time = 0.0f;
+
+Monster_NightMareVirus::Monster_NightMareVirus() :
+	AnimationRender(nullptr)
 {
 }
 
@@ -17,13 +20,32 @@ void Monster_NightMareVirus::Start()
 {
 	SetPos({ 600, 600 });
 
-	GameEngineRender* Render = CreateRender("Monster_NightMare_Virus_left.bmp", RENDERORDER::MONSTER);
-	Render->SetScale({200, 200});
+	AnimationRender = CreateRender(RENDERORDER::MONSTER);
+	AnimationRender->SetScale({200, 200});
+	AnimationRender->CreateAnimation({ .AnimationName = "monster_nightmare_virus_leftidle",
+									  .ImageName = "monster_nightmare_virus_left.bmp",
+									  .Start = 0 , .End = 2 });
+	AnimationRender->ChangeAnimation("monster_nightmare_virus_leftidle");
 }
 
 // 나이트메어 바이러스 클래스의 내부 연산
 void Monster_NightMareVirus::Update(float _DeltaTime)
 {
+	Time += _DeltaTime;
+	if (4 >= Time)
+	{
+		SetMove(float4::Left * 100.0f * _DeltaTime);
+	}
+
+	else if (4 < Time)
+	{
+		SetMove(float4::Right * 100.0f * _DeltaTime);
+	}
+
+	if (9 <= Time)
+	{
+		Time -= Time;
+	}
 }
 
 // 연산을 토대로 화면에 어떻게 출력할 것인지. 

@@ -20,6 +20,8 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
-
+	GameEngineRender* AnimationRender = nullptr;
+	static float Time;
+	
 };
 
