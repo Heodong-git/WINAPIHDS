@@ -7,6 +7,7 @@ enum class RENDERORDER
 	BACKGROUND,
 	MAP,
 	MONSTER,
+	UI,
 	PLAYER,
-	UI
+	UI_Text
 };

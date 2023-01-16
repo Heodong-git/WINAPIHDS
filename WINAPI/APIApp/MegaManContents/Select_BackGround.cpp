@@ -16,7 +16,7 @@ Select_BackGround::~Select_BackGround()
 // 얘를 출력해줄 녀석을 만들어야함 
 void Select_BackGround::Start()
 {
-	GameEngineRender* Render = CreateRender("player_select.bmp", RENDERORDER::BACKGROUND);
+	GameEngineRender* Render = CreateRender("select_background.bmp", RENDERORDER::BACKGROUND);
 	Render->SetScale(GameEngineWindow::GetScreenSize());
 	Render->SetPosition(GameEngineWindow::GetScreenSize().half());
 }
