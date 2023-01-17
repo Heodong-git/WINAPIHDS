@@ -75,8 +75,7 @@ void GameEngineRender::FrameAnimation::Render(float _DeltaTime)
 			// 루프 애니메이션이 아닐 경우 인덱스를 마지막 인덱스로 고정한다.  
 			else
 			{
-				// static_cast ?? 
-				CurrentIndex = FrameIndex.size() - 1;
+				CurrentIndex = static_cast<int>(FrameIndex.size()) - 1;
 			}
 		}
 
@@ -105,13 +104,13 @@ void GameEngineRender::Render(float _DeltaTime)
 	if (true == Image->IsImageCutting())
 	{
 		// 프레임당 트랜스카피 사용
-		GameEngineWindow::GetDoubleBufferImage()->TransCopy(Image, Frame, RenderPos, Scale);
+		GameEngineWindow::GetDoubleBufferImage()->TransCopy(Image, Frame, RenderPos, Scale , TransColor);
 	}
 	// 커팅된 이미지가 아니라면
 	else
 	{
 		// 그냥 이미지 전체를 입력된 크기로 출력한다. 
-		GameEngineWindow::GetDoubleBufferImage()->TransCopy(Image, RenderPos, Scale, { 0, 0 }, Image->GetImageScale());
+		GameEngineWindow::GetDoubleBufferImage()->TransCopy(Image, RenderPos, Scale, { 0, 0 }, Image->GetImageScale() , TransColor);
 	}
 }
 
@@ -182,27 +181,32 @@ void GameEngineRender::CreateAnimation(const FrameAnimationParameter& _Paramter)
 	NewAnimation.Parent = this;
 }
 
-
+// 체인지애니메이션
+// 렌더러의 애니메이션을 인자로 넣어준 키값에 해당하는 애니메이션으로 교체한다. 
 void GameEngineRender::ChangeAnimation(const std::string_view& _AnimationName)
 {
+	// 대문자 변환
 	std::string UpperName = GameEngineString::ToUpper(_AnimationName);
 
+	// 인자로 들어온 키값으로 동일한 키값이 존재하지 않는다면 저장된 애니메이션이 없다는 의미. 
 	if (Animation.end() == Animation.find(UpperName))
 	{
 		MsgAssert("존재하지 않는 애니메이션으로 바꾸려고 했습니다." + UpperName);
 	}
 
-	// 이전 프레임과 같은 애니메이션을 출력하려고 한다면 return 
+	// 이전 프레임과 같은 애니메이션을 출력하려고 한다면 return
+	// 루프가 종료된 애니메이션이라면 마지막 인덱스를 유지하게 한다.
 	if (CurrentAnimation == &Animation[UpperName])
 	{
 		return;
 	}
 
-	// 현재 애니메이션은 맵에 저장되어 있는 키값의 프레임애니메이션
+	// 현재 애니메이션을 변경될 애니메이션으로 교체
 	CurrentAnimation = &Animation[UpperName];
 
-	// 현재 애니메이션의 인덱스 = 0
+	// 애니메이션이 교체 되었기 때문에 인덱스를 0으로 변경
 	CurrentAnimation->CurrentIndex = 0;
 	
+	// 애니메이션의 현재시간은 변경된 애니메이션의 프레임타임으로 변경
 	CurrentAnimation->CurrentTime = CurrentAnimation->FrameTime[CurrentAnimation->CurrentIndex];
 }

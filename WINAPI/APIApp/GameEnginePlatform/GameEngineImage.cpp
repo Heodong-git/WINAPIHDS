@@ -12,8 +12,7 @@ GameEngineImage::GameEngineImage()
 
 GameEngineImage::~GameEngineImage()
 {
-	// 이미지의 소멸자에서는
-	// 현재소유하고 있는 비트맵, 올드비트맵, DC를 모두 제거해준다. 
+	// 이미지 클래스가 메모리에서 제거될 때, 자신이 소유한 비트맵, 이전비트맵, DC를 모두 제거
 	if (nullptr != BitMap)
 	{
 		DeleteObject(BitMap);
@@ -52,15 +51,16 @@ bool GameEngineImage::ImageCreate(HDC _Hdc)
 	return true;
 }
 
+// 이미지백지화
 void GameEngineImage::ImageClear()
 {
 	// 초기화의 경우 이미지 크기와 동일한 크기로 흰색 사각형을 한번 그려주는 것!
 	Rectangle(ImageDC, 0, 0, Info.bmWidth, Info.bmHeight);
 }
 
-// 인자로 크기를 받는 ImaggeCreate
 bool GameEngineImage::ImageCreate(const float4& _Scale)
 {
+	// Scale 이 0 이라면 이미지를 생성할 수 없다.
 	if (true == _Scale.IsZero())
 	{
 		MsgAssert("크기가 0인 이미지를 만들 수는 없습니다");

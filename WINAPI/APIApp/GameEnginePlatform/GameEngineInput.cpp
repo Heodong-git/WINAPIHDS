@@ -8,11 +8,9 @@ bool GameEngineInput::IsAnyKeyValue = false;
 
 void GameEngineInput::GameEngineKey::Update(float _DeltaTime)
 {
-	// 현재 키가 눌렸다면 
-	// 키체크함수 내부에서 어싱크키스테이트 함수로 확인
 	if (true == KeyCheck())
 	{
-		// 눌린 상태이기 때문에 델타타임 누적
+		// 눌렸기 때문에 시간 누적
 		PressTime += _DeltaTime;
 
 		// 만약 키가 아무런 상태가 아니라면 ( 눌리지도, 눌려져 있지도 않음 ) 
@@ -71,6 +69,9 @@ void GameEngineInput::GameEngineKey::Update(float _DeltaTime)
 	}
 }
 
+// 문자열을 키값으로 하여 키를 생성했기 때문에
+// 키가 눌렸다면 그 키에 해당하는 문자열을 확인하여 
+// 동일한 문자열을 가진 키의 상태를 반환한다. 
 bool GameEngineInput::IsDown(const std::string_view& _Name)
 {
 	std::string UpperName = GameEngineString::ToUpper(_Name);
@@ -139,14 +140,13 @@ bool GameEngineInput::IsKey(const std::string_view& _Name)
 	return Keys.end() != Keys.find(UpperName);
 }
 
-
+// 문자열을 키값으로 하여 원하는 키 생성
 void GameEngineInput::CreateKey(const std::string_view& _Name, int _Key)
 {
-	// 모든 문자를 대문자로 변경하여 저장
+	// 키값을 대문자로 변환
 	std::string UpperName = GameEngineString::ToUpper(_Name);
 
-	// 인자로 들어온 키와 같은 키로 저장된 데이터가 있다면
-	// nullptr 이 아니라면 이미 저장되었다는 의미
+	// 동일한 키값으로 이미 저장되어있다면
 	if (Keys.end() != Keys.find(UpperName))
 	{
 		// assert
@@ -156,8 +156,7 @@ void GameEngineInput::CreateKey(const std::string_view& _Name, int _Key)
 	// 소문자를 대문자로 변환하여 반환 , 다른 문자는 그대로 반환
 	_Key = toupper(_Key);
 
-	// 맵에 저장해준다.
-
+	// 인자로 들어온 문자열을 키값으로 하여 어떤 키를 저장한다.
 	Keys[UpperName].Key = _Key;
 }
 
@@ -172,11 +171,11 @@ GameEngineInput::~GameEngineInput()
 
 void GameEngineInput::Update(float _DeltaTime)
 {
-	//현재 키가 저장되어 있는 맵을 순회
+	// 현재 map에 저장되어 있는 키를 순회하며 업데이트 진행
+	// 
 	std::map<std::string, GameEngineKey>::iterator StartKeyIter = Keys.begin();
 	std::map<std::string, GameEngineKey>::iterator EndKeyIter = Keys.end();
 
-	// 키 업데이트
 	for (; StartKeyIter != EndKeyIter; ++StartKeyIter)
 	{
 		StartKeyIter->second.Update(_DeltaTime);

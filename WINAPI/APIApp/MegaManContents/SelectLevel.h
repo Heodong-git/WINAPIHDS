@@ -16,13 +16,17 @@ public:
 	SelectLevel& operator=(const SelectLevel& _Other) = delete;
 	SelectLevel& operator=(SelectLevel&& _Other) noexcept = delete;
 
+	bool SelectX = false;
+	bool SelectZero = false;
+
 protected:
 	virtual void Loading() override;
 	virtual void Update(float _DeltaTime) override;
 
 	void LevelChangeEnd(GameEngineLevel* _NextLevel) override {}
 	void LevelChangeStart(GameEngineLevel* _PrevLevel) override {}
-private:
 
+	// 음.. 캐릭터가 선택되었다는걸 어떤식으로 표현해야할까. 
+private:
 };
 

@@ -56,6 +56,16 @@ protected:
 		// 생성한 레벨을 저장
 		Levels.insert(std::make_pair(_Name.data(), Level));
 	}
+
+	void DebugSwitch()
+	{
+		IsDebugValue = !IsDebugValue;
+	}
+
+	bool IsDebug()
+	{
+		return IsDebugValue;
+	}
 	
 	// 상속받는 클래스는 반드시 이 함수들을 구현해야 한다. 
 	// 부모클래스가 추상클래스일 경우 , 자식클래스에서 구현하지 않는다면
@@ -72,4 +82,6 @@ private:
 	
 	// 레벨로딩함수 (순환참조방지, 기능분리)
 	void LevelLoading(GameEngineLevel* _Level);
+
+	bool IsDebugValue = false;
 };

@@ -5,8 +5,7 @@
 #include <vector>
 #include <GameEngineBase/GameEngineDebug.h>
 
-// 이미지 클래스에서 사용할 컷데이터 구조체
-// 각 컷의 시작 x,y 위치 부터 그려질 부분까지의 x, y 의 값을 저장한다. 
+// 이미지를 자를 경우 어떠한 형태로 저장할 것인지에 대한 구조체
 struct ImageCutData
 {
 	float StartX = 0.0f;
@@ -43,7 +42,7 @@ public:
 	// 이미지 생성
 	bool ImageCreate(HDC _Hdc);
 
-	// 인자로 크기를 받게 되면 새로운 이미지를 생성하는 것이다. 
+	// 인자로 Scale 을 받게 되면, 내부에서 새로운 이미지를 생성 
 	bool ImageCreate(const float4& _Scale);
 
 	// 이미지 로드
@@ -65,7 +64,7 @@ public:
 		return float4{ static_cast<float>(Info.bmWidth), static_cast<float>(Info.bmHeight) };
 	}
 
-	// 이미지의 컷상태 반환
+	// 컷여부 반환
 	bool IsImageCutting()
 	{
 		return IsCut;
@@ -103,7 +102,6 @@ public:
 		return ImageCutDatas[_Index];
 	}
 
-
 	// 기준점을 잡고 그기준점을 기준으로 하는 CUT
 	void Cut(float4 _Start, float4 _End, int _X, int _Y);
 	
@@ -119,15 +117,14 @@ public:
 protected:
 
 private:
-	// HDC : 이미지 = 2차원배열이라고 볼 수 있고, 그 2차원배열을 컨트롤(수정)
-	// 할 수 있는 권한을 의미한다. 
+	// HDC : 이미지 = 2차원배열이라고 볼 수 있고, 그 2차원배열을 컨트롤(수정) 할 수 있는 권한을 의미한다.
 	HDC ImageDC = nullptr;
 	HBITMAP BitMap = nullptr;
 	HBITMAP OldBitMap = nullptr;
 	// 이미지의 정보를 저장
 	BITMAP Info = BITMAP();
 	
-	// 현재 이미지가 컷 상태인지 확인하는 bool 변수
+	// 이미지가 컷상태인지를 표현할 변수
 	bool IsCut = false;
 
 	// 이미지 컷데이터를 저장하는 vector 

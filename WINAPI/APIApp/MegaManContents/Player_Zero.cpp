@@ -17,17 +17,33 @@ Player_Zero::~Player_Zero()
 {
 }
 
+// 방향체크
+void Player_Zero::DirCheck()
+{
+	// 현재 Left 키가 눌렸다면 
+	if (GameEngineInput::IsPress("LeftMove"))
+	{
+		// 방향문자열을 Left_
+		Dir = "Left_";
+	}
+	else if (GameEngineInput::IsPress("RightMove"))
+	{
+		Dir = "Right_";
+	}
+}
+
 void Player_Zero::Start()
 {
 	// 플레이어의 위치
 
 	// 키생성
+	// 문자열을 키값으로 하여 원하는 키와 
 	if (false == GameEngineInput::IsKey("LeftMove"))
 	{
-		GameEngineInput::CreateKey("Left", VK_LEFT);
-		GameEngineInput::CreateKey("Right", VK_RIGHT);
-		GameEngineInput::CreateKey("Up", VK_UP);
-		GameEngineInput::CreateKey("Down", VK_DOWN);
+		GameEngineInput::CreateKey("LeftMove", VK_LEFT);
+		GameEngineInput::CreateKey("RightMove", VK_RIGHT);
+		GameEngineInput::CreateKey("UpMove", VK_UP);
+		GameEngineInput::CreateKey("DownMove", VK_DOWN);
 		GameEngineInput::CreateKey("Dash", 'Z');
 		GameEngineInput::CreateKey("Attack", 'X');
 		GameEngineInput::CreateKey("Jump", 'C');
@@ -38,55 +54,49 @@ void Player_Zero::Start()
 	
 	// 렌더러생성, 생성시 zorder 값 입력 
 	AnimationRender = CreateRender(RENDERORDER::PLAYER);
-	AnimationRender->SetScale({ 165,200 });
-	
+	AnimationRender->SetScale({ 250,250 });
+
 	// 구조체를 넣어주는데 원하는 변수의 값만 수정하여 넣어줄 수 있다.
 	// 단, 순서는 지켜서 넣어주어야 빨간줄이 그이지 않는다. 
-	AnimationRender->CreateAnimation({ .AnimationName = "player_recall",  .ImageName = "player_recall.bmp", .Start = 0, .End = 0 });
-	AnimationRender->ChangeAnimation("player_recall");
-	
+
+	// 우측 
+	AnimationRender->CreateAnimation({ .AnimationName = "right_idle",  .ImageName = "player_idle_walk_right.bmp", 
+									   .Start = 0, .End = 5 , .InterTime = 0.2f });
+	AnimationRender->CreateAnimation({ .AnimationName = "right_move_start",  .ImageName = "player_idle_walk_right.bmp",
+									   .Start = 6, .End = 7 , .InterTime = 0.1f });
+	AnimationRender->CreateAnimation({ .AnimationName = "right_move",  .ImageName = "player_idle_walk_right.bmp",
+									   .Start = 8, .End = 21 , .InterTime = 0.05f });
+
+	// 좌측
+	AnimationRender->CreateAnimation({ .AnimationName = "left_idle",  .ImageName = "player_idle_walk_left.bmp",
+									   .Start = 0, .End = 5 , .InterTime = 0.2f });
+	AnimationRender->CreateAnimation({ .AnimationName = "left_move_start",  .ImageName = "player_idle_walk_left.bmp",
+									   .Start = 6, .End = 7 , .InterTime = 0.1f });
+	AnimationRender->CreateAnimation({ .AnimationName = "left_move",  .ImageName = "player_idle_walk_left.bmp",
+									   .Start = 8, .End = 21 , .InterTime = 0.05f });
+
+	ChangeState(PlayerState::IDLE);
 }
 
-// 플레이어 연산
 void Player_Zero::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsPress("Left"))
-	{
-		SetMove(float4::Left * MoveSpeed * _DeltaTime);
-	}
-
-	if (true == GameEngineInput::IsPress("Right"))
-	{
-		SetMove(float4::Right * MoveSpeed * _DeltaTime);
-	}
-
-	if (true == GameEngineInput::IsPress("Up"))
-	{
-		SetMove(float4::Up * MoveSpeed * _DeltaTime);
-	}
-
-	if (true == GameEngineInput::IsPress("Down"))
-	{
-		SetMove(float4::Down * MoveSpeed * _DeltaTime);
-	}
-
-	if (true == GameEngineInput::IsDown("Dash"))
-	{
-		// 대쉬 버튼이 눌렸을 때 동작할 애니메이션과 로직
-	}
-
-	if (true == GameEngineInput::IsDown("Attack"))
-	{
-		// 공격 버튼이 눌렸을 때 동작할 애니메이션과 로직
-	}
-
-	if (true == GameEngineInput::IsDown("Jump"))
-	{
-		// 점프 버튼이 눌렸을 때 동작할 애니메이션과 로직
-	}
+	DirCheck();
+	// 현재 플레이어의 상태값에 따라 업데이트를 진행.
+	UpdateState(_DeltaTime);
 }
 
+// 오브젝트의 중심점을 알 수 있도록 사각형 출력 
 void Player_Zero::Render(float _DeltaTime)
 {
 	// 디버깅용
+	HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
+	float4 ActorPos = GetPos();
+
+	Rectangle(DoubleDC,
+		ActorPos.ix() - 5,
+		ActorPos.iy() - 5,
+		ActorPos.ix() + 5,
+		ActorPos.iy() + 5
+	);
+
 }

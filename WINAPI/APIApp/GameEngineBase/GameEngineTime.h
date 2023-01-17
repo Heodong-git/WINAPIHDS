@@ -42,3 +42,7 @@ private:
 	float floatDeltaTime = 0.0;
 };
 
+// FPS : 초당 프레임 값  
+// DeltaTime : 프레임 당 걸리는 시간  
+
+// 게임에서 사용할 DeltaTime를 구하고 사용하기 위해서. 

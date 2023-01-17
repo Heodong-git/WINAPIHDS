@@ -1,5 +1,17 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
+#include <string>
+
+enum class PlayerState
+{
+	IDLE,
+	MOVE,
+	JUMP,
+	DASH,
+	NOMALATTACK,
+	JUMPATTACK,
+	DASHATTACK,
+};
 
 class Player_Zero : public GameEngineActor
 {
@@ -23,6 +35,47 @@ private:
 	static float Time;
 	float	     MoveSpeed = 300.0f;
 
+	// 기본 방향 - 오른쪽, 문자열로 저장
+	std::string Dir = "Right_";
+	// 플레이어의 기본상태는 아이들로 초기화
+	PlayerState StateValue = PlayerState::MOVE;
 	GameEngineRender* AnimationRender = nullptr;
+
+	// 방향체크
+	void DirCheck();
+
+	// 상태체인지
+	void ChangeState(PlayerState _State);
+	// 상태 업데이트 
+	void UpdateState(float _Time);
+
+	// 어떠한 상태가 있을 것인지생각해본다. 
+	void IdleStart();
+	void IdleUpdate(float _Time);
+	void IdleEnd();
+
+	void MoveStart();
+	void MoveUpdate(float _Time);
+	void MoveEnd();
+
+	void NormalAttackStart();
+	void NormalAttackUpdate(float _Time);
+	void NormalAttackEnd();
+
+	void JumpStart();
+	void JumpUpdate(float _Time);
+	void JumpEnd();
+
+	void JumpAttackStart();
+	void JumpAttackUpdate(float _Time);
+	void JumpAttackEnd();
+	
+	void DashStart();
+	void DashUpdate(float _Time);
+	void DashEnd();
+	
+	void DashAttackStart();
+	void DashAttackUpdate(float _Time);
+	void DashAttackEnd();
 };
 

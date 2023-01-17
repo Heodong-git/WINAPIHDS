@@ -1,6 +1,8 @@
 #include "UI_SelectX.h"
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineRender.h>
+#include <GameEngineCore/GameEngineLevel.h>
+#include <GameEngineCore/GameEngineCore.h>
 #include "ContentsEnum.h"
 
 UI_SelectX::UI_SelectX()
@@ -26,6 +28,7 @@ void UI_SelectX::Start()
 
 void UI_SelectX::Update(float _DeltaTime)
 {
+	
 }
 
 void UI_SelectX::Render(float _DeltaTime)

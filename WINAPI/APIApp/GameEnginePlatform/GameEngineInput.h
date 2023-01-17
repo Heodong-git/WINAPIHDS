@@ -21,10 +21,14 @@ public:
 
 		float PressTime;	    // 키가 몇초간 눌렸는지
 
-		int Key = -1;			// 입력된 키 저장
+		int Key = -1;			// 입력된 키값이 무엇인지 저장
 
 		bool KeyCheck()
 		{
+			// 저장된 키값을 넣고 그 키가 눌렸다면
+			// 0이 아닌 비트값을 반환하게 되기 때문에 true 를 반환하게 되어 눌렸다는 의미가 된다.
+			// ex) 현재 ENTER 에 해당하는 값을 넣어주고 해당하는 키가 지금 눌렸다면 0 이 아닌값을
+			// 반환하기 때문에 ENTER 키가 눌렸다는 의미가 되고, 해당하는 키의 상태값을 변경한다. 
 			return 0 != GetAsyncKeyState(Key);
 		}
 
@@ -66,7 +70,6 @@ private:
 	static std::map<std::string, GameEngineKey> Keys;
 	
 	// 아무키가 눌렸는지 확인하기 위한 변수 
-	// 이기능은 일단 내 프로젝트에선 필요 없는 것 같음. 
 	static bool IsAnyKeyValue;
 
 	static void IsAnyKeyOn()
@@ -78,7 +81,10 @@ private:
 	{
 		IsAnyKeyValue = false;
 	}
-
 };
 
+// 키 클래스는 왜 모두 staitc 으로 구성되어 있는지?
+// 별다른 의미는 없고, 객체를 호출하지 않고 전역함수처럼 사용이 가능하기 때문에 편리해서 이렇게 만듦. 
+// 문자열을 키값으로 하여 사용할 키들을 저장하고 map에 저장되어 있는
+// 데이터들을 모두 순회하며 Update 에서, 자신이 눌렸는지 체크한다. 
 

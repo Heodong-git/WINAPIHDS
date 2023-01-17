@@ -8,9 +8,10 @@
 #include "UI_SelectZero.h"
 #include "UI_TopText_PlayerSelect.h"
 #include "UI_BottomText_PlayerSelect.h"
+#include "UI_SelectBar.h"
 #include "Player_Zero.h"
 
-SelectLevel::SelectLevel()
+SelectLevel::SelectLevel() 
 {
 }
 
@@ -43,6 +44,8 @@ void SelectLevel::Loading()
 	Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_UI_text_playerselect.bmp"));
 	Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_UI_text_x.bmp"));
 	Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_UI_text_zero.bmp"));
+	Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_select_bar.bmp"));
+	Image->Cut({ 0, 0 }, { 628 , 170 }, 3, 1);
 
 	Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_player_attack_left.bmp"));
 	Image->Cut({ 124, 15 }, { 1557, 151 }, 8, 1);
@@ -52,6 +55,7 @@ void SelectLevel::Loading()
 	CreateActor<UI_SelectZero>();
 	CreateActor<UI_TopText_PlayerSelect>();
 	CreateActor<UI_BottomText_PlayerSelect>();
+	CreateActor<UI_SelectBar>();
 }
 
 void SelectLevel::Update(float _DeltaTime)
@@ -60,4 +64,7 @@ void SelectLevel::Update(float _DeltaTime)
 	{
 		GameEngineCore::GetInst()->ChangeLevel("SigmaStageLevel");
 	}
+
+	// 업데이트에서는 기본적으로 selectX 렌더가 선택되어 있고 그녀석의 애니메이션을 출력할건데.. 그건 
+	// 여기가 아니라 selectx 액터에서 해야되는구나 
 }

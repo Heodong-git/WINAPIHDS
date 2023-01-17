@@ -68,6 +68,11 @@ public:
 		return Frame;
 	}
 
+	void SetTransColor(int _Color)
+	{
+		TransColor = _Color;
+	}
+
 	inline GameEngineImage* GetImage()	
 	{
 		return Image;
@@ -98,6 +103,8 @@ private:
 	// 출력시 사용할 이미지
 	GameEngineImage* Image = nullptr;
 
+	int TransColor = RGB(255, 0, 255);
+
 	int Frame = 0;
 
 	void SetOrder(int _Order);
@@ -117,7 +124,6 @@ private:
 
 		// 현재 인덱스 
 		int CurrentIndex = 0;
-		// 현재 시간
 		float CurrentTime = 0.0f;
 		// 반복여부
 		bool Loop = true;
