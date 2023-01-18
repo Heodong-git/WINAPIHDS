@@ -33,16 +33,16 @@ protected:
 
 private:
 	static float Time;
-	float	     MoveSpeed = 300.0f;
+	float	     MoveSpeed = 800.0f;
 
 	// 기본 방향 - 오른쪽, 문자열로 저장
-	std::string Dir = "Right_";
+	std::string DirString = "Right_";
 	// 플레이어의 기본상태는 아이들로 초기화
 	PlayerState StateValue = PlayerState::MOVE;
 	GameEngineRender* AnimationRender = nullptr;
 
 	// 방향체크
-	void DirCheck();
+	void DirCheck(const std::string_view& _AnimationName);
 
 	// 상태체인지
 	void ChangeState(PlayerState _State);

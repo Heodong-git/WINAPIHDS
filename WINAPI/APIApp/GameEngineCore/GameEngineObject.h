@@ -1,6 +1,5 @@
 #pragma once
 
-// 설명 :
 class GameEngineObject
 {
 public:
@@ -21,7 +20,7 @@ public:
 	{
 		// 삼항연산자
 		// 오브젝트의 부모가 존재한다면 왼쪽, 아니면 오른쪽 반환	
-		return nullptr != Parent ? ((ObjectUpdate && false == IsDeath()) || Parent->IsUpdate()) : (ObjectUpdate && false == IsDeath());
+		return nullptr != Parent ? ((true == ObjectUpdate && false == IsDeath()) && true == Parent->IsUpdate()) : (ObjectUpdate && false == IsDeath());
 	}
 
 	// 데스체크 
@@ -52,9 +51,20 @@ public:
 		ObjectUpdate = !ObjectUpdate;
 	}
 
-	void SetParent(GameEngineObject* _Parent)
+	void SetOwner(GameEngineObject* _Parent)
 	{
 		Parent = _Parent;
+	}
+
+	template<typename ConvertType>
+	ConvertType* GetOwner()
+	{
+		return dynamic_cast<ConvertType*>(Parent);
+	}
+
+	GameEngineObject* GetOwner()
+	{
+		return Parent;
 	}
 
 protected:

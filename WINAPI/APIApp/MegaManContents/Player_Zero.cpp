@@ -1,9 +1,11 @@
 #include "Player_Zero.h"
-#include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineBase/GameEngineMath.h>
+#include <GameEnginePlatform/GameEngineWindow.h>
+#include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineResources.h>
 #include <GameEngineCore/GameEngineRender.h>
-#include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEngineCore/GameEngineLevel.h>
+
 #include "ContentsEnum.h"
 
 float Player_Zero::Time = 0.0f;
@@ -18,17 +20,31 @@ Player_Zero::~Player_Zero()
 }
 
 // 방향체크
-void Player_Zero::DirCheck()
+void Player_Zero::DirCheck(const std::string_view& _AnimationName)
 {
-	// 현재 Left 키가 눌렸다면 
+	// 현재 방향문자열 값을 받아온다. 
+	std::string PrevDirString = DirString;
+	// 해당하는 방향의 애니메이션으로 change
+	AnimationRender->ChangeAnimation(DirString + _AnimationName.data());
+
+	// 만약 leftmove 키가 눌렸다면
 	if (GameEngineInput::IsPress("LeftMove"))
 	{
-		// 방향문자열을 Left_
-		Dir = "Left_";
+		// 현재 방향문자열을 left_ 로 변경한다. 
+		DirString = "Left_";
 	}
+	// 만약 rightmove 키가 눌렸다면 
 	else if (GameEngineInput::IsPress("RightMove"))
 	{
-		Dir = "Right_";
+		// 현재 방향문자열을 right_ 로 변경한다.
+		DirString = "Right_";
+	}
+
+	// 변경 이후 
+	// 만약 이전 방향문자열이 현재 방향문자열과 다르다면
+	if (PrevDirString != DirString)
+	{
+		AnimationRender->ChangeAnimation(DirString + _AnimationName.data());
 	}
 }
 
@@ -50,11 +66,12 @@ void Player_Zero::Start()
 	}
 
 	// 플레이어 크기 165 , 200 
-	SetPos({ 300, 600 });
+	SetPos({GameEngineWindow::GetScreenSize().half().x , 
+		   (GameEngineWindow::GetScreenSize().half().y) + (GameEngineWindow::GetScreenSize().half().y / 2)});
 	
 	// 렌더러생성, 생성시 zorder 값 입력 
 	AnimationRender = CreateRender(RENDERORDER::PLAYER);
-	AnimationRender->SetScale({ 250,250 });
+	AnimationRender->SetScale({ 400, 400 });
 
 	// 구조체를 넣어주는데 원하는 변수의 값만 수정하여 넣어줄 수 있다.
 	// 단, 순서는 지켜서 넣어주어야 빨간줄이 그이지 않는다. 
@@ -63,7 +80,7 @@ void Player_Zero::Start()
 	AnimationRender->CreateAnimation({ .AnimationName = "right_idle",  .ImageName = "player_idle_walk_right.bmp", 
 									   .Start = 0, .End = 5 , .InterTime = 0.2f });
 	AnimationRender->CreateAnimation({ .AnimationName = "right_move_start",  .ImageName = "player_idle_walk_right.bmp",
-									   .Start = 6, .End = 7 , .InterTime = 0.1f });
+									   .Start = 6, .End = 7 , .InterTime = 0.5f });
 	AnimationRender->CreateAnimation({ .AnimationName = "right_move",  .ImageName = "player_idle_walk_right.bmp",
 									   .Start = 8, .End = 21 , .InterTime = 0.05f });
 
@@ -71,16 +88,16 @@ void Player_Zero::Start()
 	AnimationRender->CreateAnimation({ .AnimationName = "left_idle",  .ImageName = "player_idle_walk_left.bmp",
 									   .Start = 0, .End = 5 , .InterTime = 0.2f });
 	AnimationRender->CreateAnimation({ .AnimationName = "left_move_start",  .ImageName = "player_idle_walk_left.bmp",
-									   .Start = 6, .End = 7 , .InterTime = 0.1f });
+									   .Start = 6, .End = 7 , .InterTime = 0.5f });
 	AnimationRender->CreateAnimation({ .AnimationName = "left_move",  .ImageName = "player_idle_walk_left.bmp",
 									   .Start = 8, .End = 21 , .InterTime = 0.05f });
+
 
 	ChangeState(PlayerState::IDLE);
 }
 
 void Player_Zero::Update(float _DeltaTime)
 {
-	DirCheck();
 	// 현재 플레이어의 상태값에 따라 업데이트를 진행.
 	UpdateState(_DeltaTime);
 }
@@ -90,7 +107,7 @@ void Player_Zero::Render(float _DeltaTime)
 {
 	// 디버깅용
 	HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
-	float4 ActorPos = GetPos();
+	float4 ActorPos = GetPos() - GetLevel()->GetCameraPos();
 
 	Rectangle(DoubleDC,
 		ActorPos.ix() - 5,

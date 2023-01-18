@@ -19,7 +19,7 @@ void SigmaStage_BackGround::Start()
 	// 렌더러의 Setpositon 이 있기 때문.
 	// 맵의 정중앙의 위치를 좌표로 잡는다.
 	SetPos(GameEngineWindow::GetScreenSize().half());
-	GameEngineRender* Render = CreateRender("Sigma_Stage.bmp", RENDERORDER::BACKGROUND);
+	GameEngineRender* Render = CreateRender("sigmastage_background.bmp", RENDERORDER::BACKGROUND);
 	Render->SetScale(GameEngineWindow::GetScreenSize());
 }
 

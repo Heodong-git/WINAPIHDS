@@ -2,11 +2,14 @@
 #include <list>
 #include <map>
 
+#include <GameEngineBase/GameEngineMath.h>
+#include <GameEngineCore/GameEngineObject.h>
+
 // 윈도우창에 보여지는 화면을 Level 또는 Sceen 이라고 한다. 
 class GameEngineCore;
 class GameEngineActor;
 class GameEngineRender;
-class GameEngineLevel
+class GameEngineLevel : public GameEngineObject
 {
 	friend GameEngineCore;
 	friend GameEngineRender;
@@ -24,7 +27,7 @@ public:
 
 	// 레벨에서 사용할 액터 생성
 	template <typename ActorType>
-	void CreateActor(int _Order = 0)
+	ActorType* CreateActor(int _Order = 0)
 	{
 		GameEngineActor* Actor = new ActorType;
 
@@ -36,6 +39,24 @@ public:
 		// 데이터가 없을 경우, 그 키값으로 데이터를 저장한다.
 		// 데이터가 있을 경우, 그 키값에 해당하는 데이터를 레퍼런스로 반환해준다. 
 		Actors[_Order].push_back(Actor);
+
+		// 액터를 생성하면 생성한 액터의 포인터타입으로 캐스팅하여 반환해준다. 
+		return dynamic_cast<ActorType*>(Actor);
+	}
+
+	void SetCameraMove(const float4& _MoveValue)
+	{
+		CameraPos += _MoveValue;
+	}
+
+	void SetCameraPos(const float4& _CameraPos)
+	{
+		CameraPos = _CameraPos;
+	}
+
+	float4 GetCameraPos()
+	{
+		return CameraPos;
 	}
 
 protected:
@@ -49,6 +70,9 @@ protected:
 	virtual void LevelChangeStart(GameEngineLevel* _PrevLevel) = 0;
 	
 private:
+	// 카메라 좌표
+	float4 CameraPos = float4::Zero;
+
 	// Order 값을 키값으로 하는 액터리스트를 저장한다. 
 	std::map<int, std::list<GameEngineActor*>> Actors;
 	

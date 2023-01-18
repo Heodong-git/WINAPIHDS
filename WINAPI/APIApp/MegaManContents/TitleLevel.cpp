@@ -29,7 +29,7 @@ void TitleLevel::Loading()
 	// 디렉터리가 있다면 경로를 설정해준다.  
 	Directory.Move("ContentsResources");
 	Directory.Move("Image");
-	Directory.Move("Title");
+	Directory.Move("TitleLevel");
 
 	GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Main_Title.bmp"));
 

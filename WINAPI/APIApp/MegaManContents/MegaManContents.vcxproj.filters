@@ -56,6 +56,9 @@
     <ClInclude Include="UI_SelectBar.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="SigmaStage_Map.h">
+      <Filter>Map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndTitleLevel.cpp">
@@ -114,6 +117,9 @@
     </ClCompile>
     <ClCompile Include="Player_Zero_State.cpp">
       <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="SigmaStage_Map.cpp">
+      <Filter>Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

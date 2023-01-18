@@ -1,15 +1,17 @@
+#include "SigmaStageLevel.h"
 #include <GameEngineBase/GameEngineDirectory.h>
 #include <GameEngineBase/GameEngineTime.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineResources.h>
 #include <GameEngineCore/GameEngineCore.h>
-#include "SigmaStageLevel.h"
+
 #include "Player_Zero.h"
 #include "Monster_Sigma.h"
 #include "Monster_NightMareVirus.h"
 #include "Monster_MetalT.h"
 #include "SigmaStage_BackGround.h"
 #include "UI_PlayerHpBar.h"
+#include "SigmaStage_Map.h"
 
 SigmaStageLevel::SigmaStageLevel()
 {
@@ -29,27 +31,62 @@ void SigmaStageLevel::Loading()
 	// 2. 디렉터리가 있다면 경로를 설정해준다.  
 	Directory.Move("ContentsResources");
 	Directory.Move("Image");
-	Directory.Move("SigmaStage");
+	Directory.Move("SigmaStageLevel");
 
 	{
+		// 오른쪽 아이들 + 워크 
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_idle_walk_right.bmp"));
 		Image->Cut( 5 , 5 );
 	}
-
 	{
+		// 왼쪽 아이들 + 워크
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_idle_walk_left.bmp"));
 		Image->Cut(5, 5);
 	}
-
+	{
+		// 백그라운드
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("sigmastage_background.bmp"));
+	}
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("sigma_stage.bmp"));
+	}
+	
 	// 해당 레벨에서 사용할 액터 생성
 	// 액터 생성시에 인자로 넣어주는 값은 업데이트,렌더링 순서이며 값이 높을 수록 나중에 연산,렌더링이 된다. 
-	CreateActor<Player_Zero>();
+	Player = CreateActor<Player_Zero>();
 	//CreateActor<SigmaStage_BackGround>();
+	CreateActor<SigmaStage_Map>();
+	//CreateActor<SigmaStage_BackGround>();
+
+	if (false == GameEngineInput::IsKey("CameraLeftMove"))
+	{
+		GameEngineInput::CreateKey("CameraLeftMove", 'A');
+		GameEngineInput::CreateKey("CameraRightMove", 'D');
+		GameEngineInput::CreateKey("CameraDownMove", 'S');
+		GameEngineInput::CreateKey("CameraUpMove", 'W');
+	}
 }
 
 void SigmaStageLevel::Update(float _DeltaTime)
 {
-	
+	float CameraMoveSpeed = 100.0f;
+
+	if (GameEngineInput::IsPress("CameraLeftMove"))
+	{
+		SetCameraMove(float4::Left * _DeltaTime * CameraMoveSpeed);
+	}
+	if (GameEngineInput::IsPress("CameraRightMove"))
+	{
+		SetCameraMove(float4::Right * _DeltaTime * CameraMoveSpeed);
+	}
+	if (GameEngineInput::IsPress("CameraDownMove"))
+	{
+		SetCameraMove(float4::Down * _DeltaTime * CameraMoveSpeed);
+	}
+	if (GameEngineInput::IsPress("CameraUpMove"))
+	{
+		SetCameraMove(float4::Up * _DeltaTime * CameraMoveSpeed);
+	}
 }
 
 void SigmaStageLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)

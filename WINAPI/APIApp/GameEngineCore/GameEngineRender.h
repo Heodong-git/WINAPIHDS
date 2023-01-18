@@ -68,6 +68,8 @@ public:
 		return Frame;
 	}
 
+	GameEngineActor* GetActor();
+
 	void SetTransColor(int _Color)
 	{
 		TransColor = _Color;
@@ -81,6 +83,11 @@ public:
 	inline int GetOrder()
 	{
 		return Order;
+	}
+
+	inline void EffectCameraOff()
+	{
+		IsEffectCamera = false;
 	}
 
 	// 애니메이션 생성
@@ -102,6 +109,9 @@ private:
 	float4 Scale = float4::Zero;
 	// 출력시 사용할 이미지
 	GameEngineImage* Image = nullptr;
+
+	// 카메라의 영향을 받지 않을 액터는 EffectCameraOff() 를 Start 에서 호출.
+	bool IsEffectCamera = true;
 
 	int TransColor = RGB(255, 0, 255);
 

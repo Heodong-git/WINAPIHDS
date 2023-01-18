@@ -34,7 +34,7 @@ void SelectLevel::Loading()
 	// 경로설정
 	Directory.Move("ContentsResources");
 	Directory.Move("Image");
-	Directory.Move("Select");
+	Directory.Move("SelectLevel");
 	
 	// 백그라운드	
 	GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_background.bmp"));

@@ -42,11 +42,7 @@ public:
 		Pos += _MovePos;
 	}
 
-	// 나를 소유한 Level 반환
-	inline GameEngineLevel* GetLevel()
-	{
-		return Level;
-	}
+	GameEngineLevel* GetLevel();
 
 #pragma region CreateRenderEnumOverLoadings
 

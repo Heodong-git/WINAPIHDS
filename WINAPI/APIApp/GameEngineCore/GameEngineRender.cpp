@@ -13,6 +13,12 @@ GameEngineRender::~GameEngineRender()
 {
 }
 
+GameEngineActor* GameEngineRender::GetActor()
+{
+	return GetOwner<GameEngineActor>();
+}
+
+
 // 출력시 사용할 이미지 세팅
 void GameEngineRender::SetImage(const std::string_view& _ImageName)
 {
@@ -97,8 +103,15 @@ void GameEngineRender::Render(float _DeltaTime)
 		Image = CurrentAnimation->Image;
 	}
 
+	float4 CameraPos = float4::Zero;
+
+	if (true == IsEffectCamera)
+	{
+		CameraPos = GetActor()->GetLevel()->GetCameraPos();
+	}
+
 	// 출력될 좌표는 렌더러를 소유한 액터의 위치 + 추가 포지션값
-	float4 RenderPos = Owner->GetPos() + Position;
+	float4 RenderPos = GetActor()->GetPos() + Position - CameraPos;
 
 	// 커팅된 이미지라면
 	if (true == Image->IsImageCutting())

@@ -61,6 +61,7 @@ public:
 	// 현재 이미지의 크기를 float4 타입으로 반환한다.  
 	float4 GetImageScale() const
 	{
+
 		return float4{ static_cast<float>(Info.bmWidth), static_cast<float>(Info.bmHeight) };
 	}
 

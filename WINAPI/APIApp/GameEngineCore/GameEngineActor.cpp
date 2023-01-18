@@ -1,5 +1,6 @@
 #include "GameEngineActor.h"
 #include "GameEngineRender.h"
+#include "GameEngineLevel.h"
 
 GameEngineActor::GameEngineActor()
 {
@@ -20,6 +21,12 @@ GameEngineActor::~GameEngineActor()
 	}
 }
 
+GameEngineLevel* GameEngineActor::GetLevel()
+{
+	return GetOwner<GameEngineLevel>();
+}
+
+
 // 인자로 넣어준 이미지, Order 값으로 렌더클래스생성
 GameEngineRender* GameEngineActor::CreateRender(const std::string_view& _Image, int _Order /*= 0*/)
 {
@@ -39,7 +46,7 @@ GameEngineRender* GameEngineActor::CreateRender(int _Order /*= 0*/)
 	GameEngineRender* Render = new GameEngineRender();
 
 	// 같은행동이지만 임시로 일단 둘다 냅둠 
-	Render->SetParent(this);
+	Render->SetOwner(this);
 	// Renderer 오너 = this ( 이함수를 호출한 객체의 주소 ) 
 	Render->Owner = this;
 	// Zorder 값 세팅

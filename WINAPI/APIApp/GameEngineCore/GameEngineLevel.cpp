@@ -45,7 +45,7 @@ void GameEngineLevel::ActorStart(GameEngineActor* _Actor, int _Order)
 	}
 
 	// 생성한 액터의 Level = this
-	_Actor->Level = this;
+	_Actor->SetOwner(this);
 	_Actor->SetOrder(_Order);
 	_Actor->Start();
 }

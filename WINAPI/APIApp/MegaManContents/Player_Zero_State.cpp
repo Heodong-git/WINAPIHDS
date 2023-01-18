@@ -1,9 +1,12 @@
 #include "Player_Zero.h"
-#include <GameEnginePlatform/GameEngineWindow.h>
+
 #include <GameEngineBase/GameEnginePath.h>
+#include <GameEnginePlatform/GameEngineWindow.h>
+#include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineResources.h>
 #include <GameEngineCore/GameEngineRender.h>
-#include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEngineCore/GameEngineLevel.h>
+
 #include "ContentsEnum.h"
 
 
@@ -105,8 +108,7 @@ void Player_Zero::UpdateState(float _Time)
 
 void Player_Zero::IdleStart()
 {
-	// 방향(문자열) + 원하는 애니메이션 호출
-	AnimationRender->ChangeAnimation(Dir + "idle");
+	DirCheck("Idle");
 }
 
 void Player_Zero::IdleUpdate(float _Time)
@@ -127,8 +129,7 @@ void Player_Zero::IdleEnd()
 
 void Player_Zero::MoveStart()
 {
-	// Move 상태로 변경되었다면 움직이는 애니메이션으로 변경
-	AnimationRender->ChangeAnimation(Dir + "Move_start");
+	DirCheck("Move");
 }
 
 void Player_Zero::MoveUpdate(float _Time)
@@ -148,25 +149,35 @@ void Player_Zero::MoveUpdate(float _Time)
 	// 키가 눌렸다면 해당하는 움직임 수행
 	if (true == GameEngineInput::IsPress("LeftMove"))
 	{
-		AnimationRender->ChangeAnimation(Dir + "Move");
+		//AnimationRender->ChangeAnimation(DirString + "Move");
 		SetMove(float4::Left * MoveSpeed * _Time);
+		GetLevel()->SetCameraMove(float4::Left * _Time * MoveSpeed);
 	}
-
-	if (true == GameEngineInput::IsPress("RightMove"))
+	else if (true == GameEngineInput::IsPress("RightMove"))
 	{
-		AnimationRender->ChangeAnimation(Dir + "Move");
+		//AnimationRender->ChangeAnimation(DirString +"Move");
 		SetMove(float4::Right * MoveSpeed * _Time);
+		GetLevel()->SetCameraMove(float4::Right * _Time * MoveSpeed);
 	}
 
 	if (true == GameEngineInput::IsPress("UpMove"))
 	{
 		SetMove(float4::Up * MoveSpeed * _Time);
+		GetLevel()->SetCameraMove(float4::Up * _Time * MoveSpeed);
 	}
 
-	if (true == GameEngineInput::IsPress("DownMove"))
+	else if (true == GameEngineInput::IsPress("DownMove"))
 	{
+		//AnimationRender->ChangeAnimation(DirString +"Move");
 		SetMove(float4::Down * MoveSpeed * _Time);
+		GetLevel()->SetCameraMove(float4::Down * _Time * MoveSpeed);
 	}
+
+	// 왼쪽무브를 먼저체크하기 때문에 오른쪽키가 눌린상태에서는 왼쪽키를 눌러도 
+	// if 문이 동작하여 반대로 이동 + 애니메이션이  출력되지만 왼쪽키가 눌린상태에서는
+	// 오른쪽키를 눌러도 왼쪽방향체크가 먼저되어 아래 코드가 동작하지 않는 것 같다. 
+
+	DirCheck("Move");
 }
 
 void Player_Zero::MoveEnd()
