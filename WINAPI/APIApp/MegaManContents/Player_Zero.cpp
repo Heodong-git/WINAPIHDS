@@ -123,7 +123,8 @@ void Player_Zero::Movecalculation(float _DeltaTime)
 		MoveDir.x *= 0.001f;
 	}
 
-	GameEngineImage* ColImage = GameEngineResources::GetInst().ImageFind("Map_SpacePort.BMP");
+	// 임시로 배경으로 
+	GameEngineImage* ColImage = GameEngineResources::GetInst().ImageFind("SigmaStage_BackGround.BMP");
 	if (nullptr == ColImage)
 	{
 		MsgAssert("충돌용 맵 이미지가 없습니다.");

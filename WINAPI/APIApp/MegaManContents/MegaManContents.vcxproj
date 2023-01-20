@@ -161,7 +161,7 @@
     <ClInclude Include="Monster_Sigma.h" />
     <ClInclude Include="Player_Zero.h" />
     <ClInclude Include="SelectLevel.h" />
-    <ClInclude Include="SigmaStageLevel.h" />
+    <ClInclude Include="SpacePortLevel.h" />
     <ClInclude Include="Map_SpacePort.h" />
     <ClInclude Include="TitleLevel.h" />
     <ClInclude Include="Title_BackGround.h" />
@@ -183,7 +183,7 @@
     <ClCompile Include="Monster_Sigma.cpp" />
     <ClCompile Include="Player_Zero.cpp" />
     <ClCompile Include="SelectLevel.cpp" />
-    <ClCompile Include="SigmaStageLevel.cpp" />
+    <ClCompile Include="SpacePortLevel.cpp" />
     <ClCompile Include="Map_SpacePort.cpp" />
     <ClCompile Include="TitleLevel.cpp" />
     <ClCompile Include="Title_BackGround.cpp" />

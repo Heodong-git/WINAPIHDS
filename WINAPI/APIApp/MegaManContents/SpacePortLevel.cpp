@@ -1,4 +1,4 @@
-#include "SigmaStageLevel.h"
+#include "SpacePortLevel.h"
 #include <GameEngineBase/GameEngineDirectory.h>
 #include <GameEngineBase/GameEngineTime.h>
 #include <GameEnginePlatform/GameEngineInput.h>
@@ -13,15 +13,15 @@
 #include "UI_PlayerHpBar.h"
 #include "Map_SpacePort.h"
 
-SigmaStageLevel::SigmaStageLevel()
+SpacePortLevel::SpacePortLevel()
 {
 }
 
-SigmaStageLevel::~SigmaStageLevel()
+SpacePortLevel::~SpacePortLevel()
 {
 }
  
-void SigmaStageLevel::Loading()
+void SpacePortLevel::Loading()
 {
 	// 이미지로딩
 	GameEngineDirectory Directory;
@@ -47,7 +47,6 @@ void SigmaStageLevel::Loading()
 		// 오른쪽 대쉬 + 앉은상태 공격 
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_doublejump_dash_sitattack_right.bmp"));
 		Image->Cut(8, 5);
-		float4 Scale = Image->GetImageScale();
 	}
 	{
 		// 왼쪽 대쉬 + 앉은상태 공격
@@ -60,7 +59,7 @@ void SigmaStageLevel::Loading()
 	}
 	{
 		// 스페이스포트 맵
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort.bmp"));
+		// GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort.bmp"));
 	}
 	
 	// 해당 레벨에서 사용할 액터 생성
@@ -79,7 +78,7 @@ void SigmaStageLevel::Loading()
 	}
 }
 
-void SigmaStageLevel::Update(float _DeltaTime)
+void SpacePortLevel::Update(float _DeltaTime)
 {
 	float CameraMoveSpeed = 2000.0f;
 
@@ -101,7 +100,7 @@ void SigmaStageLevel::Update(float _DeltaTime)
 	}
 }
 
-void SigmaStageLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
+void SpacePortLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 
 }

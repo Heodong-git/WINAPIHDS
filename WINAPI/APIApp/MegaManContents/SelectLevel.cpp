@@ -26,7 +26,7 @@ SelectLevel::~SelectLevel()
 void SelectLevel::Loading()
 {
 	// ENTER <-- 정수 13
-	GameEngineInput::CreateKey("Change_SigmaStageLevel", 13);
+	GameEngineInput::CreateKey("Change_SpacePortLevel", 13);
 
 	GameEngineDirectory Directory;
 	// 상위폴더에 해당 디렉터리 존재여부 확인
@@ -60,9 +60,9 @@ void SelectLevel::Loading()
 
 void SelectLevel::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsDown("Change_SigmaStageLevel"))
+	if (true == GameEngineInput::IsDown("Change_SpacePortLevel"))
 	{
-		GameEngineCore::GetInst()->ChangeLevel("SigmaStageLevel");
+		GameEngineCore::GetInst()->ChangeLevel("SpacePortLevel");
 	}
 
 	// 업데이트에서는 기본적으로 selectX 렌더가 선택되어 있고 그녀석의 애니메이션을 출력할건데.. 그건 

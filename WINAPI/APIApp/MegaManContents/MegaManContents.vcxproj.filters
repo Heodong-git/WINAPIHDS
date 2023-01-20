@@ -7,7 +7,7 @@
     <ClInclude Include="SelectLevel.h">
       <Filter>Level</Filter>
     </ClInclude>
-    <ClInclude Include="SigmaStageLevel.h">
+    <ClInclude Include="SpacePortLevel.h">
       <Filter>Level</Filter>
     </ClInclude>
     <ClInclude Include="MegaManCore.h">
@@ -85,7 +85,7 @@
     <ClCompile Include="Monster_Sigma.cpp">
       <Filter>Monster</Filter>
     </ClCompile>
-    <ClCompile Include="SigmaStageLevel.cpp">
+    <ClCompile Include="SpacePortLevel.cpp">
       <Filter>Level</Filter>
     </ClCompile>
     <ClCompile Include="UI_PlayerHpBar.cpp">

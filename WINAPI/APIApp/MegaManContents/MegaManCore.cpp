@@ -2,7 +2,7 @@
 #include "MegaManCore.h"
 #include <MegaManContents/TitleLevel.h>
 #include <MegaManContents/SelectLevel.h>
-#include <MegaManContents/SigmaStageLevel.h>
+#include <MegaManContents/SpacePortLevel.h>
 #include <MegaManContents/EndTitleLevel.h>
 
 // static 변수 구현
@@ -23,7 +23,7 @@ void MegaManCore::Start()
 
 	CreateLevel<TitleLevel>("TitleLevel");
 	CreateLevel<SelectLevel>("SelectLevel");
-	CreateLevel<SigmaStageLevel>("SigmaStageLevel");
+	CreateLevel<SpacePortLevel>("SpacePortLevel");
 	CreateLevel<EndTitleLevel>("EndTitleLevel");
 	
 	// 실행 시에 반드시 어떤 레벨을 보여줄 것인지 지정한다. 

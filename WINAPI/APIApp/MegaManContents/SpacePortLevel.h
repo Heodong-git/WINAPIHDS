@@ -4,18 +4,18 @@
 // Select Level 에서 캐릭터를 선택했다면
 // 진입하여 본격적으로 게임을 진행하는 Level 
 class Player_Zero;
-class SigmaStageLevel : public GameEngineLevel
+class SpacePortLevel : public GameEngineLevel
 {
 public:
 	// constrcuter destructer
-	SigmaStageLevel();
-	~SigmaStageLevel();
+	SpacePortLevel();
+	~SpacePortLevel();
 
 	// delete Function
-	SigmaStageLevel(const SigmaStageLevel& _Other) = delete;
-	SigmaStageLevel(SigmaStageLevel&& _Other) noexcept = delete;
-	SigmaStageLevel& operator=(const SigmaStageLevel& _Other) = delete;
-	SigmaStageLevel& operator=(SigmaStageLevel&& _Other) noexcept = delete;
+	SpacePortLevel(const SpacePortLevel& _Other) = delete;
+	SpacePortLevel(SpacePortLevel&& _Other) noexcept = delete;
+	SpacePortLevel& operator=(const SpacePortLevel& _Other) = delete;
+	SpacePortLevel& operator=(SpacePortLevel&& _Other) noexcept = delete;
 
 	Player_Zero* GetPlayer()
 	{
