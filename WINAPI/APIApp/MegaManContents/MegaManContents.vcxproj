@@ -162,7 +162,7 @@
     <ClInclude Include="Player_Zero.h" />
     <ClInclude Include="SelectLevel.h" />
     <ClInclude Include="SigmaStageLevel.h" />
-    <ClInclude Include="SigmaStage_Map.h" />
+    <ClInclude Include="Map_SpacePort.h" />
     <ClInclude Include="TitleLevel.h" />
     <ClInclude Include="Title_BackGround.h" />
     <ClInclude Include="UI_BottomText_PlayerSelect.h" />
@@ -184,7 +184,7 @@
     <ClCompile Include="Player_Zero.cpp" />
     <ClCompile Include="SelectLevel.cpp" />
     <ClCompile Include="SigmaStageLevel.cpp" />
-    <ClCompile Include="SigmaStage_Map.cpp" />
+    <ClCompile Include="Map_SpacePort.cpp" />
     <ClCompile Include="TitleLevel.cpp" />
     <ClCompile Include="Title_BackGround.cpp" />
     <ClCompile Include="UI_BottomText_PlayerSelect.cpp" />

@@ -7,6 +7,7 @@ enum class PlayerState
 	IDLE,
 	MOVE,
 	JUMP,
+	FALL,
 	DASH,
 	NOMALATTACK,
 	JUMPATTACK,
@@ -33,13 +34,18 @@ protected:
 
 private:
 	static float Time;
-	float	     MoveSpeed = 800.0f;
-
+	float	     MoveSpeed = 400.0f;
 	// 기본 방향 - 오른쪽, 문자열로 저장
-	std::string DirString = "Right_";
+	std::string  DirString = "Right_";
+	float4		 MoveDir = float4::Zero;
 	// 플레이어의 기본상태는 아이들로 초기화
-	PlayerState StateValue = PlayerState::MOVE;
+	PlayerState  StateValue = PlayerState::MOVE;
 	GameEngineRender* AnimationRender = nullptr;
+	bool		 Gravity = false;
+	bool		 Jump = false;
+	float		 JumpPower = 5.f;
+	float4		PrevPos = float4::Zero;
+	
 
 	// 방향체크
 	void DirCheck(const std::string_view& _AnimationName);
@@ -47,35 +53,34 @@ private:
 	// 상태체인지
 	void ChangeState(PlayerState _State);
 	// 상태 업데이트 
-	void UpdateState(float _Time);
+	void UpdateState(float _DeltaTime);
+
+	void Movecalculation(float _DeltaTime);
 
 	// 어떠한 상태가 있을 것인지생각해본다. 
 	void IdleStart();
-	void IdleUpdate(float _Time);
+	void IdleUpdate(float _DeltaTime);
 	void IdleEnd();
 
 	void MoveStart();
-	void MoveUpdate(float _Time);
+	void MoveUpdate(float _DeltaTime);
 	void MoveEnd();
 
 	void NormalAttackStart();
-	void NormalAttackUpdate(float _Time);
+	void NormalAttackUpdate(float _DeltaTime);
 	void NormalAttackEnd();
 
 	void JumpStart();
-	void JumpUpdate(float _Time);
+	void JumpUpdate(float _DeltaTime);
 	void JumpEnd();
 
-	void JumpAttackStart();
-	void JumpAttackUpdate(float _Time);
-	void JumpAttackEnd();
+	void FallStart();
+	void FallUpdate(float _DeltaTime);
+	void FallEnd();
 	
 	void DashStart();
-	void DashUpdate(float _Time);
+	void DashUpdate(float _DeltaTime);
 	void DashEnd();
-	
-	void DashAttackStart();
-	void DashAttackUpdate(float _Time);
-	void DashAttackEnd();
+
 };
 

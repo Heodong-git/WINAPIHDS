@@ -45,12 +45,13 @@ public:
 
 	void SetImage(const std::string_view& _ImageName);
 
+	// 포지션 세팅
 	inline void SetPosition(float4 _Position)
 	{
 		Position = _Position;
 	}
 
-	// 임시로 만든 함수
+	// 렌더러의 포지션을 받아온다.
 	inline float4 GetPosition()
 	{
 		return Position;
@@ -149,6 +150,8 @@ private:
 		}
 	};
 
+public:
+	// 임시로 퍼블릭. 잠시 	
 	std::map<std::string, FrameAnimation> Animation;
 	FrameAnimation* CurrentAnimation = nullptr;
 };

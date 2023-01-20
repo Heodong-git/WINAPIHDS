@@ -127,7 +127,7 @@ GameEngineCore::~GameEngineCore()
 void GameEngineCore::CoreStart(HINSTANCE _instance)
 {
 	// 윈도우 생성 
-	GameEngineWindow::WindowCreate(_instance, "MainWindow", { 1600.0f, 900.0f }, { 0, 0 });
+	GameEngineWindow::WindowCreate(_instance, "MainWindow", { 1280.0f, 960.0f }, { 0, 0 });
 	
 	// 윈도우 루프
 	// 이러한 방식을 callback 방식이라고 하며 

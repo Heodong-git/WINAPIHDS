@@ -56,7 +56,7 @@
     <ClInclude Include="UI_SelectBar.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="SigmaStage_Map.h">
+    <ClInclude Include="Map_SpacePort.h">
       <Filter>Map</Filter>
     </ClInclude>
   </ItemGroup>
@@ -118,7 +118,7 @@
     <ClCompile Include="Player_Zero_State.cpp">
       <Filter>Player</Filter>
     </ClCompile>
-    <ClCompile Include="SigmaStage_Map.cpp">
+    <ClCompile Include="Map_SpacePort.cpp">
       <Filter>Map</Filter>
     </ClCompile>
   </ItemGroup>

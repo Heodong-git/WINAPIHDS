@@ -11,7 +11,10 @@
 float Player_Zero::Time = 0.0f;
 
 Player_Zero::Player_Zero() :
-	AnimationRender(nullptr)
+	MoveSpeed(400.f),
+	AnimationRender(nullptr),
+	Gravity(false),
+	Jump(false)
 {
 }
 
@@ -71,8 +74,7 @@ void Player_Zero::Start()
 	
 	// 렌더러생성, 생성시 zorder 값 입력 
 	AnimationRender = CreateRender(RENDERORDER::PLAYER);
-	AnimationRender->SetScale({ 400, 400 });
-
+	AnimationRender->SetScale({ 640, 640 });
 	// 구조체를 넣어주는데 원하는 변수의 값만 수정하여 넣어줄 수 있다.
 	// 단, 순서는 지켜서 넣어주어야 빨간줄이 그이지 않는다. 
 
@@ -83,6 +85,8 @@ void Player_Zero::Start()
 									   .Start = 6, .End = 7 , .InterTime = 0.5f });
 	AnimationRender->CreateAnimation({ .AnimationName = "right_move",  .ImageName = "player_idle_walk_right.bmp",
 									   .Start = 8, .End = 21 , .InterTime = 0.05f });
+	AnimationRender->CreateAnimation({ .AnimationName = "right_dash",  .ImageName = "player_doublejump_dash_sitattack_right.bmp",
+									   .Start = 11, .End = 23 , .InterTime = 0.05f , .Loop = false  });
 
 	// 좌측
 	AnimationRender->CreateAnimation({ .AnimationName = "left_idle",  .ImageName = "player_idle_walk_left.bmp",
@@ -91,29 +95,97 @@ void Player_Zero::Start()
 									   .Start = 6, .End = 7 , .InterTime = 0.5f });
 	AnimationRender->CreateAnimation({ .AnimationName = "left_move",  .ImageName = "player_idle_walk_left.bmp",
 									   .Start = 8, .End = 21 , .InterTime = 0.05f });
-
-
+	AnimationRender->CreateAnimation({ .AnimationName = "left_dash",  .ImageName = "player_doublejump_dash_sitattack_left.bmp",
+									   .Start = 11, .End = 23 , .InterTime = 0.05f , .Loop = false });
 	ChangeState(PlayerState::IDLE);
 }
 
+void Player_Zero::Movecalculation(float _DeltaTime)
+{
+	if (true == Gravity)
+	{
+		MoveDir += float4::Down * MoveSpeed * _DeltaTime;
+	}
+
+	if (400.0f <= abs(MoveDir.x))
+	{
+		if (0 > MoveDir.x)
+		{
+			MoveDir.x = -400.0f;
+		}
+		else {
+			MoveDir.x = 400.0f;
+		}
+	}
+
+	if (false == GameEngineInput::IsPress("LeftMove") && false == GameEngineInput::IsPress("RightMove"))
+	{
+		MoveDir.x *= 0.001f;
+	}
+
+	GameEngineImage* ColImage = GameEngineResources::GetInst().ImageFind("Map_SpacePort.BMP");
+	if (nullptr == ColImage)
+	{
+		MsgAssert("충돌용 맵 이미지가 없습니다.");
+	}
+
+
+	// 충돌체크 
+	bool Check = true;
+	float4 NextPos = GetPos() + MoveDir * _DeltaTime;
+
+	if (RGB(255, 0, 255) == ColImage->GetPixelColor(NextPos, RGB(255, 0, 255)))
+	{
+		Check = false;
+		// MoveDir = float4::Zero;
+	}
+
+	
+	// 잠깐주석 
+	/*if (false == Check)
+	{
+		while (true)
+		{
+			MoveDir.y -= 1;
+
+			float4 NextPos = GetPos() + MoveDir * _DeltaTime;
+
+			if (RGB(255, 0, 255) == ColImage->GetPixelColor(NextPos, RGB(255, 0, 255)))
+			{
+				continue;
+			}
+
+			break;
+		}
+	}*/
+
+	 SetMove(MoveDir *_DeltaTime);
+	 // 일단 임시로 카메라무브 적용
+	 GetLevel()->SetCameraMove(MoveDir * _DeltaTime);
+}
+
+// 상수들은 다 내가 변수로 만들어서 사용해야함. 생각할 것. 
 void Player_Zero::Update(float _DeltaTime)
 {
 	// 현재 플레이어의 상태값에 따라 업데이트를 진행.
 	UpdateState(_DeltaTime);
+	
+	Movecalculation(_DeltaTime);
+	
 }
 
 // 오브젝트의 중심점을 알 수 있도록 사각형 출력 
 void Player_Zero::Render(float _DeltaTime)
 {
 	// 디버깅용
-	HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
-	float4 ActorPos = GetPos() - GetLevel()->GetCameraPos();
+	//HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
+	//float4 ActorPos = GetPos() - GetLevel()->GetCameraPos();
 
-	Rectangle(DoubleDC,
-		ActorPos.ix() - 5,
-		ActorPos.iy() - 5,
-		ActorPos.ix() + 5,
-		ActorPos.iy() + 5
-	);
+	//Rectangle(DoubleDC,
+	//	ActorPos.ix() - 5,
+	//	ActorPos.iy() - 5,
+	//	ActorPos.ix() + 5,
+	//	ActorPos.iy() + 5
+	//);
 
 }

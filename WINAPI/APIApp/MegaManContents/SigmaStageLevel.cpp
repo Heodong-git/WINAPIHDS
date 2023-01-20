@@ -11,7 +11,7 @@
 #include "Monster_MetalT.h"
 #include "SigmaStage_BackGround.h"
 #include "UI_PlayerHpBar.h"
-#include "SigmaStage_Map.h"
+#include "Map_SpacePort.h"
 
 SigmaStageLevel::SigmaStageLevel()
 {
@@ -31,31 +31,43 @@ void SigmaStageLevel::Loading()
 	// 2. 디렉터리가 있다면 경로를 설정해준다.  
 	Directory.Move("ContentsResources");
 	Directory.Move("Image");
-	Directory.Move("SigmaStageLevel");
+	Directory.Move("SpacePortLevel");
 
 	{
-		// 오른쪽 아이들 + 워크 
+		// 오른쪽 아이들 + 걷기
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_idle_walk_right.bmp"));
-		Image->Cut( 5 , 5 );
+		Image->Cut( 8 , 3 );
 	}
 	{
-		// 왼쪽 아이들 + 워크
+		// 왼쪽 아이들 + 걷기
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_idle_walk_left.bmp"));
-		Image->Cut(5, 5);
+		Image->Cut( 8, 3 );
+	}
+	{
+		// 오른쪽 대쉬 + 앉은상태 공격 
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_doublejump_dash_sitattack_right.bmp"));
+		Image->Cut(8, 5);
+		float4 Scale = Image->GetImageScale();
+	}
+	{
+		// 왼쪽 대쉬 + 앉은상태 공격
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_doublejump_dash_sitattack_left.bmp"));
+		Image->Cut(8, 5);
 	}
 	{
 		// 백그라운드
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("sigmastage_background.bmp"));
 	}
 	{
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("sigma_stage.bmp"));
+		// 스페이스포트 맵
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort.bmp"));
 	}
 	
 	// 해당 레벨에서 사용할 액터 생성
 	// 액터 생성시에 인자로 넣어주는 값은 업데이트,렌더링 순서이며 값이 높을 수록 나중에 연산,렌더링이 된다. 
 	Player = CreateActor<Player_Zero>();
 	//CreateActor<SigmaStage_BackGround>();
-	CreateActor<SigmaStage_Map>();
+	CreateActor<Map_SpacePort>();
 	//CreateActor<SigmaStage_BackGround>();
 
 	if (false == GameEngineInput::IsKey("CameraLeftMove"))
@@ -69,7 +81,7 @@ void SigmaStageLevel::Loading()
 
 void SigmaStageLevel::Update(float _DeltaTime)
 {
-	float CameraMoveSpeed = 100.0f;
+	float CameraMoveSpeed = 2000.0f;
 
 	if (GameEngineInput::IsPress("CameraLeftMove"))
 	{

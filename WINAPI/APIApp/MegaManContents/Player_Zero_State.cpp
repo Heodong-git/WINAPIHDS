@@ -37,11 +37,6 @@ void Player_Zero::ChangeState(PlayerState _State)
 	case PlayerState::NOMALATTACK:
 		NormalAttackStart();
 		break;
-	case PlayerState::JUMPATTACK:
-		JumpAttackStart();
-		break;
-	case PlayerState::DASHATTACK:
-		DashAttackStart();
 	default:
 		break;
 	}
@@ -64,11 +59,6 @@ void Player_Zero::ChangeState(PlayerState _State)
 	case PlayerState::NOMALATTACK:
 		NormalAttackEnd();
 		break;
-	case PlayerState::JUMPATTACK:
-		JumpAttackEnd();
-		break;
-	case PlayerState::DASHATTACK:
-		DashAttackEnd();
 	default:
 		break;
 	}
@@ -95,11 +85,6 @@ void Player_Zero::UpdateState(float _Time)
 	case PlayerState::NOMALATTACK:
 		NormalAttackUpdate(_Time);
 		break;
-	case PlayerState::JUMPATTACK:
-		JumpAttackUpdate(_Time);
-		break;
-	case PlayerState::DASHATTACK:
-		DashAttackUpdate(_Time);
 	default:
 		break;
 	}
@@ -113,13 +98,18 @@ void Player_Zero::IdleStart()
 
 void Player_Zero::IdleUpdate(float _Time)
 {
-	// 기본 상태의 업데이트에서는 특정키가 눌리면 
-	// 원하는 상태에 맞게 상태를 변경해준다. 
-	if (GameEngineInput::IsPress("LeftMove") || GameEngineInput::IsPress("RightMove")
-		|| GameEngineInput::IsPress("UpMove") || GameEngineInput::IsPress("DownMove"))
+	
+	// Idle 상태일 경우 왼쪽, 오른쪽 키가 눌렸다면 Move 상태로 변경한다.  
+	if (GameEngineInput::IsPress("LeftMove") || GameEngineInput::IsPress("RightMove"))
 	{
 		ChangeState(PlayerState::MOVE);
-		return; // 보통 스테이트를 체인지하면 아래 코드를 실행되면 
+		return;
+	}
+
+	if (GameEngineInput::IsDown("Jump"))
+	{
+		ChangeState(PlayerState::JUMP);
+		return;
 	}
 }
 
@@ -146,36 +136,24 @@ void Player_Zero::MoveUpdate(float _Time)
 		return;
 	}
 
+	if (true == GameEngineInput::IsPress("Dash"))
+	{
+		// ChangeState(PlayerState::DASH);
+		// GetLevel()->SetCameraMove(float4::Up * _Time * MoveSpeed * 2.0f);
+	}
+
 	// 키가 눌렸다면 해당하는 움직임 수행
 	if (true == GameEngineInput::IsPress("LeftMove"))
 	{
-		//AnimationRender->ChangeAnimation(DirString + "Move");
-		SetMove(float4::Left * MoveSpeed * _Time);
-		GetLevel()->SetCameraMove(float4::Left * _Time * MoveSpeed);
+		MoveDir += float4::Left * MoveSpeed;
+		//GetLevel()->SetCameraMove(float4::Left * _Time * MoveSpeed);
 	}
-	else if (true == GameEngineInput::IsPress("RightMove"))
+	
+	if (true == GameEngineInput::IsPress("RightMove"))
 	{
-		//AnimationRender->ChangeAnimation(DirString +"Move");
-		SetMove(float4::Right * MoveSpeed * _Time);
-		GetLevel()->SetCameraMove(float4::Right * _Time * MoveSpeed);
+		MoveDir += float4::Right * MoveSpeed;
+		//GetLevel()->SetCameraMove(float4::Right * _Time * MoveSpeed);
 	}
-
-	if (true == GameEngineInput::IsPress("UpMove"))
-	{
-		SetMove(float4::Up * MoveSpeed * _Time);
-		GetLevel()->SetCameraMove(float4::Up * _Time * MoveSpeed);
-	}
-
-	else if (true == GameEngineInput::IsPress("DownMove"))
-	{
-		//AnimationRender->ChangeAnimation(DirString +"Move");
-		SetMove(float4::Down * MoveSpeed * _Time);
-		GetLevel()->SetCameraMove(float4::Down * _Time * MoveSpeed);
-	}
-
-	// 왼쪽무브를 먼저체크하기 때문에 오른쪽키가 눌린상태에서는 왼쪽키를 눌러도 
-	// if 문이 동작하여 반대로 이동 + 애니메이션이  출력되지만 왼쪽키가 눌린상태에서는
-	// 오른쪽키를 눌러도 왼쪽방향체크가 먼저되어 아래 코드가 동작하지 않는 것 같다. 
 
 	DirCheck("Move");
 }
@@ -198,30 +176,51 @@ void Player_Zero::NormalAttackEnd()
 
 void Player_Zero::JumpStart()
 {
+	Jump = true;
+	PrevPos = GetPos();
+	DirCheck("Move");
 }
 
 void Player_Zero::JumpUpdate(float _Time)
 {
+	AnimationRender->ChangeAnimation(DirString + "Dash");
+	
+	// 이전좌표값을 구해놨고, 점프했을 때 의 y축 좌표랑 
+	// 그전 y 축 좌표를 뺐을때 의 값이 200이상 차이나면
+	// 이전 좌표는 초기화, 낙하상태로만듬 , 200은 점프높이. 
+	/*if (200 <= abs(PrevPos.y - GetPos().y))
+	{
+		PrevPos = float4::Zero;
+		ChangeState(PlayerState::IDLE);
+		return;
+	}*/
+
+	//MoveDir += float4::Up* MoveSpeed * JumpPower * _Time;
+		
 }
 
 void Player_Zero::JumpEnd()
 {
+	
 }
 
-void Player_Zero::JumpAttackStart()
+void Player_Zero::FallStart()
 {
+	DirCheck("Move");
 }
 
-void Player_Zero::JumpAttackUpdate(float _Time)
+void Player_Zero::FallUpdate(float _DeltaTime)
 {
+	// 낙하업데이트, 
 }
 
-void Player_Zero::JumpAttackEnd()
+void Player_Zero::FallEnd()
 {
 }
 
 void Player_Zero::DashStart()
 {
+	DirCheck("Dash");
 }
 
 void Player_Zero::DashUpdate(float _Time)
@@ -232,14 +231,3 @@ void Player_Zero::DashEnd()
 {
 }
 
-void Player_Zero::DashAttackStart()
-{
-}
-
-void Player_Zero::DashAttackUpdate(float _Time)
-{
-}
-
-void Player_Zero::DashAttackEnd()
-{
-}
