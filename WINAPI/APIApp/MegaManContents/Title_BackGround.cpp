@@ -16,9 +16,9 @@ Title_BackGround::~Title_BackGround()
 
 void Title_BackGround::Start()
 {
-	GameEngineRender* Render = CreateRender("Main_Title.bmp", RENDERORDER::BACKGROUND);
-	Render->SetScale(GameEngineWindow::GetScreenSize());
-	Render->SetPosition(GameEngineWindow::GetScreenSize().half());
+	m_Render = CreateRender("Main_Title.bmp", RENDERORDER::BACKGROUND);
+	m_Render->SetScale(GameEngineWindow::GetScreenSize());
+	m_Render->SetPosition(GameEngineWindow::GetScreenSize().half());
 }
 
 void Title_BackGround::Update(float _DeltaTime)

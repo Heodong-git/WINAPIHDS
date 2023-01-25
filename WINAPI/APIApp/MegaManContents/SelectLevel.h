@@ -26,7 +26,6 @@ protected:
 	void LevelChangeEnd(GameEngineLevel* _NextLevel) override {}
 	void LevelChangeStart(GameEngineLevel* _PrevLevel) override {}
 
-	// 음.. 캐릭터가 선택되었다는걸 어떤식으로 표현해야할까. 
 private:
 };
 

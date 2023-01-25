@@ -154,7 +154,6 @@
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="EndTitleLevel.h" />
     <ClInclude Include="Select_BackGround.h" />
-    <ClInclude Include="SigmaStage_BackGround.h" />
     <ClInclude Include="MegaManCore.h" />
     <ClInclude Include="Monster_MetalT.h" />
     <ClInclude Include="Monster_NightMareVirus.h" />
@@ -166,6 +165,7 @@
     <ClInclude Include="TitleLevel.h" />
     <ClInclude Include="Title_BackGround.h" />
     <ClInclude Include="UI_BottomText_PlayerSelect.h" />
+    <ClInclude Include="UI_MainSelectUI.h" />
     <ClInclude Include="UI_PlayerHpBar.h" />
     <ClInclude Include="UI_SelectBar.h" />
     <ClInclude Include="UI_SelectX.h" />
@@ -176,7 +176,6 @@
     <ClCompile Include="EndTitleLevel.cpp" />
     <ClCompile Include="Player_Zero_State.cpp" />
     <ClCompile Include="Select_BackGround.cpp" />
-    <ClCompile Include="SigmaStage_BackGround.cpp" />
     <ClCompile Include="MegaManCore.cpp" />
     <ClCompile Include="Monster_MetalT.cpp" />
     <ClCompile Include="Monster_NightMareVirus.cpp" />
@@ -188,6 +187,7 @@
     <ClCompile Include="TitleLevel.cpp" />
     <ClCompile Include="Title_BackGround.cpp" />
     <ClCompile Include="UI_BottomText_PlayerSelect.cpp" />
+    <ClCompile Include="UI_MainSelectUI.cpp" />
     <ClCompile Include="UI_PlayerHpBar.cpp" />
     <ClCompile Include="UI_SelectBar.cpp" />
     <ClCompile Include="UI_SelectX.cpp" />

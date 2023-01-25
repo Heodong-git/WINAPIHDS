@@ -32,9 +32,6 @@
     <ClInclude Include="UI_PlayerHpBar.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="SigmaStage_BackGround.h">
-      <Filter>BackGround</Filter>
-    </ClInclude>
     <ClInclude Include="Title_BackGround.h">
       <Filter>BackGround</Filter>
     </ClInclude>
@@ -58,6 +55,9 @@
     </ClInclude>
     <ClInclude Include="Map_SpacePort.h">
       <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_MainSelectUI.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -91,9 +91,6 @@
     <ClCompile Include="UI_PlayerHpBar.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="SigmaStage_BackGround.cpp">
-      <Filter>BackGround</Filter>
-    </ClCompile>
     <ClCompile Include="Title_BackGround.cpp">
       <Filter>BackGround</Filter>
     </ClCompile>
@@ -120,6 +117,9 @@
     </ClCompile>
     <ClCompile Include="Map_SpacePort.cpp">
       <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_MainSelectUI.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

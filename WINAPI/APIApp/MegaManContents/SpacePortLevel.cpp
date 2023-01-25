@@ -10,7 +10,6 @@
 #include "Monster_Sigma.h"
 #include "Monster_NightMareVirus.h"
 #include "Monster_MetalT.h"
-#include "SigmaStage_BackGround.h"
 #include "UI_PlayerHpBar.h"
 #include "Map_SpacePort.h"
 
@@ -60,8 +59,8 @@ void SpacePortLevel::Loading()
 	}
 	{
 		// 스페이스포트 맵
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort.bmp"));
-		GameEngineImage* ColImage = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("ColMap_SpacePort.bmp"));
+		/*GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort.bmp"));
+		GameEngineImage* ColImage = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("ColMap_SpacePort.bmp"));*/
 	}
 
 	// 해당 레벨에서 사용할 액터 생성

@@ -20,5 +20,6 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
+	GameEngineRender* m_Render = nullptr;
 };
 

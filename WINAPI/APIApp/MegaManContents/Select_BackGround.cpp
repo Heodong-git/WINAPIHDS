@@ -15,9 +15,9 @@ Select_BackGround::~Select_BackGround()
 
 void Select_BackGround::Start()
 {
-	GameEngineRender* Render = CreateRender("select_background.bmp", RENDERORDER::BACKGROUND);
-	Render->SetScale(GameEngineWindow::GetScreenSize());
-	Render->SetPosition(GameEngineWindow::GetScreenSize().half());
+	m_Render = CreateRender("select_background.bmp", RENDERORDER::BACKGROUND);
+	m_Render->SetScale(GameEngineWindow::GetScreenSize());
+	m_Render->SetPosition(GameEngineWindow::GetScreenSize().half());
 }
 
 void Select_BackGround::Update(float _DeltaTime)
