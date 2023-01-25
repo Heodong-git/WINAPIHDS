@@ -37,6 +37,15 @@ void UI_MainSelectUI::Start()
 	m_SelectBar->ChangeAnimation("select_zero");
 
 	// X, Zero ÅØ½ºÆ®
+	m_TextX = CreateRender(RENDERORDER::UI_Text);
+	m_TextX->SetImage("select_UI_Text_X.bmp");
+	m_TextX->SetScale(m_TextX->GetImage()->GetImageScale() * 2.0f);
+	m_TextX->SetPosition(ScreenSizeHalf + float4{ -250.f , 260.0f });
+
+	m_TextZero = CreateRender(RENDERORDER::UI_Text);
+	m_TextZero->SetImage("select_UI_Text_Zero.bmp");
+	m_TextZero->SetScale(m_TextZero->GetImage()->GetImageScale() * 2.0f);
+	m_TextZero->SetPosition(ScreenSizeHalf + float4{ 350.f , 270.0f });
 }
 
 void UI_MainSelectUI::Update(float _DeltaTime)
