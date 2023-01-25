@@ -13,7 +13,7 @@ float Player_Zero::Time = 0.0f;
 Player_Zero::Player_Zero() :
 	MoveSpeed(400.f),
 	AnimationRender(nullptr),
-	Gravity(false),
+	Gravity(true),
 	Jump(false)
 {
 }
@@ -68,13 +68,10 @@ void Player_Zero::Start()
 		GameEngineInput::CreateKey("Jump", 'C');
 	}
 
-	// 플레이어 크기 165 , 200 
-	SetPos({GameEngineWindow::GetScreenSize().half().x , 
-		   (GameEngineWindow::GetScreenSize().half().y) + (GameEngineWindow::GetScreenSize().half().y / 2)});
 	
 	// 렌더러생성, 생성시 zorder 값 입력 
 	AnimationRender = CreateRender(RENDERORDER::PLAYER);
-	AnimationRender->SetScale({ 640, 640 });
+	AnimationRender->SetScale({ 640, 480 * 1.2f });
 	// 구조체를 넣어주는데 원하는 변수의 값만 수정하여 넣어줄 수 있다.
 	// 단, 순서는 지켜서 넣어주어야 빨간줄이 그이지 않는다. 
 
@@ -120,11 +117,11 @@ void Player_Zero::Movecalculation(float _DeltaTime)
 
 	if (false == GameEngineInput::IsPress("LeftMove") && false == GameEngineInput::IsPress("RightMove"))
 	{
-		MoveDir.x *= 0.001f;
+		MoveDir.x *= 0.01f;
 	}
 
 	// 임시로 배경으로 
-	GameEngineImage* ColImage = GameEngineResources::GetInst().ImageFind("SigmaStage_BackGround.BMP");
+	GameEngineImage* ColImage = GameEngineResources::GetInst().ImageFind("ColMap_Spaceport.BMP");
 	if (nullptr == ColImage)
 	{
 		MsgAssert("충돌용 맵 이미지가 없습니다.");
@@ -138,12 +135,12 @@ void Player_Zero::Movecalculation(float _DeltaTime)
 	if (RGB(255, 0, 255) == ColImage->GetPixelColor(NextPos, RGB(255, 0, 255)))
 	{
 		Check = false;
-		// MoveDir = float4::Zero;
+		MoveDir = float4::Zero;
 	}
 
 	
 	// 잠깐주석 
-	/*if (false == Check)
+	if (false == Check)
 	{
 		while (true)
 		{
@@ -158,7 +155,7 @@ void Player_Zero::Movecalculation(float _DeltaTime)
 
 			break;
 		}
-	}*/
+	}
 
 	 SetMove(MoveDir *_DeltaTime);
 	 // 일단 임시로 카메라무브 적용
@@ -179,14 +176,14 @@ void Player_Zero::Update(float _DeltaTime)
 void Player_Zero::Render(float _DeltaTime)
 {
 	// 디버깅용
-	//HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
-	//float4 ActorPos = GetPos() - GetLevel()->GetCameraPos();
+	HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
+	float4 ActorPos = GetPos() - GetLevel()->GetCameraPos();
 
-	//Rectangle(DoubleDC,
-	//	ActorPos.ix() - 5,
-	//	ActorPos.iy() - 5,
-	//	ActorPos.ix() + 5,
-	//	ActorPos.iy() + 5
-	//);
+	Rectangle(DoubleDC,
+		ActorPos.ix() - 5,
+		ActorPos.iy() - 5,
+		ActorPos.ix() + 5,
+		ActorPos.iy() + 5
+	);
 
 }

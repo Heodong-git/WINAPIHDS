@@ -106,11 +106,6 @@ void Player_Zero::IdleUpdate(float _Time)
 		return;
 	}
 
-	if (GameEngineInput::IsDown("Jump"))
-	{
-		ChangeState(PlayerState::JUMP);
-		return;
-	}
 }
 
 void Player_Zero::IdleEnd()
@@ -145,12 +140,20 @@ void Player_Zero::MoveUpdate(float _Time)
 	// 키가 눌렸다면 해당하는 움직임 수행
 	if (true == GameEngineInput::IsPress("LeftMove"))
 	{
+		if (true == GameEngineInput::IsPress("LeftMove") && true == GameEngineInput::IsPress("RightMove"))
+		{
+			return;
+		}
 		MoveDir += float4::Left * MoveSpeed;
 		//GetLevel()->SetCameraMove(float4::Left * _Time * MoveSpeed);
 	}
 	
 	if (true == GameEngineInput::IsPress("RightMove"))
 	{
+		if (true == GameEngineInput::IsPress("LeftMove") && true == GameEngineInput::IsPress("RightMove"))
+		{
+			return;
+		}
 		MoveDir += float4::Right * MoveSpeed;
 		//GetLevel()->SetCameraMove(float4::Right * _Time * MoveSpeed);
 	}
@@ -176,26 +179,10 @@ void Player_Zero::NormalAttackEnd()
 
 void Player_Zero::JumpStart()
 {
-	Jump = true;
-	PrevPos = GetPos();
-	DirCheck("Move");
 }
 
 void Player_Zero::JumpUpdate(float _Time)
 {
-	AnimationRender->ChangeAnimation(DirString + "Dash");
-	
-	// 이전좌표값을 구해놨고, 점프했을 때 의 y축 좌표랑 
-	// 그전 y 축 좌표를 뺐을때 의 값이 200이상 차이나면
-	// 이전 좌표는 초기화, 낙하상태로만듬 , 200은 점프높이. 
-	/*if (200 <= abs(PrevPos.y - GetPos().y))
-	{
-		PrevPos = float4::Zero;
-		ChangeState(PlayerState::IDLE);
-		return;
-	}*/
-
-	//MoveDir += float4::Up* MoveSpeed * JumpPower * _Time;
 		
 }
 
@@ -206,12 +193,10 @@ void Player_Zero::JumpEnd()
 
 void Player_Zero::FallStart()
 {
-	DirCheck("Move");
 }
 
 void Player_Zero::FallUpdate(float _DeltaTime)
 {
-	// 낙하업데이트, 
 }
 
 void Player_Zero::FallEnd()
@@ -220,7 +205,6 @@ void Player_Zero::FallEnd()
 
 void Player_Zero::DashStart()
 {
-	DirCheck("Dash");
 }
 
 void Player_Zero::DashUpdate(float _Time)

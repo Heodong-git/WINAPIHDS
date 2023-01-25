@@ -2,6 +2,7 @@
 #include <GameEngineBase/GameEngineDirectory.h>
 #include <GameEngineBase/GameEngineTime.h>
 #include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineResources.h>
 #include <GameEngineCore/GameEngineCore.h>
 
@@ -25,7 +26,7 @@ void SpacePortLevel::Loading()
 {
 	// 이미지로딩
 	GameEngineDirectory Directory;
-	
+
 	// 1. 상위폴더에 해당 디렉터리가 있는지 확인
 	Directory.MoveParentToDirectory("ContentsResources");
 	// 2. 디렉터리가 있다면 경로를 설정해준다.  
@@ -36,12 +37,12 @@ void SpacePortLevel::Loading()
 	{
 		// 오른쪽 아이들 + 걷기
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_idle_walk_right.bmp"));
-		Image->Cut( 8 , 3 );
+		Image->Cut(8, 3);
 	}
 	{
 		// 왼쪽 아이들 + 걷기
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_idle_walk_left.bmp"));
-		Image->Cut( 8, 3 );
+		Image->Cut(8, 3);
 	}
 	{
 		// 오른쪽 대쉬 + 앉은상태 공격 
@@ -59,14 +60,16 @@ void SpacePortLevel::Loading()
 	}
 	{
 		// 스페이스포트 맵
-		// GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort.bmp"));
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort.bmp"));
+		GameEngineImage* ColImage = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("ColMap_SpacePort.bmp"));
 	}
-	
+
 	// 해당 레벨에서 사용할 액터 생성
 	// 액터 생성시에 인자로 넣어주는 값은 업데이트,렌더링 순서이며 값이 높을 수록 나중에 연산,렌더링이 된다. 
 	Player = CreateActor<Player_Zero>();
-	CreateActor<SigmaStage_BackGround>();
-	//CreateActor<Map_SpacePort>();
+	Player->SetPos({ 400, 7000 });
+	//CreateActor<SigmaStage_BackGround>();
+	CreateActor<Map_SpacePort>();
 	//CreateActor<SigmaStage_BackGround>();
 
 	if (false == GameEngineInput::IsKey("CameraLeftMove"))
@@ -76,6 +79,8 @@ void SpacePortLevel::Loading()
 		GameEngineInput::CreateKey("CameraDownMove", 'S');
 		GameEngineInput::CreateKey("CameraUpMove", 'W');
 	}
+
+	SetCameraMove(GameEngineWindow::GetScreenSize().half() + float4{ -580 , 5690 });
 }
 
 void SpacePortLevel::Update(float _DeltaTime)

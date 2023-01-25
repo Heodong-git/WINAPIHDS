@@ -34,6 +34,16 @@ void GameEngineRender::SetOrder(int _Order)
 	Owner->GetLevel()->PushRender(this);
 }
 
+void GameEngineRender::SetScaleToImage()
+{
+	if (nullptr == Image)
+	{
+		MsgAssert("이미지를 세팅하지 않았는데 이미지의 크기로 변경하려고 했습니다.");
+	}
+
+	Scale = Image->GetImageScale();
+}
+
 // 프레임값 세팅
 void GameEngineRender::SetFrame(int _Frame)
 {

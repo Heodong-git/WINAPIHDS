@@ -13,7 +13,6 @@ Select_BackGround::~Select_BackGround()
 {
 }
 
-// 얘를 출력해줄 녀석을 만들어야함 
 void Select_BackGround::Start()
 {
 	GameEngineRender* Render = CreateRender("select_background.bmp", RENDERORDER::BACKGROUND);

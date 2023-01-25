@@ -14,6 +14,7 @@ enum class PlayerState
 	DASHATTACK,
 };
 
+// 디버깅용 키 다시 만들어야함. 
 class Player_Zero : public GameEngineActor
 {
 public:
@@ -41,7 +42,7 @@ private:
 	// 플레이어의 기본상태는 아이들로 초기화
 	PlayerState  StateValue = PlayerState::MOVE;
 	GameEngineRender* AnimationRender = nullptr;
-	bool		 Gravity = false;
+	bool		 Gravity = true;
 	bool		 Jump = false;
 	float		 JumpPower = 5.f;
 	float4		PrevPos = float4::Zero;
