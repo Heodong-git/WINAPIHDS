@@ -49,10 +49,20 @@ void SelectLevel::Loading()
 		Image->Cut(3, 1);
 	}
 	{
+		// select bar X 
+		GameEngineImage* Imgae = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_select_bar_x.bmp"));
+		Imgae->Cut(3, 1);
+	}
+	{
+		// select text X 
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_ui_text_X.bmp"));
 	}
 	{
+		// select text zero 
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_ui_text_zero.bmp"));
+	}
+	{
+		GameEngineImage* Imgae = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_ui_text_playerselect.bmp"));
 	}
 	
 	// UI X 
