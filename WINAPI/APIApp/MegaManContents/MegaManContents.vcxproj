@@ -164,13 +164,8 @@
     <ClInclude Include="Map_SpacePort.h" />
     <ClInclude Include="TitleLevel.h" />
     <ClInclude Include="Title_BackGround.h" />
-    <ClInclude Include="UI_BottomText_PlayerSelect.h" />
     <ClInclude Include="UI_MainSelectUI.h" />
     <ClInclude Include="UI_PlayerHpBar.h" />
-    <ClInclude Include="UI_SelectBar.h" />
-    <ClInclude Include="UI_SelectX.h" />
-    <ClInclude Include="UI_SelectZero.h" />
-    <ClInclude Include="UI_TopText_PlayerSelect.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndTitleLevel.cpp" />
@@ -186,13 +181,8 @@
     <ClCompile Include="Map_SpacePort.cpp" />
     <ClCompile Include="TitleLevel.cpp" />
     <ClCompile Include="Title_BackGround.cpp" />
-    <ClCompile Include="UI_BottomText_PlayerSelect.cpp" />
     <ClCompile Include="UI_MainSelectUI.cpp" />
     <ClCompile Include="UI_PlayerHpBar.cpp" />
-    <ClCompile Include="UI_SelectBar.cpp" />
-    <ClCompile Include="UI_SelectX.cpp" />
-    <ClCompile Include="UI_SelectZero.cpp" />
-    <ClCompile Include="UI_TopText_PlayerSelect.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

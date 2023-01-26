@@ -50,8 +50,8 @@ void SelectLevel::Loading()
 	}
 	{
 		// select bar X 
-		GameEngineImage* Imgae = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_select_bar_x.bmp"));
-		Imgae->Cut(3, 1);
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_select_bar_x.bmp"));
+		Image->Cut(3, 1);
 	}
 	{
 		// select text X 
@@ -62,15 +62,26 @@ void SelectLevel::Loading()
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_ui_text_zero.bmp"));
 	}
 	{
-		GameEngineImage* Imgae = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_ui_text_playerselect.bmp"));
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_ui_text_playerselect.bmp"));
 	}
-	
-	// UI X 
-	/*Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_UI_zero.bmp"));
-	Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_UI_text_playerselect.bmp"));
-	Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_UI_text_x.bmp"));
-	Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_UI_text_zero.bmp"));
-	Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_select_bar.bmp"));*/
+	{
+		// left idle 
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_player_idle_walk_left.bmp"));
+		Image->Cut(8, 3);	
+	}
+	{
+		// attack right 
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_player_attack_right.bmp"));
+		Image->Cut(8, 4);
+	}
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_player_attack_left.bmp"));
+		Image->Cut(8, 4);
+	}
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_player_exit.bmp"));
+		Image->Cut(8, 2);
+	}
 
 	CreateActor<Select_BackGround>();
 	CreateActor<UI_MainSelectUI>();

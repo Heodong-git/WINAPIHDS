@@ -2,9 +2,14 @@
 #include <GameEngineBase/GameEngineMath.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
+#include <GameEngineCore/GameEngineCore.h>
 #include <GameEngineCore/GameEngineRender.h>
 #include "ContentsEnum.h"
 
+
+// 이거까지하면 selectlevel은 일단 마무리
+// 엔터를 치면 백그라운드를 제외한 모든 UI가 사라지고
+// 제로의 출격 애니메이션이 재생되고나서 Play Stage로 이동한다. 
 
 float UI_MainSelectUI::m_Time = 0.0f;
 
@@ -67,11 +72,26 @@ void UI_MainSelectUI::Start()
 	m_BottomText->SetPosition(m_BottomTextStartPos);
 
 	// 제로 애니메이션
-	// m_ZeroAnimation = CreateRender(RENDERORDER::PLAYER);
+	// 픽셀편집할겸 임시로 설정
+	m_ZeroAnimation = CreateRender(RENDERORDER::PLAYER);
+	m_ZeroAnimation->CreateAnimation({ .AnimationName = "select_idle_left" , .ImageName = "select_player_idle_walk_left.bmp" ,
+									  .Start = 0, .End = 5 , .InterTime = 0.15f });
+	m_ZeroAnimation->CreateAnimation({ .AnimationName = "select_attack_left", .ImageName = "select_player_attack_left.bmp" ,
+									   .Start = 0, .End = 28, .InterTime = 0.035f});
+	m_ZeroAnimation->CreateAnimation({ .AnimationName = "select_attack_right", .ImageName = "select_player_attack_right.bmp" ,
+									   .Start = 0, .End = 28, .InterTime = 0.035f });
+	m_ZeroAnimation->CreateAnimation({ .AnimationName = "select_exit", .ImageName = "select_player_exit.bmp" ,
+									   .Start = 0, .End = 13, .InterTime = 0.09f, .Loop = false });
 
+	m_ZeroAnimation->SetScale({640.0f, 480.0f * 1.5f });
+	m_ZeroAnimation->SetPosition(m_ScreenSizeHalf + float4{ 550.0f, 300.0f });
+	m_ZeroAnimation->ChangeAnimation("select_idle_left");
+
+	
 	// 좌우 키생성
 	GameEngineInput::CreateKey("SelectMove_Right", VK_RIGHT);
 	GameEngineInput::CreateKey("SelectMove_Left", VK_LEFT);
+	GameEngineInput::CreateKey("Select_Enter", 13);
 }
 
 void UI_MainSelectUI::Update(float _DeltaTime)
@@ -87,15 +107,34 @@ void UI_MainSelectUI::Render(float _DeltaTime)
 
 void UI_MainSelectUI::SelectUpdate(float _DeltaTime)
 {
+	// 만약 엔터가눌렸다면 레벨체인지 + 메인 UI 의 필요한 애니메이션 동작
+	// 제로애니메이션 , 백그라운드 렌더를 제외한 모든녀석이 렌더링이 안되게하려면
+	// 데스상태로 만들어야하지 않나? 
+
+	if (true == GameEngineInput::IsDown("Select_Enter"))
+	{
+		// 제로 exit 애니메이션으로 변경, 마지막프레임까지 재생이 완료 되면
+		// 체인지레벨을 할 생각 이었으나.. 음.. 
+		m_ZeroAnimation->ChangeAnimation("Select_exit");
+
+		// exit 의 마지막 프레임은 13
+		if (13 == m_ZeroAnimation->GetFrame())
+		{
+			// GameEngineCore::GetInst()->ChangeLevel("SpacePortLevel");
+		}
+	}
+
 	if (true == GameEngineInput::IsDown("SelectMove_Right"))
 	{
 		if (ESelectPlayer::X == m_SelectPlayer)
 		{
 			m_SelectPlayer = ESelectPlayer::ZERO;
+			m_ZeroAnimation->ChangeAnimation("select_attack_left");
 		}
 		else if (ESelectPlayer::ZERO == m_SelectPlayer)
 		{
 			m_SelectPlayer = ESelectPlayer::X;
+			m_ZeroAnimation->ChangeAnimation("select_idle_left");
 		}
 	}
 
@@ -104,10 +143,12 @@ void UI_MainSelectUI::SelectUpdate(float _DeltaTime)
 		if (ESelectPlayer::ZERO == m_SelectPlayer)
 		{
 			m_SelectPlayer = ESelectPlayer::X;
+			m_ZeroAnimation->ChangeAnimation("select_idle_left");
 		}
 		else if (ESelectPlayer::X == m_SelectPlayer)
 		{
 			m_SelectPlayer = ESelectPlayer::ZERO;
+			m_ZeroAnimation->ChangeAnimation("select_attack_left");
 		}
 	}
 
