@@ -51,6 +51,13 @@ public:
 		Position = _Position;
 	}
 
+	// 포지션 무브, 임시 , 작동하면 만들어달라고 건의
+	// 렌더러의 무브 포지션, 셋포스를 해놓고 포지션을 그 셋포스를 따라가게 하면되지않나? 일단해봐 
+	inline void MovePosition(float4  _Position)
+	{
+		Position += _Position;
+	}
+
 	// 렌더러의 포지션을 받아온다.
 	inline float4 GetPosition()
 	{

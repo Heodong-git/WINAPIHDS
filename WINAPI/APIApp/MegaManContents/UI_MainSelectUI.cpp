@@ -5,6 +5,9 @@
 #include <GameEngineCore/GameEngineRender.h>
 #include "ContentsEnum.h"
 
+
+float UI_MainSelectUI::m_Time = 0.0f;
+
 UI_MainSelectUI::UI_MainSelectUI()
 {
 }
@@ -53,8 +56,18 @@ void UI_MainSelectUI::Start()
 	// Top 텍스트
 	m_TopText = CreateRender(RENDERORDER::UI_Text);
 	m_TopText->SetImage("select_UI_text_playerselect.bmp");
-	m_TopText->SetScaleToImage();
-	m_TopText->SetPosition(m_ScreenSizeHalf);
+	m_TopText->SetScale(m_TopText->GetImage()->GetImageScale() * 1.5f);
+	m_TopTextStartPos = { m_ScreenSize.x + 450.f , 100.0f };
+	m_TopText->SetPosition(m_TopTextStartPos);
+
+	m_BottomText = CreateRender(RENDERORDER::UI_Text);
+	m_BottomText->SetImage("select_UI_text_playerselect.bmp");
+	m_BottomText->SetScale(m_TopText->GetImage()->GetImageScale() * 1.5f);
+	m_BottomTextStartPos = { -450.0f , 850.0f };
+	m_BottomText->SetPosition(m_BottomTextStartPos);
+
+	// 제로 애니메이션
+	// m_ZeroAnimation = CreateRender(RENDERORDER::PLAYER);
 
 	// 좌우 키생성
 	GameEngineInput::CreateKey("SelectMove_Right", VK_RIGHT);
@@ -118,4 +131,22 @@ void UI_MainSelectUI::SelectUpdate(float _DeltaTime)
 
 void UI_MainSelectUI::TopBottomTextUpdate(float _DeltaTime)
 {
+	// 시간누적 
+	m_Time += _DeltaTime;
+
+	if (m_TextMoveTime <= m_Time)
+	{
+		m_TopText->SetPosition(m_TopTextStartPos);
+		m_BottomText->SetPosition(m_BottomTextStartPos);
+		m_Time = 0.0f;
+	}
+	
+	if (m_TextMoveTime >= m_Time)
+	{
+		m_TopText->MovePosition(float4::Left * _DeltaTime * m_TextMoveSpeed);
+		m_BottomText->MovePosition(float4::Right * _DeltaTime * m_TextMoveSpeed);
+	}
+
+	
+	
 }

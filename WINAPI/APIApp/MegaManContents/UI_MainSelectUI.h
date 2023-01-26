@@ -29,6 +29,13 @@ private:
 	float4 m_ScreenSize = float4::Zero;
 	float4 m_ScreenSizeHalf = float4::Zero;
 	ESelectPlayer m_SelectPlayer = ESelectPlayer::X;
+
+	float4 m_TopTextStartPos = float4::Zero;
+	float4 m_BottomTextStartPos = float4::Zero;
+
+	static float m_Time;
+	float		 m_TextMoveTime = 7.5f; 
+	float		 m_TextMoveSpeed = 300.0f;
 	
 	// 생성만하고 안가지고 있어도 될 것 같은 친구들
 	GameEngineRender* m_SelectX = nullptr;
@@ -40,6 +47,7 @@ private:
 	GameEngineRender* m_SelectBar = nullptr;
 	GameEngineRender* m_TopText = nullptr;
 	GameEngineRender* m_BottomText = nullptr;
+	GameEngineRender* m_ZeroAnimation = nullptr;
 
 	void SelectUpdate(float _DeltaTime);
 	void TopBottomTextUpdate(float _DeltaTime);
