@@ -111,17 +111,18 @@ void UI_MainSelectUI::SelectUpdate(float _DeltaTime)
 	// 제로애니메이션 , 백그라운드 렌더를 제외한 모든녀석이 렌더링이 안되게하려면
 	// 데스상태로 만들어야하지 않나? 
 
+	// exit 의 마지막 프레임은 13
+	if (13 == m_ZeroAnimation->GetFrame())
+	{
+		// GameEngineCore::GetInst()->ChangeLevel("SpacePortLevel");
+	}
+
+
 	if (true == GameEngineInput::IsDown("Select_Enter"))
 	{
 		// 제로 exit 애니메이션으로 변경, 마지막프레임까지 재생이 완료 되면
 		// 체인지레벨을 할 생각 이었으나.. 음.. 
 		m_ZeroAnimation->ChangeAnimation("Select_exit");
-
-		// exit 의 마지막 프레임은 13
-		if (13 == m_ZeroAnimation->GetFrame())
-		{
-			// GameEngineCore::GetInst()->ChangeLevel("SpacePortLevel");
-		}
 	}
 
 	if (true == GameEngineInput::IsDown("SelectMove_Right"))
@@ -187,7 +188,4 @@ void UI_MainSelectUI::TopBottomTextUpdate(float _DeltaTime)
 		m_TopText->MovePosition(float4::Left * _DeltaTime * m_TextMoveSpeed);
 		m_BottomText->MovePosition(float4::Right * _DeltaTime * m_TextMoveSpeed);
 	}
-
-	
-	
 }

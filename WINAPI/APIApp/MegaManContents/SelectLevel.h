@@ -16,8 +16,6 @@ public:
 	SelectLevel& operator=(const SelectLevel& _Other) = delete;
 	SelectLevel& operator=(SelectLevel&& _Other) noexcept = delete;
 
-	bool SelectX = false;
-	bool SelectZero = false;
 
 protected:
 	virtual void Loading() override;
@@ -27,5 +25,7 @@ protected:
 	void LevelChangeStart(GameEngineLevel* _PrevLevel) override {}
 
 private:
+	bool m_ChangeLevel = false;
+	float m_ChangeTime = 0.0f;
 };
 

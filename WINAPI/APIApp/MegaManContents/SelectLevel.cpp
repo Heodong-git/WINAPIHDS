@@ -75,28 +75,35 @@ void SelectLevel::Loading()
 		Image->Cut(8, 4);
 	}
 	{
+		// attack left
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_player_attack_left.bmp"));
 		Image->Cut(8, 4);
 	}
 	{
+		// exit 
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_player_exit.bmp"));
 		Image->Cut(8, 2);
 	}
 
 	CreateActor<Select_BackGround>();
 	CreateActor<UI_MainSelectUI>();
-	/*CreateActor<UI_SelectX>();
-	CreateActor<UI_SelectZero>();
-	CreateActor<UI_TopText_PlayerSelect>();
-	CreateActor<UI_BottomText_PlayerSelect>();
-	CreateActor<UI_SelectBar>();*/
 }
 
 void SelectLevel::Update(float _DeltaTime)
 {
-	// Àá±ñÁÖ¼®
-	/*if (true == GameEngineInput::IsDown("Change_SpacePortLevel"))
+	if (true == m_ChangeLevel)
 	{
-		GameEngineCore::GetInst()->ChangeLevel("SpacePortLevel");
-	}*/
+		m_ChangeTime += _DeltaTime;
+	}
+
+	if (1.6f <= m_ChangeTime)
+	{
+		GameEngineCore::GetInst()->ChangeLevel("TitleLevel");
+		m_ChangeTime = 0.0f;
+	}
+
+	if (true == GameEngineInput::IsDown("Change_SpacePortLevel"))
+	{
+		m_ChangeLevel = true;
+	}
 }
