@@ -3,6 +3,8 @@
 
 // Title Level 에서 Game Start 를 선택했다면
 // 해당 Level 로 넘어와서 캐릭터를 선택하는 Level 
+
+class UI_MainSelectUI;
 class SelectLevel : public GameEngineLevel
 {
 public:
@@ -27,5 +29,7 @@ protected:
 private:
 	bool m_ChangeLevel = false;
 	float m_ChangeTime = 0.0f;
+	UI_MainSelectUI* m_MainSelectUI = nullptr;
+
 };
 

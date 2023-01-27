@@ -76,6 +76,9 @@ void Player_Zero::Start()
 	// 단, 순서는 지켜서 넣어주어야 빨간줄이 그이지 않는다. 
 
 	// 우측 
+	AnimationRender->CreateAnimation({ .AnimationName = "right_recall" , .ImageName = "player_recall.bmp",
+									   .Start = 0 , .End = 18 , .InterTime = 0.07f });
+
 	AnimationRender->CreateAnimation({ .AnimationName = "right_idle",  .ImageName = "player_idle_walk_right.bmp", 
 									   .Start = 0, .End = 5 , .InterTime = 0.2f });
 	AnimationRender->CreateAnimation({ .AnimationName = "right_move_start",  .ImageName = "player_idle_walk_right.bmp",
@@ -84,6 +87,7 @@ void Player_Zero::Start()
 									   .Start = 8, .End = 21 , .InterTime = 0.05f });
 	AnimationRender->CreateAnimation({ .AnimationName = "right_dash",  .ImageName = "player_doublejump_dash_sitattack_right.bmp",
 									   .Start = 11, .End = 23 , .InterTime = 0.05f , .Loop = false  });
+
 
 	// 좌측
 	AnimationRender->CreateAnimation({ .AnimationName = "left_idle",  .ImageName = "player_idle_walk_left.bmp",
@@ -94,7 +98,9 @@ void Player_Zero::Start()
 									   .Start = 8, .End = 21 , .InterTime = 0.05f });
 	AnimationRender->CreateAnimation({ .AnimationName = "left_dash",  .ImageName = "player_doublejump_dash_sitattack_left.bmp",
 									   .Start = 11, .End = 23 , .InterTime = 0.05f , .Loop = false });
-	ChangeState(PlayerState::IDLE);
+
+	// 확인해야함 여기서 리콜이면 
+	ChangeState(PlayerState::RECALL);
 }
 
 void Player_Zero::Movecalculation(float _DeltaTime)
@@ -161,6 +167,7 @@ void Player_Zero::Movecalculation(float _DeltaTime)
 	 // 일단 임시로 카메라무브 적용
 	 GetLevel()->SetCameraMove(MoveDir * _DeltaTime);
 }
+
 
 // 상수들은 다 내가 변수로 만들어서 사용해야함. 생각할 것. 
 void Player_Zero::Update(float _DeltaTime)

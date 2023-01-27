@@ -81,7 +81,7 @@ void UI_MainSelectUI::Start()
 	m_ZeroAnimation->CreateAnimation({ .AnimationName = "select_attack_right", .ImageName = "select_player_attack_right.bmp" ,
 									   .Start = 0, .End = 28, .InterTime = 0.035f });
 	m_ZeroAnimation->CreateAnimation({ .AnimationName = "select_exit", .ImageName = "select_player_exit.bmp" ,
-									   .Start = 0, .End = 13, .InterTime = 0.09f, .Loop = false });
+									   .Start = 0, .End = 13, .InterTime = 0.06f, .Loop = false });
 
 	m_ZeroAnimation->SetScale({640.0f, 480.0f * 1.5f });
 	m_ZeroAnimation->SetPosition(m_ScreenSizeHalf + float4{ 550.0f, 300.0f });
@@ -113,7 +113,10 @@ void UI_MainSelectUI::SelectUpdate(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("Select_Enter"))
 	{
-		m_ZeroAnimation->ChangeAnimation("Select_exit");
+		if (ESelectPlayer::ZERO == GetSelectPlayer())
+		{
+			m_ZeroAnimation->ChangeAnimation("Select_exit");
+		}
 	}
 
 	if (true == GameEngineInput::IsDown("SelectMove_Right"))

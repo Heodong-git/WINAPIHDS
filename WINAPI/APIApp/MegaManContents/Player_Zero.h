@@ -4,6 +4,7 @@
 
 enum class PlayerState
 {
+	RECALL,
 	IDLE,
 	MOVE,
 	JUMP,
@@ -45,7 +46,7 @@ private:
 	bool		 Gravity = true;
 	bool		 Jump = false;
 	float		 JumpPower = 5.f;
-	float4		PrevPos = float4::Zero;
+	float4		 PrevPos = float4::Zero;
 	
 
 	// 방향체크
@@ -58,7 +59,11 @@ private:
 
 	void Movecalculation(float _DeltaTime);
 
-	// 어떠한 상태가 있을 것인지생각해본다. 
+
+	void RecallStart();
+	void RecallUpdate(float _DeltaTime);
+	void RecallEnd();
+
 	void IdleStart();
 	void IdleUpdate(float _DeltaTime);
 	void IdleEnd();

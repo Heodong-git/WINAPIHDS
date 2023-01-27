@@ -9,6 +9,7 @@ enum class ESelectPlayer
 
 class UI_MainSelectUI : public GameEngineActor
 {
+	friend class SelectLevel;
 public:
 	// constrcuter destructer
 	UI_MainSelectUI();
@@ -24,6 +25,11 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override;
+
+	inline ESelectPlayer GetSelectPlayer()
+	{
+		return m_SelectPlayer;
+	}
 
 private:
 	float4 m_ScreenSize = float4::Zero;

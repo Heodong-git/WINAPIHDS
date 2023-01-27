@@ -34,6 +34,11 @@ void SpacePortLevel::Loading()
 	Directory.Move("SpacePortLevel");
 
 	{
+		// 리콜 
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_recall.bmp"));
+		Image->Cut(8, 3);
+	}
+	{
 		// 오른쪽 아이들 + 걷기
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_idle_walk_right.bmp"));
 		Image->Cut(8, 3);
@@ -54,22 +59,16 @@ void SpacePortLevel::Loading()
 		Image->Cut(8, 5);
 	}
 	{
-		// 백그라운드
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("sigmastage_background.bmp"));
-	}
-	{
 		// 스페이스포트 맵
-		/*GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort.bmp"));
-		GameEngineImage* ColImage = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("ColMap_SpacePort.bmp"));*/
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort.bmp"));
+		GameEngineImage* ColImage = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("ColMap_SpacePort.bmp"));
 	}
 
 	// 해당 레벨에서 사용할 액터 생성
 	// 액터 생성시에 인자로 넣어주는 값은 업데이트,렌더링 순서이며 값이 높을 수록 나중에 연산,렌더링이 된다. 
 	Player = CreateActor<Player_Zero>();
 	Player->SetPos({ 400, 7000 });
-	//CreateActor<SigmaStage_BackGround>();
 	CreateActor<Map_SpacePort>();
-	//CreateActor<SigmaStage_BackGround>();
 
 	// 카메라 키생성
 	if (false == GameEngineInput::IsKey("CameraLeftMove"))

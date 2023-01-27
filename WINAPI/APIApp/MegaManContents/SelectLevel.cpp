@@ -86,7 +86,7 @@ void SelectLevel::Loading()
 	}
 
 	CreateActor<Select_BackGround>();
-	CreateActor<UI_MainSelectUI>();
+	m_MainSelectUI = CreateActor<UI_MainSelectUI>();
 }
 
 void SelectLevel::Update(float _DeltaTime)
@@ -96,14 +96,18 @@ void SelectLevel::Update(float _DeltaTime)
 		m_ChangeTime += _DeltaTime;
 	}
 
-	if (1.6f <= m_ChangeTime)
+	if (1.15f <= m_ChangeTime)
 	{
 		GameEngineCore::GetInst()->ChangeLevel("SpacePortLevel");
 		m_ChangeTime = 0.0f;
 	}
 
+	// 엔터를 쳤을 때 현재 선택된 캐릭터가 엑스라면 시작하면 retrun 해야함 
 	if (true == GameEngineInput::IsDown("Change_SpacePortLevel"))
 	{
-		m_ChangeLevel = true;
+		if (ESelectPlayer::ZERO == m_MainSelectUI->GetSelectPlayer())
+		{
+			m_ChangeLevel = true;
+		}
 	}
 }

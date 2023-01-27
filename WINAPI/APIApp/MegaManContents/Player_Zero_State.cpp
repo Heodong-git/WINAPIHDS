@@ -22,6 +22,8 @@ void Player_Zero::ChangeState(PlayerState _State)
 
 	switch (NextState)
 	{
+	case PlayerState::RECALL:
+		RecallStart();
 	case PlayerState::IDLE:
 		IdleStart();
 		break;
@@ -44,6 +46,8 @@ void Player_Zero::ChangeState(PlayerState _State)
 	// 종료될 상태에 따라서 그 상태의 End 함수를 호출
 	switch (PrevState)
 	{
+	case PlayerState::RECALL:
+		RecallEnd();
 	case PlayerState::IDLE:
 		IdleEnd();
 		break;
@@ -70,6 +74,9 @@ void Player_Zero::UpdateState(float _Time)
 	// 현재 상태값에 따라서 분기처리
 	switch (StateValue)
 	{
+	case PlayerState::RECALL:
+		RecallUpdate(_Time);
+		break;
 	case PlayerState::IDLE:
 		IdleUpdate(_Time);
 		break;
@@ -91,6 +98,29 @@ void Player_Zero::UpdateState(float _Time)
 
 }
 
+void Player_Zero::RecallStart()
+{
+	DirCheck("recall");
+}
+
+void Player_Zero::RecallUpdate(float _DeltaTime)
+{
+	if (18 == AnimationRender->GetFrame())
+	{
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
+	// 리콜의 업데이트에서는 애니메이션 재생이 완료 됐다면 아이들 상태로 전환한다. 
+	// 재생완료 기준은 프레임을 확인하여 마지막 프레임에 도달했다면 , 아이들로 전환
+	// 어.. 근데 왜 리콜스타트에서 애니메이션 변경이 안되지 
+	AnimationRender->ChangeAnimation("right_recall");
+	
+}
+
+void Player_Zero::RecallEnd()
+{
+}
+
 void Player_Zero::IdleStart()
 {
 	DirCheck("Idle");
@@ -98,7 +128,7 @@ void Player_Zero::IdleStart()
 
 void Player_Zero::IdleUpdate(float _Time)
 {
-	
+
 	// Idle 상태일 경우 왼쪽, 오른쪽 키가 눌렸다면 Move 상태로 변경한다.  
 	if (GameEngineInput::IsPress("LeftMove") || GameEngineInput::IsPress("RightMove"))
 	{
@@ -160,6 +190,8 @@ void Player_Zero::MoveUpdate(float _Time)
 
 	DirCheck("Move");
 }
+
+
 
 void Player_Zero::MoveEnd()
 {
