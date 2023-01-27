@@ -71,6 +71,7 @@ void SpacePortLevel::Loading()
 	CreateActor<Map_SpacePort>();
 	//CreateActor<SigmaStage_BackGround>();
 
+	// 카메라 키생성
 	if (false == GameEngineInput::IsKey("CameraLeftMove"))
 	{
 		GameEngineInput::CreateKey("CameraLeftMove", 'A');
