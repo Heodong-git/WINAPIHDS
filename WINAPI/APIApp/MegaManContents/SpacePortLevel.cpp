@@ -59,6 +59,18 @@ void SpacePortLevel::Loading()
 		Image->Cut(8, 5);
 	}
 	{
+		// 우측 기본공격
+		// attack right 
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_normal_attack_right.bmp"));
+		Image->Cut(8, 4);
+	}
+	{
+		// 좌측 기본공격 
+		// attack left
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_normal_attack_left.bmp"));
+		Image->Cut(8, 4);
+	}
+	{
 		// 스페이스포트 맵
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort.bmp"));
 		GameEngineImage* ColImage = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("ColMap_SpacePort.bmp"));

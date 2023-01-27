@@ -84,6 +84,11 @@ void SelectLevel::Loading()
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_player_exit.bmp"));
 		Image->Cut(8, 2);
 	}
+	
+	// ---------------------- 여기부터는 Spaceport Level 에서 사용할 이미지 편집용 로드 ----------------------------------
+	{
+		// GameEngineImage* TestImage = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName(""))
+	}
 
 	CreateActor<Select_BackGround>();
 	m_MainSelectUI = CreateActor<UI_MainSelectUI>();

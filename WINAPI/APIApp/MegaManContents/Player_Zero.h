@@ -35,18 +35,18 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
-	static float Time;
-	float	     MoveSpeed = 400.0f;
+	static float m_Time;
+	float	     m_MoveSpeed = 700.0f;
 	// 기본 방향 - 오른쪽, 문자열로 저장
-	std::string  DirString = "Right_";
-	float4		 MoveDir = float4::Zero;
+	std::string  m_DirString = "Right_";
+	float4		 m_MoveDir = float4::Zero;
 	// 플레이어의 기본상태는 아이들로 초기화
-	PlayerState  StateValue = PlayerState::MOVE;
-	GameEngineRender* AnimationRender = nullptr;
-	bool		 Gravity = true;
-	bool		 Jump = false;
-	float		 JumpPower = 5.f;
-	float4		 PrevPos = float4::Zero;
+	PlayerState  m_StateValue = PlayerState::MOVE;
+	GameEngineRender* m_AnimationRender = nullptr;
+	bool		 m_Gravity = true;
+	bool		 m_Jump = false;
+	float		 m_JumpPower = 5.f;
+	float4		 m_PrevPos = float4::Zero;
 	
 
 	// 방향체크
@@ -59,7 +59,7 @@ private:
 
 	void Movecalculation(float _DeltaTime);
 
-
+	// 임시 완료 
 	void RecallStart();
 	void RecallUpdate(float _DeltaTime);
 	void RecallEnd();

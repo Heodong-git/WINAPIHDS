@@ -8,13 +8,9 @@
 
 #include "ContentsEnum.h"
 
-float Player_Zero::Time = 0.0f;
+float Player_Zero::m_Time = 0.0f;
 
-Player_Zero::Player_Zero() :
-	MoveSpeed(400.f),
-	AnimationRender(nullptr),
-	Gravity(true),
-	Jump(false)
+Player_Zero::Player_Zero()
 {
 }
 
@@ -26,28 +22,28 @@ Player_Zero::~Player_Zero()
 void Player_Zero::DirCheck(const std::string_view& _AnimationName)
 {
 	// 현재 방향문자열 값을 받아온다. 
-	std::string PrevDirString = DirString;
+	std::string PrevDirString = m_DirString;
 	// 해당하는 방향의 애니메이션으로 change
-	AnimationRender->ChangeAnimation(DirString + _AnimationName.data());
+	m_AnimationRender->ChangeAnimation(m_DirString + _AnimationName.data());
 
 	// 만약 leftmove 키가 눌렸다면
 	if (GameEngineInput::IsPress("LeftMove"))
 	{
 		// 현재 방향문자열을 left_ 로 변경한다. 
-		DirString = "Left_";
+		m_DirString = "Left_";
 	}
 	// 만약 rightmove 키가 눌렸다면 
 	else if (GameEngineInput::IsPress("RightMove"))
 	{
 		// 현재 방향문자열을 right_ 로 변경한다.
-		DirString = "Right_";
+		m_DirString = "Right_";
 	}
 
 	// 변경 이후 
 	// 만약 이전 방향문자열이 현재 방향문자열과 다르다면
-	if (PrevDirString != DirString)
+	if (PrevDirString != m_DirString)
 	{
-		AnimationRender->ChangeAnimation(DirString + _AnimationName.data());
+		m_AnimationRender->ChangeAnimation(m_DirString + _AnimationName.data());
 	}
 }
 
@@ -70,34 +66,43 @@ void Player_Zero::Start()
 
 	
 	// 렌더러생성, 생성시 zorder 값 입력 
-	AnimationRender = CreateRender(RENDERORDER::PLAYER);
-	AnimationRender->SetScale({ 640, 480 * 1.2f });
+	m_AnimationRender = CreateRender(RENDERORDER::PLAYER);
+	m_AnimationRender->SetScale({ 640, 480 * 1.2f });
 	// 구조체를 넣어주는데 원하는 변수의 값만 수정하여 넣어줄 수 있다.
 	// 단, 순서는 지켜서 넣어주어야 빨간줄이 그이지 않는다. 
 
 	// 우측 
-	AnimationRender->CreateAnimation({ .AnimationName = "right_recall" , .ImageName = "player_recall.bmp",
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_recall" , .ImageName = "player_recall.bmp",
 									   .Start = 0 , .End = 18 , .InterTime = 0.07f });
 
-	AnimationRender->CreateAnimation({ .AnimationName = "right_idle",  .ImageName = "player_idle_walk_right.bmp", 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_idle",  .ImageName = "player_idle_walk_right.bmp", 
 									   .Start = 0, .End = 5 , .InterTime = 0.15f });
-	AnimationRender->CreateAnimation({ .AnimationName = "right_move_start",  .ImageName = "player_idle_walk_right.bmp",
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_move_start",  .ImageName = "player_idle_walk_right.bmp",
 									   .Start = 6, .End = 7 , .InterTime = 0.5f });
-	AnimationRender->CreateAnimation({ .AnimationName = "right_move",  .ImageName = "player_idle_walk_right.bmp",
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_move",  .ImageName = "player_idle_walk_right.bmp",
 									   .Start = 8, .End = 21 , .InterTime = 0.05f });
-	AnimationRender->CreateAnimation({ .AnimationName = "right_dash",  .ImageName = "player_doublejump_dash_sitattack_right.bmp",
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_dash",  .ImageName = "player_doublejump_dash_sitattack_right.bmp",
 									   .Start = 11, .End = 23 , .InterTime = 0.05f , .Loop = false  });
+	// 오른쪽 기본공격
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_normal_attack", .ImageName = "player_normal_attack_right.bmp" ,
+									   .Start = 0, .End = 28, .InterTime = 0.035f , .Loop = false });
 
 
-	// 좌측
-	AnimationRender->CreateAnimation({ .AnimationName = "left_idle",  .ImageName = "player_idle_walk_left.bmp",
+	// 왼쪽 아이들
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_idle",  .ImageName = "player_idle_walk_left.bmp",
 									   .Start = 0, .End = 5 , .InterTime = 0.15f });
-	AnimationRender->CreateAnimation({ .AnimationName = "left_move_start",  .ImageName = "player_idle_walk_left.bmp",
+	// 왼쪽 무브시작
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_move_start",  .ImageName = "player_idle_walk_left.bmp",
 									   .Start = 6, .End = 7 , .InterTime = 0.5f });
-	AnimationRender->CreateAnimation({ .AnimationName = "left_move",  .ImageName = "player_idle_walk_left.bmp",
+	// 왼쪽 무브
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_move",  .ImageName = "player_idle_walk_left.bmp",
 									   .Start = 8, .End = 21 , .InterTime = 0.05f });
-	AnimationRender->CreateAnimation({ .AnimationName = "left_dash",  .ImageName = "player_doublejump_dash_sitattack_left.bmp",
+	// 왼쪽 대쉬 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_dash",  .ImageName = "player_doublejump_dash_sitattack_left.bmp",
 									   .Start = 11, .End = 23 , .InterTime = 0.05f , .Loop = false });
+	// 왼쪽 기본공격
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_normal_attack" , .ImageName = "player_normal_attack_left.bmp" ,
+									   .Start = 0, .End = 28 , .InterTime = 0.035f , .Loop = false });
 
 	// 확인해야함 여기서 리콜이면 
 	ChangeState(PlayerState::RECALL);
@@ -105,25 +110,28 @@ void Player_Zero::Start()
 
 void Player_Zero::Movecalculation(float _DeltaTime)
 {
-	if (true == Gravity)
+	if (true == m_Gravity)
 	{
-		MoveDir += float4::Down * MoveSpeed * _DeltaTime;
+		m_MoveDir += float4::Down * m_MoveSpeed * _DeltaTime;
 	}
 
-	if (400.0f <= abs(MoveDir.x))
+	// x축 이동값이 일정값을 넘어간다면 
+	if (400.0f <= abs(m_MoveDir.x))
 	{
-		if (0 > MoveDir.x)
+		// x 축 값이 0보다 작다면 왼쪽이동,,.. 아 여기 영상으로 다시 봐 ㅅㅂ 
+		if (0 > m_MoveDir.x)
 		{
-			MoveDir.x = -400.0f;
+			m_MoveDir.x = -400.0f;
 		}
-		else {
-			MoveDir.x = 400.0f;
+		else 
+		{
+			m_MoveDir.x = 400.0f;
 		}
 	}
 
 	if (false == GameEngineInput::IsPress("LeftMove") && false == GameEngineInput::IsPress("RightMove"))
 	{
-		MoveDir.x *= 0.01f;
+		m_MoveDir.x *= 0.01f;
 	}
 
 	// 임시로 배경으로 
@@ -136,12 +144,12 @@ void Player_Zero::Movecalculation(float _DeltaTime)
 
 	// 충돌체크 
 	bool Check = true;
-	float4 NextPos = GetPos() + MoveDir * _DeltaTime;
+	float4 NextPos = GetPos() + m_MoveDir * _DeltaTime;
 
 	if (RGB(255, 0, 255) == ColImage->GetPixelColor(NextPos, RGB(255, 0, 255)))
 	{
 		Check = false;
-		MoveDir = float4::Zero;
+		m_MoveDir = float4::Zero;
 	}
 
 	
@@ -150,9 +158,9 @@ void Player_Zero::Movecalculation(float _DeltaTime)
 	{
 		while (true)
 		{
-			MoveDir.y -= 1;
+			m_MoveDir.y -= 1;
 
-			float4 NextPos = GetPos() + MoveDir * _DeltaTime;
+			float4 NextPos = GetPos() + m_MoveDir * _DeltaTime;
 
 			if (RGB(255, 0, 255) == ColImage->GetPixelColor(NextPos, RGB(255, 0, 255)))
 			{
@@ -163,9 +171,9 @@ void Player_Zero::Movecalculation(float _DeltaTime)
 		}
 	}
 
-	 SetMove(MoveDir *_DeltaTime);
+	 SetMove(m_MoveDir *_DeltaTime);
 	 // 일단 임시로 카메라무브 적용
-	 GetLevel()->SetCameraMove(MoveDir * _DeltaTime);
+	 GetLevel()->SetCameraMove(m_MoveDir * _DeltaTime);
 }
 
 
