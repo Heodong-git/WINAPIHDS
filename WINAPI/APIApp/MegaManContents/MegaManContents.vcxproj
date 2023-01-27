@@ -166,6 +166,7 @@
     <ClInclude Include="Title_BackGround.h" />
     <ClInclude Include="UI_MainSelectUI.h" />
     <ClInclude Include="UI_PlayerHpBar.h" />
+    <ClInclude Include="UI_TitleUI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndTitleLevel.cpp" />
@@ -183,6 +184,7 @@
     <ClCompile Include="Title_BackGround.cpp" />
     <ClCompile Include="UI_MainSelectUI.cpp" />
     <ClCompile Include="UI_PlayerHpBar.cpp" />
+    <ClCompile Include="UI_TitleUI.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

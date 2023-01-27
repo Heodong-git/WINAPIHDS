@@ -44,6 +44,9 @@
     <ClInclude Include="UI_MainSelectUI.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="UI_TitleUI.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndTitleLevel.cpp">
@@ -89,6 +92,9 @@
       <Filter>Map</Filter>
     </ClCompile>
     <ClCompile Include="UI_MainSelectUI.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_TitleUI.cpp">
       <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>

@@ -3,6 +3,7 @@
 
 // 타이틀화면
 // 게임시작, 옵션, 종료 등을 선택할 수 있는 Level 
+class UI_TitleUI;
 class TitleLevel : public GameEngineLevel
 {
 public:
@@ -24,6 +25,6 @@ protected:
 	void LevelChangeStart(GameEngineLevel* _PrevLevel) override {}
 
 private:
-
+	UI_TitleUI* m_TitleUI = nullptr;
 };
 
