@@ -96,7 +96,7 @@ void SelectLevel::Update(float _DeltaTime)
 		m_ChangeTime += _DeltaTime;
 	}
 
-	if (1.15f <= m_ChangeTime)
+	if (1.03f <= m_ChangeTime)
 	{
 		GameEngineCore::GetInst()->ChangeLevel("SpacePortLevel");
 		m_ChangeTime = 0.0f;

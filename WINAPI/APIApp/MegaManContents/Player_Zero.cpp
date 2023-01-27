@@ -80,7 +80,7 @@ void Player_Zero::Start()
 									   .Start = 0 , .End = 18 , .InterTime = 0.07f });
 
 	AnimationRender->CreateAnimation({ .AnimationName = "right_idle",  .ImageName = "player_idle_walk_right.bmp", 
-									   .Start = 0, .End = 5 , .InterTime = 0.2f });
+									   .Start = 0, .End = 5 , .InterTime = 0.15f });
 	AnimationRender->CreateAnimation({ .AnimationName = "right_move_start",  .ImageName = "player_idle_walk_right.bmp",
 									   .Start = 6, .End = 7 , .InterTime = 0.5f });
 	AnimationRender->CreateAnimation({ .AnimationName = "right_move",  .ImageName = "player_idle_walk_right.bmp",
@@ -91,7 +91,7 @@ void Player_Zero::Start()
 
 	// ÁÂÃø
 	AnimationRender->CreateAnimation({ .AnimationName = "left_idle",  .ImageName = "player_idle_walk_left.bmp",
-									   .Start = 0, .End = 5 , .InterTime = 0.2f });
+									   .Start = 0, .End = 5 , .InterTime = 0.15f });
 	AnimationRender->CreateAnimation({ .AnimationName = "left_move_start",  .ImageName = "player_idle_walk_left.bmp",
 									   .Start = 6, .End = 7 , .InterTime = 0.5f });
 	AnimationRender->CreateAnimation({ .AnimationName = "left_move",  .ImageName = "player_idle_walk_left.bmp",
