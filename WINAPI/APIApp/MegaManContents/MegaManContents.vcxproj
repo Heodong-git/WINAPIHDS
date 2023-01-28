@@ -153,9 +153,10 @@
   <ItemGroup>
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="EndTitleLevel.h" />
+    <ClInclude Include="ImageTestLevel.h" />
     <ClInclude Include="Select_BackGround.h" />
     <ClInclude Include="MegaManCore.h" />
-    <ClInclude Include="Monster_MetalT.h" />
+    <ClInclude Include="Monster_Gunman.h" />
     <ClInclude Include="Monster_NightMareVirus.h" />
     <ClInclude Include="Monster_Sigma.h" />
     <ClInclude Include="Player_Zero.h" />
@@ -170,10 +171,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndTitleLevel.cpp" />
+    <ClCompile Include="ImageTestLevel.cpp" />
     <ClCompile Include="Player_Zero_State.cpp" />
     <ClCompile Include="Select_BackGround.cpp" />
     <ClCompile Include="MegaManCore.cpp" />
-    <ClCompile Include="Monster_MetalT.cpp" />
+    <ClCompile Include="Monster_Gunman.cpp" />
     <ClCompile Include="Monster_NightMareVirus.cpp" />
     <ClCompile Include="Monster_Sigma.cpp" />
     <ClCompile Include="Player_Zero.cpp" />

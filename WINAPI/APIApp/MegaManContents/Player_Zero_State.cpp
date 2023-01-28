@@ -104,7 +104,6 @@ void Player_Zero::RecallStart()
 
 void Player_Zero::RecallUpdate(float _DeltaTime)
 {
-
 	if (18 == m_AnimationRender->GetFrame())
 	{
 		ChangeState(PlayerState::IDLE);

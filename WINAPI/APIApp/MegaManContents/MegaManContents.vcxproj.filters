@@ -16,7 +16,7 @@
     <ClInclude Include="Player_Zero.h">
       <Filter>Player</Filter>
     </ClInclude>
-    <ClInclude Include="Monster_MetalT.h">
+    <ClInclude Include="Monster_Gunman.h">
       <Filter>Monster</Filter>
     </ClInclude>
     <ClInclude Include="Monster_NightMareVirus.h">
@@ -47,6 +47,9 @@
     <ClInclude Include="UI_TitleUI.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="ImageTestLevel.h">
+      <Filter>Level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndTitleLevel.cpp">
@@ -64,7 +67,7 @@
     <ClCompile Include="Player_Zero.cpp">
       <Filter>Player</Filter>
     </ClCompile>
-    <ClCompile Include="Monster_MetalT.cpp">
+    <ClCompile Include="Monster_Gunman.cpp">
       <Filter>Monster</Filter>
     </ClCompile>
     <ClCompile Include="Monster_NightMareVirus.cpp">
@@ -96,6 +99,9 @@
     </ClCompile>
     <ClCompile Include="UI_TitleUI.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageTestLevel.cpp">
+      <Filter>Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

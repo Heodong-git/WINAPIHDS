@@ -67,7 +67,7 @@ void Player_Zero::Start()
 	
 	// 렌더러생성, 생성시 zorder 값 입력 
 	m_AnimationRender = CreateRender(RENDERORDER::PLAYER);
-	m_AnimationRender->SetScale({ 640, 480 * 1.2f });
+	m_AnimationRender->SetScale({ 640 * 1.1f , 480 * 1.6f });
 	// 구조체를 넣어주는데 원하는 변수의 값만 수정하여 넣어줄 수 있다.
 	// 단, 순서는 지켜서 넣어주어야 빨간줄이 그이지 않는다. 
 

@@ -107,10 +107,7 @@ void UI_MainSelectUI::Render(float _DeltaTime)
 
 void UI_MainSelectUI::SelectUpdate(float _DeltaTime)
 {
-	// 만약 엔터가눌렸다면 레벨체인지 + 메인 UI 의 필요한 애니메이션 동작
-	// 제로애니메이션 , 백그라운드 렌더를 제외한 모든녀석이 렌더링이 안되게하려면
-	// 데스상태로 만들어야하지 않나? 
-
+	// 엔터키가 눌렸다면 
 	if (true == GameEngineInput::IsDown("Select_Enter"))
 	{
 		if (ESelectPlayer::ZERO == GetSelectPlayer())
@@ -147,7 +144,6 @@ void UI_MainSelectUI::SelectUpdate(float _DeltaTime)
 		}
 	}
 
-
 	switch (m_SelectPlayer)
 	{
 	case ESelectPlayer::X:
@@ -170,6 +166,7 @@ void UI_MainSelectUI::TopBottomTextUpdate(float _DeltaTime)
 	// 시간누적 
 	m_Time += _DeltaTime;
 
+	// 이동시간이 종료되면 다시 텍스트의 시작위치로 이동
 	if (m_TextMoveTime <= m_Time)
 	{
 		m_TopText->SetPosition(m_TopTextStartPos);

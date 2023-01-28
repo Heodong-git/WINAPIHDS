@@ -1,9 +1,11 @@
-#include <GameEnginePlatform/GameEngineWindow.h>
 #include "MegaManCore.h"
-#include <MegaManContents/TitleLevel.h>
-#include <MegaManContents/SelectLevel.h>
-#include <MegaManContents/SpacePortLevel.h>
-#include <MegaManContents/EndTitleLevel.h>
+#include <GameEnginePlatform/GameEngineWindow.h>
+
+#include "TitleLevel.h"
+#include "SelectLevel.h"
+#include "SpacePortLevel.h"
+#include "EndTitleLevel.h"
+#include "ImageTestLevel.h"
 
 // static 변수 구현
 MegaManCore MegaManCore::Core;
@@ -25,6 +27,7 @@ void MegaManCore::Start()
 	CreateLevel<SelectLevel>("SelectLevel");
 	CreateLevel<SpacePortLevel>("SpacePortLevel");
 	CreateLevel<EndTitleLevel>("EndTitleLevel");
+	CreateLevel<ImageTestLevel>("ImageTestLevel");
 	
 	// 실행 시에 반드시 어떤 레벨을 보여줄 것인지 지정한다. 
 	ChangeLevel("TitleLevel");

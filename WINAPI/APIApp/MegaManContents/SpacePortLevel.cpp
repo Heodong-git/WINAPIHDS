@@ -7,9 +7,8 @@
 #include <GameEngineCore/GameEngineCore.h>
 
 #include "Player_Zero.h"
-#include "Monster_Sigma.h"
+#include "Monster_Gunman.h"
 #include "Monster_NightMareVirus.h"
-#include "Monster_MetalT.h"
 #include "UI_PlayerHpBar.h"
 #include "Map_SpacePort.h"
 
@@ -33,6 +32,7 @@ void SpacePortLevel::Loading()
 	Directory.Move("Image");
 	Directory.Move("SpacePortLevel");
 
+	// 플레이어
 	{
 		// 리콜 
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_recall.bmp"));
@@ -76,11 +76,25 @@ void SpacePortLevel::Loading()
 		GameEngineImage* ColImage = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("ColMap_SpacePort.bmp"));
 	}
 
+	// 몬스터
+
+	// gunman image
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("spaceport_gunman_left.bmp"));
+		Image->Cut(8, 4);
+	}
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("spaceport_gunman_right.bmp"));
+		Image->Cut(8, 4);
+	}
 	// 해당 레벨에서 사용할 액터 생성
 	// 액터 생성시에 인자로 넣어주는 값은 업데이트,렌더링 순서이며 값이 높을 수록 나중에 연산,렌더링이 된다. 
 	Player = CreateActor<Player_Zero>();
 	Player->SetPos({ 400, 7000 });
 	CreateActor<Map_SpacePort>();
+	GameEngineActor* Monster = CreateActor<Monster_GunMan>();
+	Monster->SetPos({ 600 , 7000 });
+
 
 	// 카메라 키생성
 	if (false == GameEngineInput::IsKey("CameraLeftMove"))
