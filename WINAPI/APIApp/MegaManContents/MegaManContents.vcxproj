@@ -151,9 +151,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Boss_Colonel.h" />
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="EndTitleLevel.h" />
-    <ClInclude Include="ImageTestLevel.h" />
     <ClInclude Include="Select_BackGround.h" />
     <ClInclude Include="MegaManCore.h" />
     <ClInclude Include="Monster_Gunman.h" />
@@ -170,8 +170,8 @@
     <ClInclude Include="UI_TitleUI.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Boss_Colonel.cpp" />
     <ClCompile Include="EndTitleLevel.cpp" />
-    <ClCompile Include="ImageTestLevel.cpp" />
     <ClCompile Include="Player_Zero_State.cpp" />
     <ClCompile Include="Select_BackGround.cpp" />
     <ClCompile Include="MegaManCore.cpp" />

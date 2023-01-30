@@ -27,10 +27,9 @@ void MegaManCore::Start()
 	CreateLevel<SelectLevel>("SelectLevel");
 	CreateLevel<SpacePortLevel>("SpacePortLevel");
 	CreateLevel<EndTitleLevel>("EndTitleLevel");
-	CreateLevel<ImageTestLevel>("ImageTestLevel");
 	
 	// 실행 시에 반드시 어떤 레벨을 보여줄 것인지 지정한다. 
-	ChangeLevel("TitleLevel");
+	ChangeLevel("SpacePortLevel");
 }
 
 

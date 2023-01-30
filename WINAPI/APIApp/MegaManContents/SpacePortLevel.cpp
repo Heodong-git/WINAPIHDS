@@ -11,6 +11,7 @@
 #include "Monster_NightMareVirus.h"
 #include "UI_PlayerHpBar.h"
 #include "Map_SpacePort.h"
+#include "Boss_Colonel.h"
 
 SpacePortLevel::SpacePortLevel()
 {
@@ -72,8 +73,14 @@ void SpacePortLevel::Loading()
 	}
 	{
 		// 스페이스포트 맵
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort.bmp"));
+		// GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort.bmp"));
 		GameEngineImage* ColImage = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("ColMap_SpacePort.bmp"));
+	}
+
+	// 보스 커널
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("spaceport_colonel_left.bmp"));
+		Image->Cut(8, 6);
 	}
 
 	// 몬스터
@@ -81,17 +88,20 @@ void SpacePortLevel::Loading()
 	// gunman image
 	{
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("spaceport_gunman_left.bmp"));
-		Image->Cut(8, 4);
+		Image->Cut(8, 5);
 	}
 	{
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("spaceport_gunman_right.bmp"));
-		Image->Cut(8, 4);
+		Image->Cut(8, 5);
 	}
 	// 해당 레벨에서 사용할 액터 생성
 	// 액터 생성시에 인자로 넣어주는 값은 업데이트,렌더링 순서이며 값이 높을 수록 나중에 연산,렌더링이 된다. 
 	Player = CreateActor<Player_Zero>();
 	Player->SetPos({ 400, 7000 });
-	CreateActor<Map_SpacePort>();
+	// 일단 플레이어 애니메이션부터 필요한거 다 진행하고나서 다시. 
+	/*GameEngineActor* Boss = CreateActor<Boss_Colonel>();
+	Boss->SetPos({ 600, 7050 });*/
+	// CreateActor<Map_SpacePort>();
 	GameEngineActor* Monster = CreateActor<Monster_GunMan>();
 	Monster->SetPos({ 1738 , 7065 });
 	// 건맨 01 SetPos 값

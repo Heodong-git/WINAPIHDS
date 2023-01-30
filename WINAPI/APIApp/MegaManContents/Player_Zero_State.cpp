@@ -14,16 +14,17 @@
 void Player_Zero::ChangeState(PlayerState _State)
 {
 	// 플레이어의 다음 상태를 받아온다. 
-	PlayerState NextState = _State;
+	m_NextState = _State;
 	// 플레이어의 이전 상태는 현재 상태가 된다. 
-	PlayerState PrevState = m_StateValue;
+	m_PrevState = m_StateValue;
 	// 현재 상태를 변경될 상태로 변경한다. 
-	m_StateValue = NextState;
+	m_StateValue = m_NextState;
 
-	switch (NextState)
+	switch (m_NextState)
 	{
 	case PlayerState::RECALL:
 		RecallStart();
+		break;
 	case PlayerState::IDLE:
 		IdleStart();
 		break;
@@ -36,6 +37,12 @@ void Player_Zero::ChangeState(PlayerState _State)
 	case PlayerState::DASH:
 		DashStart();
 		break;
+	case PlayerState::SIT:
+		SitStart();
+		break;
+	case PlayerState::SITATTACK:
+		SitAttackStart();
+		break;
 	case PlayerState::NOMALATTACK:
 		NormalAttackStart();
 		break;
@@ -44,10 +51,11 @@ void Player_Zero::ChangeState(PlayerState _State)
 	}
 
 	// 종료될 상태에 따라서 그 상태의 End 함수를 호출
-	switch (PrevState)
+	switch (m_PrevState)
 	{
 	case PlayerState::RECALL:
 		RecallEnd();
+		break;
 	case PlayerState::IDLE:
 		IdleEnd();
 		break;
@@ -59,6 +67,12 @@ void Player_Zero::ChangeState(PlayerState _State)
 		break;
 	case PlayerState::DASH:
 		DashEnd();
+		break;
+	case PlayerState::SIT:
+		SitEnd();
+		break;
+	case PlayerState::SITATTACK:
+		SitAttackEnd();
 		break;
 	case PlayerState::NOMALATTACK:
 		NormalAttackEnd();
@@ -88,6 +102,12 @@ void Player_Zero::UpdateState(float _Time)
 		break;
 	case PlayerState::DASH:
 		DashUpdate(_Time);
+		break;
+	case PlayerState::SIT:
+		SitUpdate(_Time);
+		break;
+	case PlayerState::SITATTACK:
+		SitAttackUpdate(_Time);
 		break;
 	case PlayerState::NOMALATTACK:
 		NormalAttackUpdate(_Time);
@@ -132,6 +152,11 @@ void Player_Zero::IdleStart()
 
 void Player_Zero::IdleUpdate(float _Time)
 {
+	if (GameEngineInput::IsPress("Sit"))
+	{
+		ChangeState(PlayerState::SIT);
+		return;
+	}
 
 	// Idle 상태일 경우 왼쪽, 오른쪽 키가 눌렸다면 Move 상태로 변경한다.  
 	if (GameEngineInput::IsPress("LeftMove") || GameEngineInput::IsPress("RightMove"))
@@ -143,6 +168,12 @@ void Player_Zero::IdleUpdate(float _Time)
 	if (GameEngineInput::IsPress("Attack"))
 	{
 		ChangeState(PlayerState::NOMALATTACK);
+		return;
+	}
+
+	if (GameEngineInput::IsDown("Dash"))
+	{
+		ChangeState(PlayerState::DASH);
 		return;
 	}
 
@@ -192,9 +223,22 @@ void Player_Zero::MoveUpdate(float _DeltaTime)
 		//GetLevel()->SetCameraMove(float4::Right * _Time * MoveSpeed);
 	}
 
+	// 공격키가 눌렸다면 공격 
 	if (GameEngineInput::IsPress("Attack"))
 	{
 		ChangeState(PlayerState::NOMALATTACK);
+		return;
+	}
+
+	if (GameEngineInput::IsDown("Dash"))
+	{
+		ChangeState(PlayerState::DASH);
+		return;
+	}
+
+	if (GameEngineInput::IsPress("Sit"))
+	{
+		ChangeState(PlayerState::SIT);
 		return;
 	}
 
@@ -217,7 +261,7 @@ void Player_Zero::NormalAttackUpdate(float _Time)
 {
 	// 공격의 마지막 프레임에 도달하면 Idle 상태로 변경해준다. 
 	// 일단 임시로 적용해두고, 나중에 만들때 노말어택 1타, 23타 상태로 구분해서 적용한다. 
-	if (28 == m_AnimationRender->GetFrame())
+	if (m_AnimationRender->IsAnimationEnd())
 	{
 		ChangeState(PlayerState::IDLE);
 		return;
@@ -235,10 +279,11 @@ void Player_Zero::DashStart()
 
 void Player_Zero::DashUpdate(float _Time)
 {
-
-
-
-	DirCheck("Dash");
+	if (m_AnimationRender->IsAnimationEnd())
+	{
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
 }
 
 void Player_Zero::DashEnd()
@@ -258,6 +303,58 @@ void Player_Zero::JumpUpdate(float _Time)
 void Player_Zero::JumpEnd()
 {
 	
+}
+
+void Player_Zero::SitStart()
+{
+	DirCheck("Sit");
+}
+void Player_Zero::SitUpdate(float _DeltaTime)
+{
+	// 앉기 키가 계속 눌려있었다면
+	if (true == GameEngineInput::IsPress("Sit"))
+	{
+		// 애니메이션을 그대로 유지
+		DirCheck("Sit");
+
+		// 앉은 상태에서 공격키를 눌렀다면 앉은공격 상태로 변경
+		if (true == GameEngineInput::IsDown("Attack"))
+		{
+			ChangeState(PlayerState::SITATTACK);
+		}
+
+		return;
+	}
+
+	// 키가 눌려있지 않았다면 IDLE 상태로 전환 
+	else
+	{
+		ChangeState(PlayerState::IDLE);
+	}
+}
+void Player_Zero::SitEnd()
+{
+	
+}
+
+void Player_Zero::SitAttackStart()
+{
+	// 방향체크후 애니메이션 실행
+	DirCheck("Sit_Attack");
+}
+
+void Player_Zero::SitAttackUpdate(float _DeltaTime)
+{
+	// 앉은 공격 애니메이션이 재생완료 되었다면
+	if (true == m_AnimationRender->IsAnimationEnd())
+	{
+		// SIT 상태로 전환
+		ChangeState(PlayerState::SIT);
+	}
+}
+
+void Player_Zero::SitAttackEnd()
+{
 }
 
 void Player_Zero::FallStart()

@@ -89,6 +89,29 @@ public:
 		return x == 0.0f && y == 0.0f && z == 0.0f;
 	}
 
+	// 러프 
+	static float4 Lerp(const float4& Start, const float4& End, float Ratio)
+	{
+		// 1.5 + 0.5 * 2.5;
+		return Start * (1.0f - Ratio) + (End * Ratio);
+	}
+
+	// 러프와 동일하지만 비율을 0 ~ 1로 제한
+	static float4 LerpClamp(const float4& Start, const float4& End, float Ratio)
+	{
+		if (0 >= Ratio)
+		{
+			Ratio = 0.0f;
+		}
+
+		if (1.0f <= Ratio)
+		{
+			Ratio = 1.0f;
+		}
+
+		return Lerp(Start, End, Ratio);
+	}
+
 	// 오퍼레이터 *
 	// const 객체도 이 함수를 호출 할 수 있도록 하기 위해 뒤에 const 키워드를 붙여준다. 
 	float4 operator *(const float& _Value) const
@@ -133,6 +156,31 @@ public:
 		y += _Other.y;
 		z += _Other.z;
 
+		return *this;
+	}
+
+	float4& operator *=(const float& _Value)
+	{
+		x *= _Value;
+		y *= _Value;
+		z *= _Value;
+		return *this;
+	}
+
+
+	float4& operator *=(const float4& _Other)
+	{
+		x *= _Other.x;
+		y *= _Other.y;
+		z *= _Other.z;
+		return *this;
+	}
+
+	float4& operator -=(const float4& _Other)
+	{
+		x -= _Other.x;
+		y -= _Other.y;
+		z -= _Other.z;
 		return *this;
 	}
 };

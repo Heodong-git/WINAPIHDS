@@ -9,6 +9,8 @@ enum class PlayerState
 	MOVE,
 	JUMP,
 	FALL,
+	SIT,
+	SITATTACK,
 	DASH,
 	NOMALATTACK,
 	JUMPATTACK,
@@ -42,7 +44,9 @@ private:
 	std::string  m_DirString = "Right_";
 	float4		 m_MoveDir = float4::Zero;
 	// 플레이어의 기본상태는 아이들로 초기화
-	PlayerState  m_StateValue = PlayerState::MOVE;
+	PlayerState  m_StateValue = PlayerState::RECALL;
+	PlayerState  m_PrevState = PlayerState::RECALL;
+	PlayerState  m_NextState = PlayerState::RECALL;
 	GameEngineRender* m_AnimationRender = nullptr;
 	bool		 m_Gravity = true;
 	bool		 m_Jump = false;
@@ -89,6 +93,14 @@ private:
 	void FallStart();
 	void FallUpdate(float _DeltaTime);
 	void FallEnd();
+	
+	void SitStart();
+	void SitUpdate(float _DeltaTime);
+	void SitEnd();
+
+	void SitAttackStart();
+	void SitAttackUpdate(float _DeltaTime);
+	void SitAttackEnd();
 	
 	void DashStart();
 	void DashUpdate(float _DeltaTime);

@@ -58,6 +58,7 @@ void Player_Zero::Start()
 		GameEngineInput::CreateKey("LeftMove", VK_LEFT);
 		GameEngineInput::CreateKey("RightMove", VK_RIGHT);
 		GameEngineInput::CreateKey("UpMove", VK_UP);
+		GameEngineInput::CreateKey("Sit", VK_DOWN);
 		GameEngineInput::CreateKey("DownMove", VK_DOWN);
 		GameEngineInput::CreateKey("Dash", 'Z');
 		GameEngineInput::CreateKey("Attack", 'X');
@@ -72,38 +73,53 @@ void Player_Zero::Start()
 	// 구조체를 넣어주는데 원하는 변수의 값만 수정하여 넣어줄 수 있다.
 	// 단, 순서는 지켜서 넣어주어야 빨간줄이 그이지 않는다. 
 
-	// 우측 
+	// 플레이어
+	// 리콜
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_recall" , .ImageName = "player_recall.bmp",
 									   .Start = 0 , .End = 18 , .InterTime = 0.07f });
 
+	// 아이들
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_idle",  .ImageName = "player_idle_walk_right.bmp", 
 									   .Start = 0, .End = 5 , .InterTime = 0.15f });
-	m_AnimationRender->CreateAnimation({ .AnimationName = "right_move_start",  .ImageName = "player_idle_walk_right.bmp",
-									   .Start = 6, .End = 7 , .InterTime = 0.5f });
-	m_AnimationRender->CreateAnimation({ .AnimationName = "right_move",  .ImageName = "player_idle_walk_right.bmp",
-									   .Start = 8, .End = 21 , .InterTime = 0.05f });
-	m_AnimationRender->CreateAnimation({ .AnimationName = "right_dash",  .ImageName = "player_doublejump_dash_sitattack_right.bmp",
-									   .Start = 11, .End = 23 , .InterTime = 0.05f , .Loop = false  });
-	// 오른쪽 기본공격
-	m_AnimationRender->CreateAnimation({ .AnimationName = "right_normal_attack", .ImageName = "player_normal_attack_right.bmp" ,
-									   .Start = 0, .End = 28, .InterTime = 0.035f , .Loop = false });
-
-
-	// 왼쪽 아이들
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_idle",  .ImageName = "player_idle_walk_left.bmp",
 									   .Start = 0, .End = 5 , .InterTime = 0.15f });
-	// 왼쪽 무브시작
-	m_AnimationRender->CreateAnimation({ .AnimationName = "left_move_start",  .ImageName = "player_idle_walk_left.bmp",
-									   .Start = 6, .End = 7 , .InterTime = 0.5f });
-	// 왼쪽 무브
+
+	// 좌우 무브
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_move",  .ImageName = "player_idle_walk_right.bmp",
+									   .Start = 8, .End = 21 , .InterTime = 0.05f });
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_move",  .ImageName = "player_idle_walk_left.bmp",
 									   .Start = 8, .End = 21 , .InterTime = 0.05f });
-	// 왼쪽 대쉬 
-	m_AnimationRender->CreateAnimation({ .AnimationName = "left_dash",  .ImageName = "player_doublejump_dash_sitattack_left.bmp",
-									   .Start = 11, .End = 23 , .InterTime = 0.05f , .Loop = false });
-	// 왼쪽 기본공격
+
+	// 좌우 기본공격
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_normal_attack", .ImageName = "player_normal_attack_right.bmp" ,
+									   .Start = 0, .End = 28, .InterTime = 0.035f , .Loop = false });
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_normal_attack" , .ImageName = "player_normal_attack_left.bmp" ,
 									   .Start = 0, .End = 28 , .InterTime = 0.035f , .Loop = false });
+
+	// 좌우 대쉬 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_dash", .ImageName = "player_doublejump_dash_sitattack_right.bmp" ,
+								   .Start = 10, .End = 22, .InterTime = 0.08f , .Loop = false });
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_dash" , .ImageName = "player_doublejump_dash_sitattack_left.bmp" ,
+									   .Start = 10, .End = 22 , .InterTime = 0.08f , .Loop = false });
+
+	// 좌우 앉기
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_sit", .ImageName = "player_doublejump_dash_sitattack_right.bmp" ,
+								   .Start = 23, .End = 24, .InterTime = 0.05f , .Loop = false });
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_sit" , .ImageName = "player_doublejump_dash_sitattack_left.bmp" ,
+									   .Start = 23, .End = 24 , .InterTime = 0.05f , .Loop = false });
+
+	// 앉기 공격
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_sit_attack", .ImageName = "player_doublejump_dash_sitattack_right.bmp" ,
+								   .Start = 25, .End = 33, .InterTime = 0.05f , .Loop = false });
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_sit_attack" , .ImageName = "player_doublejump_dash_sitattack_left.bmp" ,
+									   .Start = 25, .End = 33 , .InterTime = 0.05f , .Loop = false });
+
+
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_move_start",  .ImageName = "player_idle_walk_right.bmp",
+									   .Start = 6, .End = 7 , .InterTime = 0.5f });
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_move_start",  .ImageName = "player_idle_walk_left.bmp",
+									   .Start = 6, .End = 7 , .InterTime = 0.5f });
+	
 
 	// 확인해야함 여기서 리콜이면 
 	ChangeState(PlayerState::RECALL);
