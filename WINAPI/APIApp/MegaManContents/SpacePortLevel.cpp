@@ -93,7 +93,20 @@ void SpacePortLevel::Loading()
 	Player->SetPos({ 400, 7000 });
 	CreateActor<Map_SpacePort>();
 	GameEngineActor* Monster = CreateActor<Monster_GunMan>();
-	Monster->SetPos({ 600 , 7000 });
+	Monster->SetPos({ 1738 , 7065 });
+	// 건맨 01 SetPos 값
+	// 1738, 7065
+	// 2334, 6382
+	// 2354, 6382 
+	// 3186, 7058 
+	// 5366, 6825 
+	// 5379, 6385
+	// 5910, 6609 
+	// 12827, 6384
+	// 15521, 5371 
+	
+	// 건맨 02 SetPos 값 
+	// 2575 , 6904
 
 
 	// 카메라 키생성

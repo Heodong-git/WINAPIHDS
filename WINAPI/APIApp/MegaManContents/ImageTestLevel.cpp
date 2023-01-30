@@ -24,8 +24,7 @@ void ImageTestLevel::Loading()
 	Directory.Move("Image");
 	Directory.Move("TestImage");
 
-
-	CreateActor<Monster_GunMan>();
+	// 
 }
 
 void ImageTestLevel::Update(float _DeltaTime)

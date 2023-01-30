@@ -51,9 +51,7 @@ public:
 		Position = _Position;
 	}
 
-	// 포지션 무브, 임시 , 작동하면 만들어달라고 건의
-	// 렌더러의 무브 포지션, 셋포스를 해놓고 포지션을 그 셋포스를 따라가게 하면되지않나? 일단해봐 
-	inline void MovePosition(float4  _Position)
+	inline void SetMove(float4  _Position)
 	{
 		Position += _Position;
 	}
@@ -99,10 +97,12 @@ public:
 		IsEffectCamera = false;
 	}
 
+	// 현재 애니메이션이 모두 재생되었는지 체크 
+	bool IsAnimationEnd();
 	// 애니메이션 생성
 	void CreateAnimation(const FrameAnimationParameter& _Paramter);
 	// 애니메이션 체인지
-	void ChangeAnimation(const std::string_view& _AnimationName);
+	void ChangeAnimation(const std::string_view& _AnimationName, bool _ForceChange = false);
 
 protected:
 
@@ -146,6 +146,8 @@ private:
 		float CurrentTime = 0.0f;
 		// 반복여부
 		bool Loop = true;
+
+		bool IsEnd();
 
 		void Render(float _DeltaTime);
 

@@ -68,6 +68,14 @@ void GameEngineRender::SetFrame(int _Frame)
 	Frame = _Frame;
 }
 
+
+bool GameEngineRender::FrameAnimation::IsEnd()
+{
+	// 애니메이션이 종료되었는지
+	int Value = (static_cast<int>(FrameIndex.size()) - 1);
+	return CurrentIndex == Value;
+}
+
 void GameEngineRender::FrameAnimation::Render(float _DeltaTime)
 {
 	// 현재시간에서 델타타임을 누적하여 빼주어 
@@ -143,6 +151,12 @@ void GameEngineRender::Render(float _DeltaTime)
 	}
 }
 
+// 애니메이션 종료됐니? 
+bool GameEngineRender::IsAnimationEnd()
+{
+	return CurrentAnimation->IsEnd();
+}
+
 // 애니메이션 생성
 void GameEngineRender::CreateAnimation(const FrameAnimationParameter& _Paramter)
 {
@@ -212,7 +226,7 @@ void GameEngineRender::CreateAnimation(const FrameAnimationParameter& _Paramter)
 
 // 체인지애니메이션
 // 렌더러의 애니메이션을 인자로 넣어준 키값에 해당하는 애니메이션으로 교체한다. 
-void GameEngineRender::ChangeAnimation(const std::string_view& _AnimationName)
+void GameEngineRender::ChangeAnimation(const std::string_view& _AnimationName, bool _ForceChange /*= false*/)
 {
 	// 대문자 변환
 	std::string UpperName = GameEngineString::ToUpper(_AnimationName);
@@ -223,9 +237,9 @@ void GameEngineRender::ChangeAnimation(const std::string_view& _AnimationName)
 		MsgAssert("존재하지 않는 애니메이션으로 바꾸려고 했습니다." + UpperName);
 	}
 
-	// 이전 프레임과 같은 애니메이션을 출력하려고 한다면 return
-	// 루프가 종료된 애니메이션이라면 마지막 인덱스를 유지하게 한다.
-	if (CurrentAnimation == &Animation[UpperName])
+
+	// 애니메이션을 강제로 변경하지 않고, 애니메이션이 같다면 return 
+	if (false == _ForceChange && CurrentAnimation == &Animation[UpperName])
 	{
 		return;
 	}

@@ -35,6 +35,7 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
+	bool		 m_DebugMode = false;
 	static float m_Time;
 	float	     m_MoveSpeed = 700.0f;
 	// 기본 방향 - 오른쪽, 문자열로 저장
@@ -48,6 +49,11 @@ private:
 	float		 m_JumpPower = 5.f;
 	float4		 m_PrevPos = float4::Zero;
 	
+	// 디버그용
+	inline void DebugSwitch()
+	{
+		m_DebugMode = !m_DebugMode;
+	}
 
 	// 방향체크
 	void DirCheck(const std::string_view& _AnimationName);

@@ -112,8 +112,14 @@ void UI_MainSelectUI::SelectUpdate(float _DeltaTime)
 	{
 		if (ESelectPlayer::ZERO == GetSelectPlayer())
 		{
+			m_Select = true;
 			m_ZeroAnimation->ChangeAnimation("Select_exit");
 		}
+	}
+
+	if (true == m_Select)
+	{
+		return;
 	}
 
 	if (true == GameEngineInput::IsDown("SelectMove_Right"))
@@ -176,7 +182,7 @@ void UI_MainSelectUI::TopBottomTextUpdate(float _DeltaTime)
 	
 	if (m_TextMoveTime >= m_Time)
 	{
-		m_TopText->MovePosition(float4::Left * _DeltaTime * m_TextMoveSpeed);
-		m_BottomText->MovePosition(float4::Right * _DeltaTime * m_TextMoveSpeed);
+		m_TopText->SetMove(float4::Left * _DeltaTime * m_TextMoveSpeed);
+		m_BottomText->SetMove(float4::Right * _DeltaTime * m_TextMoveSpeed);
 	}
 }

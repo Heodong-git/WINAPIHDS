@@ -56,6 +56,8 @@ private:
 	GameEngineRender* m_BottomText = nullptr;
 	GameEngineRender* m_ZeroAnimation = nullptr;
 
+	bool			  m_Select = false;
+
 	void SelectUpdate(float _DeltaTime);
 	void TopBottomTextUpdate(float _DeltaTime);
 };

@@ -157,7 +157,7 @@ void Player_Zero::MoveStart()
 	DirCheck("Move");
 }
 
-void Player_Zero::MoveUpdate(float _Time)
+void Player_Zero::MoveUpdate(float _DeltaTime)
 {	
 	// 무브의 업데이트에서는 현재 아무키도 눌리지 않았다면 기본 IDLE 상태로 변경한다.  
 	if (

@@ -107,7 +107,6 @@ void SelectLevel::Update(float _DeltaTime)
 		m_ChangeTime = 0.0f;
 	}
 
-	// 엔터를 쳤을 때 현재 선택된 캐릭터가 엑스라면 시작하면 retrun 해야함 
 	if (true == GameEngineInput::IsDown("Change_SpacePortLevel"))
 	{
 		if (ESelectPlayer::ZERO == m_MainSelectUI->GetSelectPlayer())

@@ -62,6 +62,7 @@ void Player_Zero::Start()
 		GameEngineInput::CreateKey("Dash", 'Z');
 		GameEngineInput::CreateKey("Attack", 'X');
 		GameEngineInput::CreateKey("Jump", 'C');
+		GameEngineInput::CreateKey("DebugMode", 'Q');
 	}
 
 	
@@ -110,28 +111,63 @@ void Player_Zero::Start()
 
 void Player_Zero::Movecalculation(float _DeltaTime)
 {
+	// ---------------------디버그용 -----------------------------
+	if (true == m_DebugMode)
+	{
+		if (true == GameEngineInput::IsPress("LeftMove"))
+		{
+			SetMove(float4::Left * 1000.0f * _DeltaTime);
+			GetLevel()->SetCameraMove(float4::Left * 1000.0f * _DeltaTime);
+		}
+
+		if (true == GameEngineInput::IsPress("RightMove"))
+		{
+			SetMove(float4::Right * 3000.0f * _DeltaTime);
+			GetLevel()->SetCameraMove(float4::Right * 3000.0f * _DeltaTime);
+		}
+
+		if (true == GameEngineInput::IsPress("UpMove"))
+		{
+			SetMove(float4::Up * 3000.0f * _DeltaTime);
+			GetLevel()->SetCameraMove(float4::Up * 3000.0f * _DeltaTime);
+		}
+
+		if (true == GameEngineInput::IsPress("DownMove"))
+		{
+			SetMove(float4::Down * 3000.0f * _DeltaTime);
+			GetLevel()->SetCameraMove(float4::Down * 3000.0f * _DeltaTime);
+		}
+		
+		// 디버그용
+		// 현재위치 체크
+		float4 CurPos = GetPos();
+
+		return;
+	}
+
+	// ---------------------실제  게임 플레이용 ---------------------------- 
 	if (true == m_Gravity)
 	{
-		m_MoveDir += float4::Down * m_MoveSpeed * _DeltaTime;
+		m_MoveDir += float4::Down * 200.0f * _DeltaTime;
 	}
 
 	// x축 이동값이 일정값을 넘어간다면 
-	if (400.0f <= abs(m_MoveDir.x))
+	if (100.0f <= abs(m_MoveDir.x))
 	{
-		// x 축 값이 0보다 작다면 왼쪽이동,,.. 아 여기 영상으로 다시 봐 ㅅㅂ 
+		// x 축 값이 0보다 작다면 왼쪽이동,,.. 아 여기 영상으로 다시 봐  
 		if (0 > m_MoveDir.x)
 		{
-			m_MoveDir.x = -400.0f;
+			m_MoveDir.x = -100.0f;
 		}
 		else 
 		{
-			m_MoveDir.x = 400.0f;
+			m_MoveDir.x = 100.0f;
 		}
 	}
 
 	if (false == GameEngineInput::IsPress("LeftMove") && false == GameEngineInput::IsPress("RightMove"))
 	{
-		m_MoveDir.x *= 0.01f;
+		m_MoveDir.x *= 0.001f;
 	}
 
 	// 임시로 배경으로 
@@ -180,6 +216,12 @@ void Player_Zero::Movecalculation(float _DeltaTime)
 // 상수들은 다 내가 변수로 만들어서 사용해야함. 생각할 것. 
 void Player_Zero::Update(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("DebugMode"))
+	{
+		DebugSwitch();
+	}
+
+
 	// 현재 플레이어의 상태값에 따라 업데이트를 진행.
 	UpdateState(_DeltaTime);
 	
