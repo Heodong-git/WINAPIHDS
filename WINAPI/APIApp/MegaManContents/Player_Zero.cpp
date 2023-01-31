@@ -18,14 +18,15 @@ Player_Zero::~Player_Zero()
 {
 }
 
-// 방향체크
+
 void Player_Zero::DirCheck(const std::string_view& _AnimationName)
 {
+
 	// 현재 방향문자열 값을 받아온다. 
 	std::string PrevDirString = m_DirString;
 	// 해당하는 방향의 애니메이션으로 change
 	m_AnimationRender->ChangeAnimation(m_DirString + _AnimationName.data());
-
+	
 	// 만약 leftmove 키가 눌렸다면
 	if (GameEngineInput::IsPress("LeftMove"))
 	{
@@ -91,16 +92,17 @@ void Player_Zero::Start()
 									   .Start = 8, .End = 21 , .InterTime = 0.05f });
 
 	// 좌우 기본공격
+	// 임시로 3타 묶어둠.
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_normal_attack", .ImageName = "player_normal_attack_right.bmp" ,
-									   .Start = 0, .End = 28, .InterTime = 0.035f , .Loop = false });
+									   .Start = 0, .End = 28, .InterTime = 0.025f , .Loop = false });
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_normal_attack" , .ImageName = "player_normal_attack_left.bmp" ,
-									   .Start = 0, .End = 28 , .InterTime = 0.035f , .Loop = false });
+									   .Start = 0, .End = 28 , .InterTime = 0.025f , .Loop = false });
 
 	// 좌우 대쉬 
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_dash", .ImageName = "player_doublejump_dash_sitattack_right.bmp" ,
-								   .Start = 10, .End = 22, .InterTime = 0.08f , .Loop = false });
+								   .Start = 10, .End = 22, .InterTime = 0.06f , .Loop = false });
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_dash" , .ImageName = "player_doublejump_dash_sitattack_left.bmp" ,
-									   .Start = 10, .End = 22 , .InterTime = 0.08f , .Loop = false });
+									   .Start = 10, .End = 22 , .InterTime = 0.06f , .Loop = false });
 
 	// 좌우 앉기
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_sit", .ImageName = "player_doublejump_dash_sitattack_right.bmp" ,
@@ -108,19 +110,44 @@ void Player_Zero::Start()
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_sit" , .ImageName = "player_doublejump_dash_sitattack_left.bmp" ,
 									   .Start = 23, .End = 24 , .InterTime = 0.05f , .Loop = false });
 
+	// 앉기 유지시 출력할 이미지 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_press_sit", .ImageName = "player_doublejump_dash_sitattack_right.bmp" ,
+								   .Start = 24, .End = 24, .InterTime = 0.1f , .Loop = false });
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_press_sit" , .ImageName = "player_doublejump_dash_sitattack_left.bmp" ,
+									   .Start = 24, .End = 24 , .InterTime = 0.1f , .Loop = false });
+
 	// 앉기 공격
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_sit_attack", .ImageName = "player_doublejump_dash_sitattack_right.bmp" ,
-								   .Start = 25, .End = 33, .InterTime = 0.05f , .Loop = false });
+								   .Start = 25, .End = 33, .InterTime = 0.04f , .Loop = false });
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_sit_attack" , .ImageName = "player_doublejump_dash_sitattack_left.bmp" ,
-									   .Start = 25, .End = 33 , .InterTime = 0.05f , .Loop = false });
+									   .Start = 25, .End = 33 , .InterTime = 0.04f , .Loop = false });
 
-
+	// 필요 없어보이지만 혹시 모르니 일단 남겨두고 
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_move_start",  .ImageName = "player_idle_walk_right.bmp",
 									   .Start = 6, .End = 7 , .InterTime = 0.5f });
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_move_start",  .ImageName = "player_idle_walk_left.bmp",
 									   .Start = 6, .End = 7 , .InterTime = 0.5f });
-	
 
+	// 더블점프 애니메이션
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_double_jump", .ImageName = "player_doublejump_dash_sitattack_right.bmp" ,
+								   .Start = 0, .End = 9, .InterTime = 0.05f , .Loop = false });
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_double_jump" , .ImageName = "player_doublejump_dash_sitattack_left.bmp" ,
+									   .Start = 0, .End = 9 , .InterTime = 0.05f , .Loop = false });
+
+	// 일반점프 애니메이션
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_jump", .ImageName = "player_jump_jumpattack_right.bmp" ,
+								   .Start = 0, .End = 13, .InterTime = 0.08f , .Loop = true });
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_jump" , .ImageName = "player_jump_jumpattack_left.bmp" ,
+									   .Start = 0, .End = 13 , .InterTime = 0.08f , .Loop = true });
+
+	// 점프 공격 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_jump_attack", .ImageName = "player_jump_jumpattack_right.bmp" ,
+								   .Start = 15, .End = 23, .InterTime = 0.06f , .Loop = false });
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_jump_attack" , .ImageName = "player_jump_jumpattack_left.bmp" ,
+									   .Start = 15, .End = 23 , .InterTime = 0.06f , .Loop = false });
+
+
+	
 	// 확인해야함 여기서 리콜이면 
 	ChangeState(PlayerState::RECALL);
 }
@@ -195,33 +222,33 @@ void Player_Zero::Movecalculation(float _DeltaTime)
 
 
 	// 충돌체크 
-	bool Check = true;
-	float4 NextPos = GetPos() + m_MoveDir * _DeltaTime;
+	//bool Check = true;
+	//float4 NextPos = GetPos() + m_MoveDir * _DeltaTime;
 
-	if (RGB(255, 0, 255) == ColImage->GetPixelColor(NextPos, RGB(255, 0, 255)))
-	{
-		Check = false;
-		m_MoveDir = float4::Zero;
-	}
+	//if (RGB(255, 0, 255) == ColImage->GetPixelColor(NextPos, RGB(255, 0, 255)))
+	//{
+	//	Check = false;
+	//	m_MoveDir = float4::Zero;
+	//}
 
-	
-	// 잠깐주석 
-	if (false == Check)
-	{
-		while (true)
-		{
-			m_MoveDir.y -= 1;
+	//
+	//// 잠깐주석 
+	//if (false == Check)
+	//{
+	//	while (true)
+	//	{
+	//		m_MoveDir.y -= 1;
 
-			float4 NextPos = GetPos() + m_MoveDir * _DeltaTime;
+	//		float4 NextPos = GetPos() + m_MoveDir * _DeltaTime;
 
-			if (RGB(255, 0, 255) == ColImage->GetPixelColor(NextPos, RGB(255, 0, 255)))
-			{
-				continue;
-			}
+	//		if (RGB(255, 0, 255) == ColImage->GetPixelColor(NextPos, RGB(255, 0, 255)))
+	//		{
+	//			continue;
+	//		}
 
-			break;
-		}
-	}
+	//		break;
+	//	}
+	//}
 
 	 SetMove(m_MoveDir *_DeltaTime);
 	 // 일단 임시로 카메라무브 적용

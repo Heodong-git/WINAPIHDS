@@ -1,6 +1,7 @@
 #pragma once
 #include <list>
 #include <map>
+#include <vector>
 
 #include <GameEngineBase/GameEngineMath.h>
 #include <GameEngineCore/GameEngineObject.h>
@@ -24,6 +25,14 @@ public:
 	GameEngineLevel(GameEngineLevel&& _Other) noexcept = delete;
 	GameEngineLevel& operator=(const GameEngineLevel& _Other) = delete;
 	GameEngineLevel& operator=(GameEngineLevel&& _Other) noexcept = delete;
+
+
+	// 액터생성시 Order 타입을 인자로 받는다. 
+	template<typename ActorType, typename EnumType>
+	ActorType* CreateActor(EnumType _Order)
+	{
+		return CreateActor<ActorType>(static_cast<int>(_Order));
+	}
 
 	// 레벨에서 사용할 액터 생성
 	template <typename ActorType>
@@ -58,6 +67,36 @@ public:
 	{
 		return CameraPos;
 	}
+
+	// 원하는 타입을 인자로 넣어주면 해당하는 타입의 배열을 반환한다. 
+	template<typename EnumType>
+	std::vector<GameEngineActor*> GetActors(EnumType _GroupIndex)
+	{
+		return GetActors(static_cast<int>(_GroupIndex));
+	}
+
+	// 레벨이 소유한 액터중 원하는 타입을 골라서 받아올 수 있음. 
+	std::vector<GameEngineActor*> GetActors(int _GroupIndex)
+	{
+		// 내부에서 새로운 vector 선언
+		std::vector<GameEngineActor*> Result;
+
+		// 액터리스트에 들어있는 배열 그자체를 받아온다. (레퍼런스)  
+		std::list<GameEngineActor*>& Group = Actors[_GroupIndex];
+		
+		// 새로 생성한 배열의 공간을 받아올 배열의 크기만큼 늘린다. 
+		Result.reserve(Group.size());
+
+		// 받아온 데이터를 push_back 
+		for (GameEngineActor* ActorPtr : Group)
+		{
+			Result.push_back(ActorPtr);
+		}
+
+		// 데이터를 복사해준 vector 를 반환해준다. 
+		return Result;
+	}
+
 
 protected:
 	// 화면을 보여줄 때 사용할 부분들을 로드한다.

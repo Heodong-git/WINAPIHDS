@@ -1,4 +1,7 @@
 #pragma once
+#include <math.h>
+#include <cmath>
+
 
 // final 키워드 : 해당 키워드가 입력되어 있다면 그 클래스는 상속을 내리지 못한다.
 class GameEngineMath final
@@ -89,6 +92,25 @@ public:
 		return x == 0.0f && y == 0.0f && z == 0.0f;
 	}
 
+	// 사이즈 ( length ) 
+	float Size() const
+	{
+		// 삼각형의 밑변과 높이를 알기 때문에 빗변의 길이를 알 수 있다.
+		// x * x + y * y = 빗변길이 제곱 
+		return sqrtf(x * x + y * y);
+	}
+
+	// 정규화, 길이를 1로 만든다. 
+	void Normalize()
+	{
+		// 방향을 구하고 그 방향 길이의 값을 1로 만든다. 
+		float SizeValue = Size();
+		x /= SizeValue;
+		y /= SizeValue;
+		z /= SizeValue;
+	}
+
+
 	// 러프 
 	static float4 Lerp(const float4& Start, const float4& End, float Ratio)
 	{
@@ -176,6 +198,17 @@ public:
 		return *this;
 	}
 
+
+	float4 operator /(const float4 _Value) const
+	{
+		float4 Return;
+		Return.x = x / _Value.x;
+		Return.y = y / _Value.y;
+		Return.z = z / _Value.z;
+		return Return;
+	}
+
+
 	float4& operator -=(const float4& _Other)
 	{
 		x -= _Other.x;
@@ -183,6 +216,15 @@ public:
 		z -= _Other.z;
 		return *this;
 	}
+
+	float4& operator /=(const float4& _Other)
+	{
+		x /= _Other.x;
+		y /= _Other.y;
+		z /= _Other.z;
+		return *this;
+	}
+
 };
 
 // 클래스를 만든 이유.

@@ -29,7 +29,7 @@ void GameEngineRender::SetImage(const std::string_view& _ImageName)
 // 인자로 들어온 값으로 order 세팅
 void GameEngineRender::SetOrder(int _Order)
 {
-	Order = _Order;
+	GameEngineObject::SetOrder(_Order);
 	// 값을 넣어준 후에 렌더러를 소유한 오너의 Level 이 소유한 map 에 추가
 	Owner->GetLevel()->PushRender(this);
 }

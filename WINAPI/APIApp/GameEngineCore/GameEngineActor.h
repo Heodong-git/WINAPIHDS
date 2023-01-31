@@ -8,6 +8,7 @@
 // 어떠한 Level에 속해있는 화면에 표현되는 모든것 --- Actor
 class GameEngineLevel;
 class GameEngineRender;
+class GameEngineCollision;
 class GameEngineActor : public GameEngineObject
 {
 	// GameEngineLevl 에서 GameEngineActor 클래스 내부에 접근 가능
@@ -64,6 +65,15 @@ public:
 	GameEngineRender* CreateRender(const std::string_view& _Image, int _Order = 0);
 	GameEngineRender* CreateRender(int _Order = 0);
 
+	// 충돌체생성, 충돌체그룹을 enum 값으로 지정해준다. 
+	template<typename EnumType>
+	GameEngineCollision* CreateCollision(EnumType _GroupIndex)
+	{
+		return CreateCollision(static_cast<int>(_GroupIndex));
+	}
+
+	GameEngineCollision* CreateCollision(int _GroupIndex = 0);
+
 protected:
 	// 클래스 생성 후 바로 해주어야할 일
 	// 렌더링이 필요하다면 GameEngineRender 생성 후 사용할 이미지, Order 체크
@@ -85,16 +95,10 @@ protected:
 	}
 
 private:
-	GameEngineLevel* Level = nullptr;
 
-	int		Order = 0;						 // 업데이트, 렌더링 순서 값이 작을 수록 먼저 수행 
 	float	LiveTime = 0.0;					 // 액터가 화면에 살아있는 시간 
 	float4  Pos = { 0.0f, 0.0f };			 // 위치를 저장할 변수
 	std::list<GameEngineRender*> RenderList; // 액터는 자신이 출력해야할 Render 리스트를 가진다. 
-
-	void SetOrder(int _Order)
-	{
-		Order = _Order;
-	}
+	std::list<GameEngineCollision*> CollisionList;
 };
 

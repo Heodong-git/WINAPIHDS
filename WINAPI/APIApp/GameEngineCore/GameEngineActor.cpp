@@ -1,6 +1,7 @@
 #include "GameEngineActor.h"
 #include "GameEngineRender.h"
 #include "GameEngineLevel.h"
+#include "GameEngineCollision.h"
 
 GameEngineActor::GameEngineActor()
 {
@@ -56,4 +57,21 @@ GameEngineRender* GameEngineActor::CreateRender(int _Order /*= 0*/)
 
 	// 작업완료된 렌더러 반환
 	return Render;
+}
+
+// 충돌체 생성함수
+GameEngineCollision* GameEngineActor::CreateCollision(int _GroupIndex)
+{
+	// 충돌체 클래스 동적할당
+	GameEngineCollision* Collision = new GameEngineCollision();
+
+	// 생성한 충돌체의 오너는 함수를 호출한 객체가 된다.
+	Collision->SetOwner(this);
+	// 인자로 들어온 그룹 값을 넣어준다.
+	Collision->SetOrder(_GroupIndex);
+	// 액터가 소유한 충돌체 리스트에 넣어준다.
+	CollisionList.push_back(Collision);
+	
+	// 생성한 충돌체 반환 
+	return Collision;
 }

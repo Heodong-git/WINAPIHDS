@@ -87,11 +87,6 @@ public:
 		return Image;
 	}
 
-	inline int GetOrder()
-	{
-		return Order;
-	}
-
 	inline void EffectCameraOff()
 	{
 		IsEffectCamera = false;
@@ -103,6 +98,8 @@ public:
 	void CreateAnimation(const FrameAnimationParameter& _Paramter);
 	// 애니메이션 체인지
 	void ChangeAnimation(const std::string_view& _AnimationName, bool _ForceChange = false);
+
+	void SetOrder(int _Order) override;
 
 protected:
 
@@ -126,7 +123,6 @@ private:
 
 	int Frame = 0;
 
-	void SetOrder(int _Order);
 	void Render(float _DeltaTime);
 
 	// 프레임애니메이션 클래스는 렌더에서만 내부적으로 사용하기 때문에 private 접근제한지정자에 두고 사용한다. 

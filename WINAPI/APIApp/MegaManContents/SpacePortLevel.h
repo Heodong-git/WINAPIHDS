@@ -31,5 +31,8 @@ protected:
 
 private:
 	Player_Zero* Player = nullptr;
+	
+	// 몬스터들의 시작위치를 저장해두는 게 맞는건가..? 
+	// 흠.. 일단 플레이어 애니메이션부터 
 };
 

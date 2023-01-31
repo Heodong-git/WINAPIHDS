@@ -46,6 +46,12 @@ void Player_Zero::ChangeState(PlayerState _State)
 	case PlayerState::NOMALATTACK:
 		NormalAttackStart();
 		break;
+	case PlayerState::JUMPATTACK:
+		JumpAttackStart();
+		break;
+	case PlayerState::DOUBLEJUMP:
+		DoubleJumpStart();
+		break;
 	default:
 		break;
 	}
@@ -77,42 +83,51 @@ void Player_Zero::ChangeState(PlayerState _State)
 	case PlayerState::NOMALATTACK:
 		NormalAttackEnd();
 		break;
+	case PlayerState::JUMPATTACK:
+		JumpAttackEnd();
+		break;
+	case PlayerState::DOUBLEJUMP:
+		break;
 	default:
 		break;
 	}
 }
 
 // 상태업데이트 
-void Player_Zero::UpdateState(float _Time)
+void Player_Zero::UpdateState(float _DeltaTime)
 {
 	// 현재 상태값에 따라서 분기처리
 	switch (m_StateValue)
 	{
 	case PlayerState::RECALL:
-		RecallUpdate(_Time);
+		RecallUpdate(_DeltaTime);
 		break;
 	case PlayerState::IDLE:
-		IdleUpdate(_Time);
+		IdleUpdate(_DeltaTime);
 		break;
 	case PlayerState::MOVE:
-		MoveUpdate(_Time);
+		MoveUpdate(_DeltaTime);
 		break;
 	case PlayerState::JUMP:
-		JumpUpdate(_Time);
+		JumpUpdate(_DeltaTime);
 		break;
 	case PlayerState::DASH:
-		DashUpdate(_Time);
+		DashUpdate(_DeltaTime);
 		break;
 	case PlayerState::SIT:
-		SitUpdate(_Time);
+		SitUpdate(_DeltaTime);
 		break;
 	case PlayerState::SITATTACK:
-		SitAttackUpdate(_Time);
+		SitAttackUpdate(_DeltaTime);
 		break;
 	case PlayerState::NOMALATTACK:
-		NormalAttackUpdate(_Time);
+		NormalAttackUpdate(_DeltaTime);
 		break;
-	default:
+	case PlayerState::JUMPATTACK:
+		JumpAttackUpdate(_DeltaTime);
+		break;
+	case PlayerState::DOUBLEJUMP:
+		DoubleJumpUpdate(_DeltaTime);
 		break;
 	}
 
@@ -177,6 +192,12 @@ void Player_Zero::IdleUpdate(float _Time)
 		return;
 	}
 
+	if (GameEngineInput::IsDown("Jump"))
+	{
+		ChangeState(PlayerState::JUMP);
+		return;
+	}
+
 }
 
 void Player_Zero::IdleEnd()
@@ -224,19 +245,24 @@ void Player_Zero::MoveUpdate(float _DeltaTime)
 	}
 
 	// 공격키가 눌렸다면 공격 
-	if (GameEngineInput::IsPress("Attack"))
+	if (GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(PlayerState::NOMALATTACK);
 		return;
 	}
 
+	if (GameEngineInput::IsDown("Jump"))
+	{
+		ChangeState(PlayerState::JUMP);
+		return;
+	}
 	if (GameEngineInput::IsDown("Dash"))
 	{
 		ChangeState(PlayerState::DASH);
 		return;
 	}
 
-	if (GameEngineInput::IsPress("Sit"))
+	if (GameEngineInput::IsDown("Sit"))
 	{
 		ChangeState(PlayerState::SIT);
 		return;
@@ -279,6 +305,8 @@ void Player_Zero::DashStart()
 
 void Player_Zero::DashUpdate(float _Time)
 {
+	// 대쉬업데이트에서는 공중상태에서 대쉬 모션이 종료되면 
+	// 낙하모션으로 바뀌어야함. 결국 그냥 낙하모션을 따로 해야되네 
 	if (m_AnimationRender->IsAnimationEnd())
 	{
 		ChangeState(PlayerState::IDLE);
@@ -293,16 +321,90 @@ void Player_Zero::DashEnd()
 
 void Player_Zero::JumpStart()
 {
+	DirCheck("Jump");
 }
 
 void Player_Zero::JumpUpdate(float _Time)
 {
-		
+	if (true == m_AnimationRender->IsAnimationEnd())
+	{
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
+	
+	if (true == GameEngineInput::IsDown("Jump"))
+	{
+		ChangeState(PlayerState::DOUBLEJUMP);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Attack"))
+	{
+		ChangeState(PlayerState::JUMPATTACK);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Dash"))
+	{
+		ChangeState(PlayerState::DASH);
+		return;
+	}
+	// 점프키 중에 반대방향키를 누르면 그쪽으로 애니메이션이 바뀌어야함. 
+	if (true == GameEngineInput::IsPress("LeftMove") || true == GameEngineInput::IsPress("RightMove"))
+	{
+		// 어.. 음.. 흠.. 흐음.. 일단 나중에 다른 애니메이션부터.. 
+		return;
+	}
 }
 
 void Player_Zero::JumpEnd()
 {
 	
+}
+
+void Player_Zero::JumpAttackStart()
+{
+	DirCheck("Jump_Attack");
+}
+
+void Player_Zero::JumpAttackUpdate(float _DeltaTime)
+{
+	// 나중에 땅을 밟은상태인지 아닌지를 추가해서 다시 ㄱㄱ
+	if (true == m_AnimationRender->IsAnimationEnd())
+	{
+		
+		if (true == GameEngineInput::IsDown("Jump"))
+		{
+			ChangeState(PlayerState::DOUBLEJUMP);
+		}
+
+
+
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
+}
+
+void Player_Zero::JumpAttackEnd()
+{
+}
+
+void Player_Zero::DoubleJumpStart()
+{
+	DirCheck("Double_jump");
+}
+
+void Player_Zero::DoubleJumpUpdate(float _DeltaTime)
+{
+	if (true == m_AnimationRender->IsAnimationEnd())
+	{
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
+}
+
+void Player_Zero::DoubleJumpEnd()
+{
 }
 
 void Player_Zero::SitStart()
@@ -314,10 +416,10 @@ void Player_Zero::SitUpdate(float _DeltaTime)
 	// 앉기 키가 계속 눌려있었다면
 	if (true == GameEngineInput::IsPress("Sit"))
 	{
-		// 애니메이션을 그대로 유지
-		DirCheck("Sit");
+		// 완전히 앉아있는 애니메이션을 유지하고
+		DirCheck("press_sit");
 
-		// 앉은 상태에서 공격키를 눌렀다면 앉은공격 상태로 변경
+		// 앉은 상태에서 공격키를 눌렀다면 앉은공격 상태로 변경인데. 
 		if (true == GameEngineInput::IsDown("Attack"))
 		{
 			ChangeState(PlayerState::SITATTACK);

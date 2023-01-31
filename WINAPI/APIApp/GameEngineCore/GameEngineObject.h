@@ -51,6 +51,16 @@ public:
 		ObjectUpdate = !ObjectUpdate;
 	}
 
+	virtual void SetOrder(int _Order)
+	{
+		Order = _Order;
+	}
+
+	int GetOrder()
+	{
+		return Order;
+	}
+
 	void SetOwner(GameEngineObject* _Parent)
 	{
 		Parent = _Parent;
@@ -70,6 +80,8 @@ public:
 protected:
 
 private:
+	int Order;
+
 	GameEngineObject* Parent = nullptr;
 
 	bool ObjectDeath = false;

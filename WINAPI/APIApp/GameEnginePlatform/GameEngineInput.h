@@ -9,7 +9,8 @@ class GameEngineInput
 	// window 클래스에서만 private 의 기능인 
 	// 아무키나 눌렀을 때 종료 기능을 사용하게 하기 위해 프렌드로 작성
 	friend GameEngineWindow;
-public:
+
+private:
 	class GameEngineKey
 	{
 		friend GameEngineInput;
