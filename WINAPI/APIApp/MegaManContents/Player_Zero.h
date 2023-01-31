@@ -4,18 +4,20 @@
 
 enum class PlayerState
 {
+	NONE,
 	RECALL,
 	IDLE,
 	MOVE,
 	JUMP,
+	JUMPATTACK,
+	DOUBLEJUMP,
 	FALL,
 	SIT,
 	SITATTACK,
-	DASH,
 	NOMALATTACK,
-	JUMPATTACK,
-	DOUBLEJUMP,
-	DASHATTACK
+	DASH,
+	DASHATTACK,
+	HIT,
 };
 
 // 디버깅용 키 다시 만들어야함. 
@@ -38,22 +40,28 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
+	// 디버그용 변수
 	bool		 m_DebugMode = false;
+	// 어디서 썼던거같은데.. 어디지?ㅋㅋㅋㅋ
 	static float m_Time;
+	// 이동속도 
 	float	     m_MoveSpeed = 700.0f;
 	// 기본 방향 - 오른쪽, 문자열로 저장
 	std::string  m_DirString = "Right_";
+	// 방향 
 	float4		 m_MoveDir = float4::Zero;
+
 	// 플레이어의 기본상태는 아이들로 초기화
-	PlayerState  m_StateValue = PlayerState::RECALL;
-	PlayerState  m_PrevState = PlayerState::RECALL;
-	PlayerState  m_NextState = PlayerState::RECALL;
+	PlayerState  m_StateValue = PlayerState::NONE;
+	PlayerState  m_PrevState = PlayerState::NONE;
+	PlayerState  m_NextState = PlayerState::NONE;
+
+	// 렌더러 
 	GameEngineRender* m_AnimationRender = nullptr;
-	bool		 m_Gravity = true;
-	bool		 m_Jump = false;
-	float		 m_JumpPower = 5.f;
-	float4		 m_PrevPos = float4::Zero;
 	
+	// 중력상태 
+	bool		 m_Gravity = true;
+	bool		 m_Ground = true;
 	// 디버그용
 	inline void DebugSwitch()
 	{
@@ -100,6 +108,7 @@ private:
 	void JumpAttackUpdate(float _DeltaTime);
 	void JumpAttackEnd();
 
+	// 임시 완료
 	void DoubleJumpStart();
 	void DoubleJumpUpdate(float _DeltaTime);
 	void DoubleJumpEnd();
@@ -123,6 +132,11 @@ private:
 	void DashStart();
 	void DashUpdate(float _DeltaTime);
 	void DashEnd();
+
+	// 진행중
+	void HitStart();
+	void HitUpdate(float _DeltaTime);
+	void HitEnd();
 
 };
 

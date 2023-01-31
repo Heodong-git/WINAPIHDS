@@ -52,6 +52,8 @@ void Player_Zero::ChangeState(PlayerState _State)
 	case PlayerState::DOUBLEJUMP:
 		DoubleJumpStart();
 		break;
+	case PlayerState::HIT:
+		break;
 	default:
 		break;
 	}
@@ -87,6 +89,10 @@ void Player_Zero::ChangeState(PlayerState _State)
 		JumpAttackEnd();
 		break;
 	case PlayerState::DOUBLEJUMP:
+		DoubleJumpEnd();
+		break;
+	case PlayerState::HIT:
+		HitEnd();
 		break;
 	default:
 		break;
@@ -128,6 +134,9 @@ void Player_Zero::UpdateState(float _DeltaTime)
 		break;
 	case PlayerState::DOUBLEJUMP:
 		DoubleJumpUpdate(_DeltaTime);
+		break;
+	case PlayerState::HIT:
+		HitUpdate(_DeltaTime);
 		break;
 	}
 
@@ -312,9 +321,34 @@ void Player_Zero::DashUpdate(float _Time)
 		ChangeState(PlayerState::IDLE);
 		return;
 	}
+
+	if (true == GameEngineInput::IsDown("Jump"))
+	{
+		ChangeState(PlayerState::JUMP);
+		return;
+	}
 }
 
 void Player_Zero::DashEnd()
+{
+}
+
+void Player_Zero::HitStart()
+{
+	DirCheck("player_hit");
+}
+
+void Player_Zero::HitUpdate(float _DeltaTime)
+{
+	// 지금 쳐맞는 중일 때는 맞고나서 애니메이션이 끝날때 까지는 무적이어야함.
+	if (true == m_AnimationRender->IsAnimationEnd())
+	{
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
+}
+
+void Player_Zero::HitEnd()
 {
 }
 

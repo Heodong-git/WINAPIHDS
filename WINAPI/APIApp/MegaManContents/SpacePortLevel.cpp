@@ -80,10 +80,19 @@ void SpacePortLevel::Loading()
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_jump_jumpattack_left.bmp"));
 		Image->Cut(8, 4);
 	}
+	{
+		// 로프공격, 히트시 아파하는거 이름이 생각이안나네 
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_rope_attacked_right.bmp"));
+		Image->Cut(8, 3);
+	}
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_rope_attacked_left.bmp"));
+		Image->Cut(8, 3);
+	}
 
 	{
 		// 스페이스포트 맵
-		// GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort.bmp"));
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort.bmp"));
 		GameEngineImage* ColImage = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("ColMap_SpacePort.bmp"));
 	}
 
@@ -112,7 +121,7 @@ void SpacePortLevel::Loading()
 	// 일단 플레이어 애니메이션부터 필요한거 다 진행하고나서 다시. 
 	/*GameEngineActor* Boss = CreateActor<Boss_Colonel>();
 	Boss->SetPos({ 600, 7050 });*/
-	// CreateActor<Map_SpacePort>();
+	CreateActor<Map_SpacePort>();
 	GameEngineActor* Monster = CreateActor<Monster_GunMan>();
 	Monster->SetPos({ 1738 , 7065 });
 	// 건맨 01 SetPos 값
