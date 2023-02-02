@@ -54,6 +54,8 @@ public:
 	// callback ±â¹Ý 
 	static int WindowLoop(void(*_Start)(), void(*_Loop)(), void(*_End)());
 
+	static float4 GetMousePosition();
+
 	GameEngineWindow();
 	~GameEngineWindow();
 

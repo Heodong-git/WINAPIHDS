@@ -12,6 +12,7 @@
 #include "UI_PlayerHpBar.h"
 #include "Map_SpacePort.h"
 #include "Boss_Colonel.h"
+#include "ContentsEnum.h"
 
 SpacePortLevel::SpacePortLevel()
 {
@@ -91,6 +92,12 @@ void SpacePortLevel::Loading()
 	}
 
 	{
+		// UI HpBar
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("ui_hp_bar.bmp"));
+		Image->Cut(8, 5);
+	}
+
+	{
 		// 스페이스포트 맵
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort.bmp"));
 		GameEngineImage* ColImage = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("ColMap_SpacePort.bmp"));
@@ -114,26 +121,51 @@ void SpacePortLevel::Loading()
 		Image->Cut(8, 5);
 	}
 
+	// 이펙트
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("effect_dash_right.bmp"));
+		Image->Cut(5, 2);
+	}
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("effect_dash_left.bmp"));
+		Image->Cut(5, 2);
+	}
+
 	// 해당 레벨에서 사용할 액터 생성
 	// 액터 생성시에 인자로 넣어주는 값은 업데이트,렌더링 순서이며 값이 높을 수록 나중에 연산,렌더링이 된다. 
-	Player = CreateActor<Player_Zero>();
-	Player->SetPos({ 400, 7000 });
+	m_Player = CreateActor<Player_Zero>(ZORDER::PLAYER);
+	m_Player->SetPos({ 400, 7000 });
 	// 일단 플레이어 애니메이션부터 필요한거 다 진행하고나서 다시. 
-	/*GameEngineActor* Boss = CreateActor<Boss_Colonel>();
-	Boss->SetPos({ 600, 7050 });*/
+	GameEngineActor* Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);
+	Boss->SetPos({ 18587, 968 });
+
+	GameEngineActor* PlayerHpBar = CreateActor<UI_PlayerHpBar>(ZORDER::UI);
+	PlayerHpBar->SetPos(m_Player->GetPos() + float4 { - 200 , - 350});
+
+	// 음.. 몬스터 좌표를 벡터에 저장해놓고 for문으로 넣는게 맞는거같기도하고.. 일단은 그냥
 	CreateActor<Map_SpacePort>();
-	GameEngineActor* Monster = CreateActor<Monster_GunMan>();
+	Monster_GunMan* Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 1738 , 7065 });
-	// 건맨 01 SetPos 값
-	// 1738, 7065
-	// 2334, 6382
-	// 2354, 6382 
-	// 3186, 7058 
-	// 5366, 6825 
-	// 5379, 6385
-	// 5910, 6609 
-	// 12827, 6384
-	// 15521, 5371 
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 2334, 6382 });
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 2354 , 6382 });
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 3186 , 7058 });
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 3186 , 7058 });
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 5366, 6825 });
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 5379, 6385 });
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 5910, 6609 });
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 12827, 6384 });
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 15259, 3932 });
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 15521, 5371 });
 	
 	// 건맨 02 SetPos 값 
 	// 2575 , 6904
@@ -148,7 +180,14 @@ void SpacePortLevel::Loading()
 		GameEngineInput::CreateKey("CameraUpMove", 'W');
 	}
 
-	SetCameraMove(GameEngineWindow::GetScreenSize().half() + float4{ -580 , 5690 });
+	// 디버그렌더 스위치 생성
+	if (false == GameEngineInput::IsKey("DebugRenderSwitch"))
+	{
+		GameEngineInput::CreateKey("DebugRenderSwitch", '2');
+	}
+
+	m_StartCameraPos = GameEngineWindow::GetScreenSize().half() + float4{ -580 , 5690 };
+	SetCameraMove(m_StartCameraPos);
 }
 
 void SpacePortLevel::Update(float _DeltaTime)
@@ -170,6 +209,12 @@ void SpacePortLevel::Update(float _DeltaTime)
 	if (GameEngineInput::IsPress("CameraUpMove"))
 	{
 		SetCameraMove(float4::Up * _DeltaTime * CameraMoveSpeed);
+	}
+
+	// 2번키가 눌렸다면 디버그모드 on , off 
+	if (GameEngineInput::IsDown("DebugRenderSwitch"))
+	{
+		DebugRenderSwitch();
 	}
 }
 

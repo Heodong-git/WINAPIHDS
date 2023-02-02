@@ -27,7 +27,7 @@ void UI_TitleUI::Start()
 
 	// 애니메이션 추가 및 세팅
 	// --------------------------------------메뉴 렌더러 -----------------------------------------------
-	m_MenuRender = CreateRender("title_text.bmp", RENDERORDER::UI);
+	m_MenuRender = CreateRender("title_text.bmp", ZORDER::UI);
 	m_MenuRender->CreateAnimation({ .AnimationName = "title_gamestart" , .ImageName = "title_text.bmp" ,
 								.Start = 0 , .End = 0 });
 	m_MenuRender->CreateAnimation({ .AnimationName = "title_CONTINUE" , .ImageName = "title_text.bmp" ,
@@ -41,7 +41,7 @@ void UI_TitleUI::Start()
 
 
 	// --------------------------------------press text 렌더러 ------------------------------------------
-	m_TextRender = CreateRender("title_press_text.bmp", RENDERORDER::UI_Text);
+	m_TextRender = CreateRender("title_press_text.bmp", ZORDER::UI_Text);
 	m_TextRender->CreateAnimation({ .AnimationName = "title_press_render" , .ImageName = "title_press_text.bmp" ,
 									.Start = 0, .End = 1 , .InterTime = 0.6f });
 	float4 ImageScale = m_TextRender->GetImage()->GetImageScale();

@@ -16,7 +16,7 @@ Title_BackGround::~Title_BackGround()
 
 void Title_BackGround::Start()
 {
-	m_Render = CreateRender("Main_Title.bmp", RENDERORDER::BACKGROUND);
+	m_Render = CreateRender("Main_Title.bmp", ZORDER::BACKGROUND);
 	m_Render->SetScale(GameEngineWindow::GetScreenSize());
 	m_Render->SetPosition(GameEngineWindow::GetScreenSize().half());
 }

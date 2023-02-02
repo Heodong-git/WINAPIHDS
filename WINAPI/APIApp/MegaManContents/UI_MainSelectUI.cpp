@@ -28,44 +28,44 @@ void UI_MainSelectUI::Start()
 	m_ScreenSizeHalf = m_ScreenSize.half();
 
 	// X select UI 
-	m_SelectX = CreateRender(RENDERORDER::UI);
+	m_SelectX = CreateRender(ZORDER::UI);
 	m_SelectX->SetImage("select_UI_X.bmp");
 	m_SelectX->SetScaleToImage();
 	m_SelectX->SetPosition(m_ScreenSizeHalf + float4 { -250.0f ,  0.0f});
 
 	// Zero select UI
-	m_SelectZero = CreateRender(RENDERORDER::UI);
+	m_SelectZero = CreateRender(ZORDER::UI);
 	m_SelectZero->SetImage("select_UI_zero.bmp");
 	m_SelectZero->SetScaleToImage();
 	m_SelectZero->SetPosition(m_ScreenSizeHalf + float4{ 250.0f , 0.0f });
 
 	// 초록색 Select Bar 
-	m_SelectBar = CreateRender("select_select_bar_zero.bmp", RENDERORDER::UI);
+	m_SelectBar = CreateRender("select_select_bar_zero.bmp", ZORDER::UI);
 	m_SelectBar->CreateAnimation({ .AnimationName = "select_zero" , .ImageName = "select_select_bar_zero.bmp",
 								   .Start = 0 , .End = 2 , .InterTime = 0.05f });
 	m_SelectBar->CreateAnimation({ .AnimationName = "select_X", .ImageName = "select_select_bar_X.bmp" ,
 								   .Start = 0, .End = 2, .InterTime = 0.05f });
 
 	// X 텍스트
-	m_TextX = CreateRender(RENDERORDER::UI_Text);
+	m_TextX = CreateRender(ZORDER::UI_Text);
 	m_TextX->SetImage("select_UI_Text_X.bmp");
 	m_TextX->SetScale(m_TextX->GetImage()->GetImageScale() * 2.0f);
 	m_TextX->SetPosition(m_ScreenSizeHalf + float4{ -250.f , 260.0f });
 
 	// Zero 텍스트
-	m_TextZero = CreateRender(RENDERORDER::UI_Text);
+	m_TextZero = CreateRender(ZORDER::UI_Text);
 	m_TextZero->SetImage("select_UI_Text_Zero.bmp");
 	m_TextZero->SetScale(m_TextZero->GetImage()->GetImageScale() * 2.0f);
 	m_TextZero->SetPosition(m_ScreenSizeHalf + float4{ 350.f , 270.0f });
 
 	// Top 텍스트
-	m_TopText = CreateRender(RENDERORDER::UI_Text);
+	m_TopText = CreateRender(ZORDER::UI_Text);
 	m_TopText->SetImage("select_UI_text_playerselect.bmp");
 	m_TopText->SetScale(m_TopText->GetImage()->GetImageScale() * 1.5f);
 	m_TopTextStartPos = { m_ScreenSize.x + 450.f , 100.0f };
 	m_TopText->SetPosition(m_TopTextStartPos);
 
-	m_BottomText = CreateRender(RENDERORDER::UI_Text);
+	m_BottomText = CreateRender(ZORDER::UI_Text);
 	m_BottomText->SetImage("select_UI_text_playerselect.bmp");
 	m_BottomText->SetScale(m_TopText->GetImage()->GetImageScale() * 1.5f);
 	m_BottomTextStartPos = { -450.0f , 850.0f };
@@ -73,7 +73,7 @@ void UI_MainSelectUI::Start()
 
 	// 제로 애니메이션
 	// 픽셀편집할겸 임시로 설정
-	m_ZeroAnimation = CreateRender(RENDERORDER::PLAYER);
+	m_ZeroAnimation = CreateRender(ZORDER::PLAYER);
 	m_ZeroAnimation->CreateAnimation({ .AnimationName = "select_idle_left" , .ImageName = "select_player_idle_walk_left.bmp" ,
 									  .Start = 0, .End = 5 , .InterTime = 0.15f });
 	m_ZeroAnimation->CreateAnimation({ .AnimationName = "select_attack_left", .ImageName = "select_player_attack_left.bmp" ,

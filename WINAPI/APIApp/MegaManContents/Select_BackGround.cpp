@@ -15,7 +15,7 @@ Select_BackGround::~Select_BackGround()
 
 void Select_BackGround::Start()
 {
-	m_Render = CreateRender("select_background.bmp", RENDERORDER::BACKGROUND);
+	m_Render = CreateRender("select_background.bmp", ZORDER::BACKGROUND);
 	m_Render->SetScale(GameEngineWindow::GetScreenSize());
 	m_Render->SetPosition(GameEngineWindow::GetScreenSize().half());
 }

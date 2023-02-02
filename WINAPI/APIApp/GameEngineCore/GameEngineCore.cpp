@@ -81,7 +81,8 @@ void GameEngineCore::GlobalUpdate()
 	Core->MainLevel->ActorsRender(TimeDeltaTime);
 	// 더블버퍼에 이미지가 모두 그려졌기 때문에 백버퍼에 옮겨그려준다. 
 	GameEngineWindow::DoubleBufferRender();
-	
+	// 연산, 렌더링이 모두 완료 됐다면 메모리에서 제거될 녀석들을 지워준다. 
+	Core->MainLevel->Release();
 }
 
 // 생성된 코어클래스의 End 함수 동작

@@ -1,7 +1,9 @@
 #pragma once
 #include <GameEnginePlatform/GameEngineImage.h>
-#include <GameEngineCore/GameEngineObject.h>
+#include <GameEngineCore/GameEngineComponent.h>
 #include <map>
+
+
 // 랜더링에 관련된 기능을 모두 집약
 
 // 프레임애니메이션파라미터
@@ -27,10 +29,11 @@ public:
 // 설명 :
 class GameEngineActor;
 class GameEngineLevel;
-class GameEngineRender : public GameEngineObject
+class GameEngineRender : public GameEngineComponent
 {
 	friend GameEngineActor;
 	friend GameEngineLevel;
+	
 
 public:
 	// constrcuter destructer
@@ -44,29 +47,6 @@ public:
 	GameEngineRender& operator=(GameEngineRender&& _Other) noexcept = delete;
 
 	void SetImage(const std::string_view& _ImageName);
-
-	// 포지션 세팅
-	inline void SetPosition(float4 _Position)
-	{
-		Position = _Position;
-	}
-
-	inline void SetMove(float4  _Position)
-	{
-		Position += _Position;
-	}
-
-	// 렌더러의 포지션을 받아온다.
-	inline float4 GetPosition()
-	{
-		return Position;
-	}
-
-	inline void SetScale(float4 _Scale)
-	{
-		Scale = _Scale;
-	}
-
 	void SetScaleToImage();
 	void SetFrame(int _Frame);
 
@@ -74,8 +54,6 @@ public:
 	{
 		return Frame;
 	}
-
-	GameEngineActor* GetActor();
 
 	void SetTransColor(int _Color)
 	{
@@ -104,25 +82,13 @@ public:
 protected:
 
 private:
-	// 이 Render를 소유한 액터를 저장
-	GameEngineActor* Owner = nullptr;
-
-	// Zorder 값 
-	int Order = 0;
-	// Owner로 부터 얼만큼 떨어져있을 것인지
-	float4 Position = float4::Zero;
-	// 출력될 크기
-	float4 Scale = float4::Zero;
 	// 출력시 사용할 이미지
 	GameEngineImage* Image = nullptr;
-
 	// 카메라의 영향을 받지 않을 액터는 EffectCameraOff() 를 Start 에서 호출.
 	bool IsEffectCamera = true;
-
+	// 출력하지 않을 이미지의 RGB값 
 	int TransColor = RGB(255, 0, 255);
-
 	int Frame = 0;
-
 	void Render(float _DeltaTime);
 
 	// 프레임애니메이션 클래스는 렌더에서만 내부적으로 사용하기 때문에 private 접근제한지정자에 두고 사용한다. 

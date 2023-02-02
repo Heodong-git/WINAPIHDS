@@ -1,6 +1,7 @@
 #pragma once
 #include <math.h>
 #include <cmath>
+#include <string>
 
 
 // final 키워드 : 해당 키워드가 입력되어 있다면 그 클래스는 상속을 내리지 못한다.
@@ -77,6 +78,26 @@ public:
 	int hiw() const
 	{
 		return static_cast<int>(w * 0.5f);
+	}
+
+	float hx() const
+	{
+		return x * 0.5f;
+	}
+
+	float hy() const
+	{
+		return y * 0.5f;
+	}
+
+	float hz() const
+	{
+		return z * 0.5f;
+	}
+
+	float hw() const
+	{
+		return w * 0.5f;
 	}
 
 	// 절반
@@ -225,6 +246,14 @@ public:
 		return *this;
 	}
 
+	std::string ToString()
+	{
+		char ArrReturn[256];
+
+		sprintf_s(ArrReturn, "x: %f, y: %f, z: %f, w: %f", x, y, z, w);
+
+		return std::string(ArrReturn);
+	}
 };
 
 // 클래스를 만든 이유.

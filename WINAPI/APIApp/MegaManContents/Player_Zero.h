@@ -20,7 +20,7 @@ enum class PlayerState
 	HIT,
 };
 
-// 디버깅용 키 다시 만들어야함. 
+class GameEngineCollision;
 class Player_Zero : public GameEngineActor
 {
 public:
@@ -44,8 +44,11 @@ private:
 	bool		 m_DebugMode = false;
 	// 어디서 썼던거같은데.. 어디지?ㅋㅋㅋㅋ
 	static float m_Time;
+	float		 m_HitTime = 0.5f;
+	float		 m_DashEffectLiveTime = 0.0f;
+	float		 m_DashEffectMaxTime = 0.64f;
 	// 이동속도 
-	float	     m_MoveSpeed = 700.0f;
+	float	     m_MoveSpeed = 800.0f;
 	// 기본 방향 - 오른쪽, 문자열로 저장
 	std::string  m_DirString = "Right_";
 	// 방향 
@@ -58,6 +61,10 @@ private:
 
 	// 렌더러 
 	GameEngineRender* m_AnimationRender = nullptr;
+	GameEngineRender* m_EffectRender = nullptr;
+
+	// 충돌체 
+	GameEngineCollision* m_Collision = nullptr;
 	
 	// 중력상태 
 	bool		 m_Gravity = true;

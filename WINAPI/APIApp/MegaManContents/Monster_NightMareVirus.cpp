@@ -20,7 +20,7 @@ void Monster_NightMareVirus::Start()
 {
 	SetPos({ 600, 600 });
 
-	AnimationRender = CreateRender(RENDERORDER::MONSTER);
+	AnimationRender = CreateRender(ZORDER::MONSTER);
 	AnimationRender->SetScale({200, 200});
 	AnimationRender->CreateAnimation({ .AnimationName = "monster_nightmare_virus_leftidle",
 									  .ImageName = "monster_nightmare_virus_left.bmp",

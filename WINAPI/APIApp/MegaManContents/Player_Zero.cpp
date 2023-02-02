@@ -4,6 +4,7 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineResources.h>
 #include <GameEngineCore/GameEngineRender.h>
+#include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineLevel.h>
 
 #include "ContentsEnum.h"
@@ -21,7 +22,6 @@ Player_Zero::~Player_Zero()
 
 void Player_Zero::DirCheck(const std::string_view& _AnimationName)
 {
-
 	// 현재 방향문자열 값을 받아온다. 
 	std::string PrevDirString = m_DirString;
 	// 해당하는 방향의 애니메이션으로 change
@@ -67,12 +67,24 @@ void Player_Zero::Start()
 		GameEngineInput::CreateKey("DebugMode", 'Q');
 	}
 
-	
+
 	// 렌더러생성, 생성시 zorder 값 입력 
-	m_AnimationRender = CreateRender(RENDERORDER::PLAYER);
+	m_AnimationRender = CreateRender(ZORDER::PLAYER);
 	m_AnimationRender->SetScale({ 640 * 1.1f , 480 * 1.6f });
-	// 구조체를 넣어주는데 원하는 변수의 값만 수정하여 넣어줄 수 있다.
-	// 단, 순서는 지켜서 넣어주어야 빨간줄이 그이지 않는다. 
+
+	// 이펙트렌더러 생성
+	m_EffectRender = CreateRender("effect_dash_right.bmp", ZORDER::PLAYER_EFFECT);
+	m_EffectRender->SetScale({ 320 * 1.5f, 240 * 1.5f });
+
+	// 이펙트애니메이션 생성
+	m_EffectRender->CreateAnimation({ .AnimationName = "right_dash_effect" , .ImageName = "effect_dash_right.bmp" ,
+								   . Start = 0, .End = 7, .InterTime = 0.05f });
+	m_EffectRender->CreateAnimation({ .AnimationName = "left_dash_effect" , .ImageName = "effect_dash_left.bmp" ,
+									   . Start = 0, .End = 7, .InterTime = 0.05f });
+
+	// 충돌체 생성
+	m_Collision = CreateCollision(COLORDER::PLAYER);
+	m_Collision->SetScale({ 100 , 100 });
 
 	// 플레이어
 	// 리콜
@@ -80,7 +92,7 @@ void Player_Zero::Start()
 									   .Start = 0 , .End = 18 , .InterTime = 0.07f });
 
 	// 아이들
-	m_AnimationRender->CreateAnimation({ .AnimationName = "right_idle",  .ImageName = "player_idle_walk_right.bmp", 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_idle",  .ImageName = "player_idle_walk_right.bmp",
 									   .Start = 0, .End = 5 , .InterTime = 0.15f });
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_idle",  .ImageName = "player_idle_walk_left.bmp",
 									   .Start = 0, .End = 5 , .InterTime = 0.15f });
@@ -148,10 +160,15 @@ void Player_Zero::Start()
 
 	// 히트 시 애니메이션
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_player_hit", .ImageName = "player_rope_attacked_right.bmp" ,
-							   .Start = 20, .End = 23, .InterTime = 0.1f , .Loop = false });
+							   .Start = 20, .End = 23, .InterTime = 0.15f , .Loop = false });
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_player_hit" , .ImageName = "player_rope_attacked_left.bmp" ,
-									   .Start = 20, .End = 23 , .InterTime = 0.1f , .Loop = false });
+									   .Start = 20, .End = 23 , .InterTime = 0.15f , .Loop = false });
+	/*m_HpBarRender = CreateRender(ZORDER::UI);
+	m_HpBarRender->SetScale({ 320 * 3.0f , 240 * 3.0f });
+	m_HpBarRender->CreateAnimation({ .AnimationName = "Player_Hpbar0" , .ImageName = "ui_hp_bar.bmp" ,
+								.Start = 0 , .End = 0 , .InterTime = 0.15f });
 
+	m_HpBarRender->ChangeAnimation("Player_Hpbar0");*/
 	
 	// 확인해야함 여기서 리콜이면 
 	ChangeState(PlayerState::RECALL);
@@ -270,12 +287,24 @@ void Player_Zero::Update(float _DeltaTime)
 	{
 		DebugSwitch();
 	}
-
-
 	// 현재 플레이어의 상태값에 따라 업데이트를 진행.
 	UpdateState(_DeltaTime);
 	
 	Movecalculation(_DeltaTime);
+
+	// 컬리전삭제 예시용코드 
+	/*if (nullptr != BodyCollision)
+	{
+		std::vector<GameEngineCollision*> Collision;
+		if (true == BodyCollision->Collision({ .TargetGroup = static_cast<int>(BubbleCollisionOrder::Monster), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, Collision))
+		{
+			for (size_t i = 0; i < Collision.size(); i++)
+			{
+				GameEngineActor* ColActor = Collision[i]->GetActor();
+				ColActor->Death();
+			}
+		}
+	}*/
 	
 }
 
@@ -293,4 +322,13 @@ void Player_Zero::Render(float _DeltaTime)
 		ActorPos.iy() + 5
 	);
 
+	// 디버그용 위치출력시 참고할 코드 
+	/*std::string MouseText = "MousePosition : ";
+	MouseText += GetLevel()->GetMousePos().ToString();
+
+	std::string CameraMouseText = "MousePositionCamera : ";
+	CameraMouseText += GetLevel()->GetMousePosToCamera().ToString();
+
+	GameEngineLevel::DebugTextPush(MouseText);
+	GameEngineLevel::DebugTextPush(CameraMouseText);*/
 }

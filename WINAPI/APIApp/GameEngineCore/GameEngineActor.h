@@ -100,5 +100,7 @@ private:
 	float4  Pos = { 0.0f, 0.0f };			 // 위치를 저장할 변수
 	std::list<GameEngineRender*> RenderList; // 액터는 자신이 출력해야할 Render 리스트를 가진다. 
 	std::list<GameEngineCollision*> CollisionList;
+
+	void Release();
 };
 

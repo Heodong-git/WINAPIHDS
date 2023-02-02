@@ -80,7 +80,7 @@ public:
 protected:
 
 private:
-	int Order;
+	int Order = 0;
 
 	GameEngineObject* Parent = nullptr;
 

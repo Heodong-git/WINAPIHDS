@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineResources.h>
 #include <GameEngineCore/GameEngineRender.h>
 #include <GameEngineCore/GameEngineLevel.h>
+#include <GameEngineCore/GameEngineCollision.h>
 
 #include "ContentsEnum.h"
 
@@ -53,6 +54,7 @@ void Player_Zero::ChangeState(PlayerState _State)
 		DoubleJumpStart();
 		break;
 	case PlayerState::HIT:
+		HitStart();
 		break;
 	default:
 		break;
@@ -220,6 +222,14 @@ void Player_Zero::MoveStart()
 
 void Player_Zero::MoveUpdate(float _DeltaTime)
 {	
+	// 단일 충돌체크 
+	if (true == m_Collision->Collision({ .TargetGroup = static_cast<int>(COLORDER::MONSTER) }))
+	{
+		ChangeState(PlayerState::HIT);
+		return;
+	}
+
+
 	// 무브의 업데이트에서는 현재 아무키도 눌리지 않았다면 기본 IDLE 상태로 변경한다.  
 	if (
 		false == GameEngineInput::IsPress("LeftMove") &&
@@ -307,16 +317,32 @@ void Player_Zero::NormalAttackEnd()
 {
 }
 
+
+// 그냥 ㅅㅂ 클래스 따로 만들면 바로 해결일거 같은데
+// 클래스 만들고, 대쉬스타트하면 생성, 클래스 자체 업데이트에서는 시간지나면 데스
+// 데스처리한거는 오늘 릴리즈구조 만들었으니까 
 void Player_Zero::DashStart()
 {
+	// 대시 스타트에서는 이펙트렌더러의 업데이트상태를 on으로 변경
 	DirCheck("Dash");
+	if (true == GameEngineInput::IsPress("RightMove"))
+	{
+		m_EffectRender->SetPosition(float4{ -250 , 0 });
+		m_EffectRender->ChangeAnimation(m_DirString + "dash_effect");
+	}
+
+	if (true == GameEngineInput::IsPress("LeftMove"))
+	{
+		m_EffectRender->SetPosition(float4{ 250 , 0 });
+		m_EffectRender->ChangeAnimation(m_DirString + "dash_effect");
+	}
 }
 
 void Player_Zero::DashUpdate(float _Time)
 {
 	// 대쉬업데이트에서는 공중상태에서 대쉬 모션이 종료되면 
 	// 낙하모션으로 바뀌어야함. 결국 그냥 낙하모션을 따로 해야되네 
-	if (m_AnimationRender->IsAnimationEnd())
+	if (true == m_AnimationRender->IsAnimationEnd())
 	{
 		ChangeState(PlayerState::IDLE);
 		return;

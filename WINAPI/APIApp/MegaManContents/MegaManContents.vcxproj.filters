@@ -126,5 +126,8 @@
     <Filter Include="BackGround">
       <UniqueIdentifier>{85d0a1e8-cebd-494f-91dd-bb1994ba963d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Effect">
+      <UniqueIdentifier>{45e9794a-8312-4ee8-9120-56e4c81e35df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

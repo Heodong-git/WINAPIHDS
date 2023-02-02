@@ -14,7 +14,7 @@ Boss_Colonel::~Boss_Colonel()
 
 void Boss_Colonel::Start()
 {
-	m_Render = CreateRender(RENDERORDER::MONSTER);
+	m_Render = CreateRender(ZORDER::BOSS);
 	m_Render->SetScale({ 640 * 1.7f , 480 * 2.0f });
 
 	// 전투시작모션
@@ -30,7 +30,7 @@ void Boss_Colonel::Start()
 	m_Render->CreateAnimation({ .AnimationName = "Colonel_Moonthrow_Left" , .ImageName = "spaceport_colonel_left.bmp" ,
 								.Start = 9 , .End = 10 , .InterTime = 0.8f });
 
-	m_Render->ChangeAnimation("Colonel_TeleportAttack_left");
+	m_Render->ChangeAnimation("Colonel_Start_left");
 	
 }
 

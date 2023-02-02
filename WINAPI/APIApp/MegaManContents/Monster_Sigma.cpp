@@ -18,7 +18,7 @@ void Monster_Sigma::Start()
 	SetPos({ 1200, 350 });
 
 	// 렌더생성 , 생성시 사용할 이미지, Zorder 값 입력
-	GameEngineRender* Render = CreateRender("Sigma_left.bmp", RENDERORDER::MONSTER);
+	GameEngineRender* Render = CreateRender("Sigma_left.bmp", ZORDER::MONSTER);
 	// 렌더링시 x축 y축의 크기설정
 	Render->SetScale({ 200, 200 });
 }

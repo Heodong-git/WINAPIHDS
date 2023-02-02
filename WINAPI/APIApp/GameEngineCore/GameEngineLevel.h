@@ -4,16 +4,20 @@
 #include <vector>
 
 #include <GameEngineBase/GameEngineMath.h>
+#include <GameEngineBase/GameEngineDebug.h>
 #include <GameEngineCore/GameEngineObject.h>
+#include <GameEngineCore/GameEngineCollision.h>
 
 // 윈도우창에 보여지는 화면을 Level 또는 Sceen 이라고 한다. 
 class GameEngineCore;
 class GameEngineActor;
 class GameEngineRender;
+class GameEngineCollsion;
 class GameEngineLevel : public GameEngineObject
 {
 	friend GameEngineCore;
 	friend GameEngineRender;
+	friend GameEngineCollision;
 
 public:
 	// constrcuter destructer
@@ -25,6 +29,15 @@ public:
 	GameEngineLevel(GameEngineLevel&& _Other) noexcept = delete;
 	GameEngineLevel& operator=(const GameEngineLevel& _Other) = delete;
 	GameEngineLevel& operator=(GameEngineLevel&& _Other) noexcept = delete;
+
+	// 디버그용 렌더 스위치
+	static void DebugRenderSwitch()
+	{
+		IsDebugRender = !IsDebugRender;
+	}
+
+	float4 GetMousePos();
+	float4 GetMousePosToCamera();
 
 
 	// 액터생성시 Order 타입을 인자로 받는다. 
@@ -97,6 +110,11 @@ public:
 		return Result;
 	}
 
+	static void DebugTextPush(const std::string& _DebugText)
+	{
+		DebugTexts.push_back(_DebugText);
+	}
+
 
 protected:
 	// 화면을 보여줄 때 사용할 부분들을 로드한다.
@@ -109,8 +127,13 @@ protected:
 	virtual void LevelChangeStart(GameEngineLevel* _PrevLevel) = 0;
 	
 private:
+	static bool IsDebugRender;
+
 	// 카메라 좌표
 	float4 CameraPos = float4::Zero;
+
+	static float4 TextOutStart;
+	static std::vector<std::string> DebugTexts;
 
 	// Order 값을 키값으로 하는 액터리스트를 저장한다. 
 	std::map<int, std::list<GameEngineActor*>> Actors;
@@ -124,6 +147,14 @@ private:
 
 	// 렌더러 저장
 	std::map<int, std::list<GameEngineRender*>> Renders;
-
+	// 맵에 렌더러 추가
 	void PushRender(GameEngineRender* _Render);
+
+	// 충돌체 저장
+	std::map<int, std::list<GameEngineCollision*>> Collisions;
+	// 맵에 충돌체 추가  
+	void PushCollision(GameEngineCollision* _Collision);
+
+	// 엔진수준의 기능이기 때문에 private으로 둔다.
+	void Release();
 };

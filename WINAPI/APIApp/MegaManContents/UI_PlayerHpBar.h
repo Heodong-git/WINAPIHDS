@@ -1,6 +1,8 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 
+
+class GameEngineRender;
 class UI_PlayerHpBar: public GameEngineActor
 {
 public:
@@ -20,6 +22,6 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
-
+	GameEngineRender* m_AnimationRender = nullptr;
 };
 

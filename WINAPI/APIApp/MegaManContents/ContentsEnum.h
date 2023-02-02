@@ -3,14 +3,24 @@
 // 컨텐츠 프로젝트에서 사용할 enum class 집합
 
 // Z오더 
-enum class RENDERORDER
+enum class ZORDER
 {
 	BACKGROUND,
 	MAP,
 	MONSTER,
+	BOSS,
 	UI,
 	PLAYER,
+	PLAYER_EFFECT,
 	UI_Text
+};
+
+enum class COLORDER
+{
+	PLAYER,
+	PLAYERATTACK,
+	MONSTER,
+	MONSTERATTACK
 };
 
 // 타이틀메뉴 

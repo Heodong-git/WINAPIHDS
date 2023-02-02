@@ -19,7 +19,7 @@ public:
 
 	Player_Zero* GetPlayer()
 	{
-		return Player;
+		return m_Player;
 	}
 
 protected:
@@ -30,7 +30,8 @@ protected:
 	void LevelChangeStart(GameEngineLevel* _PrevLevel) override;
 
 private:
-	Player_Zero* Player = nullptr;
+	Player_Zero* m_Player = nullptr;
+	float4		m_StartCameraPos = float4::Zero;
 	
 	// 몬스터들의 시작위치를 저장해두는 게 맞는건가..? 
 	// 흠.. 일단 플레이어 애니메이션부터 
