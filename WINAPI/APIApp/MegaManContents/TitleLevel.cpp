@@ -51,7 +51,7 @@ void TitleLevel::Loading()
 
 	CreateActor<Title_BackGround>();
 	// 생성할 메인 UI를 가지고 있게 하고, 메뉴 선택시에
-	// 선택되어 있는 메뉴를 받아와서 메뉴에 따라서 동작시킨다. 
+	// 선택되어 있는 메뉴를 받아와서 메뉴에 따라서 동작시킨다.	
 	m_TitleUI = CreateActor<UI_TitleUI>();
 }
 

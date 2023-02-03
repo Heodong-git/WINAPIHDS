@@ -18,14 +18,23 @@ void UI_PlayerHpBar::Start()
 	m_AnimationRender = CreateRender(ZORDER::UI);
 	m_AnimationRender->SetScale({ 320 * 3.0f , 240 * 3.0f });
 
-	m_AnimationRender->CreateAnimation({ .AnimationName = "Player_Hpbar0" , .ImageName = "ui_hp_bar.bmp" ,
-								.Start = 0 , .End = 0 , .InterTime = 0.15f });
+	// 여기부터다시. 
+	// 카메라가 움직이면 카메라와 똑같이 이동하면 될듯. 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "Player_HpbarMax" , .ImageName = "ui_hp_bar.bmp" ,
+								.Start = 0 , .End = 35 , .InterTime = 0.6f });
+	
+	/*m_AnimationRender->CreateAnimation({ .AnimationName = "Player_HpbarMax" , .ImageName = "ui_hp_bar.bmp" ,
+								.Start = 1 , .End = 1 , .InterTime = 0.6f });
 
-	m_AnimationRender->ChangeAnimation("Player_Hpbar0");
+	m_AnimationRender->CreateAnimation({ .AnimationName = "Player_HpbarMax" , .ImageName = "ui_hp_bar.bmp" ,
+								.Start = 2 , .End = 2 , .InterTime = 0.6f });*/
+
+	m_AnimationRender->ChangeAnimation("Player_HpbarMax");
 }
 
-void UI_PlayerHpBar::Update(float _DeltaTime)
+void UI_PlayerHpBar::Update(float _DeltaTime) 
 {
+	
 }
 
 void UI_PlayerHpBar::Render(float _DeltaTime)
