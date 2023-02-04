@@ -127,6 +127,13 @@ GameEngineCore::~GameEngineCore()
 
 void GameEngineCore::CoreStart(HINSTANCE _instance)
 {
+	// 마우스 좌,우클릭 키생성
+	if (false == GameEngineInput::IsKey("EngineMouseLeft"))
+	{
+		GameEngineInput::CreateKey("EngineMouseLeft", VK_LBUTTON);
+		GameEngineInput::CreateKey("EngineMouseRight", VK_RBUTTON);
+	}
+
 	// 윈도우 생성 
 	GameEngineWindow::WindowCreate(_instance, "MainWindow", { 1280.0f, 960.0f }, { 0, 0 });
 	

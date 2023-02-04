@@ -69,6 +69,9 @@ void Player_Zero::Start()
 	// 렌더러생성, 생성시 zorder 값 입력 
 	m_AnimationRender = CreateRender(ZORDER::PLAYER);
 	m_AnimationRender->SetScale({ 1280 , 960 });
+
+	m_Collision = CreateCollision(COLORDER::PLAYER);
+	m_Collision->SetScale({ 100, 100 });
 	
 	// 리콜
 	// 0 ~ 18
@@ -83,7 +86,7 @@ void Player_Zero::Start()
 	// 오른쪽 점프
 	// 19 ~ 31 
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_jump" , .ImageName = "player_zero_sprite_right.bmp",
-									   .Start = 19 , .End = 31 , .InterTime = 0.05f });
+									   .Start = 19 , .End = 31 , .InterTime = 0.1f });
 
 	// 31~32 착지모션인데 일단. 음..일단 만들어둬 
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_landing" , .ImageName = "player_zero_sprite_right.bmp",
@@ -184,7 +187,7 @@ void Player_Zero::Start()
 	// 왼쪽 점프
 	// 19 ~ 31 , 0.05
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_jump" , .ImageName = "player_zero_sprite_left.bmp",
-									   .Start = 19 , .End = 31 , .InterTime = 0.05f });
+									   .Start = 19 , .End = 31 , .InterTime = 0.1f });
 
 	// 31~32 착지모션인데 일단. 음..일단 만들어둬 
 	// 30 ~ 32 ? 0.4
@@ -359,7 +362,6 @@ void Player_Zero::Movecalculation(float _DeltaTime)
 		m_MoveDir = float4::Zero;
 	}
 
-	
 	// 잠깐주석 
 	if (false == Check)
 	{
@@ -417,7 +419,7 @@ void Player_Zero::Render(float _DeltaTime)
 {
 	// 디버깅용
 	HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
-	float4 ActorPos = GetPos() - GetLevel()->GetCameraPos();
+	float4 ActorPos = GetPos() -GetLevel()->GetCameraPos();
 
 	Rectangle(DoubleDC,
 		ActorPos.ix() - 5,

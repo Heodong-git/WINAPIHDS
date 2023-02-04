@@ -119,6 +119,12 @@ void GameEngineCollision::SetOrder(int _Order)
 
 bool GameEngineCollision::Collision(const CollisionCheckParameter& _Parameter)
 {
+	// 업데이트가 false 일 경우에는 false 반환 
+	if (false == IsUpdate())
+	{
+		return false;
+	}
+
 	// 충돌검사를 실행할 그룹을 받아온다.
 	std::list<GameEngineCollision*>& _TargetGroup = GetActor()->GetLevel()->Collisions[_Parameter.TargetGroup];
 
@@ -126,6 +132,12 @@ bool GameEngineCollision::Collision(const CollisionCheckParameter& _Parameter)
 	// 받아온 그룹을 순회하며 
 	for (GameEngineCollision* OtherCollision : _TargetGroup)
 	{
+		// 그룹에 속한 충돌체가 update가 false 상태라면 continue; 
+		if (false == OtherCollision->IsUpdate())
+		{
+			continue;
+		}
+
 		CollisionType Type = _Parameter.ThisColType;
 		CollisionType OtherType = _Parameter.TargetColType;
 
@@ -146,6 +158,11 @@ bool GameEngineCollision::Collision(const CollisionCheckParameter& _Parameter)
 
 bool GameEngineCollision::Collision(const CollisionCheckParameter& _Parameter, std::vector<GameEngineCollision*>& _Collision)
 {
+	if (false == IsUpdate())
+	{
+		return false;
+	}
+
 	// 데이터를 저장하기 전에 벡터 초기화
 	_Collision.clear();
 
@@ -193,7 +210,7 @@ CollisionData GameEngineCollision::GetCollisionData()
 void GameEngineCollision::DebugRender()
 {
 	HDC BackBufferDc = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
-	float4 DebugRenderPos = GetActorPlusPos() + GetActor()->GetLevel()->GetCameraPos();
+	float4 DebugRenderPos = GetActorPlusPos() - GetActor()->GetLevel()->GetCameraPos();
 	switch (DebugRenderType)
 	{
 	case CT_Point:

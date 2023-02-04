@@ -263,13 +263,6 @@ void Player_Zero::IdleUpdate(float _Time)
 		ChangeState(PlayerState::JUMP);
 		return;
 	}
-
-	/*if (GameEngineInput::IsPress("UpMove"))
-	{
-		ChangeState(PlayerState::RIDEUP);
-		return;
-	}*/
-
 }
 
 void Player_Zero::IdleEnd()
@@ -503,7 +496,6 @@ void Player_Zero::JumpUpdate(float _Time)
 		return;
 	}
 
-
 	if (true == GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(PlayerState::JUMP_ATTACK);
@@ -518,7 +510,8 @@ void Player_Zero::JumpUpdate(float _Time)
 	// 점프키 중에 반대방향키를 누르면 그쪽으로 애니메이션이 바뀌어야함. 
 	if (true == GameEngineInput::IsPress("LeftMove") || true == GameEngineInput::IsPress("RightMove"))
 	{
-		// 어.. 음.. 흠.. 흐음.. 일단 나중에 다른 애니메이션부터.. 
+		// 이 때 현재 프레임을 넘겨주면 그 프레임에서 이어서 애니메이션을 동작시키면 될 것 같은데.. 
+		DirCheck("Jump");
 		return;
 	}
 }

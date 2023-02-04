@@ -55,9 +55,9 @@ private:
 	float		 m_DashEffectLiveTime = 0.0f;
 	float		 m_DashEffectMaxTime = 0.64f;
 	// 이동속도 
-	float	     m_MoveSpeed = 800.0f;
+	float	     m_MoveSpeed = 1000.0f;
 	// 기본 방향 - 오른쪽, 문자열로 저장
-	std::string  m_DirString = "Left_";
+	std::string  m_DirString = "Right_";
 	// 방향 
 	float4		 m_MoveDir = float4::Zero;
 
