@@ -34,62 +34,18 @@ void SpacePortLevel::Loading()
 	Directory.Move("Image");
 	Directory.Move("SpacePortLevel");
 
-	// 플레이어
 	{
-		// 리콜 
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_recall.bmp"));
-		Image->Cut(8, 3);
+		// 제로 오른쪽 스프라이트 
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_zero_sprite_right.bmp"));
+		Image->Cut(12, 16);
 	}
 	{
-		// 오른쪽 아이들 + 걷기
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_idle_walk_right.bmp"));
-		Image->Cut(8, 3);
+		// 제로 왼쪽 스프라이트
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_zero_sprite_left.bmp"));
+		Image->Cut(12, 16);
 	}
-	{
-		// 왼쪽 아이들 + 걷기
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_idle_walk_left.bmp"));
-		Image->Cut(8, 3);
-	}
-	{
-		// 오른쪽 대쉬 + 앉은상태 공격 
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_doublejump_dash_sitattack_right.bmp"));
-		Image->Cut(8, 5);
-	}
-	{
-		// 왼쪽 대쉬 + 앉은상태 공격
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_doublejump_dash_sitattack_left.bmp"));
-		Image->Cut(8, 5);
-	}
-	{
-		// 우측 기본공격
-		// attack right 
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_normal_attack_right.bmp"));
-		Image->Cut(8, 4);
-	}
-	{
-		// 좌측 기본공격 
-		// attack left
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_normal_attack_left.bmp"));
-		Image->Cut(8, 4);
-	}
-	{
-		// 점프, 점프공격
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_jump_jumpattack_right.bmp"));
-		Image->Cut(8, 4);
-	}
-	{
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_jump_jumpattack_left.bmp"));
-		Image->Cut(8, 4);
-	}
-	{
-		// 로프공격, 히트시 아파하는거 이름이 생각이안나네 
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_rope_attacked_right.bmp"));
-		Image->Cut(8, 3);
-	}
-	{
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_rope_attacked_left.bmp"));
-		Image->Cut(8, 3);
-	}
+
+
 
 	{
 		// UI HpBar

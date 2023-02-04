@@ -19,7 +19,6 @@ Player_Zero::~Player_Zero()
 {
 }
 
-
 void Player_Zero::DirCheck(const std::string_view& _AnimationName)
 {
 	// 현재 방향문자열 값을 받아온다. 
@@ -67,108 +66,213 @@ void Player_Zero::Start()
 		GameEngineInput::CreateKey("DebugMode", 'Q');
 	}
 
-
 	// 렌더러생성, 생성시 zorder 값 입력 
 	m_AnimationRender = CreateRender(ZORDER::PLAYER);
-	m_AnimationRender->SetScale({ 640 * 1.1f , 480 * 1.6f });
-
-	// 이펙트렌더러 생성
-	m_EffectRender = CreateRender("effect_dash_right.bmp", ZORDER::PLAYER_EFFECT);
-	m_EffectRender->SetScale({ 320 * 1.5f, 240 * 1.5f });
-
-	// 이펙트애니메이션 생성
-	m_EffectRender->CreateAnimation({ .AnimationName = "right_dash_effect" , .ImageName = "effect_dash_right.bmp" ,
-								   . Start = 0, .End = 7, .InterTime = 0.05f });
-	m_EffectRender->CreateAnimation({ .AnimationName = "left_dash_effect" , .ImageName = "effect_dash_left.bmp" ,
-									   . Start = 0, .End = 7, .InterTime = 0.05f });
-
-	// 충돌체 생성
-	m_Collision = CreateCollision(COLORDER::PLAYER);
-	m_Collision->SetScale({ 100 , 100 });
-
-	// 플레이어
+	m_AnimationRender->SetScale({ 1280 , 960 });
+	
 	// 리콜
-	m_AnimationRender->CreateAnimation({ .AnimationName = "right_recall" , .ImageName = "player_recall.bmp",
-									   .Start = 0 , .End = 18 , .InterTime = 0.07f });
+	// 0 ~ 18
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_recall" , .ImageName = "player_zero_sprite_right.bmp",
+									   .Start = 0 , .End = 18 , .InterTime = 0.075f });
+	// 오른쪽 아이들
+	// 14 ~ 18
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_idle" , .ImageName = "player_zero_sprite_right.bmp",
+									   .Start = 14 , .End = 18 , .InterTime = 0.14f });
 
-	// 아이들
-	m_AnimationRender->CreateAnimation({ .AnimationName = "right_idle",  .ImageName = "player_idle_walk_right.bmp",
-									   .Start = 0, .End = 5 , .InterTime = 0.15f });
-	m_AnimationRender->CreateAnimation({ .AnimationName = "left_idle",  .ImageName = "player_idle_walk_left.bmp",
-									   .Start = 0, .End = 5 , .InterTime = 0.15f });
+	// 근데 점프는 누르면 누를수록 더 높이 올라가는데 애니메이션 다만들고 생각.
+	// 오른쪽 점프
+	// 19 ~ 31 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_jump" , .ImageName = "player_zero_sprite_right.bmp",
+									   .Start = 19 , .End = 31 , .InterTime = 0.05f });
 
-	// 좌우 무브
-	m_AnimationRender->CreateAnimation({ .AnimationName = "right_move",  .ImageName = "player_idle_walk_right.bmp",
-									   .Start = 8, .End = 21 , .InterTime = 0.05f });
-	m_AnimationRender->CreateAnimation({ .AnimationName = "left_move",  .ImageName = "player_idle_walk_left.bmp",
-									   .Start = 8, .End = 21 , .InterTime = 0.05f });
+	// 31~32 착지모션인데 일단. 음..일단 만들어둬 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_landing" , .ImageName = "player_zero_sprite_right.bmp",
+									   .Start = 30 , .End = 32 , .InterTime = 0.4f });
 
-	// 좌우 기본공격
-	// 임시로 3타 묶어둠.
-	m_AnimationRender->CreateAnimation({ .AnimationName = "right_normal_attack", .ImageName = "player_normal_attack_right.bmp" ,
-									   .Start = 0, .End = 28, .InterTime = 0.025f , .Loop = false });
-	m_AnimationRender->CreateAnimation({ .AnimationName = "left_normal_attack" , .ImageName = "player_normal_attack_left.bmp" ,
-									   .Start = 0, .End = 28 , .InterTime = 0.025f , .Loop = false });
 
-	// 좌우 대쉬 
-	m_AnimationRender->CreateAnimation({ .AnimationName = "right_dash", .ImageName = "player_doublejump_dash_sitattack_right.bmp" ,
-								   .Start = 10, .End = 22, .InterTime = 0.06f , .Loop = false });
-	m_AnimationRender->CreateAnimation({ .AnimationName = "left_dash" , .ImageName = "player_doublejump_dash_sitattack_left.bmp" ,
-									   .Start = 10, .End = 22 , .InterTime = 0.06f , .Loop = false });
+	// 오른쪽 무브
+	// 37 ~ 50
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_move" , .ImageName = "player_zero_sprite_right.bmp",
+									   .Start = 37 , .End = 50 , .InterTime = 0.04f });
+	// 오른쪽 공격
+	// 51~91 까지 1~3타
+	// 1타 : 51 ~ 66 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_normal_attack_first" , .ImageName = "player_zero_sprite_right.bmp",
+									   .Start = 51 , .End = 66 , .InterTime = 0.025f });
+	// 2타 67 ~ 78
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_normal_attack_second" , .ImageName = "player_zero_sprite_right.bmp",
+									   .Start = 67 , .End = 78 , .InterTime = 0.025f });
 
-	// 좌우 앉기
-	m_AnimationRender->CreateAnimation({ .AnimationName = "right_sit", .ImageName = "player_doublejump_dash_sitattack_right.bmp" ,
-								   .Start = 23, .End = 24, .InterTime = 0.05f , .Loop = false });
-	m_AnimationRender->CreateAnimation({ .AnimationName = "left_sit" , .ImageName = "player_doublejump_dash_sitattack_left.bmp" ,
-									   .Start = 23, .End = 24 , .InterTime = 0.05f , .Loop = false });
+	// 3타 79 ~ 92
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_normal_attack_third" , .ImageName = "player_zero_sprite_right.bmp",
+									   .Start = 79 , .End = 92 , .InterTime = 0.025f });
 
-	// 앉기 유지시 출력할 이미지 
-	m_AnimationRender->CreateAnimation({ .AnimationName = "right_press_sit", .ImageName = "player_doublejump_dash_sitattack_right.bmp" ,
-								   .Start = 24, .End = 24, .InterTime = 0.1f , .Loop = false });
-	m_AnimationRender->CreateAnimation({ .AnimationName = "left_press_sit" , .ImageName = "player_doublejump_dash_sitattack_left.bmp" ,
-									   .Start = 24, .End = 24 , .InterTime = 0.1f , .Loop = false });
+	// 오른쪽 점프공격 93 ~ 101
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_jump_attack" , .ImageName = "player_zero_sprite_right.bmp",
+									   .Start = 93 , .End = 101 , .InterTime = 0.03f });
 
-	// 앉기 공격
-	m_AnimationRender->CreateAnimation({ .AnimationName = "right_sit_attack", .ImageName = "player_doublejump_dash_sitattack_right.bmp" ,
-								   .Start = 25, .End = 33, .InterTime = 0.04f , .Loop = false });
-	m_AnimationRender->CreateAnimation({ .AnimationName = "left_sit_attack" , .ImageName = "player_doublejump_dash_sitattack_left.bmp" ,
-									   .Start = 25, .End = 33 , .InterTime = 0.04f , .Loop = false });
+	// 오른쪽 대쉬 111 ~ 121 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_dash" , .ImageName = "player_zero_sprite_right.bmp",
+									   .Start = 111 , .End = 121 , .InterTime = 0.05f });
 
-	// 필요 없어보이지만 혹시 모르니 일단 남겨두고 
-	m_AnimationRender->CreateAnimation({ .AnimationName = "right_move_start",  .ImageName = "player_idle_walk_right.bmp",
-									   .Start = 6, .End = 7 , .InterTime = 0.5f });
-	m_AnimationRender->CreateAnimation({ .AnimationName = "left_move_start",  .ImageName = "player_idle_walk_left.bmp",
-									   .Start = 6, .End = 7 , .InterTime = 0.5f });
+	// 오른쪽 벽타는 모션
+	// 122~126
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_wall" , .ImageName = "player_zero_sprite_right.bmp",
+									   .Start = 122 , .End = 126 , .InterTime = 0.5f , .Loop = false });
 
-	// 더블점프 애니메이션
-	m_AnimationRender->CreateAnimation({ .AnimationName = "right_double_jump", .ImageName = "player_doublejump_dash_sitattack_right.bmp" ,
-								   .Start = 0, .End = 9, .InterTime = 0.05f , .Loop = false });
-	m_AnimationRender->CreateAnimation({ .AnimationName = "left_double_jump" , .ImageName = "player_doublejump_dash_sitattack_left.bmp" ,
-									   .Start = 0, .End = 9 , .InterTime = 0.05f , .Loop = false });
+	// 오른쪽 벽타기 중 점프
+	// 127 ~ 129 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_wall_jump" , .ImageName = "player_zero_sprite_right.bmp",
+									   .Start = 127 , .End = 129 , .InterTime = 0.07f , .Loop = false});
+	
+	// 오른쪽 벽타기 중 공격 
+	// 130 ~ 138 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_wall_attack" , .ImageName = "player_zero_sprite_right.bmp",
+									   .Start = 130 , .End = 138 , .InterTime = 0.05f , .Loop = false });
 
-	// 일반점프 애니메이션
-	m_AnimationRender->CreateAnimation({ .AnimationName = "right_jump", .ImageName = "player_jump_jumpattack_right.bmp" ,
-								   .Start = 0, .End = 13, .InterTime = 0.08f , .Loop = true });
-	m_AnimationRender->CreateAnimation({ .AnimationName = "left_jump" , .ImageName = "player_jump_jumpattack_left.bmp" ,
-									   .Start = 0, .End = 13 , .InterTime = 0.08f , .Loop = true });
+	// 힘들다 ㅠ 
+	// 사다리 타기
+	// 139 ~ 148 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_rideup" , .ImageName = "player_zero_sprite_right.bmp",
+									   .Start = 139 , .End = 148 , .InterTime = 0.06f });
+	
+	// 사다리 마지막에  올라가는 모션
+	// 149 ~ 152 
+	// 나중에 다시 손봐야 할 수도. 픽셀 살짝 애매함
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_rideup_end" , .ImageName = "player_zero_sprite_right.bmp",
+									   .Start = 149 , .End = 152 , .InterTime = 0.07f });
 
-	// 점프 공격 
-	m_AnimationRender->CreateAnimation({ .AnimationName = "right_jump_attack", .ImageName = "player_jump_jumpattack_right.bmp" ,
-								   .Start = 15, .End = 23, .InterTime = 0.06f , .Loop = false });
-	m_AnimationRender->CreateAnimation({ .AnimationName = "left_jump_attack" , .ImageName = "player_jump_jumpattack_left.bmp" ,
-									   .Start = 15, .End = 23 , .InterTime = 0.06f , .Loop = false });
+	// 사다리 타는중 공격 
+	// 153 ~ 161
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_rideup_attack" , .ImageName = "player_zero_sprite_right.bmp",
+									   .Start = 153 , .End = 161 , .InterTime = 0.05f });
 
-	// 히트 시 애니메이션
-	m_AnimationRender->CreateAnimation({ .AnimationName = "right_player_hit", .ImageName = "player_rope_attacked_right.bmp" ,
-							   .Start = 20, .End = 23, .InterTime = 0.15f , .Loop = false });
-	m_AnimationRender->CreateAnimation({ .AnimationName = "left_player_hit" , .ImageName = "player_rope_attacked_left.bmp" ,
-									   .Start = 20, .End = 23 , .InterTime = 0.15f , .Loop = false });
-	/*m_HpBarRender = CreateRender(ZORDER::UI);
-	m_HpBarRender->SetScale({ 320 * 3.0f , 240 * 3.0f });
-	m_HpBarRender->CreateAnimation({ .AnimationName = "Player_Hpbar0" , .ImageName = "ui_hp_bar.bmp" ,
-								.Start = 0 , .End = 0 , .InterTime = 0.15f });
+	// 오른쪽 피격
+	// 162 ~ 165
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_hit" , .ImageName = "player_zero_sprite_right.bmp",
+									   .Start = 162 , .End = 165 , .InterTime = 0.14f });
 
-	m_HpBarRender->ChangeAnimation("Player_Hpbar0");*/
+	// 일정체력 이하 아이들
+	// 166 ~ 169
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_idle_tiring" , .ImageName = "player_zero_sprite_right.bmp",
+									   .Start = 166 , .End = 169 , .InterTime = 1.0f });
+
+	// 쎄게 피격
+	// 170 ~ 176
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_big_hit" , .ImageName = "player_zero_sprite_right.bmp",
+									   .Start = 170 , .End = 176 , .InterTime = 0.15f });
+
+	// exit 
+	// 177 ~ 189
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_exit" , .ImageName = "player_zero_sprite_right.bmp",
+									   .Start = 177 , .End = 189 , .InterTime = 0.09f });
+
+	// ---------------------------------- 왼쪽 ---------------------------------------------
+
+
+
+	// 왼쪽 리콜
+	// 0 ~ 18 ,  0.075
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_recall" , .ImageName = "player_zero_sprite_left.bmp",
+									   .Start = 0 , .End = 18 , .InterTime = 0.075f });
+	// 왼쪽 아이들
+	// 14 ~ 18 , 0.14
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_idle" , .ImageName = "player_zero_sprite_left.bmp",
+									   .Start = 14 , .End = 18 , .InterTime = 0.14f });
+
+	// 근데 점프는 누르면 누를수록 더 높이 올라가는데 애니메이션 다만들고 생각.
+	// 왼쪽 점프
+	// 19 ~ 31 , 0.05
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_jump" , .ImageName = "player_zero_sprite_left.bmp",
+									   .Start = 19 , .End = 31 , .InterTime = 0.05f });
+
+	// 31~32 착지모션인데 일단. 음..일단 만들어둬 
+	// 30 ~ 32 ? 0.4
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_landing" , .ImageName = "player_zero_sprite_left.bmp",
+									   .Start = 30 , .End = 32 , .InterTime = 0.4f });
+
+
+	// 왼쪽 무브
+	// 37 ~ 50
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_move" , .ImageName = "player_zero_sprite_left.bmp",
+									   .Start = 37 , .End = 50 , .InterTime = 0.04f });
+	// 오른쪽 공격
+	// 51~91 까지 1~3타
+	// 1타 : 51 ~ 66 0.025
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_normal_attack_first" , .ImageName = "player_zero_sprite_left.bmp",
+									   .Start = 51 , .End = 66, .InterTime = 0.025f });
+	// 2타 67 ~ 78 0.025
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_normal_attack_second" , .ImageName = "player_zero_sprite_left.bmp",
+									   .Start = 67 , .End = 78 , .InterTime = 0.025f });
+
+	// 3타 79 ~ 92 0.025
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_normal_attack_third" , .ImageName = "player_zero_sprite_left.bmp",
+									   .Start = 79 , .End = 92 , .InterTime = 0.025f });
+
+	// 왼쪽 점프공격 93 ~ 101
+	// 깔끔한거같은데
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_jump_attack" , .ImageName = "player_zero_sprite_left.bmp",
+									   .Start = 93 , .End = 101 , .InterTime = 0.03f });
+
+	// 왼쪽 대쉬 111 ~ 121 0.05
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_dash" , .ImageName = "player_zero_sprite_left.bmp",
+									   .Start = 111 , .End = 121 , .InterTime = 0.05f });
+
+	// 오른쪽 벽타는 모션
+	// 122~126
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_wall" , .ImageName = "player_zero_sprite_left.bmp",
+									   .Start = 122 , .End = 126 , .InterTime = 0.5f , .Loop = false });
+
+	// 오른쪽 벽타기 중 점프
+	// 127 ~ 129 0.07
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_wall_jump" , .ImageName = "player_zero_sprite_left.bmp",
+									   .Start = 126 , .End = 129 , .InterTime = 0.07f , .Loop = false });
+
+	// 오른쪽 벽타기 중 공격 
+	// 130 ~ 138 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_wall_attack" , .ImageName = "player_zero_sprite_left.bmp",
+									   .Start = 130 , .End = 138 , .InterTime = 0.04f , .Loop = false });
+
+	// 힘들다 ㅠ 
+	// 사다리 타기
+	// 139 ~ 148 0.06
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_rideup" , .ImageName = "player_zero_sprite_left.bmp",
+									   .Start = 139 , .End = 148 , .InterTime = 0.06f });
+
+	// 사다리 마지막에  올라가는 모션
+	// 149 ~ 152 
+	// 나중에 다시 손봐야 할 수도. 픽셀 살짝 애매함
+	// 이건 나중에 다시 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_rideup_end" , .ImageName = "player_zero_sprite_left.bmp",
+									   .Start = 149 , .End = 152 , .InterTime = 0.07f });
+
+	// 사다리 타는중 공격 
+	// 153 ~ 161 0.05
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_rideup_attack" , .ImageName = "player_zero_sprite_left.bmp",
+									   .Start = 153 , .End = 161 , .InterTime = 0.05f });
+
+	// 왼쪽 피격
+	// 162 ~ 165 0.14
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_hit" , .ImageName = "player_zero_sprite_left.bmp",
+									   .Start = 162 , .End = 165 , .InterTime = 0.014f });
+
+	// 일정체력 이하 아이들
+	// 166 ~ 169 1.0
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_idle_tiring" , .ImageName = "player_zero_sprite_left.bmp",
+									   .Start = 166 , .End = 169 , .InterTime = 1.0f });
+
+	// 쎄게 피격
+	// 170 ~ 176 0.15
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_big_hit" , .ImageName = "player_zero_sprite_left.bmp",
+									   .Start = 170 , .End = 175 , .InterTime = 0.15f });
+
+	// exit 
+	// 177 ~ 189 0.09
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_exit" , .ImageName = "player_zero_sprite_left.bmp",
+									   .Start = 177 , .End = 189 , .InterTime = 0.09f });
+
+	
+
 	
 	// 확인해야함 여기서 리콜이면 
 	ChangeState(PlayerState::RECALL);

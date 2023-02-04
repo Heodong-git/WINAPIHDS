@@ -35,6 +35,21 @@ void Player_Zero::ChangeState(PlayerState _State)
 	case PlayerState::JUMP:
 		JumpStart();
 		break;
+	case PlayerState::RIDEUP:
+		RideUpStart();
+		break;
+	case PlayerState::RIDEUP_ATTACK:
+		RideUpAttackStart();
+		break;
+	case PlayerState::JUMP_ATTACK:
+		JumpAttackStart();
+		break;
+	case PlayerState::WALL:
+		WallStart();
+		break;
+	case PlayerState::WALL_ATTACK:
+		WallAttackStart();
+		break;
 	case PlayerState::DASH:
 		DashStart();
 		break;
@@ -44,11 +59,14 @@ void Player_Zero::ChangeState(PlayerState _State)
 	case PlayerState::SITATTACK:
 		SitAttackStart();
 		break;
-	case PlayerState::NOMALATTACK:
-		NormalAttackStart();
+	case PlayerState::ATTACK_FIRST:
+		Attack_First_Start();
 		break;
-	case PlayerState::JUMPATTACK:
-		JumpAttackStart();
+	case PlayerState::ATTACK_SECOND:
+		Attack_Second_Start();
+		break;
+	case PlayerState::ATTACK_THIRD:
+		Attack_Third_Start();
 		break;
 	case PlayerState::DOUBLEJUMP:
 		DoubleJumpStart();
@@ -75,6 +93,21 @@ void Player_Zero::ChangeState(PlayerState _State)
 	case PlayerState::JUMP:
 		JumpEnd();
 		break;
+	case PlayerState::RIDEUP:
+		RideUpEnd();
+		break;
+	case PlayerState::RIDEUP_ATTACK:
+		RideUpAttackEnd();
+		break;
+	case PlayerState::JUMP_ATTACK:
+		JumpAttackEnd();
+		break;
+	case PlayerState::WALL:
+		WallEnd();
+		break;
+	case PlayerState::WALL_ATTACK:
+		WallAttackEnd();
+		break;
 	case PlayerState::DASH:
 		DashEnd();
 		break;
@@ -84,11 +117,14 @@ void Player_Zero::ChangeState(PlayerState _State)
 	case PlayerState::SITATTACK:
 		SitAttackEnd();
 		break;
-	case PlayerState::NOMALATTACK:
-		NormalAttackEnd();
+	case PlayerState::ATTACK_FIRST:
+		Attack_First_End();
 		break;
-	case PlayerState::JUMPATTACK:
-		JumpAttackEnd();
+	case PlayerState::ATTACK_SECOND:
+		Attack_Second_End();
+		break;
+	case PlayerState::ATTACK_THIRD:
+		Attack_Third_End();
 		break;
 	case PlayerState::DOUBLEJUMP:
 		DoubleJumpEnd();
@@ -119,6 +155,21 @@ void Player_Zero::UpdateState(float _DeltaTime)
 	case PlayerState::JUMP:
 		JumpUpdate(_DeltaTime);
 		break;
+	case PlayerState::RIDEUP:
+		RideUpUpdate(_DeltaTime);
+		break;
+	case PlayerState::RIDEUP_ATTACK:
+		RideUpUpdate(_DeltaTime);
+		break;
+	case PlayerState::JUMP_ATTACK:
+		JumpAttackUpdate(_DeltaTime);
+		break;
+	case PlayerState::WALL:
+		WallUpdate(_DeltaTime);
+		break;
+	case PlayerState::WALL_ATTACK:
+		WallAttackUpdate(_DeltaTime);
+		break;
 	case PlayerState::DASH:
 		DashUpdate(_DeltaTime);
 		break;
@@ -128,11 +179,14 @@ void Player_Zero::UpdateState(float _DeltaTime)
 	case PlayerState::SITATTACK:
 		SitAttackUpdate(_DeltaTime);
 		break;
-	case PlayerState::NOMALATTACK:
-		NormalAttackUpdate(_DeltaTime);
+	case PlayerState::ATTACK_FIRST:
+		Attack_First_Update(_DeltaTime);
 		break;
-	case PlayerState::JUMPATTACK:
-		JumpAttackUpdate(_DeltaTime);
+	case PlayerState::ATTACK_SECOND:
+		Attack_Second_Update(_DeltaTime);
+		break;
+	case PlayerState::ATTACK_THIRD:
+		Attack_Third_Update(_DeltaTime);
 		break;
 	case PlayerState::DOUBLEJUMP:
 		DoubleJumpUpdate(_DeltaTime);
@@ -173,16 +227,17 @@ void Player_Zero::RecallEnd()
 
 void Player_Zero::IdleStart()
 {
-	DirCheck("Idle");
+	// 20230204 애니메이션 확인중
+	DirCheck("idle");
 }
 
 void Player_Zero::IdleUpdate(float _Time)
 {
-	if (GameEngineInput::IsPress("Sit"))
-	{
-		ChangeState(PlayerState::SIT);
-		return;
-	}
+	//if (GameEngineInput::IsPress("Sit"))
+	//{
+	//	ChangeState(PlayerState::SIT);
+	//	return;
+	//}
 
 	// Idle 상태일 경우 왼쪽, 오른쪽 키가 눌렸다면 Move 상태로 변경한다.  
 	if (GameEngineInput::IsPress("LeftMove") || GameEngineInput::IsPress("RightMove"))
@@ -193,7 +248,7 @@ void Player_Zero::IdleUpdate(float _Time)
 
 	if (GameEngineInput::IsPress("Attack"))
 	{
-		ChangeState(PlayerState::NOMALATTACK);
+		ChangeState(PlayerState::ATTACK_FIRST);
 		return;
 	}
 
@@ -209,6 +264,12 @@ void Player_Zero::IdleUpdate(float _Time)
 		return;
 	}
 
+	/*if (GameEngineInput::IsPress("UpMove"))
+	{
+		ChangeState(PlayerState::RIDEUP);
+		return;
+	}*/
+
 }
 
 void Player_Zero::IdleEnd()
@@ -223,11 +284,11 @@ void Player_Zero::MoveStart()
 void Player_Zero::MoveUpdate(float _DeltaTime)
 {	
 	// 단일 충돌체크 
-	if (true == m_Collision->Collision({ .TargetGroup = static_cast<int>(COLORDER::MONSTER) }))
+	/*if (true == m_Collision->Collision({ .TargetGroup = static_cast<int>(COLORDER::MONSTER) }))
 	{
 		ChangeState(PlayerState::HIT);
 		return;
-	}
+	}*/
 
 
 	// 무브의 업데이트에서는 현재 아무키도 눌리지 않았다면 기본 IDLE 상태로 변경한다.  
@@ -266,7 +327,7 @@ void Player_Zero::MoveUpdate(float _DeltaTime)
 	// 공격키가 눌렸다면 공격 
 	if (GameEngineInput::IsDown("Attack"))
 	{
-		ChangeState(PlayerState::NOMALATTACK);
+		ChangeState(PlayerState::ATTACK_FIRST);
 		return;
 	}
 
@@ -281,11 +342,11 @@ void Player_Zero::MoveUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (GameEngineInput::IsDown("Sit"))
+	/*if (GameEngineInput::IsDown("Sit"))
 	{
 		ChangeState(PlayerState::SIT);
 		return;
-	}
+	}*/
 
 	DirCheck("Move");
 }
@@ -297,23 +358,73 @@ void Player_Zero::MoveEnd()
 }
 
 // 일반공격 
-void Player_Zero::NormalAttackStart()
+void Player_Zero::Attack_First_Start()
 {
-	DirCheck("normal_attack");
+	DirCheck("normal_attack_first");
 }
 
-void Player_Zero::NormalAttackUpdate(float _Time)
+void Player_Zero::Attack_First_Update(float _Time)
 {
 	// 공격의 마지막 프레임에 도달하면 Idle 상태로 변경해준다. 
 	// 일단 임시로 적용해두고, 나중에 만들때 노말어택 1타, 23타 상태로 구분해서 적용한다. 
-	if (m_AnimationRender->IsAnimationEnd())
+	if (true == m_AnimationRender->IsAnimationEnd())
+	{
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
+
+	// 1타 모션이 끝나지 않은 상태에서 X 키를 한번 더 누르면 2타진행
+	if (true == GameEngineInput::IsDown("Attack"))
+	{
+		ChangeState(PlayerState::ATTACK_SECOND);
+		return;
+	}
+
+}
+
+void Player_Zero::Attack_First_End()
+{
+}
+
+void Player_Zero::Attack_Second_Start()
+{
+	DirCheck("normal_attack_second");
+}
+
+void Player_Zero::Attack_Second_Update(float _DeltaTime)
+{
+	if (true == m_AnimationRender->IsAnimationEnd())
+	{
+		ChangeState(PlayerState::IDLE);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Attack"))
+	{
+		ChangeState(PlayerState::ATTACK_THIRD);
+		return;
+	}
+}
+
+void Player_Zero::Attack_Second_End()
+{
+}
+
+void Player_Zero::Attack_Third_Start()
+{
+	DirCheck("normal_attack_third");
+}
+
+void Player_Zero::Attack_Third_Update(float _DeltaTime)
+{
+	if (true == m_AnimationRender->IsAnimationEnd())
 	{
 		ChangeState(PlayerState::IDLE);
 		return;
 	}
 }
 
-void Player_Zero::NormalAttackEnd()
+void Player_Zero::Attack_Third_End()
 {
 }
 
@@ -325,7 +436,7 @@ void Player_Zero::DashStart()
 {
 	// 대시 스타트에서는 이펙트렌더러의 업데이트상태를 on으로 변경
 	DirCheck("Dash");
-	if (true == GameEngineInput::IsPress("RightMove"))
+	/*if (true == GameEngineInput::IsPress("RightMove"))
 	{
 		m_EffectRender->SetPosition(float4{ -250 , 0 });
 		m_EffectRender->ChangeAnimation(m_DirString + "dash_effect");
@@ -335,7 +446,7 @@ void Player_Zero::DashStart()
 	{
 		m_EffectRender->SetPosition(float4{ 250 , 0 });
 		m_EffectRender->ChangeAnimation(m_DirString + "dash_effect");
-	}
+	}*/
 }
 
 void Player_Zero::DashUpdate(float _Time)
@@ -391,16 +502,11 @@ void Player_Zero::JumpUpdate(float _Time)
 		ChangeState(PlayerState::IDLE);
 		return;
 	}
-	
-	if (true == GameEngineInput::IsDown("Jump"))
-	{
-		ChangeState(PlayerState::DOUBLEJUMP);
-		return;
-	}
+
 
 	if (true == GameEngineInput::IsDown("Attack"))
 	{
-		ChangeState(PlayerState::JUMPATTACK);
+		ChangeState(PlayerState::JUMP_ATTACK);
 		return;
 	}
 
@@ -446,6 +552,80 @@ void Player_Zero::JumpAttackUpdate(float _DeltaTime)
 }
 
 void Player_Zero::JumpAttackEnd()
+{
+}
+
+void Player_Zero::RideUpStart()
+{
+	DirCheck("rideup");
+}
+
+void Player_Zero::RideUpUpdate(float _DeltaTime)
+{
+	// 계속 매달려 있는 상태라면 현재 프레임을 유지
+	// 누르고 있는 상태라면 애니메이션 진행. 흠. 
+	if (true == GameEngineInput::IsDown("Attack"))
+	{
+		ChangeState(PlayerState::RIDEUP_ATTACK);
+		return;
+	}
+}
+
+void Player_Zero::RideUpEnd()
+{
+}
+
+void Player_Zero::RideUpAttackStart()
+{
+	DirCheck("Rideup_attack");
+}
+
+void Player_Zero::RideUpAttackUpdate(float _DeltaTime)
+{
+	if (true == m_AnimationRender->IsAnimationEnd())
+	{
+		// 애니메이션 끝나면 다시 사다리 탄 모션으로.  흠. 
+		return;
+	}
+}
+
+void Player_Zero::RideUpAttackEnd()
+{
+}
+
+void Player_Zero::WallStart()
+{
+	DirCheck("wall");
+}
+
+void Player_Zero::WallUpdate(float _DeltaTime)
+{
+	if (true == GameEngineInput::IsDown("Attack"))
+	{
+		ChangeState(PlayerState::WALL_ATTACK);
+		return;
+	}
+}
+
+void Player_Zero::WallEnd()
+{
+}
+
+void Player_Zero::WallAttackStart()
+{
+	DirCheck("wall_attack");
+}
+
+void Player_Zero::WallAttackUpdate(float _DeltaTime)
+{
+	if (true == m_AnimationRender->IsAnimationEnd())
+	{
+		ChangeState(PlayerState::WALL);
+		return;
+	}
+}
+
+void Player_Zero::WallAttackEnd()
 {
 }
 

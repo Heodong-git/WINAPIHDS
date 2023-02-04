@@ -4,20 +4,27 @@
 
 enum class PlayerState
 {
-	NONE,
-	RECALL,
-	IDLE,
-	MOVE,
-	JUMP,
-	JUMPATTACK,
-	DOUBLEJUMP,
-	FALL,
-	SIT,
-	SITATTACK,
-	NOMALATTACK,
-	DASH,
-	DASHATTACK,
-	HIT,
+	NONE,			 // 초기화
+	RECALL,			 // 리콜
+	IDLE,			 // 아이들
+	MOVE,			 // 무브
+	JUMP,		     // 점프
+	JUMP_ATTACK,		 // 점프공격
+	RIDEUP,			 // 사다리타기 
+	RIDEUP_ATTACK,
+	WALL,
+	WALL_ATTACK,
+	DOUBLEJUMP,	     // 이단점프인데 이제없음 아마도?
+	FALL,			 // 낙하
+	SIT,			 // 앉기
+	SITATTACK,		 // 앉기공격
+	ATTACK_FIRST,	 // 공격 1타
+	ATTACK_SECOND,	 // 2타
+	ATTACK_THIRD,    // 3타
+	DASH,			 // 대쉬
+	DASH_ATTACK,		 // 대쉬공격 
+	HIT,			 // 히트
+	
 };
 
 class GameEngineCollision;
@@ -50,7 +57,7 @@ private:
 	// 이동속도 
 	float	     m_MoveSpeed = 800.0f;
 	// 기본 방향 - 오른쪽, 문자열로 저장
-	std::string  m_DirString = "Right_";
+	std::string  m_DirString = "Left_";
 	// 방향 
 	float4		 m_MoveDir = float4::Zero;
 
@@ -100,10 +107,18 @@ private:
 	void MoveUpdate(float _DeltaTime);
 	void MoveEnd();
 
-	// 임시 완료 
-	void NormalAttackStart();
-	void NormalAttackUpdate(float _DeltaTime);
-	void NormalAttackEnd();
+	void Attack_First_Start();
+	void Attack_First_Update(float _DeltaTime);
+	void Attack_First_End();
+
+	void Attack_Second_Start();
+	void Attack_Second_Update(float _DeltaTime);
+	void Attack_Second_End();
+
+	void Attack_Third_Start();
+	void Attack_Third_Update(float _DeltaTime);
+	void Attack_Third_End();
+
 
 	// 임시 완료
 	void JumpStart();
@@ -114,6 +129,22 @@ private:
 	void JumpAttackStart();
 	void JumpAttackUpdate(float _DeltaTime);
 	void JumpAttackEnd();
+	
+	void RideUpStart();
+	void RideUpUpdate(float _DeltaTime);
+	void RideUpEnd();
+
+	void RideUpAttackStart();
+	void RideUpAttackUpdate(float _DeltaTime);
+	void RideUpAttackEnd();
+
+	void WallStart();
+	void WallUpdate(float _DeltaTime);
+	void WallEnd();
+
+	void WallAttackStart();
+	void WallAttackUpdate(float _DeltaTime);
+	void WallAttackEnd();
 
 	// 임시 완료
 	void DoubleJumpStart();
