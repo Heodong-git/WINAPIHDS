@@ -44,9 +44,6 @@ void SpacePortLevel::Loading()
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_zero_sprite_left.bmp"));
 		Image->Cut(12, 16);
 	}
-
-
-
 	{
 		// UI HpBar
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("ui_hp_bar.bmp"));
@@ -57,6 +54,16 @@ void SpacePortLevel::Loading()
 		// 스페이스포트 맵
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort.bmp"));
 		GameEngineImage* ColImage = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("ColMap_SpacePort.bmp"));
+	}
+	{
+		// 스페이스포트 분할맵 
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort_0.bmp"));
+		Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort_1.bmp"));
+		Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort_2.bmp"));
+		Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort_3.bmp"));
+		Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort_4.bmp"));
+		Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort_5.bmp"));
+		Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort_6.bmp"));
 	}
 
 	// 보스 커널
@@ -90,13 +97,14 @@ void SpacePortLevel::Loading()
 	// 해당 레벨에서 사용할 액터 생성
 	// 액터 생성시에 인자로 넣어주는 값은 업데이트,렌더링 순서이며 값이 높을 수록 나중에 연산,렌더링이 된다. 
 	m_Player = CreateActor<Player_Zero>(ZORDER::PLAYER);
-	m_Player->SetPos({ 400, 7000 });
+	m_Player->SetPos({ 400, 7010 });
+	m_StatingPos = m_Player->GetPos();
 	// 일단 플레이어 애니메이션부터 필요한거 다 진행하고나서 다시. 
 	GameEngineActor* Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);
 	Boss->SetPos({ 18587, 968 });
 
-	GameEngineActor* PlayerHpBar = CreateActor<UI_PlayerHpBar>(ZORDER::UI);
-	PlayerHpBar->SetPos(m_Player->GetPos() + float4 { - 200 , - 350});
+	/*GameEngineActor* PlayerHpBar = CreateActor<UI_PlayerHpBar>(ZORDER::UI);
+	PlayerHpBar->SetPos(m_Player->GetPos() + float4 { - 200 , - 350});*/
 
 	// 음.. 몬스터 좌표를 벡터에 저장해놓고 for문으로 넣는게 맞는거같기도하고.. 일단은 그냥
 	CreateActor<Map_SpacePort>();
@@ -108,14 +116,12 @@ void SpacePortLevel::Loading()
 	Monster->SetPos({ 2354 , 6382 });*/
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 3186 , 7058 });
-	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
-	Monster->SetPos({ 3186 , 7058 });
+	/*Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 3186 , 7058 });*/
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 5366, 6825 });
-	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
-	Monster->SetPos({ 5379, 6385 });
-	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
-	Monster->SetPos({ 5910, 6609 });
+	/*Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 5379, 6385 });*/
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 12827, 6384 });
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
@@ -142,7 +148,8 @@ void SpacePortLevel::Loading()
 		GameEngineInput::CreateKey("DebugRenderSwitch", '2');
 	}
 
-	m_StartCameraPos = GameEngineWindow::GetScreenSize().half() + float4{ -580 , 5690 };
+	// 여기서 카메라 위치 고정은 됐어
+	m_StartCameraPos = GameEngineWindow::GetScreenSize().half() + float4{ -580 , 5760 };
 	SetCameraMove(m_StartCameraPos);
 }
 

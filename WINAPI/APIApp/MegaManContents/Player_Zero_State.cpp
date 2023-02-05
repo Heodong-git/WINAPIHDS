@@ -223,45 +223,43 @@ void Player_Zero::RecallUpdate(float _DeltaTime)
 
 void Player_Zero::RecallEnd()
 {
+	m_Ground = true;
 }
 
 void Player_Zero::IdleStart()
 {
-	// 20230204 애니메이션 확인중
+	m_Ground = true;
 	DirCheck("idle");
 }
 
-void Player_Zero::IdleUpdate(float _Time)
+void Player_Zero::IdleUpdate(float _DeltaTime)
 {
-	//if (GameEngineInput::IsPress("Sit"))
-	//{
-	//	ChangeState(PlayerState::SIT);
-	//	return;
-	//}
-
 	// Idle 상태일 경우 왼쪽, 오른쪽 키가 눌렸다면 Move 상태로 변경한다.  
-	if (GameEngineInput::IsPress("LeftMove") || GameEngineInput::IsPress("RightMove"))
+	if (true == m_Ground)
 	{
-		ChangeState(PlayerState::MOVE);
-		return;
-	}
+		if (GameEngineInput::IsPress("LeftMove") || GameEngineInput::IsPress("RightMove"))
+		{
+			ChangeState(PlayerState::MOVE);
+			return;
+		}
 
-	if (GameEngineInput::IsPress("Attack"))
-	{
-		ChangeState(PlayerState::ATTACK_FIRST);
-		return;
-	}
+		if (GameEngineInput::IsPress("Attack"))
+		{
+			ChangeState(PlayerState::ATTACK_FIRST);
+			return;
+		}
 
-	if (GameEngineInput::IsDown("Dash"))
-	{
-		ChangeState(PlayerState::DASH);
-		return;
-	}
+		if (GameEngineInput::IsDown("Dash"))
+		{
+			ChangeState(PlayerState::DASH);
+			return;
+		}
 
-	if (GameEngineInput::IsDown("Jump"))
-	{
-		ChangeState(PlayerState::JUMP);
-		return;
+		if (GameEngineInput::IsDown("Jump"))
+		{
+			ChangeState(PlayerState::JUMP);
+			return;
+		}
 	}
 }
 
@@ -324,7 +322,7 @@ void Player_Zero::MoveUpdate(float _DeltaTime)
 		return;
 	}
 
-	if (GameEngineInput::IsDown("Jump"))
+	if (GameEngineInput::IsPress("Jump"))
 	{
 		ChangeState(PlayerState::JUMP);
 		return;
@@ -485,11 +483,14 @@ void Player_Zero::HitEnd()
 
 void Player_Zero::JumpStart()
 {
+	m_Jump = true;
+	m_MoveDir += float4::Up * 400.0f;
 	DirCheck("Jump");
 }
 
-void Player_Zero::JumpUpdate(float _Time)
+void Player_Zero::JumpUpdate(float _DeltaTime)
 {
+	
 	if (true == m_AnimationRender->IsAnimationEnd())
 	{
 		ChangeState(PlayerState::IDLE);
@@ -508,17 +509,20 @@ void Player_Zero::JumpUpdate(float _Time)
 		return;
 	}
 	// 점프키 중에 반대방향키를 누르면 그쪽으로 애니메이션이 바뀌어야함. 
-	if (true == GameEngineInput::IsPress("LeftMove") || true == GameEngineInput::IsPress("RightMove"))
+	if (true == GameEngineInput::IsPress("LeftMove"))
 	{
-		// 이 때 현재 프레임을 넘겨주면 그 프레임에서 이어서 애니메이션을 동작시키면 될 것 같은데.. 
-		DirCheck("Jump");
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("RightMove"))
+	{
 		return;
 	}
 }
 
 void Player_Zero::JumpEnd()
 {
-	
+	m_Jump = false;
 }
 
 void Player_Zero::JumpAttackStart()
@@ -531,15 +535,11 @@ void Player_Zero::JumpAttackUpdate(float _DeltaTime)
 	// 나중에 땅을 밟은상태인지 아닌지를 추가해서 다시 ㄱㄱ
 	if (true == m_AnimationRender->IsAnimationEnd())
 	{
-		
-		if (true == GameEngineInput::IsDown("Jump"))
+		if (true == m_Ground)
 		{
-			ChangeState(PlayerState::DOUBLEJUMP);
+			ChangeState(PlayerState::IDLE);
 		}
-
-
-
-		ChangeState(PlayerState::IDLE);
+	
 		return;
 	}
 }

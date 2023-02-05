@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineRender.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineLevel.h>
+#include "SpacePortLevel.h"
 
 #include "ContentsEnum.h"
 
@@ -86,7 +87,7 @@ void Player_Zero::Start()
 	// 오른쪽 점프
 	// 19 ~ 31 
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_jump" , .ImageName = "player_zero_sprite_right.bmp",
-									   .Start = 19 , .End = 31 , .InterTime = 0.1f });
+									   .Start = 19 , .End = 31 , .InterTime = 0.08f , .Loop = false });
 
 	// 31~32 착지모션인데 일단. 음..일단 만들어둬 
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_landing" , .ImageName = "player_zero_sprite_right.bmp",
@@ -187,7 +188,7 @@ void Player_Zero::Start()
 	// 왼쪽 점프
 	// 19 ~ 31 , 0.05
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_jump" , .ImageName = "player_zero_sprite_left.bmp",
-									   .Start = 19 , .End = 31 , .InterTime = 0.1f });
+									   .Start = 19 , .End = 31 , .InterTime = 0.15f });
 
 	// 31~32 착지모션인데 일단. 음..일단 만들어둬 
 	// 30 ~ 32 ? 0.4
@@ -199,7 +200,7 @@ void Player_Zero::Start()
 	// 37 ~ 50
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_move" , .ImageName = "player_zero_sprite_left.bmp",
 									   .Start = 37 , .End = 50 , .InterTime = 0.04f });
-	// 오른쪽 공격
+	// 왼쪽 공격
 	// 51~91 까지 1~3타
 	// 1타 : 51 ~ 66 0.025
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_normal_attack_first" , .ImageName = "player_zero_sprite_left.bmp",
@@ -274,9 +275,6 @@ void Player_Zero::Start()
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_exit" , .ImageName = "player_zero_sprite_left.bmp",
 									   .Start = 177 , .End = 189 , .InterTime = 0.09f });
 
-	
-
-	
 	// 확인해야함 여기서 리콜이면 
 	ChangeState(PlayerState::RECALL);
 }
@@ -313,32 +311,42 @@ void Player_Zero::Movecalculation(float _DeltaTime)
 		// 디버그용
 		// 현재위치 체크
 		float4 CurPos = GetPos();
-
 		return;
 	}
 
 	// ---------------------실제  게임 플레이용 ---------------------------- 
+
 	if (true == m_Gravity)
 	{
 		// 중력 , 계속 아래로 떨어지는 힘이 더해진다 
-		m_MoveDir += float4::Down * 200.0f * _DeltaTime;
+		if (true == m_Jump)
+		{
+			m_MoveDir += float4::Down * (m_GravityPower * 2.5f) * _DeltaTime;
+		}
+
+		else
+		{
+			m_MoveDir += float4::Down * m_GravityPower * _DeltaTime;
+		}
 	}
 
-	// x축 이동값이 일정값을 넘어간다면 
-	if (100.0f <= abs(m_MoveDir.x))
+
+	// 플레이어 속력 제한
+	if (m_MoveSpeed <= abs(m_MoveDir.x))
 	{
-		// x 축 값이 0보다 작다면 왼쪽이동,,.. 아 여기 영상으로 다시 봐  
-		/*if (0 > m_MoveDir.x)
+		
+		if (0 > m_MoveDir.x)
 		{
-			m_MoveDir.x = -100.0f;
+			m_MoveDir.x = -m_MoveSpeed;
 		}
 		else 
 		{
-			m_MoveDir.x = 100.0f;
-		}*/
+			m_MoveDir.x = m_MoveSpeed;
+		}
 	}
 
 	// 마찰력 
+	// 잠깐 보류
 	if (false == GameEngineInput::IsPress("LeftMove") && false == GameEngineInput::IsPress("RightMove"))
 	{
 		m_MoveDir.x *= 0.001f;
@@ -352,13 +360,17 @@ void Player_Zero::Movecalculation(float _DeltaTime)
 	}
 
 
-	// 충돌체크 
+	// 충돌체크 변수  
 	bool Check = true;
+	// 다음 이동위치 계산
 	float4 NextPos = GetPos() + m_MoveDir * _DeltaTime;
 
+	// 다음 이동위치의 픽셀 값이 255, 0 , 255 라면 충돌한 것이다. 
 	if (RGB(255, 0, 255) == ColImage->GetPixelColor(NextPos, RGB(255, 0, 255)))
 	{
 		Check = false;
+		m_Ground = true;
+
 		m_MoveDir = float4::Zero;
 	}
 
@@ -378,12 +390,65 @@ void Player_Zero::Movecalculation(float _DeltaTime)
 
 			break;
 		}
+
 	}
 
-	 SetMove(m_MoveDir *_DeltaTime);
-	 // 일단 임시로 카메라무브 적용
-	 GetLevel()->SetCameraMove(m_MoveDir * _DeltaTime);
+	// 카메라는 X축이 더해지거나 Y축이 감소되는게 아니라면 움직이지 않는다.
+	SpacePortLevel* PlayLevel = dynamic_cast<SpacePortLevel*>(GetLevel());
+
+	if (nullptr == PlayLevel)
+	{
+		MsgAssert("받아온 레벨이 SpacePort 레벨이 아닙니다.");
+		return;
+	}
+
+
+	// 플레이어의 이전 위치는 현재 위치.
+	float4 PrevPos = GetPos();
+	// 다음 위치는 이전위치 + 이동방향 * DeltaTime; 
+	float4 PlayerNextPos = PrevPos + m_MoveDir * _DeltaTime;
+	// 플레이어는 처음에 생성된 위치보다 뒤로는 못가
+	if (PlayLevel->GetStatingPos().x > PlayerNextPos.x)
+	{
+		// 다시 기존위치로
+		SetPos(PrevPos);
+		return;
+	}
+
+	// 카메라 제한위치 받아오기. 
+	float4 limitCameraPos = PlayLevel->GetStartCameraPos();
+	// 현재 카메라 위치를 받아오고. 
+	float4 CurCameraPos = GetLevel()->GetCameraPos();
+
+	// 플레이어를 움직이고.
+	SetMove(m_MoveDir * _DeltaTime);
+
+	// 현재카메라위치 받아오고
+	float4 PrevCameraPos = GetLevel()->GetCameraPos();
+	// 다음위치는 지금위치 + 이동방향 
+	float4 NextCameraPos = PrevCameraPos + m_MoveDir * _DeltaTime;
+
+	// 카메라 움직여. 
+	// 카메라가 플레이어를 처음부터 따라가지 않음
+	// 플레이어의 위치가 윈도우x 하프 값보다 커질때부터 따라감
+	if (GameEngineWindow::GetScreenSize().half().x <= GetPos().x)
+	{
+		GetLevel()->SetCameraMove(m_MoveDir * _DeltaTime);
+	}
+
+	// 현재 카메라위치의 x 값이 제한된 x 의 값보다 작거나
+	//				   y 값이 제한된 y 의 값보다 크다면 위치고정
+	// 여기를 어떻게 바꾸면 될거 같은데. 
+	if (NextCameraPos.x < limitCameraPos.x || NextCameraPos.y > limitCameraPos.y )
+	{
+		// 제한된 위치로 고정
+		GetLevel()->SetCameraPos(PrevCameraPos);
+		return;
+	}
+
+
 }
+
 
 
 // 상수들은 다 내가 변수로 만들어서 사용해야함. 생각할 것. 

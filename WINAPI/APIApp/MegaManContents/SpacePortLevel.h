@@ -17,9 +17,19 @@ public:
 	SpacePortLevel& operator=(const SpacePortLevel& _Other) = delete;
 	SpacePortLevel& operator=(SpacePortLevel&& _Other) noexcept = delete;
 
-	Player_Zero* GetPlayer()
+	inline Player_Zero* GetPlayer()
 	{
 		return m_Player;
+	}
+
+	inline float4 GetStartCameraPos()
+	{
+		return m_StartCameraPos;
+	}
+
+	inline float4 GetStatingPos()
+	{
+		return m_StatingPos;
 	}
 
 protected:
@@ -31,9 +41,8 @@ protected:
 
 private:
 	Player_Zero* m_Player = nullptr;
-	float4		m_StartCameraPos = float4::Zero;
-	
-	// 몬스터들의 시작위치를 저장해두는 게 맞는건가..? 
-	// 흠.. 일단 플레이어 애니메이션부터 
+	// 시작카메라좌표
+	float4	     m_StartCameraPos = float4::Zero;
+	float4		 m_StatingPos = float4::Zero;
 };
 

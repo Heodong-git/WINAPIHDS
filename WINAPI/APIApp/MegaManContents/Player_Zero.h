@@ -52,30 +52,27 @@ private:
 	// 어디서 썼던거같은데.. 어디지?ㅋㅋㅋㅋ
 	static float m_Time;
 	float		 m_HitTime = 0.5f;
-	float		 m_DashEffectLiveTime = 0.0f;
-	float		 m_DashEffectMaxTime = 0.64f;
 	// 이동속도 
 	float	     m_MoveSpeed = 1000.0f;
-	// 기본 방향 - 오른쪽, 문자열로 저장
+	bool		 m_Jump = false;
+	float		 m_JumpHeight = 0.0f;
+	float		 m_JumpPower = -600.0f; // Velocity 
+	float	     m_GravityPower = 300.0f; // Gravity
+
+	bool		 m_Ground = false;
+	bool		 m_Gravity = true;
 	std::string  m_DirString = "Right_";
-	// 방향 
 	float4		 m_MoveDir = float4::Zero;
 
 	// 플레이어의 기본상태는 아이들로 초기화
 	PlayerState  m_StateValue = PlayerState::NONE;
 	PlayerState  m_PrevState = PlayerState::NONE;
 	PlayerState  m_NextState = PlayerState::NONE;
-
-	// 렌더러 
+ 
 	GameEngineRender* m_AnimationRender = nullptr;
-	GameEngineRender* m_EffectRender = nullptr;
-
-	// 충돌체 
 	GameEngineCollision* m_Collision = nullptr;
 	
-	// 중력상태 
-	bool		 m_Gravity = true;
-	bool		 m_Ground = true;
+	
 	// 디버그용
 	inline void DebugSwitch()
 	{
