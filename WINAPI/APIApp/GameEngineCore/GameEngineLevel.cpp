@@ -222,7 +222,7 @@ void GameEngineLevel::ActorsRender(float _DeltaTime)
 
 			for (GameEngineRender* Renderer : RenderList)
 			{
-				// Actors.erase()
+				// 업데이트가 false 면 렌더링 하지 않음
 				if (nullptr == Renderer || false == Renderer->IsUpdate())
 				{
 					continue;

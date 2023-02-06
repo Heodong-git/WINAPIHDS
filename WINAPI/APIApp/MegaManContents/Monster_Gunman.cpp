@@ -28,8 +28,9 @@ void Monster_GunMan::Start()
 	m_Render->SetScale({ 320 * 4.0f , 240 * 4.2f });
 
 	// 충돌체생성 , 그룹지정
-	m_Collision = CreateCollision(COLORDER::MONSTER);
-	m_Collision->SetScale({ 100 , 100 });
+	m_Collider = CreateCollision(COLORDER::MONSTER);
+	m_Collider->SetScale({ 150 , 150 });
+	m_Collider->SetPosition({ 0, -100 });
 
 	m_Render->CreateAnimation({ .AnimationName = "Gunman_idle_Left" , .ImageName = "spaceport_gunman_left.bmp" ,
 								.Start = 1 , .End = 7 , .InterTime = 0.16f });
@@ -56,7 +57,7 @@ void Monster_GunMan::Start()
 void Monster_GunMan::Update(float _DeltaTime)
 {
 	// 단일 충돌체크 
-	if (true == m_Collision->Collision({ .TargetGroup = static_cast<int>(COLORDER::PLAYER) }))
+	if (true == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::PLAYER) }))
 	{
 		this->Death();
 	}
@@ -95,4 +96,6 @@ void Monster_GunMan::Render(float _DeltaTime)
 		ActorPos.ix() + 5,
 		ActorPos.iy() + 5
 	);
+
+	m_Collider->DebugRender();
 }

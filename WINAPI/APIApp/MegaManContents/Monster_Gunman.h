@@ -24,7 +24,7 @@ private:
 	static float Time;
 	float4 m_Dir;
 	GameEngineRender* m_Render = nullptr;
-	GameEngineCollision* m_Collision = nullptr;
+	GameEngineCollision* m_Collider = nullptr;
 
 };
 

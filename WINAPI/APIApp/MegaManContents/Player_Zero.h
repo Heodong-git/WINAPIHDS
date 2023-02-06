@@ -2,29 +2,20 @@
 #include <GameEngineCore/GameEngineActor.h>
 #include <string>
 
-enum class PlayerState
+enum class STATEVALUE
 {
-	NONE,			 // 초기화
-	RECALL,			 // 리콜
-	IDLE,			 // 아이들
-	MOVE,			 // 무브
-	JUMP,		     // 점프
-	JUMP_ATTACK,		 // 점프공격
-	RIDEUP,			 // 사다리타기 
-	RIDEUP_ATTACK,
-	WALL,
-	WALL_ATTACK,
-	DOUBLEJUMP,	     // 이단점프인데 이제없음 아마도?
-	FALL,			 // 낙하
-	SIT,			 // 앉기
-	SITATTACK,		 // 앉기공격
-	ATTACK_FIRST,	 // 공격 1타
-	ATTACK_SECOND,	 // 2타
-	ATTACK_THIRD,    // 3타
-	DASH,			 // 대쉬
-	DASH_ATTACK,		 // 대쉬공격 
-	HIT,			 // 히트
-	
+	NONE,		 // 초기화
+	RECALL,		 // 리콜 (리스폰)
+	IDLE,		 // 아이들 
+	MOVE,		 // 이동
+	JUMP,		 // 점프
+	FALL,	     // 낙하
+	FALL_END,	 // 낙하종료
+	ATTACK_FIRST,		 // 공격
+	ATTACK_SECOND,
+	ATTACK_THIRD,
+	DASH,		 // 대쉬 
+	JUMP_ATTACK,
 };
 
 class GameEngineCollision;
@@ -49,16 +40,18 @@ protected:
 private:
 	// 디버그용 변수
 	bool		 m_DebugMode = false;
-	// 어디서 썼던거같은데.. 어디지?ㅋㅋㅋㅋ
-	static float m_Time;
-	float		 m_HitTime = 0.5f;
-	// 이동속도 
-	float	     m_MoveSpeed = 1000.0f;
+
+	float	     m_MoveSpeed = 1100.0f;
 	bool		 m_Jump = false;
-	float		 m_JumpHeight = 0.0f;
-	float	     m_JumpTime = 1.0f;   // 임시 
-	float		 m_JumpPower = -650.0f;
-	float	     m_GravityPower = 300.0f; // Gravity
+	bool	     m_Falling = false;
+	float	     m_JumpTime = 0.0f;       // 음.. 
+	float		 m_MaxJumpTime = 1.5f;
+	float		 m_JumpPower = 600.0f;
+	float	     m_GravityPower = 200.0f; // Gravity
+
+	float		 m_DashPower = 1000.0f;
+	float		 m_DashTime = 0.0f;
+	float		 m_MaxDashTime = 1.0f;
 
 	bool		 m_Ground = false;
 	bool		 m_Gravity = true;
@@ -66,13 +59,13 @@ private:
 	float4		 m_MoveDir = float4::Zero;
 
 	// 플레이어의 기본상태는 아이들로 초기화
-	PlayerState  m_StateValue = PlayerState::NONE;
-	PlayerState  m_PrevState = PlayerState::NONE;
-	PlayerState  m_NextState = PlayerState::NONE;
+	STATEVALUE  m_StateValue = STATEVALUE::NONE;
+	STATEVALUE  m_PrevState = STATEVALUE::NONE;
+	STATEVALUE  m_NextState = STATEVALUE::NONE;
  
 	GameEngineRender* m_AnimationRender = nullptr;
-	GameEngineCollision* m_Collision = nullptr;
-	
+	GameEngineCollision* m_Collider = nullptr;
+	GameEngineCollision* m_SaberCollider = nullptr;
 	
 	// 디버그용
 	inline void DebugSwitch()
@@ -80,30 +73,41 @@ private:
 		m_DebugMode = !m_DebugMode;
 	}
 
-	// 방향체크
-	void DirCheck(const std::string_view& _AnimationName);
+	// 방향체크 + 애니메이션 렌더 
+	void AnimDirCheck(const std::string_view& _AnimationName);
+	void ChangeState(STATEVALUE _State);
 
-	// 상태체인지
-	void ChangeState(PlayerState _State);
+	void PlayerCreateAnimation();
+
 	// 상태 업데이트 
 	void UpdateState(float _DeltaTime);
-
+	// 플레이어 이동 연산
 	void Movecalculation(float _DeltaTime);
 
-	// 임시 완료 
-	void RecallStart();
-	void RecallUpdate(float _DeltaTime);
-	void RecallEnd();
+	// 상태
+	void Recall_Start();
+	void Recall_Update(float _DeltaTime);
+	void Recall_End();
 
-	// 임시 완료
-	void IdleStart();
-	void IdleUpdate(float _DeltaTime);
-	void IdleEnd();
+	void Idle_Start();
+	void Idle_Update(float _DeltaTime);
+	void Idle_End();
 
-	// 임시 완료 
-	void MoveStart();
-	void MoveUpdate(float _DeltaTime);
-	void MoveEnd();
+	void Move_Start();
+	void Move_Update(float _DeltaTime);
+	void Move_End();
+
+	void Jump_Start();
+	void Jump_Update(float _DeltaTime);
+	void Jump_End();
+
+	void Fall_Start();
+	void Fall_Update(float _DeltaTime);
+	void Fall_End();
+
+	void Fall_End_Start();
+	void Fall_End_Update(float _DeltaTime);
+	void Fall_End_End();
 
 	void Attack_First_Start();
 	void Attack_First_Update(float _DeltaTime);
@@ -117,62 +121,12 @@ private:
 	void Attack_Third_Update(float _DeltaTime);
 	void Attack_Third_End();
 
+	void Dash_Start();
+	void Dash_Update(float _DeltaTime);
+	void Dash_End();
 
-	// 임시 완료
-	void JumpStart();
-	void JumpUpdate(float _DeltaTime);
-	void JumpEnd();
-	
-	// 임시 완료 
-	void JumpAttackStart();
-	void JumpAttackUpdate(float _DeltaTime);
-	void JumpAttackEnd();
-	
-	void RideUpStart();
-	void RideUpUpdate(float _DeltaTime);
-	void RideUpEnd();
-
-	void RideUpAttackStart();
-	void RideUpAttackUpdate(float _DeltaTime);
-	void RideUpAttackEnd();
-
-	void WallStart();
-	void WallUpdate(float _DeltaTime);
-	void WallEnd();
-
-	void WallAttackStart();
-	void WallAttackUpdate(float _DeltaTime);
-	void WallAttackEnd();
-
-	// 임시 완료
-	void DoubleJumpStart();
-	void DoubleJumpUpdate(float _DeltaTime);
-	void DoubleJumpEnd();
-
-	// 잠깐 보류
-	void FallStart();
-	void FallUpdate(float _DeltaTime);
-	void FallEnd();
-	
-	// 임시 완료
-	void SitStart();
-	void SitUpdate(float _DeltaTime);
-	void SitEnd();
-
-	// 임시 완료
-	void SitAttackStart();
-	void SitAttackUpdate(float _DeltaTime);
-	void SitAttackEnd();
-	
-	// 임시 완료 
-	void DashStart();
-	void DashUpdate(float _DeltaTime);
-	void DashEnd();
-
-	// 진행중
-	void HitStart();
-	void HitUpdate(float _DeltaTime);
-	void HitEnd();
-
+	void Jump_Attack_Start();
+	void Jump_Attack_Update(float _DeltaTime);
+	void Jump_Attack_End();
 };
 
