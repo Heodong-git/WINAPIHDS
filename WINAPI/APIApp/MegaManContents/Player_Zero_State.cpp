@@ -490,11 +490,18 @@ void Player_Zero::JumpStart()
 
 void Player_Zero::JumpUpdate(float _DeltaTime)
 {
-	
 	if (true == m_AnimationRender->IsAnimationEnd())
 	{
-		ChangeState(PlayerState::IDLE);
-		return;
+		if (true == m_Ground)
+		{
+			ChangeState(PlayerState::IDLE);
+			return;
+		}
+		
+		else if (false == m_Ground)
+		{
+			m_AnimationRender->SetFrame(31);
+		}
 	}
 
 	if (true == GameEngineInput::IsDown("Attack"))

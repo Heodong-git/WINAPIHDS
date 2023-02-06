@@ -374,7 +374,6 @@ void Player_Zero::Movecalculation(float _DeltaTime)
 		m_MoveDir = float4::Zero;
 	}
 
-	// 잠깐주석 
 	if (false == Check)
 	{
 		while (true)
@@ -389,9 +388,9 @@ void Player_Zero::Movecalculation(float _DeltaTime)
 			}
 
 			break;
-		}
-
+		}	
 	}
+
 
 	// 카메라는 X축이 더해지거나 Y축이 감소되는게 아니라면 움직이지 않는다.
 	SpacePortLevel* PlayLevel = dynamic_cast<SpacePortLevel*>(GetLevel());
@@ -401,7 +400,6 @@ void Player_Zero::Movecalculation(float _DeltaTime)
 		MsgAssert("받아온 레벨이 SpacePort 레벨이 아닙니다.");
 		return;
 	}
-
 
 	// 플레이어의 이전 위치는 현재 위치.
 	float4 PrevPos = GetPos();
@@ -433,20 +431,15 @@ void Player_Zero::Movecalculation(float _DeltaTime)
 	// 플레이어의 위치가 윈도우x 하프 값보다 커질때부터 따라감
 	if (GameEngineWindow::GetScreenSize().half().x <= GetPos().x)
 	{
-		GetLevel()->SetCameraMove(m_MoveDir * _DeltaTime);
+		GetLevel()->SetCameraMove(m_MoveDir *_DeltaTime);
 	}
 
-	// 현재 카메라위치의 x 값이 제한된 x 의 값보다 작거나
-	//				   y 값이 제한된 y 의 값보다 크다면 위치고정
-	// 여기를 어떻게 바꾸면 될거 같은데. 
 	if (NextCameraPos.x < limitCameraPos.x || NextCameraPos.y > limitCameraPos.y )
 	{
 		// 제한된 위치로 고정
 		GetLevel()->SetCameraPos(PrevCameraPos);
 		return;
 	}
-
-
 }
 
 

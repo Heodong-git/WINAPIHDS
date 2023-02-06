@@ -56,7 +56,8 @@ private:
 	float	     m_MoveSpeed = 1000.0f;
 	bool		 m_Jump = false;
 	float		 m_JumpHeight = 0.0f;
-	float		 m_JumpPower = -600.0f; // Velocity 
+	float	     m_JumpTime = 1.0f;   // юс╫ц 
+	float		 m_JumpPower = -650.0f;
 	float	     m_GravityPower = 300.0f; // Gravity
 
 	bool		 m_Ground = false;
