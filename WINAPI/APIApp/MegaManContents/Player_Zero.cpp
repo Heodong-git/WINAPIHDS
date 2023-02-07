@@ -124,7 +124,7 @@ void Player_Zero::Movecalculation(float _DeltaTime)
 	{
 		if (true == m_Jump)
 		{
-			m_MoveDir += float4::Down * (m_GravityPower * 1.5f ) * _DeltaTime;
+			m_MoveDir += float4::Down * m_GravityPower * _DeltaTime;
 		}
 
 		else
