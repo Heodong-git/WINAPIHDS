@@ -286,12 +286,12 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsPress("Left_Move"))
 	{
-		m_MoveDir += float4::Left;
+		m_MoveDir += float4::Left * m_JumpPower * _DeltaTime;
 	}
 
 	if (true == GameEngineInput::IsPress("Right_Move"))
 	{
-		m_MoveDir += float4::Right;
+		m_MoveDir += float4::Right * m_JumpPower * _DeltaTime;
 	}
 
 	// 점프키가 눌려있다면 
@@ -476,6 +476,7 @@ void Player_Zero::Dash_Update(float _DeltaTime)
 		return;
 	}
 
+	// 이동로직작성
 	if (true == GameEngineInput::IsPress("Dash") && true == GameEngineInput::IsPress("Right_Move"))
 	{
 		return;
@@ -483,7 +484,14 @@ void Player_Zero::Dash_Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsPress("Dash") && true == GameEngineInput::IsPress("Left_Move"))
 	{
+		return;
+	}
 
+	//
+	
+	if (true == GameEngineInput::IsDown("Attack"))
+	{
+		ChangeState(STATEVALUE::ATTACK_FIRST);
 		return;
 	}
 	

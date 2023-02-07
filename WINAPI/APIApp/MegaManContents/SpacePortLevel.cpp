@@ -179,6 +179,8 @@ void SpacePortLevel::Update(float _DeltaTime)
 	{
 		DebugRenderSwitch();
 	}
+
+	// 여기서 카메라를 움직이는게 맞나? 
 }
 
 void SpacePortLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)

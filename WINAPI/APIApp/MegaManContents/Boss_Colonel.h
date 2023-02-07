@@ -23,5 +23,7 @@ private:
 	static float Time;
 	float4 m_Dir;
 	GameEngineRender* m_Render = nullptr;
+
+	void AnimationCreate();
 };
 
