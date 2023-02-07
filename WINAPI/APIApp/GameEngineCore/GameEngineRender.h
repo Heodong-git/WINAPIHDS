@@ -79,6 +79,8 @@ public:
 
 	void SetOrder(int _Order) override;
 
+	void SetText(const std::string_view& _Text);
+
 protected:
 
 private:
@@ -90,6 +92,10 @@ private:
 	int TransColor = RGB(255, 0, 255);
 	int Frame = 0;
 	void Render(float _DeltaTime);
+
+	// 텍스트렌더
+	void TextRender(float _DeltaTime);
+	void ImageRender(float _DeltaTime);
 
 	// 프레임애니메이션 클래스는 렌더에서만 내부적으로 사용하기 때문에 private 접근제한지정자에 두고 사용한다. 
 	class FrameAnimation
@@ -126,5 +132,7 @@ public:
 	// 임시로 퍼블릭. 잠시 	
 	std::map<std::string, FrameAnimation> Animation;
 	FrameAnimation* CurrentAnimation = nullptr;
+
+	std::string RenderText;
 };
 

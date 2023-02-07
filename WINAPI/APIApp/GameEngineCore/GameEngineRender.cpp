@@ -101,8 +101,42 @@ void GameEngineRender::FrameAnimation::Render(float _DeltaTime)
 		CurrentTime = FrameTime[CurrentIndex];
 	}
 }
+
+void GameEngineRender::SetText(const std::string_view& _Text)
+{
+	RenderText = _Text;
+}
+
 // 렌더링
 void GameEngineRender::Render(float _DeltaTime)
+{
+	if (RenderText != "")
+	{
+		TextRender(_DeltaTime);
+	}
+	else
+	{
+		ImageRender(_DeltaTime);
+	}
+}
+
+void GameEngineRender::TextRender(float _DeltaTime)
+{
+	float4 CameraPos = float4::Zero;
+
+	if (true == IsEffectCamera)
+	{
+		CameraPos = GetActor()->GetLevel()->GetCameraPos();
+	}
+
+	float4 RenderPos = GetActorPlusPos() - CameraPos;
+
+	TextOutA(GameEngineWindow::GetDoubleBufferImage()->GetImageDC(), RenderPos.ix(), RenderPos.iy(), RenderText.c_str(), RenderText.size());
+
+	return;
+}
+
+void GameEngineRender::ImageRender(float _DeltaTime)
 {
 	// 현재 애니메이션이 nullptr 이 아니라면
 	// 애니메이션으로 출력해야한다. 
@@ -142,7 +176,7 @@ void GameEngineRender::Render(float _DeltaTime)
 	else
 	{
 		// 그냥 이미지 전체를 입력된 크기로 출력한다. 
-		GameEngineWindow::GetDoubleBufferImage()->TransCopy(Image, RenderPos, GetScale(), {0, 0}, Image->GetImageScale(), TransColor);
+		GameEngineWindow::GetDoubleBufferImage()->TransCopy(Image, RenderPos, GetScale(), { 0, 0 }, Image->GetImageScale(), TransColor);
 	}
 }
 

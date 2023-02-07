@@ -321,7 +321,7 @@ void Player_Zero::PlayerCreateAnimation()
 									   .Start = 23 , .End = 30 , .InterTime = 0.03f , .Loop = false });
 
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_fall_end" , .ImageName = "player_zero_sprite_right.bmp",
-									   .Start = 30 , .End = 30 , .InterTime = 0.01f , .Loop = false });
+									   .Start = 30 , .End = 30 , .InterTime = 0.001f , .Loop = false });
 
 
 	// 31~32 착지모션인데 일단. 음..일단 만들어둬 
@@ -430,7 +430,7 @@ void Player_Zero::PlayerCreateAnimation()
 									   .Start = 26 , .End = 30 , .InterTime = 0.03f , .Loop = false });
 
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_fall_end" , .ImageName = "player_zero_sprite_left.bmp",
-									   .Start = 30 , .End = 30 , .InterTime = 0.01f , .Loop = false });
+									   .Start = 30 , .End = 30 , .InterTime = 0.001f , .Loop = false });
 
 
 	// 31~32 착지모션인데 일단. 음..일단 만들어둬 
