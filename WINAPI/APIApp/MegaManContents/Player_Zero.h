@@ -48,6 +48,7 @@ private:
 	float		 m_MaxJumpTime = 1.5f;
 	float		 m_JumpPower = 600.0f;
 	float	     m_GravityPower = 200.0f; // Gravity
+	bool		 IsJumpMax = false;
 
 	float		 m_DashPower = 1000.0f;
 	float		 m_DashTime = 0.0f;

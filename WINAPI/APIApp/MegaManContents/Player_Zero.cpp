@@ -120,20 +120,20 @@ void Player_Zero::Movecalculation(float _DeltaTime)
 
 	// ---------------------실제  게임 플레이용 ---------------------------- 
 
-	if (true == m_Gravity)
-	{
-		if (true == m_Jump)
-		{
-			m_MoveDir += float4::Down * m_GravityPower * _DeltaTime;
-		}
+	//if (true == m_Gravity)
+	//{
+	//	if (true == m_Jump)
+	//	{
+	//		m_MoveDir += float4::Down * m_GravityPower * _DeltaTime;
+	//	}
 
-		else
-		{
-			// 중력 , 계속 아래로 떨어지는 힘이 더해진다 
-			m_MoveDir += float4::Down * m_GravityPower * _DeltaTime;
-		}
-	
-	}
+	//	else
+	//	{
+	//		// 중력 , 계속 아래로 떨어지는 힘이 더해진다 
+	//		m_MoveDir += float4::Down * m_GravityPower * _DeltaTime;
+	//	}
+	//
+	//}
 
 	// 플레이어 속력 제한
 	if (m_MoveSpeed <= abs(m_MoveDir.x))

@@ -272,47 +272,87 @@ void Player_Zero::Jump_Start()
 	m_Jump = true;
 	m_Ground = false;
 	m_Gravity = true;
+
+	IsJumpMax = false;
+
+	// m_JumpPower = 100.0f;
+	m_JumpPower = 50.0f;
+	m_GravityPower = 800.0f;
+
+
 	AnimDirCheck("Jump");
 }
 
 void Player_Zero::Jump_Update(float _DeltaTime)
 {
-	if (m_MaxJumpTime <= m_JumpTime)
+	//if (m_MaxJumpTime <= m_JumpTime)
+	//{
+	//	m_JumpTime = 0.0f;
+	//	ChangeState(STATEVALUE::FALL);
+	//	return;
+	//}
+
+	if (false == IsJumpMax && true == GameEngineInput::IsPress("Jump"))
 	{
-		m_JumpTime = 0.0f;
-		ChangeState(STATEVALUE::FALL);
-		return;
+		m_JumpPower += 500.0f * _DeltaTime;
+
+		if (m_JumpPower >= 100.0f)
+		{
+			m_JumpPower = 100.0f;
+			IsJumpMax = true;
+		}
 	}
+
+
+	m_MoveDir += float4::Up * m_JumpPower;
+
+	m_JumpPower -= m_GravityPower * _DeltaTime;
 
 	if (true == GameEngineInput::IsPress("Left_Move"))
 	{
-		m_MoveDir += float4::Left * m_JumpPower * _DeltaTime;
+		m_MoveDir += float4::Left * m_MoveSpeed;
 	}
 
 	if (true == GameEngineInput::IsPress("Right_Move"))
 	{
-		m_MoveDir += float4::Right * m_JumpPower * _DeltaTime;
+		m_MoveDir += float4::Right * m_MoveSpeed;
 	}
 
 	// 점프키가 눌려있다면 
-	if (true == GameEngineInput::IsPress("Jump"))
-	{
-		m_JumpTime += _DeltaTime;
-		m_MoveDir += float4::Up * m_JumpPower * _DeltaTime;
-		return;
-	}
+	//if (true == GameEngineInput::IsPress("Jump"))
+	//{
+	//	m_JumpTime += _DeltaTime;
+	//	m_MoveDir += float4::Up * m_JumpPower;
+	//	return;
+	//}
 
-	else if (false == GameEngineInput::IsPress("Jump"))
-	{
-		ChangeState(STATEVALUE::FALL);
-		return;
-	}
+	//else if (false == GameEngineInput::IsPress("Jump"))
+	//{
+	//	ChangeState(STATEVALUE::FALL);
+	//	return;
+	//}
 
 	if (true == GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(STATEVALUE::JUMP_ATTACK);
 		return;
 	}
+
+	GameEngineImage* ColImage = GameEngineResources::GetInst().ImageFind("ColMap_Spaceport.BMP");
+	if (nullptr == ColImage)
+	{
+		MsgAssert("충돌용 맵 이미지가 없습니다.");
+	}
+
+	float4 NextPos = GetPos() + m_MoveDir * _DeltaTime;
+	if (RGB(255, 0, 255) == ColImage->GetPixelColor(NextPos, RGB(255, 0, 255)))
+	{
+		ChangeState(STATEVALUE::IDLE);
+		return;
+	}
+
+	// 여기서 올려주는 코드가 업어
+
 }
 
 void Player_Zero::Jump_End()
