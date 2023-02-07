@@ -160,6 +160,7 @@
     <ClInclude Include="GameEngineObject.h" />
     <ClInclude Include="GameEngineRender.h" />
     <ClInclude Include="GameEngineResources.h" />
+    <ClInclude Include="NumberRenderObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="GameEngineObject.cpp" />
     <ClCompile Include="GameEngineRender.cpp" />
     <ClCompile Include="GameEngineResources.cpp" />
+    <ClCompile Include="NumberRenderObject.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

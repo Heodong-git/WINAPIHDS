@@ -71,6 +71,11 @@ public:
 		return IsCut;
 	}
 
+	bool GetImageCuttingCount()
+	{
+		return ImageCutDatas.size();
+	}
+
 	// 컷상태 이미지의 인덱스가 유효한지 확인하여 그값을 반환 
 	bool IsCutIndexValid(int _Index) const
 	{

@@ -61,7 +61,10 @@ public:
 		return Order;
 	}
 
-	void SetOwner(GameEngineObject* _Parent)
+	// 부모클래스에 virtual 함수가 있다면 
+	// 자식클래스에서는 그 함수를 재정의 하지 않으면 부모 클래스의 함수로, 재정의한다면 
+	// 자식에서 재정의한 함수로 호출되게 된다. 
+	virtual void SetOwner(GameEngineObject* _Parent)
 	{
 		Parent = _Parent;
 	}
