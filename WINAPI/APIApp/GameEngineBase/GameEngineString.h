@@ -9,6 +9,7 @@ public:
 	// 대소문자 실수를 방지하기 위해 인자로 들어온 문자열을
 	// 모두 대문자로 변경하여 반환
 	static std::string ToUpper(const std::string_view& _Str);
+	static std::string ToString(int Value);
 	
 protected:
 

@@ -24,3 +24,9 @@ std::string GameEngineString::ToUpper(const std::string_view& _Str)
 	// 변경된 값을 반환
 	return Text;
 }
+
+// 값을 넣어주면 문자로 변환
+std::string GameEngineString::ToString(int Value)
+{
+	return std::to_string(Value);
+}

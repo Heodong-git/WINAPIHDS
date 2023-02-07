@@ -2,12 +2,15 @@
 #include <math.h>
 #include <cmath>
 #include <string>
+#include <vector>
 
 
 // final 키워드 : 해당 키워드가 입력되어 있다면 그 클래스는 상속을 내리지 못한다.
 class GameEngineMath final
 {
 public:
+	static std::vector<unsigned int> GetDigits(int _Value);
+	static unsigned int GetLenth(int _Value);
 	static const float PIE;
 	static const float PIE2;
 
