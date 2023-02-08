@@ -97,8 +97,8 @@ void SpacePortLevel::Loading()
 	// 해당 레벨에서 사용할 액터 생성
 	// 액터 생성시에 인자로 넣어주는 값은 업데이트,렌더링 순서이며 값이 높을 수록 나중에 연산,렌더링이 된다. 
 	m_Player = CreateActor<Player_Zero>(ZORDER::PLAYER);
-	m_Player->SetPos({ 400, 7010 });
-	m_StatingPos = m_Player->GetPos();
+	m_Player->SetPos({ 400, 7060 });
+	m_Player->SetStartPos(m_Player->GetPos());
 	// 일단 플레이어 애니메이션부터 필요한거 다 진행하고나서 다시. 
 	GameEngineActor* Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);
 	Boss->SetPos({ 18587, 968 });
@@ -155,7 +155,7 @@ void SpacePortLevel::Loading()
 
 void SpacePortLevel::Update(float _DeltaTime)
 {
-	float CameraMoveSpeed = 2000.0f;
+	float CameraMoveSpeed = 1000.0f;
 
 	if (GameEngineInput::IsPress("CameraLeftMove"))
 	{
@@ -174,13 +174,11 @@ void SpacePortLevel::Update(float _DeltaTime)
 		SetCameraMove(float4::Up * _DeltaTime * CameraMoveSpeed);
 	}
 
-	// 2번키가 눌렸다면 디버그모드 on , off 
+	// q 키가 눌렸다면 디버그모드 on , off 
 	if (GameEngineInput::IsDown("DebugRenderSwitch"))
 	{
 		DebugRenderSwitch();
 	}
-
-	// 여기서 카메라를 움직이는게 맞나? 
 }
 
 void SpacePortLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)

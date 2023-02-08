@@ -97,5 +97,5 @@ void Monster_GunMan::Render(float _DeltaTime)
 		ActorPos.iy() + 5
 	);
 
-	m_Collider->DebugRender();
+	// m_Collider->DebugRender();
 }

@@ -1,8 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineLevel.h>
 
-// Select Level 에서 캐릭터를 선택했다면
-// 진입하여 본격적으로 게임을 진행하는 Level 
 class Player_Zero;
 class SpacePortLevel : public GameEngineLevel
 {
@@ -27,11 +25,6 @@ public:
 		return m_StartCameraPos;
 	}
 
-	inline float4 GetStatingPos()
-	{
-		return m_StatingPos;
-	}
-
 protected:
 	virtual void Loading() override;
 	virtual void Update(float _DeltaTime) override;
@@ -43,6 +36,5 @@ private:
 	Player_Zero* m_Player = nullptr;
 	// 시작카메라좌표
 	float4	     m_StartCameraPos = float4::Zero;
-	float4		 m_StatingPos = float4::Zero;
 };
 
