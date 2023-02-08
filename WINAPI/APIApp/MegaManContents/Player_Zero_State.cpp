@@ -99,7 +99,6 @@ void Player_Zero::ChangeState(STATEVALUE _State)
 	}
 }
 
-
 void Player_Zero::UpdateState(float _DeltaTime)
 {
 	// 현재 상태값에 따라서 분기처리
@@ -141,15 +140,15 @@ void Player_Zero::UpdateState(float _DeltaTime)
 	}
 }
 
-// Recall 상태가 시작 될 때 방향체크와 동시에 애니메이션을 출력한다. 
 void Player_Zero::Recall_Start()
 {
-	m_Gravity = true;
+	// 플레이어 방향체크 + 애니메이션 출력
 	AnimDirCheck("recall");
 }
 
 void Player_Zero::Recall_Update(float _DeltaTime)
 {
+	// 애니메이션이 종료 되었다면 아이들로 전환
 	if (true == m_AnimationRender->IsAnimationEnd())
 	{
 		ChangeState(STATEVALUE::IDLE);
@@ -157,7 +156,8 @@ void Player_Zero::Recall_Update(float _DeltaTime)
 	}
 
 	// 애니메이션 동작중에 왼쪽, 오른쪽키가 눌리면 아무것도 수행하지 않도록 예외처리
-	if (true == GameEngineInput::IsPress("Left_Move") || true == GameEngineInput::IsPress("Right_Move"))
+	if (true == GameEngineInput::IsPress("Left_Move") || 
+		true == GameEngineInput::IsPress("Right_Move"))
 	{
 		return;
 	}
@@ -165,11 +165,7 @@ void Player_Zero::Recall_Update(float _DeltaTime)
 
 void Player_Zero::Recall_End()
 {
-	// 리콜이 종료되면 리스폰 된 상태에서 아이들로 전환된 상태이기 때문에
-	// Groud 상태가 ture 이고, 땅에서는 더이상 중력을 받지않는다? 뭔가이상한데 일단. 
-	m_Ground = true;
 }
-
 
 void Player_Zero::Idle_Start()
 {
@@ -179,6 +175,12 @@ void Player_Zero::Idle_Start()
 
 void Player_Zero::Idle_Update(float _DeltaTime)
 {
+	if (GameEngineInput::IsPress("Left_Move") || GameEngineInput::IsPress("Right_Move"))
+	{
+		ChangeState(STATEVALUE::MOVE);
+		return;
+	}
+	
 	// 아이들 상태에서 점프 버튼 한번 눌렸다면 점프 상태로 전환한다. 
 	if (true == GameEngineInput::IsPress("Jump"))
 	{
@@ -186,12 +188,6 @@ void Player_Zero::Idle_Update(float _DeltaTime)
 		return;
 	}
 
-	if (GameEngineInput::IsPress("Left_Move") || GameEngineInput::IsPress("Right_Move"))
-	{
-		ChangeState(STATEVALUE::MOVE);
-		return;
-	}
-	
 	if (true == GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(STATEVALUE::ATTACK_FIRST);
@@ -268,141 +264,93 @@ void Player_Zero::Move_End()
 
 void Player_Zero::Jump_Start()
 {
+	// 해근샘 
 	// 점프상태를 true 
 	m_Jump = true;
-	m_Ground = false;
-	m_Gravity = true;
-
 	IsJumpMax = false;
 
-	// m_JumpPower = 100.0f;
+	// 점프가 시작되면 기본 점프파워를 30으로.
 	m_JumpPower = 50.0f;
 	m_GravityPower = 800.0f;
-
 
 	AnimDirCheck("Jump");
 }
 
 void Player_Zero::Jump_Update(float _DeltaTime)
 {
-	//if (m_MaxJumpTime <= m_JumpTime)
-	//{
-	//	m_JumpTime = 0.0f;
-	//	ChangeState(STATEVALUE::FALL);
-	//	return;
-	//}
-
+	// 현재 점프가 최대높이가 아니고, 점프키가 눌려있다면 동작
 	if (false == IsJumpMax && true == GameEngineInput::IsPress("Jump"))
 	{
+		// 키가 눌려있다면 점프파워를 계속 증가시킨다. 
 		m_JumpPower += 500.0f * _DeltaTime;
 
+		// 점프파워가 일정수치이상 넘어갔다면
 		if (m_JumpPower >= 100.0f)
 		{
+			// 점프파워를 ?
 			m_JumpPower = 100.0f;
 			IsJumpMax = true;
 		}
 	}
 
-
 	m_MoveDir += float4::Up * m_JumpPower;
-
 	m_JumpPower -= m_GravityPower * _DeltaTime;
-
-	if (true == GameEngineInput::IsPress("Left_Move"))
-	{
-		m_MoveDir += float4::Left * m_MoveSpeed;
-	}
-
-	if (true == GameEngineInput::IsPress("Right_Move"))
-	{
-		m_MoveDir += float4::Right * m_MoveSpeed;
-	}
-
-	// 점프키가 눌려있다면 
-	//if (true == GameEngineInput::IsPress("Jump"))
-	//{
-	//	m_JumpTime += _DeltaTime;
-	//	m_MoveDir += float4::Up * m_JumpPower;
-	//	return;
-	//}
-
-	//else if (false == GameEngineInput::IsPress("Jump"))
-	//{
-	//	ChangeState(STATEVALUE::FALL);
-	//	return;
-	//}
 
 	if (true == GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(STATEVALUE::JUMP_ATTACK);
 		return;
 	}
-
-	GameEngineImage* ColImage = GameEngineResources::GetInst().ImageFind("ColMap_Spaceport.BMP");
-	if (nullptr == ColImage)
-	{
-		MsgAssert("충돌용 맵 이미지가 없습니다.");
-	}
-
-	float4 NextPos = GetPos() + m_MoveDir * _DeltaTime;
-	if (RGB(255, 0, 255) == ColImage->GetPixelColor(NextPos, RGB(255, 0, 255)))
-	{
-		ChangeState(STATEVALUE::IDLE);
-		return;
-	}
-
-	// 여기서 올려주는 코드가 업어
-
 }
 
 void Player_Zero::Jump_End()
 {
+	m_Jump = false;
+	ChangeState(STATEVALUE::IDLE);
 }
 
 void Player_Zero::Fall_Start()
 {
-	m_Falling = true;
+	/*m_Falling = true;
 	if (m_PrevState == STATEVALUE::JUMP_ATTACK)
 	{
 		AnimDirCheck("Fall_end");
 		return;
 	}
-	AnimDirCheck("Fall");
+	AnimDirCheck("Fall");*/
 }
 
 void Player_Zero::Fall_Update(float _DeltaTime)
 {
-	if (true == m_AnimationRender->IsAnimationEnd() && false == m_Falling)
-	{
-		ChangeState(STATEVALUE::IDLE);
-		return;
-	}
+	//if (true == m_AnimationRender->IsAnimationEnd() && false == m_Falling)
+	//{
+	//	ChangeState(STATEVALUE::IDLE);
+	//	return;
+	//}
 
-	if (true == GameEngineInput::IsDown("Attack"))
-	{
-		ChangeState(STATEVALUE::JUMP_ATTACK);
-		return;
-	}
-	
-	
-	// 충돌체크를 해서 픽셀의 색이 255 0 255 라면 Ground = true; 
+	//if (true == GameEngineInput::IsDown("Attack"))
+	//{
+	//	ChangeState(STATEVALUE::JUMP_ATTACK);
+	//	return;
+	//}
+	//
+	//// 충돌체크를 해서 픽셀의 색이 255 0 255 라면 Ground = true; 
 
-	GameEngineImage* ColImage = GameEngineResources::GetInst().ImageFind("ColMap_Spaceport.BMP");
-	if (nullptr == ColImage)
-	{
-		MsgAssert("충돌용 맵 이미지가 없습니다.");
-	}
+	//GameEngineImage* ColImage = GameEngineResources::GetInst().ImageFind("ColMap_Spaceport.BMP");
+	//if (nullptr == ColImage)
+	//{
+	//	MsgAssert("충돌용 맵 이미지가 없습니다.");
+	//}
 
-	float4 NextPos = GetPos() + m_MoveDir * _DeltaTime; 
-	if (RGB(255, 0, 255) == ColImage->GetPixelColor(NextPos, RGB(255, 0, 255)))
-	{
-		m_Falling = false;
-	}
+	//float4 NextPos = GetPos() + m_MoveDir * _DeltaTime; 
+	//if (RGB(57, 255, 20) == ColImage->GetPixelColor(NextPos, RGB(57, 255, 20)))
+	//{
+	//	m_Falling = false;
+	//}
 }
 
 void Player_Zero::Fall_End()
 {
-	m_Jump = false;
 }
 
 void Player_Zero::Fall_End_Start()
@@ -412,25 +360,10 @@ void Player_Zero::Fall_End_Start()
 
 void Player_Zero::Fall_End_Update(float _DeltaTime)
 {
-	// 함수로빼자
-	GameEngineImage* ColImage = GameEngineResources::GetInst().ImageFind("ColMap_Spaceport.BMP");
-	if (nullptr == ColImage)
-	{
-		MsgAssert("충돌용 맵 이미지가 없습니다.");
-	}
-
-	float4 NextPos = GetPos() + m_MoveDir * _DeltaTime;
-	if (RGB(255, 0, 255) == ColImage->GetPixelColor(NextPos, RGB(255, 0, 255)))
-	{
-		m_Falling = false;
-		ChangeState(STATEVALUE::IDLE);
-		return;
-	}
 }
 
 void Player_Zero::Fall_End_End()
 {
-	m_Jump = false;
 }
 
 void Player_Zero::Attack_First_Start()

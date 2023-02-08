@@ -32,6 +32,11 @@ public:
 	Player_Zero& operator=(const Player_Zero& _Other) = delete;
 	Player_Zero& operator=(Player_Zero&& _Other) noexcept = delete;
 
+	void SetStartPos(float4 _Pos)
+	{
+		m_StartPos = _Pos;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -41,23 +46,20 @@ private:
 	// 디버그용 변수
 	bool		 m_DebugMode = false;
 
-	float	     m_MoveSpeed = 1100.0f;
+	// 플레이어가 사용하는 변수
+	float	     m_MoveSpeed = 500.0f;
 	bool		 m_Jump = false;
-	bool	     m_Falling = false;
-	float	     m_JumpTime = 0.0f;       // 음.. 
+	bool	     m_Falling = false;  
 	float		 m_MaxJumpTime = 1.5f;
-	float		 m_JumpPower = 600.0f;
-	float	     m_GravityPower = 200.0f; // Gravity
+	float		 m_JumpPower = 0.0f;
+	float	     m_GravityPower = 200.0f;
 	bool		 IsJumpMax = false;
 
-	float		 m_DashPower = 1000.0f;
-	float		 m_DashTime = 0.0f;
-	float		 m_MaxDashTime = 1.0f;
+	float4	     m_StartPos = float4::Zero;
 
-	bool		 m_Ground = false;
-	bool		 m_Gravity = true;
 	std::string  m_DirString = "Right_";
 	float4		 m_MoveDir = float4::Zero;
+	COLORREF	 m_GroundCollisionPixel = RGB(57, 255, 20);
 
 	// 플레이어의 기본상태는 아이들로 초기화
 	STATEVALUE  m_StateValue = STATEVALUE::NONE;
@@ -73,10 +75,13 @@ private:
 	{
 		m_DebugMode = !m_DebugMode;
 	}
+	void DebugMove(float _DeltaTime);
 
 	// 방향체크 + 애니메이션 렌더 
 	void AnimDirCheck(const std::string_view& _AnimationName);
+	bool NextMoveCheck(float _DeltaTime);
 	void ChangeState(STATEVALUE _State);
+	void GroundCollisionCheck(float _DeltaTime);
 
 	void PlayerCreateAnimation();
 
