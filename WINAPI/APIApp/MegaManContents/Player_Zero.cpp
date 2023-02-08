@@ -143,7 +143,6 @@ void Player_Zero::Movecalculation(float _DeltaTime)
 		SetMove(m_MoveDir * _DeltaTime);
 		GetLevel()->SetCameraMove(m_MoveDir * _DeltaTime);
 	}
-
 }
 
 // 상수들은 다 내가 변수로 만들어서 사용해야함. 생각할 것. 
@@ -195,6 +194,7 @@ void Player_Zero::GroundCollisionCheck(float _DeltaTime)
 		return;
 	}
 
+	bool Check = true;
 	// 다음 이동위치 계산
 	float4 NextPos = GetPos() + m_MoveDir * _DeltaTime;
 	// 다음 이동위치의 픽셀이 나의 Ground 픽셀충돌값과 동일하다면
@@ -204,8 +204,24 @@ void Player_Zero::GroundCollisionCheck(float _DeltaTime)
 		m_MoveDir = float4::Zero * _DeltaTime;
 	}
 	
+	if (false == Check)
+	{
+		while (true)
+		{
+			m_MoveDir.y -= 1;
 
-	//SetMove(m_MoveDir * _DeltaTime);
+			float4 NextPos = GetPos() + m_MoveDir * _DeltaTime;
+
+			if (m_GroundCollisionPixel == ColImage->GetPixelColor(NextPos, RGB(57, 255, 20)))
+			{
+				continue;
+			}
+
+			break;
+		}
+	}
+
+	SetMove(m_MoveDir * _DeltaTime);
 }
 
 // 컬리전삭제 예시용코드 
