@@ -149,6 +149,15 @@ void Player_Zero::Update(float _DeltaTime)
 
 bool Player_Zero::IsGround(float4 Pos)
 {
+	// 그 위치의 픽셀값이 검은색이 아니라면 
+	// 나는 ground 상태가 아닌 것이다. 
+
+	// IsGround 의 true 의 조건
+	// 현재 나의 윗 픽셀의 색이 검은색 내 픽셀위치의 색도 검은색 아래픽셀 위치의 색이 흰색이라면 땅이야
+	// IsGround 의 false 의 조건
+	// 나의 아랫픽셀이 흰색이면 땅이 아니야
+	// 일단 이거는 사운드 영상 , 엔진업데이트 마무리짓고 다시 ㄱ
+	// 주말동안 충돌이미지도 편집완료해야함
 	return RGB(0, 0, 0) != GetColor(Pos);
 }
 
@@ -169,7 +178,7 @@ int Player_Zero::GetColor(float4 Pos)
 	// 컬러체크 유니온을 활용하여 색상이 맞는지 체크한다. 
 	ColorCheck CC;
 
-	// 
+	// 충돌맵이미지에서 해당하는 위치의 픽셀값을 받아서 리턴한다. 
 	CC.Color = ColImage->GetPixelColor(CheckPos, RGB(255, 255, 255));
 	return CC.Color;
 }

@@ -189,6 +189,12 @@ void Player_Zero::Idle_Update(float _DeltaTime)
 	//	return;
 	//}
 	
+	// 아이들 업데이트에 들어왔고, 아이들 상태에서는 현재 나의 위치가 땅인지 아닌지를
+	// 체크해서 나의 위치를 땅으로 올려주어야 한다.
+	// 내 프로젝트에서 Ground 란? -> 나의 윗픽셀이 검은색이고, 아랫픽셀이 충돌색상이라면 땅이다. 
+	// 그렇기 때문에 함수를 호출하여 
+	// true == IsGround 일 경우에는 내가 현재 땅에 있는 것.
+	// 땅에 있을 때는 쳐박혀있다면 올려주어야 한다.
 	if (true == IsGround())
 	{
 		GroundCollisionCheck();
