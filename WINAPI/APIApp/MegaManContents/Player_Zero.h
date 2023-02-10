@@ -43,6 +43,8 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
+	std::string ColMapName;
+
 	// 디버그용 변수
 	bool		 m_DebugMode = false;
 
@@ -81,9 +83,15 @@ private:
 	void AnimDirCheck(const std::string_view& _AnimationName);
 	bool NextMoveCheck(float _DeltaTime);
 	void ChangeState(STATEVALUE _State);
-	void GroundCollisionCheck(float _DeltaTime);
+	void GroundCollisionCheck(float4 _Pos = float4::Zero);
+
+	void Gravity(float _DeltaTime);
 
 	void PlayerCreateAnimation();
+
+	int GetColor(float4 Pos = float4::Zero);
+
+	bool IsGround(float4 Pos = float4::Zero);
 
 	// 상태 업데이트 
 	void UpdateState(float _DeltaTime);

@@ -97,7 +97,7 @@ void SpacePortLevel::Loading()
 	// 해당 레벨에서 사용할 액터 생성
 	// 액터 생성시에 인자로 넣어주는 값은 업데이트,렌더링 순서이며 값이 높을 수록 나중에 연산,렌더링이 된다. 
 	m_Player = CreateActor<Player_Zero>(ZORDER::PLAYER);
-	m_Player->SetPos({ 400, 7060 });
+	m_Player->SetPos({ 400, 7160 });
 	m_Player->SetStartPos(m_Player->GetPos());
 	// 일단 플레이어 애니메이션부터 필요한거 다 진행하고나서 다시. 
 	GameEngineActor* Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);

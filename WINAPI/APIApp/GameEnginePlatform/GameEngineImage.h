@@ -24,6 +24,18 @@ struct ImageCutData
 	}
 };
 
+union ColorCheck
+{
+	int Color;
+	struct 
+	{
+		char r;
+		char g;
+		char b;
+		char a;
+	};
+};
+
 // 전방선언
 class GameEnginePath;
 class GameEngineImage

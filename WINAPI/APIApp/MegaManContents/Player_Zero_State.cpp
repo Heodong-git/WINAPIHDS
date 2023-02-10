@@ -155,12 +155,12 @@ void Player_Zero::Recall_Update(float _DeltaTime)
 		return; 
 	}
 
-	// 애니메이션 동작중에 왼쪽, 오른쪽키가 눌리면 아무것도 수행하지 않도록 예외처리
-	if (true == GameEngineInput::IsPress("Left_Move") || 
-		true == GameEngineInput::IsPress("Right_Move"))
-	{
-		return;
-	}
+	//// 애니메이션 동작중에 왼쪽, 오른쪽키가 눌리면 아무것도 수행하지 않도록 예외처리
+	//if (true == GameEngineInput::IsPress("Left_Move") || 
+	//	true == GameEngineInput::IsPress("Right_Move"))
+	//{
+	//	return;
+	//}
 }
 
 void Player_Zero::Recall_End()
@@ -180,7 +180,24 @@ void Player_Zero::Idle_Update(float _DeltaTime)
 		ChangeState(STATEVALUE::MOVE);
 		return;
 	}
-	
+
+	// 조건을 체크해야 허공이야? 땅이야?
+
+	//if (false == IsGround())
+	//{
+	//	ChangeState(STATEVALUE::FALL);
+	//	return;
+	//}
+
+	if (true == IsGround())
+	{
+		GroundCollisionCheck();
+		// 올려줘야죠.
+		// ChangeState(STATEVALUE::FALL);
+		return;
+	}
+
+
 	// 아이들 상태에서 점프 버튼 한번 눌렸다면 점프 상태로 전환한다. 
 	if (true == GameEngineInput::IsPress("Jump"))
 	{
@@ -199,9 +216,6 @@ void Player_Zero::Idle_Update(float _DeltaTime)
 		ChangeState(STATEVALUE::DASH);
 		return;
 	}
-
-	// 업데이트 후에 눌려있는 키체크
-	AnimDirCheck("Idle");
 }
 
 void Player_Zero::Idle_End()
