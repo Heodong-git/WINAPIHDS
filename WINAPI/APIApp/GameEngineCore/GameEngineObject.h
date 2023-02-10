@@ -80,6 +80,23 @@ public:
 		return Parent;
 	}
 
+	// 오브젝트의 이름 세팅
+	void SetName(const std::string_view& _View)
+	{
+		Name = _View;
+	}
+
+	// 이름반환
+	const std::string& GetName()
+	{
+		return Name;
+	}
+	
+	std::string GetNameCopy()
+	{
+		return Name;
+	}
+
 protected:
 
 private:
@@ -89,6 +106,8 @@ private:
 
 	bool ObjectDeath = false;
 	bool ObjectUpdate = true;
+
+	std::string Name;
 
 };
 

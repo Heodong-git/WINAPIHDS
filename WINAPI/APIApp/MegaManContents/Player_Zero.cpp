@@ -195,15 +195,14 @@ void Player_Zero::GroundCollisionCheck(float _DeltaTime)
 	}
 
 	bool Check = true;
-	// 다음 이동위치 계산
 	float4 NextPos = GetPos() + m_MoveDir * _DeltaTime;
-	// 다음 이동위치의 픽셀이 나의 Ground 픽셀충돌값과 동일하다면
+
 	if (m_GroundCollisionPixel == ColImage->GetPixelColor(NextPos, RGB(57, 255, 20)))
 	{
-		// 여기부터 다시 
-		m_MoveDir = float4::Zero * _DeltaTime;
+		Check = false;
+		m_MoveDir = float4::Zero;
 	}
-	
+
 	if (false == Check)
 	{
 		while (true)
@@ -220,8 +219,6 @@ void Player_Zero::GroundCollisionCheck(float _DeltaTime)
 			break;
 		}
 	}
-
-	SetMove(m_MoveDir * _DeltaTime);
 }
 
 // 컬리전삭제 예시용코드 

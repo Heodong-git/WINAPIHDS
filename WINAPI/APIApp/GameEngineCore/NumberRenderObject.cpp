@@ -11,7 +11,7 @@ NumberRenderObject::~NumberRenderObject()
 {
 }
 
-void NumberRenderObject::SetImage(const std::string_view& _ImageName, float4 _Scale, int _Order)
+void NumberRenderObject::SetImage(const std::string_view& _ImageName, float4 _Scale, int _Order, int _TransColor)
 {
 	GameEngineImage* FindNumberImage = GameEngineResources::GetInst().ImageFind(_ImageName);
 
@@ -21,7 +21,7 @@ void NumberRenderObject::SetImage(const std::string_view& _ImageName, float4 _Sc
 		MsgAssert("숫자 이미지는 무조건 10개로 짤려있어야 합니다.");
 	}
 
-	if (0 >= NumberScale.x || 0 >= NumberScale.y)
+	if (0 >= _Scale.x || 0 >= _Scale.y)
 	{
 		MsgAssert("크기가 0으로 숫자를 출력할 수 없습니다.");
 	}
@@ -29,6 +29,7 @@ void NumberRenderObject::SetImage(const std::string_view& _ImageName, float4 _Sc
 	ImageName = _ImageName;
 	NumberScale = _Scale;
 	Order = _Order;
+	TransColor = _TransColor;
 }
 
 void NumberRenderObject::SetValue(int _Value)
@@ -46,8 +47,9 @@ void NumberRenderObject::SetValue(int _Value)
 	//            자리수가 바뀌었고                  3자리 랜더하고 있었는데 5자리가 됐다면
 	if (NumberRenders.size() != Numbers.size() && NumberRenders.size() < Numbers.size())
 	{
+		size_t CurRenderSize = NumberRenders.size();
 		//                       5                   3
-		for (size_t i = 0; i < Numbers.size() - NumberRenders.size(); i++)
+		for (size_t i = 0; i < (Numbers.size() - CurRenderSize); i++)
 		{
 			NumberRenders.push_back(Actor->CreateRender(Order));
 		}
@@ -65,11 +67,47 @@ void NumberRenderObject::SetValue(int _Value)
 			MsgAssert("숫자랜더러가 nullptr 입니다");
 		}
 
+		Render->SetTransColor(TransColor);
 		Render->SetPosition(Pos + RenderPos);
-		Render->SetScale(NumberScale);
 		Render->SetImage(ImageName);
+		Render->SetScale(NumberScale);
 		Render->SetFrame(Numbers[i]);
 
 		RenderPos.x += NumberScale.x;
 	}
+
+	switch (AlignState)
+	{
+	case Align::Left:
+		break;
+	case Align::Right:
+		SetMove(float4::Left * static_cast<const float>(GameEngineMath::GetLenth(Value) - 1) * NumberScale.x);
+		break;
+	case Align::Center:
+		SetMove((float4::Left * static_cast<const float>(GameEngineMath::GetLenth(Value) - 1) * NumberScale.x).half());
+		break;
+	default:
+		break;
+	}
+
+	for (size_t i = 0; i < NumberRenders.size(); i++)
+	{
+		//CameraEffect
+		NumberRenders[i]->SetEffectCamera(CameraEffect);
+	}
 }
+
+void NumberRenderObject::SetMove(float4 _RenderPos)
+{
+	for (size_t i = 0; i < NumberRenders.size(); i++)
+	{
+		NumberRenders[i]->SetMove(_RenderPos);
+	}
+}
+
+void NumberRenderObject::SetAlign(Align _Align)
+{
+	AlignState = _Align;
+}
+
+

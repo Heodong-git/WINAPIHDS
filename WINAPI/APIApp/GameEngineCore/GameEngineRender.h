@@ -65,10 +65,23 @@ public:
 		return Image;
 	}
 
+	// 카메라 이펙트 온오프 
+	inline void EffectCameraOn()
+	{
+		SetEffectCamera(true);
+	}
+
 	inline void EffectCameraOff()
 	{
-		IsEffectCamera = false;
+		SetEffectCamera(false);
 	}
+
+	inline void SetEffectCamera(bool _Effect)
+	{
+		IsEffectCamera = _Effect;
+	}
+	
+	
 
 	// 현재 애니메이션이 모두 재생되었는지 체크 
 	bool IsAnimationEnd();
