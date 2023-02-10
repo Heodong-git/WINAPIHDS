@@ -146,20 +146,28 @@ void Player_Zero::Update(float _DeltaTime)
 	UpdateState(_DeltaTime);
 }
 
-
+// 땅체크
 bool Player_Zero::IsGround(float4 Pos)
-{
-	// 그 위치의 픽셀값이 검은색이 아니라면 
-	// 나는 ground 상태가 아닌 것이다. 
-
-	// IsGround 의 true 의 조건
-	// 현재 나의 윗 픽셀의 색이 검은색 내 픽셀위치의 색도 검은색 아래픽셀 위치의 색이 흰색이라면 땅이야
-	// IsGround 의 false 의 조건
-	// 나의 아랫픽셀이 흰색이면 땅이 아니야
-	// 일단 이거는 사운드 영상 , 엔진업데이트 마무리짓고 다시 ㄱ
-	// 주말동안 충돌이미지도 편집완료해야함
+{	
+	// 내위가 검은색이고, 내가 검은색, 아래가 흰색이면 나는 땅위에 올라와 있는 것
+	// 지금 이걸 만족하면 false 인거고 올려주지 않아도 되는 상황
+	if (RGB(0, 0, 0) == GetColor(float4::Up) &&
+		RGB(0, 0, 0) == GetColor() &&
+		RGB(255, 255, 255) == GetColor(float4::Down))
+	{
+		return false;
+	}
+	
+	// 내위치가 검은색이아니라면 올려줘야 되는거고 
 	return RGB(0, 0, 0) != GetColor(Pos);
 }
+
+bool Player_Zero::IsFall(float4 Pos)
+{
+	// 나도 검은색, 아래도 검은색이면 낙하상태임
+	return RGB(0, 0, 0) == GetColor() && RGB(0, 0, 0) == GetColor(float4::Down);
+}
+
 
 int Player_Zero::GetColor(float4 Pos)
 {
@@ -175,7 +183,7 @@ int Player_Zero::GetColor(float4 Pos)
 		return RGB(0,0,0);
 	}
 
-	// 컬러체크 유니온을 활용하여 색상이 맞는지 체크한다. 
+	// 컬러체크 유니온을 활용하여 색상이 맞는지 체크할 수 있음
 	ColorCheck CC;
 
 	// 충돌맵이미지에서 해당하는 위치의 픽셀값을 받아서 리턴한다. 
@@ -186,7 +194,7 @@ int Player_Zero::GetColor(float4 Pos)
 // 중력적용시 호출할 함수 
 void Player_Zero::Gravity(float _DeltaTime)
 {
-	m_MoveDir += float4::Down * 250.0f * _DeltaTime;
+	m_MoveDir += float4::Down * m_GravityPower * _DeltaTime;
 }
 
 // 오브젝트의 중심점을 알 수 있도록 사각형 출력 
@@ -207,11 +215,21 @@ void Player_Zero::Render(float _DeltaTime)
 
 void Player_Zero::GroundCollisionCheck(float4 _Pos)
 {
+	// 그라운드가 true 라면 나의 현재 위치를 올려준다. 
 	while (IsGround(_Pos))
 	{
 		SetMove(float4::Up);
 	}	
 }
+
+void Player_Zero::FallCheck(float4 _Pos)
+{
+	while (IsFall(_Pos))
+	{
+		SetMove(float4::Down);
+	}
+}
+
 
 
 

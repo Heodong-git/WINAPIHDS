@@ -284,6 +284,7 @@ void GameEngineImage::Cut(float4 _Start, float4 _End, int _X, int _Y)
 	IsCut = true;
 }
 
+// 
 DWORD GameEngineImage::GetPixelColor(float4 _Pos, DWORD _OutColor)
 {
 	return GetPixelColor(_Pos.ix(), _Pos.iy(), _OutColor);

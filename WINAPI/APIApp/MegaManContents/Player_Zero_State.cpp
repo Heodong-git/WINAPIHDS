@@ -154,13 +154,6 @@ void Player_Zero::Recall_Update(float _DeltaTime)
 		ChangeState(STATEVALUE::IDLE);
 		return; 
 	}
-
-	//// 애니메이션 동작중에 왼쪽, 오른쪽키가 눌리면 아무것도 수행하지 않도록 예외처리
-	//if (true == GameEngineInput::IsPress("Left_Move") || 
-	//	true == GameEngineInput::IsPress("Right_Move"))
-	//{
-	//	return;
-	//}
 }
 
 void Player_Zero::Recall_End()
@@ -181,33 +174,23 @@ void Player_Zero::Idle_Update(float _DeltaTime)
 		return;
 	}
 
-	// 조건을 체크해야 허공이야? 땅이야?
-
-	//if (false == IsGround())
-	//{
-	//	ChangeState(STATEVALUE::FALL);
-	//	return;
-	//}
-	
-	// 아이들 업데이트에 들어왔고, 아이들 상태에서는 현재 나의 위치가 땅인지 아닌지를
-	// 체크해서 나의 위치를 땅으로 올려주어야 한다.
-	// 내 프로젝트에서 Ground 란? -> 나의 윗픽셀이 검은색이고, 아랫픽셀이 충돌색상이라면 땅이다. 
-	// 그렇기 때문에 함수를 호출하여 
-	// true == IsGround 일 경우에는 내가 현재 땅에 있는 것.
-	// 땅에 있을 때는 쳐박혀있다면 올려주어야 한다.
+	// 내 현재 위치가 땅이야
 	if (true == IsGround())
 	{
+		// 내가 바닥에 쳐박혀있다면 올려주어야함
 		GroundCollisionCheck();
-		// 올려줘야죠.
-		// ChangeState(STATEVALUE::FALL);
-		return;
 	}
 
+	else if (true == IsFall())
+	{
+		ChangeState(STATEVALUE::FALL);
+		return;
+	}
 
 	// 아이들 상태에서 점프 버튼 한번 눌렸다면 점프 상태로 전환한다. 
 	if (true == GameEngineInput::IsPress("Jump"))
 	{
-		ChangeState(STATEVALUE::JUMP);
+		//ChangeState(STATEVALUE::JUMP);
 		return;
 	}
 
@@ -261,16 +244,22 @@ void Player_Zero::Move_Update(float _DeltaTime)
 		return;
 	}
 
+	// 왼쪽, 오른쪽으로 움직일때 이동후 
+	// 땅체크를 해서 pos 를 변경해준다. 
 	if (true == GameEngineInput::IsPress("Left_Move"))
 	{
-		m_MoveDir += float4::Left * m_MoveSpeed;
+		SetMove(float4::Left * m_MoveSpeed);
+		GroundCollisionCheck();
+		FallCheck();
 		AnimDirCheck("Move");
 		return;
 	}
 
 	if (true == GameEngineInput::IsPress("Right_Move"))
 	{
-		m_MoveDir += float4::Right * m_MoveSpeed;
+		SetMove(float4::Right * m_MoveSpeed);
+		GroundCollisionCheck();
+		FallCheck();
 		AnimDirCheck("Move");
 		return;
 	}
@@ -330,42 +319,20 @@ void Player_Zero::Jump_End()
 
 void Player_Zero::Fall_Start()
 {
-	/*m_Falling = true;
-	if (m_PrevState == STATEVALUE::JUMP_ATTACK)
-	{
-		AnimDirCheck("Fall_end");
-		return;
-	}
-	AnimDirCheck("Fall");*/
+	AnimDirCheck("Fall");
 }
 
+// 낙하 업데이트에서 체크해야할 것
 void Player_Zero::Fall_Update(float _DeltaTime)
 {
-	//if (true == m_AnimationRender->IsAnimationEnd() && false == m_Falling)
-	//{
-	//	ChangeState(STATEVALUE::IDLE);
-	//	return;
-	//}
+	Gravity(_DeltaTime);
+	SetMove(m_MoveDir * _DeltaTime);
 
-	//if (true == GameEngineInput::IsDown("Attack"))
-	//{
-	//	ChangeState(STATEVALUE::JUMP_ATTACK);
-	//	return;
-	//}
-	//
-	//// 충돌체크를 해서 픽셀의 색이 255 0 255 라면 Ground = true; 
-
-	//GameEngineImage* ColImage = GameEngineResources::GetInst().ImageFind("ColMap_Spaceport.BMP");
-	//if (nullptr == ColImage)
-	//{
-	//	MsgAssert("충돌용 맵 이미지가 없습니다.");
-	//}
-
-	//float4 NextPos = GetPos() + m_MoveDir * _DeltaTime; 
-	//if (RGB(57, 255, 20) == ColImage->GetPixelColor(NextPos, RGB(57, 255, 20)))
-	//{
-	//	m_Falling = false;
-	//}
+	if (true == IsGround())
+	{
+		ChangeState(STATEVALUE::IDLE);
+		return;
+	}
 }
 
 void Player_Zero::Fall_End()

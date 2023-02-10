@@ -49,12 +49,12 @@ private:
 	bool		 m_DebugMode = false;
 
 	// 플레이어가 사용하는 변수
-	float	     m_MoveSpeed = 500.0f;
+	float	     m_MoveSpeed = 5.0f;
 	bool		 m_Jump = false;
 	bool	     m_Falling = false;  
 	float		 m_MaxJumpTime = 1.5f;
 	float		 m_JumpPower = 0.0f;
-	float	     m_GravityPower = 200.0f;
+	float	     m_GravityPower = 150.0f;
 	bool		 IsJumpMax = false;
 
 	float4	     m_StartPos = float4::Zero;
@@ -84,14 +84,21 @@ private:
 	bool NextMoveCheck(float _DeltaTime);
 	void ChangeState(STATEVALUE _State);
 	void GroundCollisionCheck(float4 _Pos = float4::Zero);
+	void FallCheck(float4 _Pos = float4::Zero);
 
+	// 중력
 	void Gravity(float _DeltaTime);
 
+	// 애니메이션 생성
 	void PlayerCreateAnimation();
 
+	// 충돌이미지의 픽셀컬러를 가져온다. 
 	int GetColor(float4 Pos = float4::Zero);
 
+	// 땅체크
 	bool IsGround(float4 Pos = float4::Zero);
+	// 낙하체크
+	bool IsFall(float4 Pos = float4::Zero);
 
 	// 상태 업데이트 
 	void UpdateState(float _DeltaTime);
