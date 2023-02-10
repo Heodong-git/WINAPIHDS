@@ -44,10 +44,6 @@ void Player_Zero::DebugMove(float _DeltaTime)
 		SetMove(float4::Down * 3000.0f * _DeltaTime);
 		GetLevel()->SetCameraMove(float4::Down * 3000.0f * _DeltaTime);
 	}
-
-	// 디버그용
-	// 현재위치 체크
-	float4 CurPos = GetPos();
 	return;
 }
 
@@ -84,8 +80,10 @@ bool Player_Zero::NextMoveCheck(float _DeltaTime)
 	float4 NextPos = GetPos() + m_MoveDir * _DeltaTime;
 	if (NextPos.x < m_StartPos.x)
 	{
+		m_MoveDir = float4::Zero;
 		return false;
 	}
+
 	return true;
 }
 
@@ -124,27 +122,6 @@ void Player_Zero::Start()
 	ChangeState(STATEVALUE::RECALL);
 }
 
-void Player_Zero::Movecalculation(float _DeltaTime)
-{
-	// --------------------- 디버그용 이동 -----------------------------
-	if (true == m_DebugMode)
-	{
-		DebugMove(_DeltaTime);
-		return;
-	}
-
-	// ---------------------실제  게임 플레이용 ---------------------------- 
-	m_MoveDir += float4::Down * 200.0f * _DeltaTime;
-	
-	if (true == (NextMoveCheck(_DeltaTime)))
-	{
-		// 이미지 충돌 픽셀체크
-		GroundCollisionCheck(_DeltaTime);
-		SetMove(m_MoveDir * _DeltaTime);
-		GetLevel()->SetCameraMove(m_MoveDir * _DeltaTime);
-	}
-}
-
 // 상수들은 다 내가 변수로 만들어서 사용해야함. 생각할 것. 
 void Player_Zero::Update(float _DeltaTime)
 {
@@ -155,6 +132,28 @@ void Player_Zero::Update(float _DeltaTime)
 	// 현재 플레이어의 상태값에 따라 업데이트를 진행.
 	UpdateState(_DeltaTime);
 	Movecalculation(_DeltaTime);
+}
+
+void Player_Zero::Movecalculation(float _DeltaTime)
+{
+	// --------------------- 디버그용 이동 -----------------------------
+	if (true == m_DebugMode)
+	{
+		DebugMove(_DeltaTime);
+		return;
+	}
+
+	// ---------------------실제  게임 플레이용 ---------------------------- 
+	// 중력
+	m_MoveDir += float4::Down * 250.0f * _DeltaTime;
+
+	if (true == (NextMoveCheck(_DeltaTime)))
+	{
+		// 땅 충돌 픽셀체크 
+		GroundCollisionCheck(_DeltaTime);
+		SetMove(m_MoveDir * _DeltaTime);
+		GetLevel()->SetCameraMove(m_MoveDir * _DeltaTime);
+	}
 }
 
 // 오브젝트의 중심점을 알 수 있도록 사각형 출력 
@@ -170,8 +169,25 @@ void Player_Zero::Render(float _DeltaTime)
 		ActorPos.ix() + 5,
 		ActorPos.iy() + 5
 	);
+}
 
-	//m_Collision->DebugRender();	
+
+void Player_Zero::GroundCollisionCheck(float _DeltaTime)
+{
+	// 충돌체크를 위해 충돌확인할 이미지 find
+	GameEngineImage* ColImage = GameEngineResources::GetInst().ImageFind("ColMap_Spaceport.BMP");
+	if (nullptr == ColImage)
+	{
+		MsgAssert("충돌용 맵 이미지가 없습니다.");
+		return;
+	}
+	
+	
+}
+
+
+
+//m_Collision->DebugRender();	
 	// 디버그용 위치출력시 참고할 코드 
 	/*std::string MouseText = "MousePosition : ";
 	MouseText += GetLevel()->GetMousePos().ToString();
@@ -181,45 +197,6 @@ void Player_Zero::Render(float _DeltaTime)
 
 	GameEngineLevel::DebugTextPush(MouseText);
 	GameEngineLevel::DebugTextPush(CameraMouseText);*/
-}
-
-
-void Player_Zero::GroundCollisionCheck(float _DeltaTime)
-{
-	// 충돌이미지를 가져온다. 
-	GameEngineImage* ColImage = GameEngineResources::GetInst().ImageFind("ColMap_Spaceport.BMP");
-	if (nullptr == ColImage)
-	{
-		MsgAssert("충돌용 맵 이미지가 없습니다.");
-		return;
-	}
-
-	bool Check = true;
-	float4 NextPos = GetPos() + m_MoveDir * _DeltaTime;
-
-	if (m_GroundCollisionPixel == ColImage->GetPixelColor(NextPos, RGB(57, 255, 20)))
-	{
-		Check = false;
-		m_MoveDir = float4::Zero;
-	}
-
-	if (false == Check)
-	{
-		while (true)
-		{
-			m_MoveDir.y -= 1;
-
-			float4 NextPos = GetPos() + m_MoveDir * _DeltaTime;
-
-			if (m_GroundCollisionPixel == ColImage->GetPixelColor(NextPos, RGB(57, 255, 20)))
-			{
-				continue;
-			}
-
-			break;
-		}
-	}
-}
 
 // 컬리전삭제 예시용코드 
 	/*if (nullptr != BodyCollision)

@@ -241,7 +241,6 @@ void Player_Zero::Move_Update(float _DeltaTime)
 		return;
 	}
 
-	// 왼쪽, 오른쪽 키가 눌려있다면 그 방향으로 힘을 준다. 
 	if (true == GameEngineInput::IsPress("Left_Move"))
 	{
 		m_MoveDir += float4::Left * m_MoveSpeed;
@@ -296,11 +295,11 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 	m_MoveDir += float4::Up * m_JumpPower;
 	m_JumpPower -= m_GravityPower * _DeltaTime;
 
-	if (true == GameEngineInput::IsDown("Attack"))
+	/*if (true == GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(STATEVALUE::JUMP_ATTACK);
 		return;
-	}
+	}*/
 }
 
 void Player_Zero::Jump_End()

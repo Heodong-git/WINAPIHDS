@@ -106,7 +106,6 @@ void SpacePortLevel::Loading()
 	/*GameEngineActor* PlayerHpBar = CreateActor<UI_PlayerHpBar>(ZORDER::UI);
 	PlayerHpBar->SetPos(m_Player->GetPos() + float4 { - 200 , - 350});*/
 
-	// 음.. 몬스터 좌표를 벡터에 저장해놓고 for문으로 넣는게 맞는거같기도하고.. 일단은 그냥
 	CreateActor<Map_SpacePort>();
 	Monster_GunMan* Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 1738 , 7065 });
