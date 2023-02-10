@@ -166,7 +166,7 @@ void GameEngineCore::ChangeLevel(const std::string_view& _Name)
 
 
 // 헤더에 다른 헤더를 인클루드 하지 않기 위해 기능을 분리
-void GameEngineCore::LevelLoading(GameEngineLevel* _Level)
+void GameEngineCore::LevelLoading(GameEngineLevel* _Level, const std::string_view& _Name)
 {
 	if (nullptr == _Level)
 	{

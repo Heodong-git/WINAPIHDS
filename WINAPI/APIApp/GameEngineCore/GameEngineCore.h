@@ -51,9 +51,8 @@ protected:
 
 		// 키값으로 데이터를 저장해준다. 
 		GameEngineLevel* Level = new LevelType();
-		Level->SetName(_Name);
 		// 레벨 생성 후 해당 레벨에 필요한 데이터 로딩
-		LevelLoading(Level);
+		LevelLoading(Level , _Name);
 		// 생성한 레벨을 저장
 		Levels.insert(std::make_pair(_Name.data(), Level));
 	}
@@ -82,7 +81,7 @@ private:
 	GameEngineLevel* MainLevel = nullptr;
 	
 	// 레벨로딩함수 (순환참조방지, 기능분리)
-	void LevelLoading(GameEngineLevel* _Level);
+	void LevelLoading(GameEngineLevel* _Level, const std::string_view& _Name);
 
 	bool IsDebugValue = false;
 };
