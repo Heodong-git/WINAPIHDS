@@ -128,24 +128,22 @@ void Player_Zero::Start()
 // 상수들은 다 내가 변수로 만들어서 사용해야함. 생각할 것. 
 void Player_Zero::Update(float _DeltaTime)
 {
+	// 디버그 키를 눌렀는지 체크는 위에서 해주어야 하니까 여기다가.
+	if (true == GameEngineInput::IsDown("DebugMode"))
+	{
+		DebugSwitch();
+		return;
+	}
 	// --------------------- 디버그용 이동 -----------------------------
+	// 디버그 이동의 경우 이동하고 아무것도 수행하지 않아야함. 
 	if (true == m_DebugMode)
 	{
 		DebugMove(_DeltaTime);
 		return;
 	}
 
-
-	if (true == GameEngineInput::IsDown("DebugMode"))
-	{
-		DebugSwitch();
-	}
 	// 현재 플레이어의 상태값에 따라 업데이트를 진행.
 	UpdateState(_DeltaTime);
-
-
-
-	// Movecalculation(_DeltaTime);
 }
 
 
@@ -156,9 +154,11 @@ bool Player_Zero::IsGround(float4 Pos)
 
 int Player_Zero::GetColor(float4 Pos)
 {
+	// 내 위치의 픽셀값을 기준으로 한 + 위치의 픽셀값을 받아온다. 
 	float4 CheckPos = GetPos() + Pos;
 
-	// 상수는 진짜로 그냥 항상 안쓰는게 좋다.
+	// 상수는 안쓰는게 좋다. <-- 인지하고
+	// 충돌맵이 없다면 assert 
 	GameEngineImage* ColImage = GameEngineResources::GetInst().ImageFind(ColMapName);
 	if (nullptr == ColImage)
 	{
@@ -166,29 +166,18 @@ int Player_Zero::GetColor(float4 Pos)
 		return RGB(0,0,0);
 	}
 
+	// 컬러체크 유니온을 활용하여 색상이 맞는지 체크한다. 
 	ColorCheck CC;
 
+	// 
 	CC.Color = ColImage->GetPixelColor(CheckPos, RGB(255, 255, 255));
 	return CC.Color;
 }
 
+// 중력적용시 호출할 함수 
 void Player_Zero::Gravity(float _DeltaTime)
 {
 	m_MoveDir += float4::Down * 250.0f * _DeltaTime;
-}
-
-void Player_Zero::Movecalculation(float _DeltaTime)
-{
-	// ---------------------실제  게임 플레이용 ---------------------------- 
-	// 중력
-
-	//if (true == (NextMoveCheck(_DeltaTime)))
-	//{
-	//	// 땅 충돌 픽셀체크 
-	//	// GroundCollisionCheck(_DeltaTime);
-	//	SetMove(m_MoveDir * _DeltaTime);
-	//	GetLevel()->SetCameraMove(m_MoveDir * _DeltaTime);
-	//}
 }
 
 // 오브젝트의 중심점을 알 수 있도록 사각형 출력 
@@ -212,18 +201,7 @@ void Player_Zero::GroundCollisionCheck(float4 _Pos)
 	while (IsGround(_Pos))
 	{
 		SetMove(float4::Up);
-	}
-
-	//// 충돌체크를 위해 충돌확인할 이미지 find
-	//GameEngineImage* ColImage = GameEngineResources::GetInst().ImageFind("ColMap_Spaceport.BMP");
-	//if (nullptr == ColImage)
-	//{
-	//	MsgAssert("충돌용 맵 이미지가 없습니다.");
-	//	return;
-	//}
-	//
-	
-	
+	}	
 }
 
 

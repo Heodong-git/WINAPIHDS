@@ -188,7 +188,7 @@ void Player_Zero::Idle_Update(float _DeltaTime)
 	//	ChangeState(STATEVALUE::FALL);
 	//	return;
 	//}
-
+	
 	if (true == IsGround())
 	{
 		GroundCollisionCheck();

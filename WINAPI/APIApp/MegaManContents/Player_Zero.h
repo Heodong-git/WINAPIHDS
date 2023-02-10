@@ -95,9 +95,7 @@ private:
 
 	// 상태 업데이트 
 	void UpdateState(float _DeltaTime);
-	// 플레이어 이동 연산
-	void Movecalculation(float _DeltaTime);
-
+	
 	// 상태
 	void Recall_Start();
 	void Recall_Update(float _DeltaTime);
