@@ -22,8 +22,26 @@ SpacePortLevel::~SpacePortLevel()
 {
 }
  
+void SpacePortLevel::SoundLoad()
+{
+	// 경로탐색 
+	GameEngineDirectory Dir;
+	Dir.MoveParentToDirectory("ContentsResources");
+	Dir.Move("ContentsResources");
+	Dir.Move("Sound");
+
+	{
+		GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("Test1.wav"));
+	}
+
+	// GameEngineResources::GetInst().SoundPlay("Appear.wav");
+
+}
+
 void SpacePortLevel::Loading()
 {
+	SoundLoad();
+
 	// 이미지로딩
 	GameEngineDirectory Directory;
 
@@ -182,7 +200,10 @@ void SpacePortLevel::Update(float _DeltaTime)
 
 void SpacePortLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
-
+	// 사운드출력
+	/*BGMPlayer = GameEngineResources::GetInst().SoundPlayToControl("Test1.wav");
+	BGMPlayer.LoopCount(100);
+	BGMPlayer.Volume(0.2f);*/
 }
 // 코어 -> 레벨생성
 // 레벨 -> 레벨 안에서 사용할 액터 생성, 생성 후 AcotrStart

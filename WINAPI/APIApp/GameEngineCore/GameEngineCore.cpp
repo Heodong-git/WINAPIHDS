@@ -4,6 +4,7 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include "GameEngineLevel.h"
 #include "GameEngineResources.h"
+#include <GameEnginePlatform/GameEngineSound.h>
 #include <GameEngineBase/GameEngineTime.h>
 
 GameEngineCore* Core;
@@ -52,6 +53,9 @@ void GameEngineCore::GlobalUpdate()
 		}
 	}
 
+	// 사운드 업데이트 
+	GameEngineSound::SoundUpdate();
+	
 	// 한프레임의 시작시에 델타타임을 정한다.
 	float TimeDeltaTime = GameEngineTime::GlobalTime.TimeCheck();
 
@@ -176,5 +180,6 @@ void GameEngineCore::LevelLoading(GameEngineLevel* _Level, const std::string_vie
 
 	// GameEngineLevel 클래스의 friend class 로 Core를 선언하여 
 	// Core 클래스에서는 Level 클래스의 내부에 접근이 가능하도록 작성해준다.
+	_Level->SetName(_Name);
 	_Level->Loading();
 }

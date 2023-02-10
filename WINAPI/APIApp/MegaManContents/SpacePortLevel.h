@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineLevel.h>
+#include <GameEngineCore/GameEngineResources.h>
 
 class Player_Zero;
 class SpacePortLevel : public GameEngineLevel
@@ -32,9 +33,12 @@ protected:
 	void LevelChangeEnd(GameEngineLevel* _NextLevel) override {}
 	void LevelChangeStart(GameEngineLevel* _PrevLevel) override;
 
+	GameEngineSoundPlayer BGMPlayer;
 private:
 	Player_Zero* m_Player = nullptr;
 	// 시작카메라좌표
 	float4	     m_StartCameraPos = float4::Zero;
+
+	void SoundLoad();
 };
 

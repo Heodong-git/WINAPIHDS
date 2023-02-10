@@ -17,6 +17,7 @@ public:
 	GameEngineDebug& operator=(GameEngineDebug&& _Other) noexcept = delete;
 	
 	static void LeakCheck();
+	static void LeakPointBreak(int _Point);
 
 protected:
 

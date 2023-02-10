@@ -5,15 +5,13 @@
 #include <MegaManContents/MegaManCore.h>
 #include <GameEngineBase/GameEngineTime.h>
 
-// 속성 : 하위시스템 -> 창으로 바꿔주면 윈도우식 WinMain 으로 진입점함수 변경
+// 속성 : 하위시스템 -> 창으로 바꿔주면 윈도우식 WinMain 으로 진입점함수 변경	
 // 진입점인자(메인파라미터) , OS가 인자를 채워주게 된다.
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPWSTR    lpCmdLine,
 	_In_ int       nCmdShow)
 
-	// static 변수는 데이터영역에 메모리가 만들어지고 프로그램 실행시에 메모리가 생성된다.
-	// 이미 이 시점에 Core 는 데이터 영역에 만들어진다. 
 {
 	// 실행
 	// 내부에서 원하는 해상도로 윈도우 생성
