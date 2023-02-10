@@ -348,3 +348,11 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+/WINAPI/APIApp/GameEnginePlatform/ThirdParty/FMOD/lib/x64/fmod_vc.lib
+/WINAPI/APIApp/GameEnginePlatform/ThirdParty/FMOD/lib/x64/fmodL_vc.lib
+/WINAPI/APIApp/GameEnginePlatform/ThirdParty/FMOD/lib/x64/fmodL.dll
+/WINAPI/APIApp/GameEnginePlatform/ThirdParty/FMOD/lib/x64/fmod.dll
+/WINAPI/APIApp/GameEnginePlatform/ThirdParty/FMOD/lib/x64/fmod_vc.lib
+/WINAPI/APIApp/GameEnginePlatform/ThirdParty/FMOD/lib/x64/fmodL_vc.lib
+/WINAPI/APIApp/GameEnginePlatform/ThirdParty/FMOD/lib/x64/fmodL.dll
+/WINAPI/APIApp/GameEnginePlatform/ThirdParty/FMOD/lib/x64/fmod.dll
