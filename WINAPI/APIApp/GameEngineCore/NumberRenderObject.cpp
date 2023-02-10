@@ -11,7 +11,7 @@ NumberRenderObject::~NumberRenderObject()
 {
 }
 
-void NumberRenderObject::SetImage(const std::string_view& _ImageName, float4 _Scale, int _Order, int _TransColor)
+void NumberRenderObject::SetImage(const std::string_view& _ImageName, float4 _Scale, int _Order, int _TransColor, const std::string_view& _NegativeName)
 {
 	GameEngineImage* FindNumberImage = GameEngineResources::GetInst().ImageFind(_ImageName);
 
@@ -30,14 +30,15 @@ void NumberRenderObject::SetImage(const std::string_view& _ImageName, float4 _Sc
 	NumberScale = _Scale;
 	Order = _Order;
 	TransColor = _TransColor;
+	NegativeName = _NegativeName;
 }
 
 void NumberRenderObject::SetValue(int _Value)
 {
+	GameEngineActor* Actor = GetOwner<GameEngineActor>();
 	Value = _Value;
 
 	std::vector<unsigned int> Numbers = GameEngineMath::GetDigits(Value);
-	GameEngineActor* Actor = GetOwner<GameEngineActor>();
 
 	if (nullptr == Actor)
 	{
@@ -57,6 +58,24 @@ void NumberRenderObject::SetValue(int _Value)
 	// Pos
 
 	float4 RenderPos;
+
+	Negative = _Value > 0 ? false : true;
+
+	if (true == Negative && nullptr == NegativeRender)
+	{
+		NegativeRender = Actor->CreateRender(Order);
+		NegativeRender->SetTransColor(TransColor);
+		NegativeRender->SetPosition(Pos + RenderPos);
+		NegativeRender->SetImage(NegativeName);
+		NegativeRender->SetScale(NumberScale);
+		RenderPos.x += NumberScale.x;
+	}
+
+	if (nullptr != NegativeRender)
+	{
+		NegativeRender->SetPosition(Pos + RenderPos);
+		RenderPos.x += NumberScale.x;
+	}
 
 	for (size_t i = 0; i < NumberRenders.size(); i++)
 	{
@@ -82,9 +101,11 @@ void NumberRenderObject::SetValue(int _Value)
 		break;
 	case Align::Right:
 		SetMove(float4::Left * static_cast<const float>(GameEngineMath::GetLenth(Value) - 1) * NumberScale.x);
+		NegativeRender->SetPosition(float4::Left * static_cast<const float>(GameEngineMath::GetLenth(Value) - 1) * NumberScale.x);
 		break;
 	case Align::Center:
 		SetMove((float4::Left * static_cast<const float>(GameEngineMath::GetLenth(Value) - 1) * NumberScale.x).half());
+		NegativeRender->SetPosition((float4::Left * static_cast<const float>(GameEngineMath::GetLenth(Value) - 1) * NumberScale.x).half());
 		break;
 	default:
 		break;
@@ -95,6 +116,7 @@ void NumberRenderObject::SetValue(int _Value)
 		//CameraEffect
 		NumberRenders[i]->SetEffectCamera(CameraEffect);
 	}
+
 }
 
 void NumberRenderObject::SetMove(float4 _RenderPos)

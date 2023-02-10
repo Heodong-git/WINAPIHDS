@@ -29,7 +29,7 @@ public:
 	NumberRenderObject& operator=(NumberRenderObject&& _Other) noexcept = delete;
 
 	// 
-	void SetImage(const std::string_view& _ImageName, float4 _Scale, int _Order, int _TransColor);
+	void SetImage(const std::string_view& _ImageName, float4 _Scale, int _Order, int _TransColor, const std::string_view& _NegativeName = "");
 	void SetValue(int _Value);
 
 	void SetMove(float4 _RenderPos);
@@ -59,12 +59,17 @@ private:
 	int Value = 0;
 	int TransColor = RGB(255, 0, 255);
 	Align AlignState = Align::Left;
+	bool Negative = false;
+
 	// GameEngineImage* NumberImage;
 
 	bool CameraEffect = false;
 
 	std::string_view ImageName = std::string_view();
 
+	std::string_view NegativeName = std::string_view();
+
 	std::vector<GameEngineRender*> NumberRenders = std::vector<GameEngineRender*>();
+	GameEngineRender* NegativeRender;
 };
 
