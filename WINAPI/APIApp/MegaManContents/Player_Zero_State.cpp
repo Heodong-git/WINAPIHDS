@@ -39,9 +39,6 @@ void Player_Zero::ChangeState(STATEVALUE _State)
 	case STATEVALUE::FALL:
 		Fall_Start();
 		break;
-	case STATEVALUE::FALL_END:
-		Fall_End_Start();
-		break;
 	case STATEVALUE::ATTACK_FIRST:
 		Attack_First_Start();
 		break;
@@ -77,9 +74,6 @@ void Player_Zero::ChangeState(STATEVALUE _State)
 		break;
 	case STATEVALUE::FALL:
 		Fall_End();
-		break;
-	case STATEVALUE::FALL_END:
-		Fall_End_End();
 		break;
 	case STATEVALUE::ATTACK_FIRST:
 		Attack_First_End();
@@ -119,9 +113,6 @@ void Player_Zero::UpdateState(float _DeltaTime)
 	case STATEVALUE::FALL:
 		Fall_Update(_DeltaTime);
 		break;
-	case STATEVALUE::FALL_END:
-		Fall_End_Update(_DeltaTime);
-		break;
 	case STATEVALUE::ATTACK_FIRST:
 		Attack_First_Update(_DeltaTime);
 		break;
@@ -140,6 +131,7 @@ void Player_Zero::UpdateState(float _DeltaTime)
 	}
 }
 
+// -----------------리콜 완료---------------------
 void Player_Zero::Recall_Start()
 {
 	// 플레이어 방향체크 + 애니메이션 출력
@@ -160,6 +152,8 @@ void Player_Zero::Recall_End()
 {
 }
 
+
+// 
 void Player_Zero::Idle_Start()
 {
 	// 방향체크 후 애니메이션 출력
@@ -179,9 +173,10 @@ void Player_Zero::Idle_Update(float _DeltaTime)
 	{
 		// 내가 바닥에 쳐박혀있다면 올려주어야함
 		GroundCollisionCheck();
+		return;
 	}
 
-	else if (true == IsFall())
+	if (true == IsFall())
 	{
 		ChangeState(STATEVALUE::FALL);
 		return;
@@ -190,7 +185,7 @@ void Player_Zero::Idle_Update(float _DeltaTime)
 	// 아이들 상태에서 점프 버튼 한번 눌렸다면 점프 상태로 전환한다. 
 	if (true == GameEngineInput::IsPress("Jump"))
 	{
-		//ChangeState(STATEVALUE::JUMP);
+		// ChangeState(STATEVALUE::JUMP);
 		return;
 	}
 
@@ -228,7 +223,7 @@ void Player_Zero::Move_Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsPress("Jump"))
 	{
-		ChangeState(STATEVALUE::JUMP);
+		// ChangeState(STATEVALUE::JUMP);
 		return;
 	}
 
@@ -244,22 +239,32 @@ void Player_Zero::Move_Update(float _DeltaTime)
 		return;
 	}
 
-	// 왼쪽, 오른쪽으로 움직일때 이동후 
-	// 땅체크를 해서 pos 를 변경해준다. 
 	if (true == GameEngineInput::IsPress("Left_Move"))
 	{
-		SetMove(float4::Left * m_MoveSpeed);
+		Gravity(_DeltaTime);
+		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		GroundCollisionCheck();
-		FallCheck();
+		if (true == IsFall())
+		{
+			ChangeState(STATEVALUE::FALL);
+			return;
+		}
 		AnimDirCheck("Move");
 		return;
 	}
 
 	if (true == GameEngineInput::IsPress("Right_Move"))
 	{
-		SetMove(float4::Right * m_MoveSpeed);
+		Gravity(_DeltaTime);
+		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
 		GroundCollisionCheck();
-		FallCheck();
+		if (true == IsFall())
+		{
+			ChangeState(STATEVALUE::FALL);
+			return;
+		}
 		AnimDirCheck("Move");
 		return;
 	}
@@ -303,12 +308,6 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 
 	m_MoveDir += float4::Up * m_JumpPower;
 	m_JumpPower -= m_GravityPower * _DeltaTime;
-
-	/*if (true == GameEngineInput::IsDown("Attack"))
-	{
-		ChangeState(STATEVALUE::JUMP_ATTACK);
-		return;
-	}*/
 }
 
 void Player_Zero::Jump_End()
@@ -326,29 +325,30 @@ void Player_Zero::Fall_Start()
 void Player_Zero::Fall_Update(float _DeltaTime)
 {
 	Gravity(_DeltaTime);
-	SetMove(m_MoveDir * _DeltaTime);
-
 	if (true == IsGround())
 	{
 		ChangeState(STATEVALUE::IDLE);
 		return;
 	}
+
+	if (true == GameEngineInput::IsPress("Right_Move"))
+	{
+		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		AnimDirCheck("Fall_end");
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("Left_Move"))
+	{
+		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		AnimDirCheck("Fall_end");
+		return;
+	}
 }
 
 void Player_Zero::Fall_End()
-{
-}
-
-void Player_Zero::Fall_End_Start()
-{
-	AnimDirCheck("Fall_End");
-}
-
-void Player_Zero::Fall_End_Update(float _DeltaTime)
-{
-}
-
-void Player_Zero::Fall_End_End()
 {
 }
 

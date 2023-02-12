@@ -59,7 +59,7 @@ void Monster_GunMan::Update(float _DeltaTime)
 	// 단일 충돌체크 
 	if (true == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::PLAYER) }))
 	{
-		this->Death();
+		// this->Death();
 	}
 	
 

@@ -284,11 +284,12 @@ void GameEngineImage::Cut(float4 _Start, float4 _End, int _X, int _Y)
 	IsCut = true;
 }
 
-// 
+// 해당 위치의 픽셀 값을 반환한다. 
 DWORD GameEngineImage::GetPixelColor(float4 _Pos, DWORD _OutColor)
 {
 	return GetPixelColor(_Pos.ix(), _Pos.iy(), _OutColor);
 }
+
 
 DWORD GameEngineImage::GetPixelColor(int _X, int _Y, DWORD _OutColor)
 {

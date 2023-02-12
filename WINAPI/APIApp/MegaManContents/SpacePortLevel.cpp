@@ -22,95 +22,12 @@ SpacePortLevel::~SpacePortLevel()
 {
 }
  
-void SpacePortLevel::SoundLoad()
-{
-	// 경로탐색 
-	GameEngineDirectory Dir;
-	Dir.MoveParentToDirectory("ContentsResources");
-	Dir.Move("ContentsResources");
-	Dir.Move("Sound");
 
-	{
-		GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("Test1.wav"));
-	}
-
-	// GameEngineResources::GetInst().SoundPlay("Appear.wav");
-
-}
 
 void SpacePortLevel::Loading()
 {
+	ImageLoad();
 	SoundLoad();
-
-	// 이미지로딩
-	GameEngineDirectory Directory;
-
-	// 1. 상위폴더에 해당 디렉터리가 있는지 확인
-	Directory.MoveParentToDirectory("ContentsResources");
-	// 2. 디렉터리가 있다면 경로를 설정해준다.  
-	Directory.Move("ContentsResources");
-	Directory.Move("Image");
-	Directory.Move("SpacePortLevel");
-
-	{
-		// 제로 오른쪽 스프라이트 
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_zero_sprite_right.bmp"));
-		Image->Cut(12, 16);
-	}
-	{
-		// 제로 왼쪽 스프라이트
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_zero_sprite_left.bmp"));
-		Image->Cut(12, 16);
-	}
-	{
-		// UI HpBar
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("ui_hp_bar.bmp"));
-		Image->Cut(8, 5);
-	}
-
-	{
-		// 스페이스포트 맵
-		// GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort.bmp"));
-		GameEngineImage* ColImage = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("ColMap_SpacePort.bmp"));
-	}
-	{
-		// 스페이스포트 분할맵 
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort_0.bmp"));
-		Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort_1.bmp"));
-		Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort_2.bmp"));
-		Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort_3.bmp"));
-		Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort_4.bmp"));
-		Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort_5.bmp"));
-		Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort_6.bmp"));
-	}
-
-	// 보스 커널
-	{
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("spaceport_colonel_left.bmp"));
-		Image->Cut(8, 6);
-	}
-
-	// 몬스터
-
-	// gunman image
-	{
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("spaceport_gunman_left.bmp"));
-		Image->Cut(8, 5);
-	}
-	{
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("spaceport_gunman_right.bmp"));
-		Image->Cut(8, 5);
-	}
-
-	// 이펙트
-	{
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("effect_dash_right.bmp"));
-		Image->Cut(5, 2);
-	}
-	{
-		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("effect_dash_left.bmp"));
-		Image->Cut(5, 2);
-	}
 
 	// 해당 레벨에서 사용할 액터 생성
 	// 액터 생성시에 인자로 넣어주는 값은 업데이트,렌더링 순서이며 값이 높을 수록 나중에 연산,렌더링이 된다. 
@@ -204,6 +121,97 @@ void SpacePortLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 	/*BGMPlayer = GameEngineResources::GetInst().SoundPlayToControl("Test1.wav");
 	BGMPlayer.LoopCount(100);
 	BGMPlayer.Volume(0.2f);*/
+}
+
+void SpacePortLevel::SoundLoad()
+{
+	// 경로탐색 
+	GameEngineDirectory Dir;
+	Dir.MoveParentToDirectory("ContentsResources");
+	Dir.Move("ContentsResources");
+	Dir.Move("Sound");
+
+	{
+		GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("Test1.wav"));
+	}
+
+	// GameEngineResources::GetInst().SoundPlay("Appear.wav");
+
+}
+
+
+
+void SpacePortLevel::ImageLoad()
+{
+	// 이미지로딩
+	GameEngineDirectory Directory;
+
+	// 1. 상위폴더에 해당 디렉터리가 있는지 확인
+	Directory.MoveParentToDirectory("ContentsResources");
+	// 2. 디렉터리가 있다면 경로를 설정해준다.  
+	Directory.Move("ContentsResources");
+	Directory.Move("Image");
+	Directory.Move("SpacePortLevel");
+
+	{
+		// 제로 오른쪽 스프라이트 
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_zero_sprite_right.bmp"));
+		Image->Cut(12, 16);
+	}
+	{
+		// 제로 왼쪽 스프라이트
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("player_zero_sprite_left.bmp"));
+		Image->Cut(12, 16);
+	}
+	{
+		// UI HpBar
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("ui_hp_bar.bmp"));
+		Image->Cut(8, 5);
+	}
+
+	{
+		// 스페이스포트 맵
+		// GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort.bmp"));
+		GameEngineImage* ColImage = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("ColMap_SpacePort.bmp"));
+	}
+	{
+		// 스페이스포트 분할맵 
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort_0.bmp"));
+		Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort_1.bmp"));
+		Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort_2.bmp"));
+		Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort_3.bmp"));
+		Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort_4.bmp"));
+		Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort_5.bmp"));
+		Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Map_SpacePort_6.bmp"));
+	}
+
+	// 보스 커널
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("spaceport_colonel_left.bmp"));
+		Image->Cut(8, 6);
+	}
+
+	// 몬스터
+
+	// gunman image
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("spaceport_gunman_left.bmp"));
+		Image->Cut(8, 5);
+	}
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("spaceport_gunman_right.bmp"));
+		Image->Cut(8, 5);
+	}
+
+	// 이펙트
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("effect_dash_right.bmp"));
+		Image->Cut(5, 2);
+	}
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("effect_dash_left.bmp"));
+		Image->Cut(5, 2);
+	}
 }
 // 코어 -> 레벨생성
 // 레벨 -> 레벨 안에서 사용할 액터 생성, 생성 후 AcotrStart

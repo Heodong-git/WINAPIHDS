@@ -40,5 +40,6 @@ private:
 	float4	     m_StartCameraPos = float4::Zero;
 
 	void SoundLoad();
+	void ImageLoad();
 };
 

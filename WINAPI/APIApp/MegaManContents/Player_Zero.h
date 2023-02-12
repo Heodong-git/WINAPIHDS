@@ -10,7 +10,6 @@ enum class STATEVALUE
 	MOVE,		 // 이동
 	JUMP,		 // 점프
 	FALL,	     // 낙하
-	FALL_END,	 // 낙하종료
 	ATTACK_FIRST,		 // 공격
 	ATTACK_SECOND,
 	ATTACK_THIRD,
@@ -49,19 +48,20 @@ private:
 	bool		 m_DebugMode = false;
 
 	// 플레이어가 사용하는 변수
-	float	     m_MoveSpeed = 5.0f;
+	float	     m_MoveSpeed = 500.0f;
 	bool		 m_Jump = false;
 	bool	     m_Falling = false;  
 	float		 m_MaxJumpTime = 1.5f;
 	float		 m_JumpPower = 0.0f;
-	float	     m_GravityPower = 150.0f;
+	float	     m_GravityPower = 700.0f;
 	bool		 IsJumpMax = false;
 
 	float4	     m_StartPos = float4::Zero;
 
 	std::string  m_DirString = "Right_";
 	float4		 m_MoveDir = float4::Zero;
-	COLORREF	 m_GroundCollisionPixel = RGB(57, 255, 20);
+	COLORREF	 m_GroundPixel = RGB(255, 255, 255);
+	COLORREF	 m_FallPixel = RGB(0, 0, 0);
 
 	// 플레이어의 기본상태는 아이들로 초기화
 	STATEVALUE  m_StateValue = STATEVALUE::NONE;
@@ -81,10 +81,9 @@ private:
 
 	// 방향체크 + 애니메이션 렌더 
 	void AnimDirCheck(const std::string_view& _AnimationName);
-	bool NextMoveCheck(float _DeltaTime);
 	void ChangeState(STATEVALUE _State);
 	void GroundCollisionCheck(float4 _Pos = float4::Zero);
-	void FallCheck(float4 _Pos = float4::Zero);
+	bool FallCheck(float4 _Pos = float4::Zero);
 
 	// 중력
 	void Gravity(float _DeltaTime);
@@ -123,10 +122,6 @@ private:
 	void Fall_Start();
 	void Fall_Update(float _DeltaTime);
 	void Fall_End();
-
-	void Fall_End_Start();
-	void Fall_End_Update(float _DeltaTime);
-	void Fall_End_End();
 
 	void Attack_First_Start();
 	void Attack_First_Update(float _DeltaTime);

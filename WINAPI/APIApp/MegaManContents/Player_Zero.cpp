@@ -8,6 +8,8 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include "SpacePortLevel.h"
 
+#include <GameEngineBase/GameEngineTime.h>
+
 #include "ContentsEnum.h"
 
 Player_Zero::Player_Zero()
@@ -74,19 +76,6 @@ void Player_Zero::AnimDirCheck(const std::string_view& _AnimationName)
 	}
 }
 
-// 다음 이동위치 체크
-bool Player_Zero::NextMoveCheck(float _DeltaTime)
-{
-	float4 NextPos = GetPos() + m_MoveDir * _DeltaTime;
-	if (NextPos.x < m_StartPos.x)
-	{
-		m_MoveDir = float4::Zero;
-		return false;
-	}
-
-	return true;
-}
-
 void Player_Zero::Start()
 {
 	ColMapName = "ColMap_Spaceport.BMP";
@@ -149,23 +138,22 @@ void Player_Zero::Update(float _DeltaTime)
 // 땅체크
 bool Player_Zero::IsGround(float4 Pos)
 {	
-	// 내위가 검은색이고, 내가 검은색, 아래가 흰색이면 나는 땅위에 올라와 있는 것
-	// 지금 이걸 만족하면 false 인거고 올려주지 않아도 되는 상황
-	if (RGB(0, 0, 0) == GetColor(float4::Up) &&
-		RGB(0, 0, 0) == GetColor() &&
-		RGB(255, 255, 255) == GetColor(float4::Down))
-	{
-		return false;
-	}
+	//// 내위가 검은색이고, 내가 검은색, 아래가 흰색이면 나는 땅위에 올라와 있는 것
+	//// 지금 이걸 만족하면 false 인거고 올려주지 않아도 되는 상황
+	//if (RGB(0, 0, 0) == GetColor(float4::Up) &&
+	//	RGB(0, 0, 0) == GetColor() &&
+	//	RGB(255, 255, 255) == GetColor(float4::Down))
+	//{
+	//	return false;
+	//}
 	
-	// 내위치가 검은색이아니라면 올려줘야 되는거고 
+	// 내위치의 픽셀이 검은색이아니라면 올려줘야 되는거고 
 	return RGB(0, 0, 0) != GetColor(Pos);
 }
 
 bool Player_Zero::IsFall(float4 Pos)
 {
-	// 나도 검은색, 아래도 검은색이면 낙하상태임
-	return RGB(0, 0, 0) == GetColor() && RGB(0, 0, 0) == GetColor(float4::Down);
+	return RGB(0, 0, 0) == GetColor() && RGB(0, 0, 0) == GetColor(float4::Down) && RGB(0, 0, 0) == GetColor(float4{ 0.0f, 2.0f });
 }
 
 
@@ -183,18 +171,21 @@ int Player_Zero::GetColor(float4 Pos)
 		return RGB(0,0,0);
 	}
 
-	// 컬러체크 유니온을 활용하여 색상이 맞는지 체크할 수 있음
 	ColorCheck CC;
 
 	// 충돌맵이미지에서 해당하는 위치의 픽셀값을 받아서 리턴한다. 
 	CC.Color = ColImage->GetPixelColor(CheckPos, RGB(255, 255, 255));
+
+	// 디버그용 코드 
+	bool Check = CC.Color == RGB(255, 255, 255);
+
 	return CC.Color;
 }
 
 // 중력적용시 호출할 함수 
 void Player_Zero::Gravity(float _DeltaTime)
 {
-	m_MoveDir += float4::Down * m_GravityPower * _DeltaTime;
+	SetMove(float4::Down * m_GravityPower * _DeltaTime);
 }
 
 // 오브젝트의 중심점을 알 수 있도록 사각형 출력 
@@ -222,12 +213,11 @@ void Player_Zero::GroundCollisionCheck(float4 _Pos)
 	}	
 }
 
-void Player_Zero::FallCheck(float4 _Pos)
+bool Player_Zero::FallCheck(float4 _Pos)
 {
-	while (IsFall(_Pos))
-	{
-		SetMove(float4::Down);
-	}
+	// 현재 나의 위치, 위, 아래가 전부 검은색이라면 fall 상태인것이다. 
+	return true;
+	
 }
 
 
