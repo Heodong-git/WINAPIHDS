@@ -147,13 +147,19 @@ bool Player_Zero::IsGround(float4 Pos)
 	//	return false;
 	//}
 	
-	// 내위치의 픽셀이 검은색이아니라면 올려줘야 되는거고 
-	return RGB(0, 0, 0) != GetColor(Pos);
+	// 내위치의픽셀이 검은색이 아니고, 내아래 픽셀이 흰색이라면 true 
+	return RGB(0, 0, 0) != GetColor(Pos) && RGB(255, 255, 255) == GetColor(float4::Down);
 }
 
 bool Player_Zero::IsFall(float4 Pos)
 {
-	return RGB(0, 0, 0) == GetColor() && RGB(0, 0, 0) == GetColor(float4::Down) && RGB(0, 0, 0) == GetColor(float4{ 0.0f, 2.0f });
+	return RGB(0, 0, 0) == GetColor() && RGB(0, 0, 0) == GetColor(float4::Down) && 
+		   RGB(0, 0, 0) == GetColor(float4::Down + float4::Down);
+}
+
+bool Player_Zero::IsWall(float4 Pos)
+{
+	return false;
 }
 
 
@@ -213,16 +219,6 @@ void Player_Zero::GroundCollisionCheck(float4 _Pos)
 	}	
 }
 
-bool Player_Zero::FallCheck(float4 _Pos)
-{
-	// 현재 나의 위치, 위, 아래가 전부 검은색이라면 fall 상태인것이다. 
-	return true;
-	
-}
-
-
-
-
 //m_Collision->DebugRender();	
 	// 디버그용 위치출력시 참고할 코드 
 	/*std::string MouseText = "MousePosition : ";
@@ -265,7 +261,7 @@ void Player_Zero::PlayerCreateAnimation()
 	// 오른쪽 점프
 	// 19 ~ 31 
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_jump" , .ImageName = "player_zero_sprite_right.bmp",
-									   .Start = 19 , .End = 22 , .InterTime = 0.1f , .Loop = false });
+									   .Start = 19 , .End = 30 , .InterTime = 0.07f , .Loop = false });
 
 	// 오른쪽 fall 
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_fall" , .ImageName = "player_zero_sprite_right.bmp",
@@ -374,7 +370,7 @@ void Player_Zero::PlayerCreateAnimation()
 	// 왼쪽 점프
 	// 19 ~ 31 , 0.05
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_jump" , .ImageName = "player_zero_sprite_left.bmp",
-									   .Start = 19 , .End = 25 , .InterTime = 0.1f });
+									   .Start = 19 , .End = 30 , .InterTime = 0.07f , .Loop = false });
 
 	// 왼쪽 낙하
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_fall" , .ImageName = "player_zero_sprite_left.bmp",

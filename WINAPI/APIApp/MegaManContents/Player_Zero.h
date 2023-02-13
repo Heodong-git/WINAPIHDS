@@ -4,17 +4,17 @@
 
 enum class STATEVALUE
 {
-	NONE,		 // 초기화
-	RECALL,		 // 리콜 (리스폰)
-	IDLE,		 // 아이들 
-	MOVE,		 // 이동
-	JUMP,		 // 점프
-	FALL,	     // 낙하
+	NONE,		         // 기본
+	RECALL,		         // 리콜 (리스폰)
+	IDLE,		         // 아이들 
+	MOVE,		         // 이동
+	JUMP,		         // 점프
+	FALL,	             // 낙하
 	ATTACK_FIRST,		 // 공격
 	ATTACK_SECOND,
 	ATTACK_THIRD,
-	DASH,		 // 대쉬 
-	JUMP_ATTACK,
+	DASH,		         // 대쉬 
+	JUMP_ATTACK,		 // 
 };
 
 class GameEngineCollision;
@@ -43,15 +43,11 @@ protected:
 
 private:
 	std::string ColMapName;
-
 	// 디버그용 변수
 	bool		 m_DebugMode = false;
-
-	// 플레이어가 사용하는 변수
+	// ---------------------------------
 	float	     m_MoveSpeed = 500.0f;
-	bool		 m_Jump = false;
-	bool	     m_Falling = false;  
-	float		 m_MaxJumpTime = 1.5f;
+	bool		 m_Jump = false;  
 	float		 m_JumpPower = 0.0f;
 	float	     m_GravityPower = 700.0f;
 	bool		 IsJumpMax = false;
@@ -83,7 +79,6 @@ private:
 	void AnimDirCheck(const std::string_view& _AnimationName);
 	void ChangeState(STATEVALUE _State);
 	void GroundCollisionCheck(float4 _Pos = float4::Zero);
-	bool FallCheck(float4 _Pos = float4::Zero);
 
 	// 중력
 	void Gravity(float _DeltaTime);
@@ -98,6 +93,8 @@ private:
 	bool IsGround(float4 Pos = float4::Zero);
 	// 낙하체크
 	bool IsFall(float4 Pos = float4::Zero);
+	// 벽체크
+	bool IsWall(float4 Pos = float4::Zero);
 
 	// 상태 업데이트 
 	void UpdateState(float _DeltaTime);

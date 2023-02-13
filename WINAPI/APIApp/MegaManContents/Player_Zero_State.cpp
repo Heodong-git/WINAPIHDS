@@ -152,8 +152,6 @@ void Player_Zero::Recall_End()
 {
 }
 
-
-// 
 void Player_Zero::Idle_Start()
 {
 	// 방향체크 후 애니메이션 출력
@@ -176,25 +174,21 @@ void Player_Zero::Idle_Update(float _DeltaTime)
 		return;
 	}
 
-	if (true == IsFall())
-	{
-		ChangeState(STATEVALUE::FALL);
-		return;
-	}
-
-	// 아이들 상태에서 점프 버튼 한번 눌렸다면 점프 상태로 전환한다. 
+	// 점프 
 	if (true == GameEngineInput::IsPress("Jump"))
 	{
-		// ChangeState(STATEVALUE::JUMP);
+		ChangeState(STATEVALUE::JUMP);
 		return;
 	}
 
+	// 공격
 	if (true == GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(STATEVALUE::ATTACK_FIRST);
 		return;
 	}
 
+	// 대쉬
 	if (true == GameEngineInput::IsPress("Dash"))
 	{
 		ChangeState(STATEVALUE::DASH);
@@ -206,6 +200,7 @@ void Player_Zero::Idle_End()
 {
 }
 
+// 이동시작시 방향+애니메이션체크
 void Player_Zero::Move_Start()
 {
 	AnimDirCheck("Move");
@@ -221,15 +216,15 @@ void Player_Zero::Move_Update(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsPress("Jump"))
-	{
-		// ChangeState(STATEVALUE::JUMP);
-		return;
-	}
-
 	if (true == GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(STATEVALUE::ATTACK_FIRST);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Jump"))
+	{
+		ChangeState(STATEVALUE::JUMP);
 		return;
 	}
 
@@ -268,6 +263,7 @@ void Player_Zero::Move_Update(float _DeltaTime)
 		AnimDirCheck("Move");
 		return;
 	}
+
 }
 
 void Player_Zero::Move_End()
@@ -277,43 +273,88 @@ void Player_Zero::Move_End()
 
 void Player_Zero::Jump_Start()
 {
-	// 해근샘 
-	// 점프상태를 true 
+	/*//선생님 코드
 	m_Jump = true;
 	IsJumpMax = false;
 
-	// 점프가 시작되면 기본 점프파워를 30으로.
 	m_JumpPower = 50.0f;
-	m_GravityPower = 800.0f;
+	m_GravityPower = 800.0f;*/
+
+	IsJumpMax = false;
+	m_JumpPower = 50.0f;
 
 	AnimDirCheck("Jump");
 }
 
 void Player_Zero::Jump_Update(float _DeltaTime)
 {
-	// 현재 점프가 최대높이가 아니고, 점프키가 눌려있다면 동작
+	// 쌤코드 
+	//if (false == IsJumpMax && true == GameEngineInput::IsPress("Jump"))
+	//{
+	//	// 키가 눌려있다면 점프파워를 계속 증가시킨다. 
+	//	m_JumpPower += 500.0f * _DeltaTime;
+
+	//	// 점프파워가 일정수치이상 넘어갔다면
+	//	if (m_JumpPower >= 100.0f)
+	//	{
+	//		// 점프파워를 ?
+	//		m_JumpPower = 100.0f;
+	//		IsJumpMax = true;
+	//	}
+	// 
+	//m_MoveDir += float4::Up * m_JumpPower;
+	//m_JumpPower -= m_GravityPower * _DeltaTime;
+
+	if (true == IsGround())
+	{
+		ChangeState(STATEVALUE::IDLE);
+		return;
+	}
+
+	// 현재 점프가 최대높이가 아니고, 점프키가 눌려있다면 동작 상수는 전부 변수로 바꿔서 사용해야함. 
 	if (false == IsJumpMax && true == GameEngineInput::IsPress("Jump"))
 	{
 		// 키가 눌려있다면 점프파워를 계속 증가시킨다. 
-		m_JumpPower += 500.0f * _DeltaTime;
+		m_JumpPower += 60.0f;
 
 		// 점프파워가 일정수치이상 넘어갔다면
-		if (m_JumpPower >= 100.0f)
+		if (m_JumpPower >= 650.0f)
 		{
-			// 점프파워를 ?
-			m_JumpPower = 100.0f;
+			// 점프파워를 고정시키고 최대 점프위치에 도달
+			m_JumpPower = 650.0f;
 			IsJumpMax = true;
 		}
 	}
 
-	m_MoveDir += float4::Up * m_JumpPower;
-	m_JumpPower -= m_GravityPower * _DeltaTime;
+	SetMove(float4::Up * m_JumpPower * _DeltaTime);
+	m_JumpPower -= (m_GravityPower * 2.0f) * _DeltaTime;
+
+	if (true == GameEngineInput::IsDown("Attack"))
+	{
+		ChangeState(STATEVALUE::JUMP_ATTACK);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("Right_Move"))
+	{
+		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("Left_Move"))
+	{
+		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		return;
+	}
+
+
+	AnimDirCheck("Jump");
 }
 
 void Player_Zero::Jump_End()
 {
-	m_Jump = false;
-	ChangeState(STATEVALUE::IDLE);
 }
 
 void Player_Zero::Fall_Start()
@@ -325,9 +366,17 @@ void Player_Zero::Fall_Start()
 void Player_Zero::Fall_Update(float _DeltaTime)
 {
 	Gravity(_DeltaTime);
+
 	if (true == IsGround())
 	{
 		ChangeState(STATEVALUE::IDLE);
+		return;
+	}
+
+	// 공격키 입력시 점프공격
+	if (true == GameEngineInput::IsDown("Attack"))
+	{
+		//ChangeState(STATEVALUE::JUMP_ATTACK);
 		return;
 	}
 
@@ -371,6 +420,12 @@ void Player_Zero::Attack_First_Update(float _Time)
 	if (true == GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(STATEVALUE::ATTACK_SECOND);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("Dash"))
+	{
+		ChangeState(STATEVALUE::DASH);
 		return;
 	}
 
@@ -446,8 +501,6 @@ void Player_Zero::Dash_Update(float _DeltaTime)
 		return;
 	}
 
-	//
-	
 	if (true == GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(STATEVALUE::ATTACK_FIRST);
@@ -469,7 +522,6 @@ void Player_Zero::Jump_Attack_Update(float _DeltaTime)
 {
 	if (true == m_AnimationRender->IsAnimationEnd())
 	{
-		AnimDirCheck("Fall_end");
 		ChangeState(STATEVALUE::FALL);
 		return;
 	}
