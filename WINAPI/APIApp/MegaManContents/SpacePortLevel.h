@@ -34,6 +34,7 @@ protected:
 	void LevelChangeStart(GameEngineLevel* _PrevLevel) override;
 
 	GameEngineSoundPlayer BGMPlayer;
+
 private:
 	Player_Zero* m_Player = nullptr;
 	// 시작카메라좌표

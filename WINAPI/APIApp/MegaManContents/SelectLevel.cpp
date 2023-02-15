@@ -91,7 +91,7 @@ void SelectLevel::Loading()
 		Dir.MoveParentToDirectory("ContentsResources");
 		Dir.Move("ContentsResources");
 		Dir.Move("Sound");
-		Dir.Move("Select");
+		Dir.Move("SelectLevel");
 
 		// 사운드 로드 
 		GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_select.wav"));

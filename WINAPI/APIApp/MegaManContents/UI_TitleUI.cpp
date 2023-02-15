@@ -59,7 +59,7 @@ void UI_TitleUI::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("title_down"))
 	{
 		// 키를 누른 시점에서 사운드 재생
-		m_UISoundPlayer = GameEngineResources::GetInst().SoundPlayToControl("player_select.wav");
+		m_UISoundPlayer = GameEngineResources::GetInst().SoundPlayToControl("title_menu_select.wav");
 		m_UISoundPlayer.LoopCount(1);
 		m_UISoundPlayer.Volume(0.1f);
 
@@ -79,7 +79,7 @@ void UI_TitleUI::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("title_up"))
 	{
 		// 키를 누른 시점에서 사운드 재생
-		m_UISoundPlayer = GameEngineResources::GetInst().SoundPlayToControl("player_select.wav");
+		m_UISoundPlayer = GameEngineResources::GetInst().SoundPlayToControl("title_menu_select.wav");
 		m_UISoundPlayer.LoopCount(1);
 		m_UISoundPlayer.Volume(0.1f);
 

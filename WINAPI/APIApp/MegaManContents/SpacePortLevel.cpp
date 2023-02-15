@@ -118,25 +118,21 @@ void SpacePortLevel::Update(float _DeltaTime)
 void SpacePortLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	// 사운드출력
-	/*BGMPlayer = GameEngineResources::GetInst().SoundPlayToControl("Test1.wav");
+	BGMPlayer = GameEngineResources::GetInst().SoundPlayToControl("Spaceport_bgm.wav");
 	BGMPlayer.LoopCount(100);
-	BGMPlayer.Volume(0.2f);*/
+	BGMPlayer.Volume(0.1f);
 }
 
 void SpacePortLevel::SoundLoad()
 {
 	// 경로탐색 
-	/*GameEngineDirectory Dir;
+	GameEngineDirectory Dir;
 	Dir.MoveParentToDirectory("ContentsResources");
 	Dir.Move("ContentsResources");
 	Dir.Move("Sound");
+	Dir.Move("SpaceportLevel");
 
-	{
-		GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("Test1.wav"));
-	}*/
-
-	// GameEngineResources::GetInst().SoundPlay("Appear.wav");
-
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("Spaceport_bgm.wav"));
 }
 
 
