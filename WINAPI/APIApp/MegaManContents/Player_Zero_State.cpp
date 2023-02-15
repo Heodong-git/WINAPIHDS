@@ -134,6 +134,9 @@ void Player_Zero::UpdateState(float _DeltaTime)
 // -----------------리콜 완료---------------------
 void Player_Zero::Recall_Start()
 {
+	m_RecallSound = GameEngineResources::GetInst().SoundPlayToControl("player_recall_sound.wav");
+	m_RecallSound.LoopCount(1);
+	m_RecallSound.Volume(0.2f);
 	// 플레이어 방향체크 + 애니메이션 출력
 	AnimDirCheck("recall");
 }
@@ -290,6 +293,9 @@ void Player_Zero::Jump_Start()
 
 	m_JumpPower = 50.0f;
 	m_GravityPower = 800.0f;*/
+	m_JumpSound = GameEngineResources::GetInst().SoundPlayToControl("player_jump_sound.wav");
+	m_JumpSound.LoopCount(1);
+	m_JumpSound.Volume(0.2f);
 
 	IsJumpMax = false;
 	m_JumpPower = 50.0f;
@@ -371,6 +377,9 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 
 void Player_Zero::Jump_End()
 {
+	m_LandingSound = GameEngineResources::GetInst().SoundPlayToControl("player_landing_sound.wav");
+	m_LandingSound.LoopCount(1);
+	m_LandingSound.Volume(0.2f);
 }
 
 void Player_Zero::Fall_Start()
@@ -386,6 +395,7 @@ void Player_Zero::Fall_Update(float _DeltaTime)
 	if (true == IsGround())
 	{
 		ChangeState(STATEVALUE::IDLE);
+
 		return;
 	}
 
@@ -415,10 +425,21 @@ void Player_Zero::Fall_Update(float _DeltaTime)
 
 void Player_Zero::Fall_End()
 {
+	m_LandingSound = GameEngineResources::GetInst().SoundPlayToControl("player_landing_sound.wav");
+	m_LandingSound.LoopCount(1);
+	m_LandingSound.Volume(0.2f);
 }
 
 void Player_Zero::Attack_First_Start()
 {
+	m_AttackSound = GameEngineResources::GetInst().SoundPlayToControl("player_attack_first.wav");
+	m_AttackSound.LoopCount(1);
+	m_AttackSound.Volume(0.2f);
+
+	m_SaberSound = GameEngineResources::GetInst().SoundPlayToControl("player_saber_sound.wav");
+	m_SaberSound.LoopCount(1);
+	m_SaberSound.Volume(0.2f);
+	
 	AnimDirCheck("normal_attack_first");
 }
 
@@ -453,6 +474,14 @@ void Player_Zero::Attack_First_End()
 
 void Player_Zero::Attack_Second_Start()
 {
+	m_AttackSound = GameEngineResources::GetInst().SoundPlayToControl("player_attack_second.wav");
+	m_AttackSound.LoopCount(1);
+	m_AttackSound.Volume(0.2f);
+
+	m_SaberSound = GameEngineResources::GetInst().SoundPlayToControl("player_saber_sound.wav");
+	m_SaberSound.LoopCount(1);
+	m_SaberSound.Volume(0.2f);
+
 	AnimDirCheck("normal_attack_second");
 }
 
@@ -477,6 +506,14 @@ void Player_Zero::Attack_Second_End()
 
 void Player_Zero::Attack_Third_Start()
 {
+	m_AttackSound = GameEngineResources::GetInst().SoundPlayToControl("player_attack_third.wav");
+	m_AttackSound.LoopCount(1);
+	m_AttackSound.Volume(0.2f);
+
+	m_SaberSound = GameEngineResources::GetInst().SoundPlayToControl("player_saber_sound.wav");
+	m_SaberSound.LoopCount(1);
+	m_SaberSound.Volume(0.2f);
+
 	AnimDirCheck("normal_attack_third");
 }
 
@@ -495,6 +532,9 @@ void Player_Zero::Attack_Third_End()
 
 void Player_Zero::Dash_Start()
 {
+	m_DashSound = GameEngineResources::GetInst().SoundPlayToControl("player_dash_sound.wav");
+	m_DashSound.LoopCount(1);
+	m_DashSound.Volume(0.2f);
 	AnimDirCheck("Dash");
 }
 
@@ -527,10 +567,15 @@ void Player_Zero::Dash_Update(float _DeltaTime)
 
 void Player_Zero::Dash_End()
 {
+	m_DashSound.Stop();
 }
 
 void Player_Zero::Jump_Attack_Start()
 {
+	m_SaberSound = GameEngineResources::GetInst().SoundPlayToControl("player_saber_sound.wav");
+	m_SaberSound.LoopCount(1);
+	m_SaberSound.Volume(0.2f);
+
 	AnimDirCheck("Jump_Attack");
 }
 

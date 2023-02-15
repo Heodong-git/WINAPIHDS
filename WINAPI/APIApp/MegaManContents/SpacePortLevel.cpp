@@ -22,69 +22,16 @@ SpacePortLevel::~SpacePortLevel()
 {
 }
  
-
-
 void SpacePortLevel::Loading()
 {
+	// 이미지로드
 	ImageLoad();
+	// 사운드로드
 	SoundLoad();
-
-	// 해당 레벨에서 사용할 액터 생성
-	// 액터 생성시에 인자로 넣어주는 값은 업데이트,렌더링 순서이며 값이 높을 수록 나중에 연산,렌더링이 된다. 
-	m_Player = CreateActor<Player_Zero>(ZORDER::PLAYER);
-	m_Player->SetPos({ 400, 7160 });
-	m_Player->SetStartPos(m_Player->GetPos());
-	// 일단 플레이어 애니메이션부터 필요한거 다 진행하고나서 다시. 
-	GameEngineActor* Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);
-	Boss->SetPos({ 18587, 968 });
-
-	/*GameEngineActor* PlayerHpBar = CreateActor<UI_PlayerHpBar>(ZORDER::UI);
-	PlayerHpBar->SetPos(m_Player->GetPos() + float4 { - 200 , - 350});*/
-
-	CreateActor<Map_SpacePort>();
-	Monster_GunMan* Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
-	Monster->SetPos({ 1738 , 7065 });
-	/*Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
-	Monster->SetPos({ 2334, 6382 });
-	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
-	Monster->SetPos({ 2354 , 6382 });*/
-	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
-	Monster->SetPos({ 3186 , 7058 });
-	/*Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
-	Monster->SetPos({ 3186 , 7058 });*/
-	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
-	Monster->SetPos({ 5366, 6825 });
-	/*Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
-	Monster->SetPos({ 5379, 6385 });*/
-	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
-	Monster->SetPos({ 12827, 6384 });
-	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
-	Monster->SetPos({ 15259, 3932 });
-	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
-	Monster->SetPos({ 15521, 5371 });
-	
-	// 건맨 02 SetPos 값 
-	// 2575 , 6904
-
-
-	// 카메라 키생성
-	if (false == GameEngineInput::IsKey("CameraLeftMove"))
-	{
-		GameEngineInput::CreateKey("CameraLeftMove", 'A');
-		GameEngineInput::CreateKey("CameraRightMove", 'D');
-		GameEngineInput::CreateKey("CameraDownMove", 'S');
-		GameEngineInput::CreateKey("CameraUpMove", 'W');
-	}
-
-	// 디버그렌더 스위치 생성
-	if (false == GameEngineInput::IsKey("DebugRenderSwitch"))
-	{
-		GameEngineInput::CreateKey("DebugRenderSwitch", '2');
-	}
-
-	// 여기서 카메라 위치 고정은 됐어
-	m_StartCameraPos = GameEngineWindow::GetScreenSize().half() + float4{ -580 , 5760 };
-	SetCameraMove(m_StartCameraPos);
+	// 액터로드
+	ActorLoad();
+	// 카메라로드
+	CameraLoad();
 }
 
 void SpacePortLevel::Update(float _DeltaTime)
@@ -121,6 +68,8 @@ void SpacePortLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 	BGMPlayer = GameEngineResources::GetInst().SoundPlayToControl("Spaceport_bgm.wav");
 	BGMPlayer.LoopCount(100);
 	BGMPlayer.Volume(0.1f);
+
+	m_Player->ChangeState(STATEVALUE::RECALL);
 }
 
 void SpacePortLevel::SoundLoad()
@@ -133,6 +82,15 @@ void SpacePortLevel::SoundLoad()
 	Dir.Move("SpaceportLevel");
 
 	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("Spaceport_bgm.wav"));
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_attack_first.wav"));
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_attack_second.wav"));
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_attack_third.wav"));
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_saber_sound.wav"));
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_dash_sound.wav"));
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_recall_sound.wav"));
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_jump_sound.wav"));
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_wall_jump_sound.wav"));
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_landing_sound.wav"));	
 }
 
 
@@ -208,6 +166,63 @@ void SpacePortLevel::ImageLoad()
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("effect_dash_left.bmp"));
 		Image->Cut(5, 2);
 	}
+}
+void SpacePortLevel::ActorLoad()
+{
+	// 해당 레벨에서 사용할 액터 생성
+	// 액터 생성시에 인자로 넣어주는 값은 업데이트,렌더링 순서이며 값이 높을 수록 나중에 연산,렌더링이 된다. 
+	m_Player = CreateActor<Player_Zero>(ZORDER::PLAYER);
+	m_Player->SetPos({ 400, 7160 });
+	m_Player->SetStartPos(m_Player->GetPos());
+	// 일단 플레이어 애니메이션부터 필요한거 다 진행하고나서 다시. 
+	GameEngineActor* Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);
+	Boss->SetPos({ 18587, 968 });
+
+	/*GameEngineActor* PlayerHpBar = CreateActor<UI_PlayerHpBar>(ZORDER::UI);
+	PlayerHpBar->SetPos(m_Player->GetPos() + float4 { - 200 , - 350});*/
+
+	CreateActor<Map_SpacePort>();
+	Monster_GunMan* Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 1738 , 7065 });
+	/*Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 2334, 6382 });
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 2354 , 6382 });*/
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 3186 , 7058 });
+	/*Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 3186 , 7058 });*/
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 5366, 6825 });
+	/*Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 5379, 6385 });*/
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 12827, 6384 });
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 15259, 3932 });
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 15521, 5371 });
+}
+void SpacePortLevel::CameraLoad()
+{
+	// 카메라 키생성
+	if (false == GameEngineInput::IsKey("CameraLeftMove"))
+	{
+		GameEngineInput::CreateKey("CameraLeftMove", 'A');
+		GameEngineInput::CreateKey("CameraRightMove", 'D');
+		GameEngineInput::CreateKey("CameraDownMove", 'S');
+		GameEngineInput::CreateKey("CameraUpMove", 'W');
+	}
+
+	// 디버그렌더 스위치 생성
+	if (false == GameEngineInput::IsKey("DebugRenderSwitch"))
+	{
+		GameEngineInput::CreateKey("DebugRenderSwitch", '2');
+	}
+
+	// 여기서 카메라 위치 고정은 됐어
+	m_StartCameraPos = GameEngineWindow::GetScreenSize().half() + float4{ -580 , 5760 };
+	SetCameraMove(m_StartCameraPos);
 }
 // 코어 -> 레벨생성
 // 레벨 -> 레벨 안에서 사용할 액터 생성, 생성 후 AcotrStart

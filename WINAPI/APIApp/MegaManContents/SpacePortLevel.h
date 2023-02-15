@@ -33,14 +33,16 @@ protected:
 	void LevelChangeEnd(GameEngineLevel* _NextLevel) override {}
 	void LevelChangeStart(GameEngineLevel* _PrevLevel) override;
 
-	GameEngineSoundPlayer BGMPlayer;
 
 private:
+	GameEngineSoundPlayer BGMPlayer;
 	Player_Zero* m_Player = nullptr;
 	// 시작카메라좌표
 	float4	     m_StartCameraPos = float4::Zero;
 
 	void SoundLoad();
 	void ImageLoad();
+	void ActorLoad();
+	void CameraLoad();
 };
 

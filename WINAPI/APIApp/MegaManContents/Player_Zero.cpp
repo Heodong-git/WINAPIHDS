@@ -109,8 +109,6 @@ void Player_Zero::Start()
 	// 여기서부터 다시
 	// 빔샤벨 컬라이더
 	m_SaberCollider = CreateCollision(COLORDER::PLAYERATTACK);
-	
-	ChangeState(STATEVALUE::RECALL);
 }
 
 

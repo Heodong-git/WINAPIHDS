@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
+#include <GameEngineCore/GameEngineResources.h>
 #include <string>
 
 enum class STATEVALUE
@@ -17,9 +18,11 @@ enum class STATEVALUE
 	JUMP_ATTACK,		 // 
 };
 
+// 포인터변수를 선언하기 위해 클래스 전방선언
 class GameEngineCollision;
 class Player_Zero : public GameEngineActor
 {
+	friend class SpacePortLevel;
 public:
 	// constrcuter destructer
 	Player_Zero();
@@ -67,6 +70,14 @@ private:
 	GameEngineRender* m_AnimationRender = nullptr;
 	GameEngineCollision* m_Collider = nullptr;
 	GameEngineCollision* m_SaberCollider = nullptr;
+
+	// 이게 맞나?ㅋㅋㅋㅋ 
+	GameEngineSoundPlayer m_AttackSound;
+	GameEngineSoundPlayer m_SaberSound;
+	GameEngineSoundPlayer m_DashSound;
+	GameEngineSoundPlayer m_RecallSound;
+	GameEngineSoundPlayer m_JumpSound;
+	GameEngineSoundPlayer m_LandingSound;
 	
 	// 디버그용
 	inline void DebugSwitch()
