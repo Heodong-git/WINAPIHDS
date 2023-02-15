@@ -153,7 +153,7 @@ bool Player_Zero::IsFall(float4 Pos)
 		   RGB(0, 0, 0) == GetColor(float4::Down + float4::Down);
 }
 
-// 확인해야함
+// 왜안되지
 bool Player_Zero::IsWall(float4 Pos)
 {
 	// 내위치의 색상이 검은색이고, 내 우측 색상이 검은색이 아니라면
@@ -166,6 +166,7 @@ bool Player_Zero::IsWall(float4 Pos)
 	return false;
 }
 
+// 테스트용
 bool Player_Zero::IsLeftOver()
 {
 	float4 OverPos = m_StartPos;
