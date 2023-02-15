@@ -60,7 +60,7 @@ void TitleLevel::Loading()
 		// 사운드 로드 
 		GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("Title.wav"));
 		GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("title_menu_select.wav"));
-
+		GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("title_menu_select_complete.wav"));
 	}
 	CreateActor<Title_BackGround>();
 
@@ -85,6 +85,10 @@ void TitleLevel::Update(float _DeltaTime)
 		{
 			GameEngineCore::GetInst()->ChangeLevel("SelectLevel");
 			BGMPlayer.Stop();
+
+			BGMPlayer = GameEngineResources::GetInst().SoundPlayToControl("title_menu_select_complete.wav");
+			BGMPlayer.LoopCount(1);
+			BGMPlayer.Volume(0.3f);
 		}
 			break;
 		case ETitleMenu::CONTINUE:
