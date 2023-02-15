@@ -84,6 +84,20 @@ void SelectLevel::Loading()
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("select_player_exit.bmp"));
 		Image->Cut(8, 2);
 	}
+
+	{
+		// 경로탐색 
+		GameEngineDirectory Dir;
+		Dir.MoveParentToDirectory("ContentsResources");
+		Dir.Move("ContentsResources");
+		Dir.Move("Sound");
+		Dir.Move("Select");
+
+		// 사운드 로드 
+		GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_select.wav"));
+		GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_select_complete.wav"));
+		GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_select_bgm.wav"));
+	}
 	
 	// ---------------------- 여기부터는 Spaceport Level 에서 사용할 이미지 편집용 로드 ----------------------------------
 	{
@@ -109,9 +123,22 @@ void SelectLevel::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("Change_SpacePortLevel"))
 	{
+		m_BGMSound.Stop();
+		m_SelectComplete = GameEngineResources::GetInst().SoundPlayToControl("player_select_complete.wav");
+		m_SelectComplete.LoopCount(1);
+		m_SelectComplete.Volume(0.2f);
+
 		if (ESelectPlayer::ZERO == m_MainSelectUI->GetSelectPlayer())
 		{
 			m_ChangeLevel = true;
 		}
 	}
+}
+
+void SelectLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
+{
+	// 사운드출력
+	m_BGMSound = GameEngineResources::GetInst().SoundPlayToControl("Player_Select_BGM.wav");
+	m_BGMSound.LoopCount(100);
+	m_BGMSound.Volume(0.1f);
 }

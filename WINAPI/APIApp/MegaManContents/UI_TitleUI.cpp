@@ -48,16 +48,21 @@ void UI_TitleUI::Start()
 	m_TextRender->SetScale({ImageScale.x * 4 , ImageScale.y * 2});
 	m_TextRender->SetPosition(GameEngineWindow::GetScreenSize().half() + float4{ 0.0f , 300.0f });
 	m_TextRender->ChangeAnimation("title_press_render");
-
+	
 	GameEngineInput::CreateKey("title_up", VK_UP);
 	GameEngineInput::CreateKey("title_down", VK_DOWN);
 }
 
 void UI_TitleUI::Update(float _DeltaTime)
 {
-	// 다운 키를 누르면 현재 이넘값에서 다음 값으로 이동한다. 
+	// 다운 키를 누르면 현재 enum값에서 다음 값으로 이동한다. 
 	if (true == GameEngineInput::IsDown("title_down"))
 	{
+		// 키를 누른 시점에서 사운드 재생
+		m_UISoundPlayer = GameEngineResources::GetInst().SoundPlayToControl("player_select.wav");
+		m_UISoundPlayer.LoopCount(1);
+		m_UISoundPlayer.Volume(0.1f);
+
 		// END = 현시점 3 
 		++m_CurIdx;
 
@@ -73,6 +78,11 @@ void UI_TitleUI::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("title_up"))
 	{
+		// 키를 누른 시점에서 사운드 재생
+		m_UISoundPlayer = GameEngineResources::GetInst().SoundPlayToControl("player_select.wav");
+		m_UISoundPlayer.LoopCount(1);
+		m_UISoundPlayer.Volume(0.1f);
+
 		--m_CurIdx;
 		
 		if (m_CurIdx < static_cast<int>(ETitleMenu::GAMESTART))
@@ -88,7 +98,10 @@ void UI_TitleUI::Update(float _DeltaTime)
 	switch (m_CurMenu)
 	{
 	case ETitleMenu::GAMESTART:
+	{
 		m_MenuRender->ChangeAnimation("title_gamestart");
+		
+	}
 		break;
 	case ETitleMenu::CONTINUE:
 		m_MenuRender->ChangeAnimation("title_continue");

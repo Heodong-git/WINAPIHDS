@@ -17,7 +17,6 @@ public:
 
 private:
 	FMOD::Channel* ControlChannel = nullptr;
-
 };
 
 

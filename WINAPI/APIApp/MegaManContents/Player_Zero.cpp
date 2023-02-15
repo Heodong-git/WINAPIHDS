@@ -138,17 +138,13 @@ void Player_Zero::Update(float _DeltaTime)
 // 땅체크
 bool Player_Zero::IsGround(float4 Pos)
 {	
-	//// 내위가 검은색이고, 내가 검은색, 아래가 흰색이면 나는 땅위에 올라와 있는 것
-	//// 지금 이걸 만족하면 false 인거고 올려주지 않아도 되는 상황
-	//if (RGB(0, 0, 0) == GetColor(float4::Up) &&
-	//	RGB(0, 0, 0) == GetColor() &&
-	//	RGB(255, 255, 255) == GetColor(float4::Down))
-	//{
-	//	return false;
-	//}
-	
-	// 내위치의픽셀이 검은색이 아니고, 내아래 픽셀이 흰색이라면 true 
-	return RGB(0, 0, 0) != GetColor(Pos) && RGB(255, 255, 255) == GetColor(float4::Down);
+	if (RGB(255, 255, 255) == GetColor(float4::Up) && RGB(255, 255, 255) == GetColor() && 
+		RGB(255, 255, 255) == GetColor(float4::Down) && RGB(255,255,255) == GetColor(float4::Left))
+	{
+		return true;
+	}
+
+	return false;
 }
 
 bool Player_Zero::IsFall(float4 Pos)
@@ -157,9 +153,25 @@ bool Player_Zero::IsFall(float4 Pos)
 		   RGB(0, 0, 0) == GetColor(float4::Down + float4::Down);
 }
 
+// 확인해야함
 bool Player_Zero::IsWall(float4 Pos)
 {
+	// 내위치의 색상이 검은색이고, 내 우측 색상이 검은색이 아니라면
+	// 테스트 
+	if (RGB(0, 0, 0) == GetColor() && RGB(0, 0, 0) != GetColor(float4::Right))
+	{
+		return true;
+	}
+
 	return false;
+}
+
+bool Player_Zero::IsLeftOver()
+{
+	float4 OverPos = m_StartPos;
+	float4 NextPos = GetPos() + float4::Left;
+
+	return OverPos.x > NextPos.x;
 }
 
 

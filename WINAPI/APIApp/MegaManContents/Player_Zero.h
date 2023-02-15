@@ -96,6 +96,9 @@ private:
 	// 벽체크
 	bool IsWall(float4 Pos = float4::Zero);
 
+	// 왼쪽으로 못빠져나가게
+	bool IsLeftOver();
+
 	// 상태 업데이트 
 	void UpdateState(float _DeltaTime);
 	

@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineLevel.h>
+#include <GameEngineCore/GameEngineResources.h>
 
 // 타이틀화면
 // 게임시작, 옵션, 종료 등을 선택할 수 있는 Level 
@@ -22,9 +23,10 @@ protected:
 	virtual void Update(float _DeltaTime) override;
 
 	void LevelChangeEnd(GameEngineLevel* _NextLevel) override {}
-	void LevelChangeStart(GameEngineLevel* _PrevLevel) override {}
+	void LevelChangeStart(GameEngineLevel* _PrevLevel) override;
 
 private:
+	GameEngineSoundPlayer BGMPlayer;
 	UI_TitleUI* m_TitleUI = nullptr;
 };
 

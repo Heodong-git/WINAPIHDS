@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
+#include <GameEngineCore/GameEngineResources.h>
 #include <vector>
 #include "ContentsEnum.h"
 
@@ -34,6 +35,9 @@ protected:
 private:
 	GameEngineRender* m_MenuRender = nullptr;
 	GameEngineRender* m_TextRender = nullptr;
+
+	GameEngineSoundPlayer m_UISoundPlayer;
+
 	ETitleMenu		  m_CurMenu = ETitleMenu::END;
 	int				  m_CurIdx = 0;
 	std::vector<ETitleMenu> m_vecMenu;

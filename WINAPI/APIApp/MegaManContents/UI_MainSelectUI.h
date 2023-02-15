@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
+#include <GameEngineCore/GameEngineResources.h>
 
 enum class ESelectPlayer
 {
@@ -32,6 +33,8 @@ protected:
 	}
 
 private:
+	GameEngineSoundPlayer m_SelectSound;
+
 	float4 m_ScreenSize = float4::Zero;
 	float4 m_ScreenSizeHalf = float4::Zero;
 	ESelectPlayer m_SelectPlayer = ESelectPlayer::X;

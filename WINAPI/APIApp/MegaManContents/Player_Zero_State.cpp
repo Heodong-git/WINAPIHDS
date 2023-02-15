@@ -234,11 +234,17 @@ void Player_Zero::Move_Update(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsPress("Left_Move"))
+	if (true == GameEngineInput::IsPress("Right_Move"))
 	{
+		if (true == IsWall())
+		{
+			int a = 0;
+			return;
+		}
+
 		Gravity(_DeltaTime);
-		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
-		GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
 		GroundCollisionCheck();
 		if (true == IsFall())
 		{
@@ -249,11 +255,16 @@ void Player_Zero::Move_Update(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsPress("Right_Move"))
+	if (true == GameEngineInput::IsPress("Left_Move"))
 	{
+		if (true == IsLeftOver())
+		{
+			return;
+		}
+
 		Gravity(_DeltaTime);
-		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
-		GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		GroundCollisionCheck();
 		if (true == IsFall())
 		{
@@ -327,7 +338,7 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 	}
 
 	SetMove(float4::Up * m_JumpPower * _DeltaTime);
-	m_JumpPower -= (m_GravityPower * 2.0f) * _DeltaTime;
+	m_JumpPower -= (m_GravityPower * 2.3f) * _DeltaTime;
 
 	if (true == GameEngineInput::IsDown("Attack"))
 	{
@@ -344,6 +355,11 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsPress("Left_Move"))
 	{
+		if (true == IsLeftOver())
+		{
+			return;
+		}
+
 		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		return;

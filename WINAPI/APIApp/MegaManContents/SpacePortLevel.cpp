@@ -126,14 +126,14 @@ void SpacePortLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 void SpacePortLevel::SoundLoad()
 {
 	// °æ·ÎÅ½»ö 
-	GameEngineDirectory Dir;
+	/*GameEngineDirectory Dir;
 	Dir.MoveParentToDirectory("ContentsResources");
 	Dir.Move("ContentsResources");
 	Dir.Move("Sound");
 
 	{
 		GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("Test1.wav"));
-	}
+	}*/
 
 	// GameEngineResources::GetInst().SoundPlay("Appear.wav");
 

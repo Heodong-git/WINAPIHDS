@@ -124,6 +124,10 @@ void UI_MainSelectUI::SelectUpdate(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("SelectMove_Right"))
 	{
+		m_SelectSound = GameEngineResources::GetInst().SoundPlayToControl("player_select.wav");
+		m_SelectSound.LoopCount(1);
+		m_SelectSound.Volume(0.1f);
+
 		if (ESelectPlayer::X == m_SelectPlayer)
 		{
 			m_SelectPlayer = ESelectPlayer::ZERO;
@@ -138,6 +142,10 @@ void UI_MainSelectUI::SelectUpdate(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("SelectMove_Left"))
 	{
+		m_SelectSound = GameEngineResources::GetInst().SoundPlayToControl("player_select.wav");
+		m_SelectSound.LoopCount(1);
+		m_SelectSound.Volume(0.1f);
+
 		if (ESelectPlayer::ZERO == m_SelectPlayer)
 		{
 			m_SelectPlayer = ESelectPlayer::X;

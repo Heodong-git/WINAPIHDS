@@ -49,7 +49,22 @@ void TitleLevel::Loading()
 		Image->Cut(1, 2);
 	}
 
+	{
+		// 경로탐색 
+		GameEngineDirectory Dir;
+		Dir.MoveParentToDirectory("ContentsResources");
+		Dir.Move("ContentsResources");
+		Dir.Move("Sound");
+		Dir.Move("Title");
+
+		// 사운드 로드 
+		GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("Title.wav"));
+
+		// 임시로 일단 플레이어 선택사운드로 , 이후에 사운드 찾으면 오리지널 사운드로 교체 예정
+		GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("title_player_select.wav"));
+	}
 	CreateActor<Title_BackGround>();
+
 	// 생성할 메인 UI를 가지고 있게 하고, 메뉴 선택시에
 	// 선택되어 있는 메뉴를 받아와서 메뉴에 따라서 동작시킨다.	
 	m_TitleUI = CreateActor<UI_TitleUI>();
@@ -60,6 +75,8 @@ void TitleLevel::Update(float _DeltaTime)
 	// 타이틀레벨에서는 ENTER 키를 입력하면 SelectStage 로 Level 전환
 	if (true == GameEngineInput::IsDown("Change_Level"))
 	{
+		BGMPlayer.Stop();
+
 		// 현재메뉴를 받아오고. 
 		ETitleMenu Menu = m_TitleUI->GetCurMenuType();
 
@@ -76,4 +93,16 @@ void TitleLevel::Update(float _DeltaTime)
 			break;
 		}
 	}
+}
+
+void TitleLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
+{
+	// 사운드출력
+	BGMPlayer = GameEngineResources::GetInst().SoundPlayToControl("Title.wav");
+	BGMPlayer.LoopCount(1);
+	BGMPlayer.Volume(0.1f);
+	/*
+	UISoundPlayer = GameEngineResources::GetInst().SoundPlayToControl("player_select.wav");
+	UISoundPlayer.LoopCount(1);
+	UISoundPlayer.Volume(0.1f);*/
 }
