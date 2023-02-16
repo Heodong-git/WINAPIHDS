@@ -211,6 +211,13 @@ void Player_Zero::Move_Start()
 
 void Player_Zero::Move_Update(float _DeltaTime)
 {
+	// 내 현재 위치가 땅이야
+	if (false == IsGround())
+	{
+		ChangeState(STATEVALUE::FALL);
+		return;
+	}
+
 	// 좌우키가 눌린 상태가 아니라면 아이들로 전환
 	if (false == GameEngineInput::IsPress("Left_Move") &&
 		false == GameEngineInput::IsPress("Right_Move"))
@@ -239,9 +246,8 @@ void Player_Zero::Move_Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsPress("Right_Move"))
 	{
-		if (true == IsWall())
+		if (true == GameEngineInput::IsPress("Left_Move"))
 		{
-			int a = 0;
 			return;
 		}
 
@@ -249,18 +255,24 @@ void Player_Zero::Move_Update(float _DeltaTime)
 		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
 		GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
 		GroundCollisionCheck();
-		if (true == IsFall())
+		/*if (true == IsFall())
 		{
 			ChangeState(STATEVALUE::FALL);
 			return;
-		}
+		}*/
 		AnimDirCheck("Move");
 		return;
 	}
 
 	if (true == GameEngineInput::IsPress("Left_Move"))
 	{
+		// 왼쪽못나가게 체크
 		if (true == IsLeftOver())
+		{
+			return;
+		}
+
+		if (true == GameEngineInput::IsPress("Right_Move"))
 		{
 			return;
 		}
@@ -269,11 +281,11 @@ void Player_Zero::Move_Update(float _DeltaTime)
 		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		GroundCollisionCheck();
-		if (true == IsFall())
+		/*if (true == IsFall())
 		{
 			ChangeState(STATEVALUE::FALL);
 			return;
-		}
+		}*/
 		AnimDirCheck("Move");
 		return;
 	}
@@ -356,6 +368,7 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 	{
 		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
 		GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		
 		return;
 	}
 

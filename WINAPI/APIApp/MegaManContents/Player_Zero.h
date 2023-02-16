@@ -39,6 +39,12 @@ public:
 		m_StartPos = _Pos;
 	}
 
+	// 이펙트클래스에서 출력시 방향을 받아와야함 
+	const std::string& GetDirString() const
+	{
+		return m_DirString;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -93,6 +99,7 @@ private:
 	void AnimDirCheck(const std::string_view& _AnimationName);
 	void ChangeState(STATEVALUE _State);
 	void GroundCollisionCheck(float4 _Pos = float4::Zero);
+
 
 	// 중력
 	void Gravity(float _DeltaTime);
