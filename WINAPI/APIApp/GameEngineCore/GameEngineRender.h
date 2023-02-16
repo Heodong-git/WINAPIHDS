@@ -4,6 +4,15 @@
 #include <map>
 
 
+// 텍스트렌더용
+enum class TextAlign
+{
+	Left = TA_LEFT,
+	Right = TA_RIGHT,
+	Center = TA_CENTER
+};
+
+
 // 랜더링에 관련된 기능을 모두 집약
 
 // 프레임애니메이션파라미터
@@ -92,7 +101,13 @@ public:
 
 	void SetOrder(int _Order) override;
 
-	void SetText(const std::string_view& _Text);
+	// 알파값 세팅
+	void SetAlpha(int _Alpha)
+	{
+		Alpha = _Alpha;
+	}
+
+	void SetText(const std::string_view& _Text, const int _TextHeight = 20, const std::string_view& _TextType = "굴림", const TextAlign _TextAlign = TextAlign::Center, const COLORREF _TextColor = RGB(0, 0, 0));
 
 protected:
 
@@ -103,6 +118,7 @@ private:
 	bool IsEffectCamera = true;
 	// 출력하지 않을 이미지의 RGB값 
 	int TransColor = RGB(255, 0, 255);
+	int Alpha = 255;
 	int Frame = 0;
 	void Render(float _DeltaTime);
 
@@ -146,6 +162,10 @@ public:
 	std::map<std::string, FrameAnimation> Animation;
 	FrameAnimation* CurrentAnimation = nullptr;
 
-	std::string RenderText;
+	std::string RenderText = std::string();
+	int TextHeight = 0;
+	std::string TextType = std::string();
+	TextAlign Align = TextAlign::Left;
+	COLORREF TextColor = RGB(0, 0, 0);
 };
 

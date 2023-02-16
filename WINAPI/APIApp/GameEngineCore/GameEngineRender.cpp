@@ -102,9 +102,13 @@ void GameEngineRender::FrameAnimation::Render(float _DeltaTime)
 	}
 }
 
-void GameEngineRender::SetText(const std::string_view& _Text)
+void GameEngineRender::SetText(const std::string_view& _Text, const int _TextHeight, const std::string_view& _TextType, const TextAlign _TextAlign, const COLORREF _TextColor)
 {
 	RenderText = _Text;
+	TextHeight = _TextHeight;
+	TextType = _TextType;
+	Align = _TextAlign;
+	TextColor = _TextColor;
 }
 
 // 렌더링
@@ -122,6 +126,7 @@ void GameEngineRender::Render(float _DeltaTime)
 
 void GameEngineRender::TextRender(float _DeltaTime)
 {
+
 	float4 CameraPos = float4::Zero;
 
 	if (true == IsEffectCamera)
@@ -131,10 +136,38 @@ void GameEngineRender::TextRender(float _DeltaTime)
 
 	float4 RenderPos = GetActorPlusPos() - CameraPos;
 
-	TextOutA(GameEngineWindow::GetDoubleBufferImage()->GetImageDC(), RenderPos.ix(), RenderPos.iy(), RenderText.c_str(), RenderText.size());
+	HDC hdc = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
+	HFONT hFont, OldFont;
+	LOGFONTA lf;
+	lf.lfHeight = TextHeight;
+	lf.lfWidth = 0;
+	lf.lfEscapement = 0;
+	lf.lfOrientation = 0;
+	lf.lfWeight = 0;
+	lf.lfItalic = 0;
+	lf.lfUnderline = 0;
+	lf.lfStrikeOut = 0;
+	lf.lfCharSet = HANGEUL_CHARSET;
+	lf.lfOutPrecision = 0;
+	lf.lfClipPrecision = 0;
+	lf.lfQuality = 0;
+	lf.lfPitchAndFamily = VARIABLE_PITCH | FF_ROMAN;
+	lstrcpy(lf.lfFaceName, TEXT(TextType.c_str()));
+	hFont = CreateFontIndirect(&lf);
+	OldFont = static_cast<HFONT>(SelectObject(hdc, hFont));
+
+	SetTextAlign(hdc, static_cast<UINT>(Align));
+	SetTextColor(hdc, TextColor);
+	SetBkMode(hdc, TRANSPARENT);
+
+	TextOutA(GameEngineWindow::GetDoubleBufferImage()->GetImageDC(), RenderPos.ix(), RenderPos.iy(), RenderText.c_str(), static_cast<int>(RenderText.size()));
+
+	SelectObject(hdc, OldFont);
+	DeleteObject(hFont);
 
 	return;
 }
+
 
 void GameEngineRender::ImageRender(float _DeltaTime)
 {
@@ -169,14 +202,25 @@ void GameEngineRender::ImageRender(float _DeltaTime)
 	// 커팅된 이미지라면
 	if (true == Image->IsImageCutting())
 	{
-		// 프레임당 트랜스카피 사용
-		GameEngineWindow::GetDoubleBufferImage()->TransCopy(Image, Frame, RenderPos, GetScale(), TransColor);
+		if (255 == Alpha)
+		{
+			GameEngineWindow::GetDoubleBufferImage()->TransCopy(Image, Frame, RenderPos, GetScale(), TransColor);
+		}
+		else if (255 > Alpha)
+		{
+			GameEngineWindow::GetDoubleBufferImage()->AlphaCopy(Image, Frame, RenderPos, GetScale(), Alpha);
+		}
 	}
-	// 커팅된 이미지가 아니라면
 	else
 	{
-		// 그냥 이미지 전체를 입력된 크기로 출력한다. 
-		GameEngineWindow::GetDoubleBufferImage()->TransCopy(Image, RenderPos, GetScale(), { 0, 0 }, Image->GetImageScale(), TransColor);
+		if (255 == Alpha)
+		{
+			GameEngineWindow::GetDoubleBufferImage()->TransCopy(Image, RenderPos, GetScale(), { 0, 0 }, Image->GetImageScale(), TransColor);
+		}
+		else if (255 > Alpha)
+		{
+			GameEngineWindow::GetDoubleBufferImage()->AlphaCopy(Image, RenderPos, GetScale(), { 0, 0 }, Image->GetImageScale(), Alpha);
+		}
 	}
 }
 
