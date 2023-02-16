@@ -134,15 +134,16 @@ void Player_Zero::Update(float _DeltaTime)
 }
 
 // 땅체크
-bool Player_Zero::IsGround(float4 Pos)
+// 이게 지금 땅체크가 아니라 내가 박혀있는지? 로 변경해야될거 같은데
+bool Player_Zero::IsHitTheGround(float4 Pos)
 {	
-	if (RGB(255, 255, 255) == GetColor(float4::Up) && RGB(255, 255, 255) == GetColor() && 
-		RGB(255, 255, 255) == GetColor(float4::Down) && RGB(255,255,255) == GetColor(float4::Left))
-	{
-		return true;
-	}
+	return (RGB(255, 255, 255) == GetColor()) && (RGB(255, 255, 255) == GetColor(float4::Down));
+}
 
-	return false;
+bool Player_Zero::IsGround(float4 Pos)
+{
+	// 내가 검은색이고, 내 아래가 흰색이면 땅위에 서있는거야. 그게아니면 false
+	return (RGB(0, 0, 0) == GetColor()) && (RGB(255,255,255) == GetColor(float4::Down));
 }
 
 bool Player_Zero::IsFall(float4 Pos)
@@ -151,18 +152,32 @@ bool Player_Zero::IsFall(float4 Pos)
 		   RGB(0, 0, 0) == GetColor(float4::Down + float4::Down);
 }
 
-// 왜안되지
-bool Player_Zero::IsWall(float4 Pos)
+// 왼쪽벽, 오른쪽벽을 다시 정의해
+bool Player_Zero::IsRightWall(float4 Pos)
 {
-	// 내위치의 색상이 검은색이고, 내 우측 색상이 검은색이 아니라면
-	// 테스트 
-	if (RGB(0, 0, 0) == GetColor() && RGB(0, 0, 0) != GetColor(float4::Right))
+	if (RGB(0, 0, 0) == GetColor() && RGB(255, 255, 255) == GetColor(float4::Right) &&
+		RGB(255, 255, 255) == GetColor(float4::Right + float4::Up) && 
+		RGB(255,255,255) == GetColor(float4::Right + float4::Down))
 	{
 		return true;
 	}
 
 	return false;
 }
+
+bool Player_Zero::IsLeftWall(float4 Pos)
+{
+	if (RGB(0, 0, 0) == GetColor() && RGB(255, 255, 255) == GetColor(float4::Left) &&
+		RGB(255,255,255) == GetColor(float4::Left + float4::Up) &&
+		RGB(255, 255, 255) == GetColor(float4::Left + float4::Down))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+
 
 // 테스트용
 bool Player_Zero::IsLeftOver()
@@ -177,7 +192,8 @@ bool Player_Zero::IsLeftOver()
 int Player_Zero::GetColor(float4 Pos)
 {
 	// 내 위치의 픽셀값을 기준으로 한 + 위치의 픽셀값을 받아온다. 
-	float4 CheckPos = GetPos() + Pos;
+	// 델타타임을 곱한값으로 받아와야 하지 않나? 
+	float4 CheckPos = GetPos() + (Pos * m_MoveSpeed * GameEngineTime::GlobalTime.GetFloatDeltaTime());
 
 	// 상수는 안쓰는게 좋다. <-- 인지하고
 	// 충돌맵이 없다면 assert 
@@ -218,29 +234,29 @@ void Player_Zero::Render(float _DeltaTime)
 		ActorPos.ix() + 5,
 		ActorPos.iy() + 5
 	);
+
+	// m_Collider->DebugRender();
+	// 디버그용 위치출력시 참고할 코드 
+	std::string PlayerText = "PlayerPosition : ";
+	PlayerText += GetPos().ToString();
+
+	/*std::string CameraMouseText = "MousePositionCamera : ";
+	CameraMouseText += GetLevel()->GetMousePosToCamera().ToString();*/
+
+	GameEngineLevel::DebugTextPush(PlayerText);
+	// GameEngineLevel::DebugTextPush(CameraMouseText);
 }
 
 
 void Player_Zero::GroundCollisionCheck(float4 _Pos)
 {
-	// 그라운드가 true 라면 나의 현재 위치를 올려준다. 
-	while (IsGround(_Pos))
+	// 땅에쳐박혀있다면 올려준다.  
+	while (IsHitTheGround(_Pos))
 	{
 		SetMove(float4::Up);
 	}	
 }
 
-
-//m_Collision->DebugRender();	
-	// 디버그용 위치출력시 참고할 코드 
-	/*std::string MouseText = "MousePosition : ";
-	MouseText += GetLevel()->GetMousePos().ToString();
-
-	std::string CameraMouseText = "MousePositionCamera : ";
-	CameraMouseText += GetLevel()->GetMousePosToCamera().ToString();
-
-	GameEngineLevel::DebugTextPush(MouseText);
-	GameEngineLevel::DebugTextPush(CameraMouseText);*/
 
 // 컬리전삭제 예시용코드 
 	/*if (nullptr != BodyCollision)

@@ -51,19 +51,18 @@ protected:
 	void Render(float _DeltaTime) override;
 
 private:
-	std::string ColMapName;
+	std::string ColMapName = "ColMap_SpacePort.bmp";
 	// 디버그용 변수
 	bool		 m_DebugMode = false;
 	// ---------------------------------
 	float	     m_MoveSpeed = 500.0f;
-	bool		 m_Jump = false;  
+	bool		 m_IsJump = false;  
 	float		 m_JumpPower = 0.0f;
 	float		 m_JumpPowerMax = 650.0f;
 	float	     m_GravityPower = 700.0f;
 	bool		 m_IsJumpMax = false;
 
-	float		 m_DashSpeed = 800.0f;
-
+	float        m_DashSpeed = 800.0f;
 	float4	     m_StartPos = float4::Zero;
 
 	std::string  m_DirString = "Right_";
@@ -110,12 +109,17 @@ private:
 	// 충돌이미지의 픽셀컬러를 가져온다. 
 	int GetColor(float4 Pos = float4::Zero);
 
-	// 땅체크
+	// 땅에 박혔는지 체크 
+	bool IsHitTheGround(float4 Pos = float4::Zero);
+	// 땅체크 
 	bool IsGround(float4 Pos = float4::Zero);
 	// 낙하체크
 	bool IsFall(float4 Pos = float4::Zero);
+
 	// 벽체크
-	bool IsWall(float4 Pos = float4::Zero);
+	// 수정필요
+	bool IsRightWall(float4 Pos = float4::Zero);
+	bool IsLeftWall(float4 Pos = float4::Zero);
 
 	// 왼쪽으로 못빠져나가게
 	bool IsLeftOver();

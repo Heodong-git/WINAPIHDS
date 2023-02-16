@@ -155,6 +155,7 @@ void Player_Zero::Recall_End()
 {
 }
 
+
 void Player_Zero::Idle_Start()
 {
 	// 방향체크 후 애니메이션 출력
@@ -163,14 +164,15 @@ void Player_Zero::Idle_Start()
 
 void Player_Zero::Idle_Update(float _DeltaTime)
 {
+	// 이동
 	if (GameEngineInput::IsPress("Left_Move") || GameEngineInput::IsPress("Right_Move"))
 	{
 		ChangeState(STATEVALUE::MOVE);
 		return;
 	}
 
-	// 내 현재 위치가 땅이야
-	if (true == IsGround())
+	// 내가 지금 땅에 쳐박혀 있다면 올려준다. 
+	if (true == IsHitTheGround())
 	{
 		// 내가 바닥에 쳐박혀있다면 올려주어야함
 		GroundCollisionCheck();
@@ -178,7 +180,7 @@ void Player_Zero::Idle_Update(float _DeltaTime)
 	}
 
 	// 점프 
-	if (true == GameEngineInput::IsPress("Jump"))
+	if (true == IsGround() && true == GameEngineInput::IsDown("Jump"))
 	{
 		ChangeState(STATEVALUE::JUMP);
 		return;
@@ -211,13 +213,6 @@ void Player_Zero::Move_Start()
 
 void Player_Zero::Move_Update(float _DeltaTime)
 {
-	// 내 현재 위치가 땅이야
-	if (false == IsGround())
-	{
-		ChangeState(STATEVALUE::FALL);
-		return;
-	}
-
 	// 좌우키가 눌린 상태가 아니라면 아이들로 전환
 	if (false == GameEngineInput::IsPress("Left_Move") &&
 		false == GameEngineInput::IsPress("Right_Move"))
@@ -226,15 +221,15 @@ void Player_Zero::Move_Update(float _DeltaTime)
 		return;
 	}
 
+	if (true == GameEngineInput::IsPress("Jump"))
+	{
+		ChangeState(STATEVALUE::JUMP);
+		return;
+	}
+	
 	if (true == GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(STATEVALUE::ATTACK_FIRST);
-		return;
-	}
-
-	if (true == GameEngineInput::IsDown("Jump"))
-	{
-		ChangeState(STATEVALUE::JUMP);
 		return;
 	}
 
@@ -244,30 +239,40 @@ void Player_Zero::Move_Update(float _DeltaTime)
 		return;
 	}
 
+	// 오른쪽 무브
 	if (true == GameEngineInput::IsPress("Right_Move"))
 	{
+		if (true == IsRightWall())
+		{
+			return;
+		}
+
 		if (true == GameEngineInput::IsPress("Left_Move"))
 		{
 			return;
 		}
 
+		// 중력주고 
 		Gravity(_DeltaTime);
-		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
-		GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
 		GroundCollisionCheck();
-		/*if (true == IsFall())
+		if (false == IsGround())
 		{
 			ChangeState(STATEVALUE::FALL);
 			return;
-		}*/
+		}
+		
+		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		
 		AnimDirCheck("Move");
 		return;
 	}
 
+	// 왼쪽무브
 	if (true == GameEngineInput::IsPress("Left_Move"))
 	{
 		// 왼쪽못나가게 체크
-		if (true == IsLeftOver())
+		if (true == IsLeftWall() || true == IsLeftOver())
 		{
 			return;
 		}
@@ -278,14 +283,15 @@ void Player_Zero::Move_Update(float _DeltaTime)
 		}
 
 		Gravity(_DeltaTime);
-		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
-		GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		GroundCollisionCheck();
-		/*if (true == IsFall())
+		if (false == IsGround())
 		{
 			ChangeState(STATEVALUE::FALL);
 			return;
-		}*/
+		}
+
+		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		AnimDirCheck("Move");
 		return;
 	}
@@ -297,27 +303,15 @@ void Player_Zero::Move_End()
 
 }
 
-void Player_Zero::Jump_Start()
-{
-	/*//선생님 코드
-	m_Jump = true;
-	IsJumpMax = false;
+// 쌤코드 점프스타트
+//m_Jump = true;
+//IsJumpMax = false;
+//
+//m_JumpPower = 50.0f;
+//m_GravityPower = 800.0f;
 
-	m_JumpPower = 50.0f;
-	m_GravityPower = 800.0f;*/
-	m_JumpSound = GameEngineResources::GetInst().SoundPlayToControl("player_jump_sound.wav");
-	m_JumpSound.LoopCount(1);
-	m_JumpSound.Volume(0.2f);
 
-	m_IsJumpMax = false;
-	m_JumpPower = 50.0f;
-
-	AnimDirCheck("Jump");
-}
-
-void Player_Zero::Jump_Update(float _DeltaTime)
-{
-	// 쌤코드 
+// 쌤코드 점프업데이트
 	//if (false == IsJumpMax && true == GameEngineInput::IsPress("Jump"))
 	//{
 	//	// 키가 눌려있다면 점프파워를 계속 증가시킨다. 
@@ -334,15 +328,39 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 	//m_MoveDir += float4::Up * m_JumpPower;
 	//m_JumpPower -= m_GravityPower * _DeltaTime;
 
-	if (true == IsGround())
+
+void Player_Zero::Jump_Start()
+{
+	// 사운드출력
+	m_JumpSound = GameEngineResources::GetInst().SoundPlayToControl("player_jump_sound.wav");
+	m_JumpSound.LoopCount(1);
+	m_JumpSound.Volume(0.2f);
+
+	m_IsJumpMax = false;
+	m_JumpPower = 50.0f;
+
+	AnimDirCheck("Jump");
+}
+
+void Player_Zero::Jump_Update(float _DeltaTime)
+{
+	if (true == IsHitTheGround())
 	{
 		ChangeState(STATEVALUE::IDLE);
 		return;
 	}
 
-	// 현재 점프가 최대높이가 아니고, 점프키가 눌려있다면 동작 상수는 전부 변수로 바꿔서 사용해야함. 
+	// 점프키가 여전히 눌린상태라면 점프에 힘을 더해준다. 
 	if (false == m_IsJumpMax && true == GameEngineInput::IsPress("Jump"))
 	{
+		// 아 여기서 점프가 한번 더눌리면 그냥 점프를 종료시켜버려 
+		if (true == GameEngineInput::IsDown("Jump"))
+		{
+			// 어떻게? 
+			m_IsJumpMax = true;
+			return;
+		}
+		
 		// 키가 눌려있다면 점프파워를 계속 증가시킨다. 
 		m_JumpPower += 60.0f;
 
@@ -355,8 +373,8 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 		}
 	}
 
+	m_JumpPower -= (m_GravityPower * 2.1f) * _DeltaTime;
 	SetMove(float4::Up * m_JumpPower * _DeltaTime);
-	m_JumpPower -= (m_GravityPower * 2.3f) * _DeltaTime;
 
 	if (true == GameEngineInput::IsDown("Attack"))
 	{
@@ -366,9 +384,11 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsPress("Right_Move"))
 	{
-		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
-		GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
-		
+		if (false == IsRightWall())
+		{
+			SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
+			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		}
 		return;
 	}
 
@@ -379,11 +399,13 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 			return;
 		}
 
-		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
-		GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		if (false == IsLeftWall())
+		{
+			SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
+			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		}
 		return;
 	}
-
 
 	AnimDirCheck("Jump");
 }
@@ -404,11 +426,14 @@ void Player_Zero::Fall_Start()
 void Player_Zero::Fall_Update(float _DeltaTime)
 {
 	Gravity(_DeltaTime);
+	if (true == IsHitTheGround())
+	{
+		GroundCollisionCheck();
+	}
 
 	if (true == IsGround())
 	{
 		ChangeState(STATEVALUE::IDLE);
-
 		return;
 	}
 
@@ -553,20 +578,64 @@ void Player_Zero::Dash_Start()
 
 void Player_Zero::Dash_Update(float _DeltaTime)
 {
+	if (true == m_AnimationRender->IsAnimationEnd())
+	{
+		ChangeState(STATEVALUE::IDLE);
+		return;
+	}
+
 	if (false == GameEngineInput::IsPress("Dash"))
 	{
 		ChangeState(STATEVALUE::IDLE);
 		return;
 	}
 
+	if (true == GameEngineInput::IsPress("Jump"))
+	{
+		ChangeState(STATEVALUE::JUMP);
+		return;
+	}
+
 	// 이동로직작성
+	// 그냥이동이랑 똑같이하고 무브스피드를 대쉬스피드로 바꾸면 될 것 같다.  
 	if (true == GameEngineInput::IsPress("Dash") && true == GameEngineInput::IsPress("Right_Move"))
 	{
+		if (true == IsRightWall())
+		{
+			SetMove(float4::Zero);
+			return;
+		}
+
+		if (true == GameEngineInput::IsPress("Left_Move"))
+		{
+			return;
+		}
+		
+		Gravity(_DeltaTime);
+		SetMove(float4::Right * m_DashSpeed * _DeltaTime);
+		GetLevel()->SetCameraMove(float4::Right * m_DashSpeed * _DeltaTime);
+		GroundCollisionCheck();
+		
 		return;
 	}
 
 	if (true == GameEngineInput::IsPress("Dash") && true == GameEngineInput::IsPress("Left_Move"))
 	{
+		if (true == IsRightWall())
+		{
+			SetMove(float4::Zero);
+			return;
+		}
+
+		if (true == GameEngineInput::IsPress("Right_Move"))
+		{
+			return;
+		}
+
+		Gravity(_DeltaTime);
+		SetMove(float4::Left * m_DashSpeed * _DeltaTime);
+		GetLevel()->SetCameraMove(float4::Left * m_DashSpeed * _DeltaTime);
+		GroundCollisionCheck();	
 		return;
 	}
 
