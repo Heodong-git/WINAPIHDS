@@ -310,8 +310,12 @@ void GameEngineLevel::PushRender(GameEngineRender* _Render)
 }
 
 // 충돌체 생성 후 호출하여 맵에 추가하는 함수 
-void GameEngineLevel::PushCollision(GameEngineCollision* _Collision)
+void GameEngineLevel::PushCollision(GameEngineCollision* _Collision, int _ChangeOrder)
 {
+	// 충돌그룹을 변경 
+	Collisions[_Collision->GetOrder()].remove(_Collision);
+	_Collision->GameEngineObject::SetOrder(_ChangeOrder);
+
 	// 예외처리
 	if (nullptr == _Collision)
 	{

@@ -153,7 +153,7 @@ private:
 	// 충돌체 저장
 	std::map<int, std::list<GameEngineCollision*>> Collisions;
 	// 맵에 충돌체 추가  
-	void PushCollision(GameEngineCollision* _Collision);
+	void PushCollision(GameEngineCollision* _Collision, int _ChangeOrder);
 
 	// 엔진수준의 기능이기 때문에 private으로 둔다.
 	void Release();

@@ -297,7 +297,7 @@ void Player_Zero::Jump_Start()
 	m_JumpSound.LoopCount(1);
 	m_JumpSound.Volume(0.2f);
 
-	IsJumpMax = false;
+	m_IsJumpMax = false;
 	m_JumpPower = 50.0f;
 
 	AnimDirCheck("Jump");
@@ -329,17 +329,17 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 	}
 
 	// 현재 점프가 최대높이가 아니고, 점프키가 눌려있다면 동작 상수는 전부 변수로 바꿔서 사용해야함. 
-	if (false == IsJumpMax && true == GameEngineInput::IsPress("Jump"))
+	if (false == m_IsJumpMax && true == GameEngineInput::IsPress("Jump"))
 	{
 		// 키가 눌려있다면 점프파워를 계속 증가시킨다. 
 		m_JumpPower += 60.0f;
 
 		// 점프파워가 일정수치이상 넘어갔다면
-		if (m_JumpPower >= 650.0f)
+		if (m_JumpPower >= m_JumpPowerMax)
 		{
 			// 점프파워를 고정시키고 최대 점프위치에 도달
-			m_JumpPower = 650.0f;
-			IsJumpMax = true;
+			m_JumpPower = m_JumpPowerMax;
+			m_IsJumpMax = true;
 		}
 	}
 

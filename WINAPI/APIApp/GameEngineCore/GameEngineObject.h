@@ -37,18 +37,19 @@ public:
 		ObjectDeath = true;
 	}
 
+	// 오브젝트의 업데이트를 온,오프시킬 경우 해당 오브젝트에서 해야할 일이 있을 경우에 자식클래스에서 구현하기 위함이다. 
 	// 업데이트 온오프 
-	void On()
+	virtual void On()
 	{
 		ObjectUpdate = true;
 	}
-	void Off()
+	virtual void Off()
 	{
 		ObjectUpdate = false;
 	}
 
-	// 온오프스위치 (임시?) 
-	void OnOffSwtich()
+	// 온오프스위치
+	virtual void OnOffSwtich()
 	{
 		ObjectUpdate = !ObjectUpdate;
 	}

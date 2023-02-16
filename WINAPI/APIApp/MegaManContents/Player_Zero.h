@@ -52,8 +52,11 @@ private:
 	float	     m_MoveSpeed = 500.0f;
 	bool		 m_Jump = false;  
 	float		 m_JumpPower = 0.0f;
+	float		 m_JumpPowerMax = 650.0f;
 	float	     m_GravityPower = 700.0f;
-	bool		 IsJumpMax = false;
+	bool		 m_IsJumpMax = false;
+
+	float		 m_DashSpeed = 800.0f;
 
 	float4	     m_StartPos = float4::Zero;
 
