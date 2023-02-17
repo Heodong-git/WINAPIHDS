@@ -398,17 +398,15 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsPress("Right_Move"))
 	{
-		if (false == IsRightWall())
+		// ¼öÁ¤
+		if (true == IsRightWall())
 		{
-			SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
-			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+			SetMove(float4::Zero);
+			return;
 		}
 
-		/*else if (true == IsRightWall())
-		{
-			ChangeState(STATEVALUE::WALL);
-			return;
-		}*/
+		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
 
 		return;
 	}

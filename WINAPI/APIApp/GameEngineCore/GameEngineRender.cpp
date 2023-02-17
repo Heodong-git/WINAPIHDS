@@ -310,7 +310,6 @@ void GameEngineRender::ChangeAnimation(const std::string_view& _AnimationName, b
 		MsgAssert("존재하지 않는 애니메이션으로 바꾸려고 했습니다." + UpperName);
 	}
 
-
 	// 애니메이션을 강제로 변경하지 않고, 애니메이션이 같다면 return 
 	if (false == _ForceChange && CurrentAnimation == &Animation[UpperName])
 	{

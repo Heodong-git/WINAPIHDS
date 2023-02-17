@@ -190,6 +190,8 @@ bool Player_Zero::IsLeftOver()
 }
 
 
+
+
 int Player_Zero::GetColor(float4 Pos)
 {
 	// 내 위치의 픽셀값을 기준으로 한 + 위치의 픽셀값을 받아온다. 
