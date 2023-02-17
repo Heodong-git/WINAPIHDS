@@ -136,6 +136,7 @@ void Player_Zero::Update(float _DeltaTime)
 // 내가 땅에 박혀있는지 
 bool Player_Zero::IsHitTheGround(float4 Pos)
 {	
+	// 여기서 내가 땅인 상태가 아닐때라는 if 문을 추가해야하나?
 	// 내위치의 픽셀이 흰색, 내아래픽셀이 흰색이라면 땅에 박혀있는거야.
 	return (RGB(255, 255, 255) == GetColor()) && (RGB(255, 255, 255) == GetColor(float4::Down));
 }
