@@ -195,7 +195,6 @@ bool Player_Zero::IsLeftOver()
 int Player_Zero::GetColor(float4 Pos)
 {
 	// 내 위치의 픽셀값을 기준으로 한 + 위치의 픽셀값을 받아온다. 
-	// 델타타임을 곱한값으로 받아와야 하지 않나? 
 	float4 CheckPos = GetPos() + (Pos * m_MoveSpeed * GameEngineTime::GlobalTime.GetFloatDeltaTime());
 
 	// 상수는 안쓰는게 좋다. <-- 인지하고
