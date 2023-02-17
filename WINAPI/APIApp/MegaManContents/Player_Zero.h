@@ -15,7 +15,8 @@ enum class STATEVALUE
 	ATTACK_SECOND,
 	ATTACK_THIRD,
 	DASH,		         // 대쉬 
-	JUMP_ATTACK,		 // 
+	JUMP_ATTACK,		 // 점프공격
+	WALL,				 // 벽타기
 };
 
 // 포인터변수를 선언하기 위해 클래스 전방선언
@@ -167,5 +168,9 @@ private:
 	void Jump_Attack_Start();
 	void Jump_Attack_Update(float _DeltaTime);
 	void Jump_Attack_End();
+
+	void Wall_Start();
+	void Wall_Update(float _DeltaTime);
+	void Wall_End();
 };
 

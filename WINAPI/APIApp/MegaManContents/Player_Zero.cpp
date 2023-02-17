@@ -133,10 +133,10 @@ void Player_Zero::Update(float _DeltaTime)
 	UpdateState(_DeltaTime);
 }
 
-// 땅체크
-// 이게 지금 땅체크가 아니라 내가 박혀있는지? 로 변경해야될거 같은데
+// 내가 땅에 박혀있는지 
 bool Player_Zero::IsHitTheGround(float4 Pos)
 {	
+	// 내위치의 픽셀이 흰색, 내아래픽셀이 흰색이라면 땅에 박혀있는거야.
 	return (RGB(255, 255, 255) == GetColor()) && (RGB(255, 255, 255) == GetColor(float4::Down));
 }
 
@@ -146,13 +146,14 @@ bool Player_Zero::IsGround(float4 Pos)
 	return (RGB(0, 0, 0) == GetColor()) && (RGB(255,255,255) == GetColor(float4::Down));
 }
 
+// 낙하체크
 bool Player_Zero::IsFall(float4 Pos)
 {
-	return RGB(0, 0, 0) == GetColor() && RGB(0, 0, 0) == GetColor(float4::Down) && 
-		   RGB(0, 0, 0) == GetColor(float4::Down + float4::Down);
+	// 내 위치의 픽셀이 검은색, 내아래도 검은색, 내아래의 아래도 검은색이면
+	return RGB(0, 0, 0) == GetColor() && RGB(0, 0, 0) == GetColor(float4::Down);
 }
 
-// 왼쪽벽, 오른쪽벽을 다시 정의해
+// 벽체크 
 bool Player_Zero::IsRightWall(float4 Pos)
 {
 	if (RGB(0, 0, 0) == GetColor() && RGB(255, 255, 255) == GetColor(float4::Right) &&
@@ -327,12 +328,12 @@ void Player_Zero::PlayerCreateAnimation()
 
 	// 오른쪽 대쉬 111 ~ 121 
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_dash" , .ImageName = "player_zero_sprite_right.bmp",
-									   .Start = 111 , .End = 121 , .InterTime = 0.05f });
+									   .Start = 111 , .End = 121 , .InterTime = 0.07f });
 
 	// 오른쪽 벽타는 모션
 	// 122~126
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_wall" , .ImageName = "player_zero_sprite_right.bmp",
-									   .Start = 122 , .End = 126 , .InterTime = 0.5f , .Loop = false });
+									   .Start = 122 , .End = 126 , .InterTime = 0.05f , .Loop = false });
 
 	// 오른쪽 벽타기 중 점프
 	// 127 ~ 129 
@@ -438,19 +439,19 @@ void Player_Zero::PlayerCreateAnimation()
 
 	// 왼쪽 대쉬 111 ~ 121 0.05
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_dash" , .ImageName = "player_zero_sprite_left.bmp",
-									   .Start = 111 , .End = 121 , .InterTime = 0.05f });
+									   .Start = 111 , .End = 121 , .InterTime = 0.07f });
 
-	// 오른쪽 벽타는 모션
+	// 왼쪽 벽타는 모션
 	// 122~126
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_wall" , .ImageName = "player_zero_sprite_left.bmp",
-									   .Start = 122 , .End = 126 , .InterTime = 0.5f , .Loop = false });
+									   .Start = 122 , .End = 126 , .InterTime = 0.05f , .Loop = false });
 
-	// 오른쪽 벽타기 중 점프
+	// 왼쪽 벽타기 중 점프
 	// 127 ~ 129 0.07
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_wall_jump" , .ImageName = "player_zero_sprite_left.bmp",
 									   .Start = 126 , .End = 129 , .InterTime = 0.07f , .Loop = false });
 
-	// 오른쪽 벽타기 중 공격 
+	// 왼쪽 벽타기 중 공격 
 	// 130 ~ 138 
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_wall_attack" , .ImageName = "player_zero_sprite_left.bmp",
 									   .Start = 130 , .End = 138 , .InterTime = 0.04f , .Loop = false });

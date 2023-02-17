@@ -16,7 +16,7 @@ Map_SpacePort::~Map_SpacePort()
 
 void Map_SpacePort::Start()
 {
-	m_vecRender.reserve(static_cast<size_t>(IMAGENUMBER::MAX) - 1);
+	// m_vecRender.reserve(static_cast<size_t>(IMAGENUMBER::MAX) - 1);
 	{
 		 // 현재 디버그용 큰이미지 
 		 GameEngineRender* AnimationRender = CreateRender(ZORDER::MAP);
@@ -24,7 +24,7 @@ void Map_SpacePort::Start()
 		 AnimationRender->SetPosition(m_FinalImageScale.half());
 	}
 
-	// 나중에는 아래 분할이미지로 변경
+	//// 나중에는 아래 분할이미지로 변경
 	//{
 	//	GameEngineRender* AnimationRender = CreateRender(ZORDER::MAP);
 	//	AnimationRender->SetImage("Map_SpacePort_0.Bmp");
@@ -33,7 +33,7 @@ void Map_SpacePort::Start()
 	//	m_vecRender.push_back(AnimationRender);
 	//}
 
-	// 분할된 이미지 
+	// //분할된 이미지 
 	//{
 	//	GameEngineRender* AnimationRender = CreateRender(ZORDER::MAP);
 	//	AnimationRender->SetImage("Map_SpacePort_1.Bmp");

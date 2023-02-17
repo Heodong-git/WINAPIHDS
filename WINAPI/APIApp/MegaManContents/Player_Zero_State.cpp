@@ -54,6 +54,9 @@ void Player_Zero::ChangeState(STATEVALUE _State)
 	case STATEVALUE::JUMP_ATTACK:
 		Jump_Attack_Start();
 		break;
+	case STATEVALUE::WALL:
+		Wall_Start();
+		break;
 	}
 
 	// 다음 상태의 Start 함수를 호출 한 이후에 
@@ -89,6 +92,9 @@ void Player_Zero::ChangeState(STATEVALUE _State)
 		break;
 	case STATEVALUE::JUMP_ATTACK:
 		Jump_Attack_End();
+		break;
+	case STATEVALUE::WALL:
+		Wall_End();
 		break;
 	}
 }
@@ -128,6 +134,9 @@ void Player_Zero::UpdateState(float _DeltaTime)
 	case STATEVALUE::JUMP_ATTACK:
 		Jump_Attack_Update(_DeltaTime);
 		break;
+	case STATEVALUE::WALL:
+		Wall_Update(_DeltaTime);
+		break;
 	}
 }
 
@@ -164,9 +173,13 @@ void Player_Zero::Idle_Start()
 
 void Player_Zero::Idle_Update(float _DeltaTime)
 {
+	// 점프 후 착지했을때 아이들로 바뀌고, 아이들로 바뀌는순간 무브를 눌러서 이동이 되기 때문에 자꾸 
+	// 하얀색으로 파고들어가서 위로 올라오는거 같은데
+
 	// 이동
 	if (GameEngineInput::IsPress("Left_Move") || GameEngineInput::IsPress("Right_Move"))
 	{
+
 		ChangeState(STATEVALUE::MOVE);
 		return;
 	}
@@ -346,6 +359,7 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 {
 	if (true == IsHitTheGround())
 	{
+		GroundCollisionCheck();
 		ChangeState(STATEVALUE::IDLE);
 		return;
 	}
@@ -389,6 +403,13 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 			SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
 			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
 		}
+
+		/*else if (true == IsRightWall())
+		{
+			ChangeState(STATEVALUE::WALL);
+			return;
+		}*/
+
 		return;
 	}
 
@@ -406,7 +427,6 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 		}
 		return;
 	}
-
 	AnimDirCheck("Jump");
 }
 
@@ -671,5 +691,34 @@ void Player_Zero::Jump_Attack_Update(float _DeltaTime)
 }
 
 void Player_Zero::Jump_Attack_End()
+{
+}
+
+void Player_Zero::Wall_Start()
+{
+	AnimDirCheck("wall");
+}
+
+void Player_Zero::Wall_Update(float _DeltaTime)
+{
+	if (true == IsGround())
+	{
+		ChangeState(STATEVALUE::IDLE);
+		return;
+	}
+
+	SetMove(float4::Down * (m_MoveSpeed* 0.7f) * _DeltaTime);
+	GroundCollisionCheck();
+
+	// 임시로 점프 한번 넣어봄
+	// 벽타기점프는 프레스 아니고 Down 으로 한번만, 일정한 힘으로 약간 점프하도록 만들어야함. 
+	if (true == GameEngineInput::IsPress("Jump"))
+	{
+		ChangeState(STATEVALUE::JUMP);
+		return;
+	}
+}
+
+void Player_Zero::Wall_End()
 {
 }

@@ -184,18 +184,16 @@ void SpacePortLevel::ActorLoad()
 	CreateActor<Map_SpacePort>();
 	Monster_GunMan* Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 1738 , 7065 });
-	/*Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
-	Monster->SetPos({ 2334, 6382 });
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	/*Monster->SetPos({ 2334, 6382 });
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 2354 , 6382 });*/
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 3186 , 7058 });
-	/*Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
-	Monster->SetPos({ 3186 , 7058 });*/
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 5366, 6825 });
-	/*Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
-	Monster->SetPos({ 5379, 6385 });*/
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 5379, 6385 });
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 12827, 6384 });
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
