@@ -647,6 +647,11 @@ void Player_Zero::Dash_Update(float _DeltaTime)
 			return;
 		}
 
+		if (true == IsLeftOver())
+		{
+			return;
+		}
+
 		if (true == GameEngineInput::IsPress("Right_Move"))
 		{
 			return;

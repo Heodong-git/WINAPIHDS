@@ -63,7 +63,7 @@ private:
 	float	     m_GravityPower = 700.0f;
 	bool		 m_IsJumpMax = false;
 
-	float        m_DashSpeed = 800.0f;
+	float        m_DashSpeed = 900.0f;
 	float4	     m_StartPos = float4::Zero;
 
 	std::string  m_DirString = "Right_";
