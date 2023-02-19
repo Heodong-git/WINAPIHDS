@@ -110,6 +110,8 @@ private:
 	// 충돌이미지의 픽셀컬러를 가져온다. 
 	int GetColor(float4 Pos = float4::Zero);
 
+
+	// --------------------------- 맵충돌픽셀체크 -------------------------
 	// 땅에 박혔는지 체크 
 	bool IsHitTheGround(float4 Pos = float4::Zero);
 	// 땅체크 
@@ -121,6 +123,8 @@ private:
 	// 수정필요
 	bool IsRightWall(float4 Pos = float4::Zero);
 	bool IsLeftWall(float4 Pos = float4::Zero);
+
+	// --------------------------------------------------------------------
 
 	// 왼쪽으로 못빠져나가게
 	bool IsLeftOver();

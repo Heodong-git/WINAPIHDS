@@ -173,33 +173,31 @@ void Player_Zero::Idle_Start()
 
 void Player_Zero::Idle_Update(float _DeltaTime)
 {
-	// 점프 후 착지했을때 아이들로 바뀌고, 아이들로 바뀌는순간 무브를 눌러서 이동이 되기 때문에 자꾸 
-	// 하얀색으로 파고들어가서 위로 올라오는거 같은데
-
-	// 이동
-	if (GameEngineInput::IsPress("Left_Move") || GameEngineInput::IsPress("Right_Move"))
-	{
-
-		ChangeState(STATEVALUE::MOVE);
-		return;
-	}
-
-	// 내가 지금 땅에 쳐박혀 있다면 올려준다. 
+	// 내가 지금 땅에 박혀 있는 상태라면 올려준다. 
 	if (true == IsHitTheGround())
 	{
 		// 내가 바닥에 쳐박혀있다면 올려주어야함
 		GroundCollisionCheck();
-		return;
+	}
+	// 현재 나의 픽셀이 검은색 일때만
+	if (RGB(0, 0, 0) == GetColor())
+	{
+		// 이동
+		if (GameEngineInput::IsPress("Left_Move") || GameEngineInput::IsPress("Right_Move"))
+		{
+			ChangeState(STATEVALUE::MOVE);
+			return;
+		}
 	}
 
-	// 점프 
+	// 내가 땅에 있고, 점프키가 눌렸다면 점프상태로 변환
 	if (true == IsGround() && true == GameEngineInput::IsDown("Jump"))
 	{
 		ChangeState(STATEVALUE::JUMP);
 		return;
 	}
 
-	// 공격
+	// 기본공격
 	if (true == GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(STATEVALUE::ATTACK_FIRST);
@@ -226,7 +224,15 @@ void Player_Zero::Move_Start()
 
 void Player_Zero::Move_Update(float _DeltaTime)
 {
-	// 좌우키가 눌린 상태가 아니라면 아이들로 전환
+	// 내가 땅에 박혀있으면 한번올려주고, 내가 땅이 아니면 fall 상태로 변경
+	GroundCollisionCheck();
+	if (true != IsGround())
+	{
+		ChangeState(STATEVALUE::FALL);
+		return;
+	}
+
+	// 현재 아무키도 눌리지 않은 상태라면 IDLE 상태로 변경
 	if (false == GameEngineInput::IsPress("Left_Move") &&
 		false == GameEngineInput::IsPress("Right_Move"))
 	{
@@ -234,82 +240,85 @@ void Player_Zero::Move_Update(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsPress("Jump"))
+	// 현재 내가 땅에 있고, 점프키가 눌렸다면 점프상태로 변경
+	if (true == IsGround() && true == GameEngineInput::IsPress("Jump"))
 	{
 		ChangeState(STATEVALUE::JUMP);
 		return;
 	}
 	
+	// 공격 
 	if (true == GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(STATEVALUE::ATTACK_FIRST);
 		return;
 	}
 
+	// 대쉬키가 눌렸다면 Dash 상태로 변경
 	if (true == GameEngineInput::IsPress("Dash"))
 	{
 		ChangeState(STATEVALUE::DASH);
 		return;
 	}
 
-	// 오른쪽 무브
+	// 우측키가 눌려있다면 
 	if (true == GameEngineInput::IsPress("Right_Move"))
 	{
-		if (true == IsRightWall())
-		{
-			return;
-		}
-
+		// 우측키가 눌린상태에서 좌측키를 입력하면 return
 		if (true == GameEngineInput::IsPress("Left_Move"))
 		{
 			return;
 		}
 
-		// 중력주고 
-		Gravity(_DeltaTime);
-		GroundCollisionCheck();
-		if (false == IsGround())
+		// 우측키가 눌린상태에서 내 오른쪽이 벽이 아니라면 
+		if (true != IsRightWall())
 		{
-			ChangeState(STATEVALUE::FALL);
+			// 움직이는 와중에 땅이 내가 땅이 아니게 되면 낙하
+			// 음.. 
+
+			// 중력, 땅에 박혀있다면 꺼내주고 
+			Gravity(_DeltaTime);
+			GroundCollisionCheck();
+			// 이동연산 + 카메라이동 해주고 
+			SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
+			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+
+			AnimDirCheck("Move");
 			return;
 		}
-		
-		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
-		GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
-		
-		AnimDirCheck("Move");
-		return;
+
 	}
 
 	// 왼쪽무브
 	if (true == GameEngineInput::IsPress("Left_Move"))
 	{
-		// 왼쪽못나가게 체크
-		if (true == IsLeftWall() || true == IsLeftOver())
+		// 왼쪽못나가게 체크해주고
+		if (true == IsLeftOver())
 		{
 			return;
 		}
 
+		// 왼쪽키가 눌린상태에서 우측키를 누르면 아무동작도 하지 않음
 		if (true == GameEngineInput::IsPress("Right_Move"))
 		{
 			return;
 		}
 
-		Gravity(_DeltaTime);
-		GroundCollisionCheck();
-		if (false == IsGround())
-		{
-			ChangeState(STATEVALUE::FALL);
+		// 왼쪽이 벽이 아닐 경우에만 연산한다 
+		if (true != IsLeftWall())
+		{	
+			Gravity(_DeltaTime);
+			GroundCollisionCheck();
+			SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
+			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+
+			AnimDirCheck("Move");
 			return;
 		}
-
-		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
-		GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
-		AnimDirCheck("Move");
-		return;
 	}
-
 }
+
+// 일단 여기까지 임시 완료 -----------------------------------------------
 
 void Player_Zero::Move_End()
 {
@@ -355,8 +364,10 @@ void Player_Zero::Jump_Start()
 	AnimDirCheck("Jump");
 }
 
+// 점프업데이트
 void Player_Zero::Jump_Update(float _DeltaTime)
 {
+	// 땅에 박힌 상태라면 꺼내주고, 아이들로 전환
 	if (true == IsHitTheGround())
 	{
 		GroundCollisionCheck();
@@ -387,7 +398,7 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 		}
 	}
 
-	m_JumpPower -= (m_GravityPower * 2.1f) * _DeltaTime;
+	m_JumpPower -= (m_GravityPower * 2.2f) * _DeltaTime;
 	SetMove(float4::Up * m_JumpPower * _DeltaTime);
 
 	if (true == GameEngineInput::IsDown("Attack"))
@@ -440,28 +451,26 @@ void Player_Zero::Fall_Start()
 	AnimDirCheck("Fall");
 }
 
-// 낙하 업데이트에서 체크해야할 것
+// 낙하 업데이트 
 void Player_Zero::Fall_Update(float _DeltaTime)
 {
+	// 낙하상태일 경우 중력연산
 	Gravity(_DeltaTime);
+	
+	// 땅에 박혀있을 경우 꺼내주고 
 	if (true == IsHitTheGround())
 	{
 		GroundCollisionCheck();
 	}
 
+	// 내가 현재 땅이라면 아이들 상태로 변경해준다. 
 	if (true == IsGround())
 	{
 		ChangeState(STATEVALUE::IDLE);
 		return;
 	}
-
-	// 공격키 입력시 점프공격
-	if (true == GameEngineInput::IsDown("Attack"))
-	{
-		//ChangeState(STATEVALUE::JUMP_ATTACK);
-		return;
-	}
-
+	
+	// 낙하중 우측이나 좌측방향키 입력시 그 방향으로 움직여준다. 
 	if (true == GameEngineInput::IsPress("Right_Move"))
 	{
 		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
@@ -477,6 +486,8 @@ void Player_Zero::Fall_Update(float _DeltaTime)
 		AnimDirCheck("Fall_end");
 		return;
 	}
+
+
 }
 
 void Player_Zero::Fall_End()

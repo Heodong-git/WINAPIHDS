@@ -151,31 +151,27 @@ bool Player_Zero::IsGround(float4 Pos)
 bool Player_Zero::IsFall(float4 Pos)
 {
 	// 내 위치의 픽셀이 검은색, 내아래도 검은색, 내아래의 아래도 검은색이면
-	return RGB(0, 0, 0) == GetColor() && RGB(0, 0, 0) == GetColor(float4::Down);
+	return RGB(0, 0, 0) == GetColor() && RGB(0, 0, 0) == GetColor(float4::Down) && RGB(0, 0, 0) == GetColor(float4::Down + float4::Down);
 }
 
 // 벽체크 
 bool Player_Zero::IsRightWall(float4 Pos)
 {
-	if (RGB(0, 0, 0) == GetColor() && RGB(255, 255, 255) == GetColor(float4::Right) &&
-		RGB(255, 255, 255) == GetColor(float4::Right + float4::Up) && 
-		RGB(255,255,255) == GetColor(float4::Right + float4::Down))
+	if (RGB(0, 0, 0) == GetColor() && RGB(255, 255, 255) == GetColor(float4::Right) && 
+		RGB(255, 255, 255) == GetColor(float4::Right + float4::Down) && RGB(255,255,255) == GetColor(float4::Right + float4::Up))
 	{
 		return true;
 	}
-
 	return false;
 }
 
 bool Player_Zero::IsLeftWall(float4 Pos)
 {
 	if (RGB(0, 0, 0) == GetColor() && RGB(255, 255, 255) == GetColor(float4::Left) &&
-		RGB(255,255,255) == GetColor(float4::Left + float4::Up) &&
-		RGB(255, 255, 255) == GetColor(float4::Left + float4::Down))
+		RGB(255,255,255) == GetColor(float4::Left + float4::Up) && RGB(255, 255, 255) == GetColor(float4::Left + float4::Down))
 	{
 		return true;
 	}
-
 	return false;
 }
 
