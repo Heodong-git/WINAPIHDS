@@ -273,9 +273,6 @@ void Player_Zero::Move_Update(float _DeltaTime)
 		// 우측키가 눌린상태에서 내 오른쪽이 벽이 아니라면 
 		if (true != IsRightWall())
 		{
-			// 움직이는 와중에 땅이 내가 땅이 아니게 되면 낙하
-			// 음.. 
-
 			// 중력, 땅에 박혀있다면 꺼내주고 
 			Gravity(_DeltaTime);
 			GroundCollisionCheck();
