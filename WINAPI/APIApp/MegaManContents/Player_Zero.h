@@ -16,7 +16,10 @@ enum class STATEVALUE
 	ATTACK_THIRD,
 	DASH,		         // 대쉬 
 	JUMP_ATTACK,		 // 점프공격
-	WALL,				 // 벽타기
+	RIGHT_WALL,				 // 벽타기
+	RIGHT_WALL_JUMP,
+	LEFT_WALL,
+	LEFT_WALL_JUMP,
 };
 
 // 포인터변수를 선언하기 위해 클래스 전방선언
@@ -60,10 +63,11 @@ private:
 	bool		 m_IsJump = false;  
 	float		 m_JumpPower = 0.0f;
 	float		 m_JumpPowerMax = 650.0f;
-	float	     m_GravityPower = 700.0f;
+	float	     m_GravityPower = 750.0f;
 	bool		 m_IsJumpMax = false;
+	float		 m_WallJumpPower = 700.0f;
 
-	float        m_DashSpeed = 900.0f;
+	float        m_DashSpeed = 1000.0f;
 	float4	     m_StartPos = float4::Zero;
 
 	std::string  m_DirString = "Right_";
@@ -123,6 +127,7 @@ private:
 	// 수정필요
 	bool IsRightWall(float4 Pos = float4::Zero);
 	bool IsLeftWall(float4 Pos = float4::Zero);
+	bool IsTopWall(float4 Pos = float4::Zero);
 
 	// --------------------------------------------------------------------
 
@@ -173,8 +178,21 @@ private:
 	void Jump_Attack_Update(float _DeltaTime);
 	void Jump_Attack_End();
 
-	void Wall_Start();
-	void Wall_Update(float _DeltaTime);
-	void Wall_End();
+	void Right_Wall_Start();
+	void Right_Wall_Update(float _DeltaTime);
+	void Right_Wall_End();
+
+	void Right_Wall_Jump_Start();
+	void Right_Wall_Jump_Update(float _DeltaTime);
+	void Right_Wall_Jump_End();
+
+	void Left_Wall_Start();
+	void Left_Wall_Update(float _DeltaTime);
+	void Left_Wall_End();
+
+	void Left_Wall_Jump_Start();
+	void Left_Wall_Jump_Update(float _DeltaTime);
+	void Left_Wall_Jump_End();
+
 };
 

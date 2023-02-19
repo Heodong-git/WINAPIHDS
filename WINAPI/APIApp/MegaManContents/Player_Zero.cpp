@@ -138,7 +138,8 @@ bool Player_Zero::IsHitTheGround(float4 Pos)
 {	
 	// 여기서 내가 땅인 상태가 아닐때라는 if 문을 추가해야하나?
 	// 내위치의 픽셀이 흰색, 내아래픽셀이 흰색이라면 땅에 박혀있는거야.
-	return (RGB(255, 255, 255) == GetColor()) && (RGB(255, 255, 255) == GetColor(float4::Down));
+	// 자 이걸 더추가하자 
+	return RGB(255, 255, 255) == GetColor() && RGB(255, 255, 255) == GetColor(float4::Down);
 }
 
 bool Player_Zero::IsGround(float4 Pos)
@@ -157,18 +158,23 @@ bool Player_Zero::IsFall(float4 Pos)
 // 벽체크 
 bool Player_Zero::IsRightWall(float4 Pos)
 {
-	if (RGB(0, 0, 0) == GetColor() && RGB(255, 255, 255) == GetColor(float4::Right) && 
-		RGB(255, 255, 255) == GetColor(float4::Right + float4::Down) && RGB(255,255,255) == GetColor(float4::Right + float4::Up))
-	{
-		return true;
-	}
-	return false;
+	return (RGB(0, 0, 0) == GetColor() && RGB(255, 255, 255) == GetColor(float4::Right) &&
+		RGB(255, 255, 255) == GetColor(float4::Right + float4::Down) && RGB(255, 255, 255) == GetColor(float4::Right + float4::Up));
 }
 
 bool Player_Zero::IsLeftWall(float4 Pos)
 {
 	if (RGB(0, 0, 0) == GetColor() && RGB(255, 255, 255) == GetColor(float4::Left) &&
 		RGB(255,255,255) == GetColor(float4::Left + float4::Up) && RGB(255, 255, 255) == GetColor(float4::Left + float4::Down))
+	{
+		return true;
+	}
+	return false;
+}
+
+bool Player_Zero::IsTopWall(float4 Pos)
+{
+	if (RGB(255, 255, 255) == GetColor(float4::Up) && RGB(255, 255, 255) == GetColor(float4::Up + float4::Up))
 	{
 		return true;
 	}
@@ -336,7 +342,7 @@ void Player_Zero::PlayerCreateAnimation()
 	// 오른쪽 벽타기 중 점프
 	// 127 ~ 129 
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_wall_jump" , .ImageName = "player_zero_sprite_right.bmp",
-									   .Start = 127 , .End = 129 , .InterTime = 0.07f , .Loop = false });
+									   .Start = 127 , .End = 129 , .InterTime = 0.13f , .Loop = false });
 
 	// 오른쪽 벽타기 중 공격 
 	// 130 ~ 138 

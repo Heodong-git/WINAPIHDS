@@ -54,8 +54,17 @@ void Player_Zero::ChangeState(STATEVALUE _State)
 	case STATEVALUE::JUMP_ATTACK:
 		Jump_Attack_Start();
 		break;
-	case STATEVALUE::WALL:
-		Wall_Start();
+	case STATEVALUE::RIGHT_WALL:
+		Right_Wall_Start();
+		break;
+	case STATEVALUE::RIGHT_WALL_JUMP:
+		Right_Wall_Jump_Start();
+		break;
+	case STATEVALUE::LEFT_WALL:
+		Left_Wall_Start();
+		break;
+	case STATEVALUE::LEFT_WALL_JUMP:
+		Left_Wall_Jump_Start();
 		break;
 	}
 
@@ -93,8 +102,17 @@ void Player_Zero::ChangeState(STATEVALUE _State)
 	case STATEVALUE::JUMP_ATTACK:
 		Jump_Attack_End();
 		break;
-	case STATEVALUE::WALL:
-		Wall_End();
+	case STATEVALUE::RIGHT_WALL:
+		Right_Wall_End();
+		break;
+	case STATEVALUE::RIGHT_WALL_JUMP:
+		Right_Wall_Jump_End();
+		break;
+	case STATEVALUE::LEFT_WALL:
+		Left_Wall_End();
+		break;
+	case STATEVALUE::LEFT_WALL_JUMP:
+		Left_Wall_Jump_End();
 		break;
 	}
 }
@@ -134,8 +152,17 @@ void Player_Zero::UpdateState(float _DeltaTime)
 	case STATEVALUE::JUMP_ATTACK:
 		Jump_Attack_Update(_DeltaTime);
 		break;
-	case STATEVALUE::WALL:
-		Wall_Update(_DeltaTime);
+	case STATEVALUE::RIGHT_WALL:
+		Right_Wall_Update(_DeltaTime);
+		break;
+	case STATEVALUE::RIGHT_WALL_JUMP:
+		Right_Wall_Jump_Update(_DeltaTime);
+		break;
+	case STATEVALUE::LEFT_WALL:
+		Left_Wall_Update(_DeltaTime);
+		break;
+	case STATEVALUE::LEFT_WALL_JUMP:
+		Left_Wall_Jump_Update(_DeltaTime);
 		break;
 	}
 }
@@ -243,6 +270,10 @@ void Player_Zero::Move_Update(float _DeltaTime)
 	// 현재 내가 땅에 있고, 점프키가 눌렸다면 점프상태로 변경
 	if (true == IsGround() && true == GameEngineInput::IsPress("Jump"))
 	{
+		if (true == IsRightWall() || true == IsLeftWall())
+		{
+			return;
+		}
 		ChangeState(STATEVALUE::JUMP);
 		return;
 	}
@@ -358,24 +389,28 @@ void Player_Zero::Jump_Start()
 	m_IsJumpMax = false;
 	m_JumpPower = 50.0f;
 
+	
 	AnimDirCheck("Jump");
 }
 
 // 점프업데이트
 void Player_Zero::Jump_Update(float _DeltaTime)
 {
-	// 땅에 박힌 상태라면 꺼내주고, 아이들로 전환
+	// 업데이트에서 올려주는 작업을 안하면 어디서 해야하지
+	// 내가만약 쳐박혀 있다면. 이라는 코드가 있고. 
+
+	// 두번체크를함. 점프라는건 공중으로 뛰어오르는게 점프다. 
+	// 일정 높이까지 올라갔으면 낙하로 상태가 변경되어야 하는가? 
 	if (true == IsHitTheGround())
 	{
 		GroundCollisionCheck();
 		ChangeState(STATEVALUE::IDLE);
 		return;
 	}
-
 	// 점프키가 여전히 눌린상태라면 점프에 힘을 더해준다. 
 	if (false == m_IsJumpMax && true == GameEngineInput::IsPress("Jump"))
 	{
-		// 아 여기서 점프가 한번 더눌리면 그냥 점프를 종료시켜버려 
+		// 눌린상태에서 키를 누를 수가 있나..? 
 		if (true == GameEngineInput::IsDown("Jump"))
 		{
 			// 어떻게? 
@@ -395,30 +430,31 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 		}
 	}
 
+	// 여기까지가 점프 계산식인데.
 	m_JumpPower -= (m_GravityPower * 2.2f) * _DeltaTime;
 	SetMove(float4::Up * m_JumpPower * _DeltaTime);
 
+	// 점프상태에서 공격키를 입력하면 점프 공격 상태로 변경
 	if (true == GameEngineInput::IsDown("Attack"))
 	{
 		ChangeState(STATEVALUE::JUMP_ATTACK);
 		return;
 	}
-
+	
+	// 내 오른쪽이 벽이 아닐때만	
 	if (true == GameEngineInput::IsPress("Right_Move"))
 	{
-		// 수정
 		if (true == IsRightWall())
 		{
-			SetMove(float4::Zero);
+			ChangeState(STATEVALUE::RIGHT_WALL);
 			return;
 		}
 
 		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
 		GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
-
 		return;
 	}
-
+	
 	if (true == GameEngineInput::IsPress("Left_Move"))
 	{
 		if (true == IsLeftOver())
@@ -426,13 +462,18 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 			return;
 		}
 
-		if (false == IsLeftWall())
+		if (true == IsLeftWall())
 		{
-			SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
-			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+			ChangeState(STATEVALUE::LEFT_WALL);
+			return;
 		}
+
+		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		return;
 	}
+	
+
 	AnimDirCheck("Jump");
 }
 
@@ -449,13 +490,13 @@ void Player_Zero::Fall_Start()
 }
 
 // 낙하 업데이트 
+// 낙하 임시완료 
 void Player_Zero::Fall_Update(float _DeltaTime)
 {
 	// 낙하상태일 경우 중력연산
 	Gravity(_DeltaTime);
 	
-	// 땅에 박혀있을 경우 꺼내주고 
-	if (true == IsHitTheGround())
+	if (false == IsLeftWall() || false == IsRightWall())
 	{
 		GroundCollisionCheck();
 	}
@@ -467,8 +508,15 @@ void Player_Zero::Fall_Update(float _DeltaTime)
 		return;
 	}
 	
+	if (true == IsRightWall() && true == GameEngineInput::IsPress("Right_Move"))
+	{
+		ChangeState(STATEVALUE::RIGHT_WALL);
+		return;
+	}
+
+	
 	// 낙하중 우측이나 좌측방향키 입력시 그 방향으로 움직여준다. 
-	if (true == GameEngineInput::IsPress("Right_Move"))
+	if (true != IsRightWall() && true == GameEngineInput::IsPress("Right_Move"))
 	{
 		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
 		GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
@@ -476,7 +524,7 @@ void Player_Zero::Fall_Update(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::IsPress("Left_Move"))
+	if (true != IsLeftWall() && true == GameEngineInput::IsPress("Left_Move"))
 	{
 		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
@@ -705,31 +753,166 @@ void Player_Zero::Jump_Attack_End()
 {
 }
 
-void Player_Zero::Wall_Start()
+void Player_Zero::Right_Wall_Start()
 {
 	AnimDirCheck("wall");
 }
 
-void Player_Zero::Wall_Update(float _DeltaTime)
+void Player_Zero::Right_Wall_Update(float _DeltaTime)
 {
+	// 그라운드 상태가 되면 IDLE상태로 변경
 	if (true == IsGround())
 	{
 		ChangeState(STATEVALUE::IDLE);
 		return;
 	}
+	SetMove(float4::Down * (m_MoveSpeed* 0.5f) * _DeltaTime);
 
-	SetMove(float4::Down * (m_MoveSpeed* 0.7f) * _DeltaTime);
-	GroundCollisionCheck();
-
-	// 임시로 점프 한번 넣어봄
-	// 벽타기점프는 프레스 아니고 Down 으로 한번만, 일정한 힘으로 약간 점프하도록 만들어야함. 
-	if (true == GameEngineInput::IsPress("Jump"))
+	// 아래로 내려가다가 내 오른쪽이 벽이 아니게 되는 순간 폴
+	if (false == IsRightWall())
 	{
-		ChangeState(STATEVALUE::JUMP);
+		ChangeState(STATEVALUE::FALL);
+		return;
+	}
+
+	if (true == IsRightWall() && true == GameEngineInput::IsDown("Jump"))
+	{
+		ChangeState(STATEVALUE::RIGHT_WALL_JUMP);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("Left_Move"))
+	{
+		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+
+		ChangeState(STATEVALUE::FALL);
 		return;
 	}
 }
 
-void Player_Zero::Wall_End()
+void Player_Zero::Right_Wall_End()
+{
+}
+
+void Player_Zero::Right_Wall_Jump_Start()
+{
+	AnimDirCheck("wall_Jump");
+}
+
+void Player_Zero::Right_Wall_Jump_Update(float _DeltaTime)
+{
+	float4 CurPos = GetPos();
+	if (true == IsTopWall())
+	{
+		while (false == IsTopWall())
+		{
+			SetMove(float4::Down * _DeltaTime);
+		}
+
+		ChangeState(STATEVALUE::FALL);
+		return;
+	}
+
+	if (true == m_AnimationRender->IsAnimationEnd())
+	{
+		if (true == IsRightWall())
+		{
+			ChangeState(STATEVALUE::RIGHT_WALL);
+			return;
+		}
+
+		if (true == IsFall())
+		{
+			ChangeState(STATEVALUE::FALL);
+			return;
+		}
+	}
+	SetMove(float4::Up * m_WallJumpPower * _DeltaTime);
+}
+
+void Player_Zero::Right_Wall_Jump_End()
+{
+}
+
+void Player_Zero::Left_Wall_Start()
+{
+	AnimDirCheck("wall");
+}
+
+void Player_Zero::Left_Wall_Update(float _DeltaTime)
+{
+	// 그라운드 상태가 되면 IDLE상태로 변경
+	if (true == IsGround())
+	{
+		ChangeState(STATEVALUE::IDLE);
+		return;
+	}
+	SetMove(float4::Down * (m_MoveSpeed * 0.5f) * _DeltaTime);
+
+	// 아래로 내려가다가 내 왼쪽이 벽이 아니게 되는 순간 폴
+	if (false == IsLeftWall())
+	{
+		ChangeState(STATEVALUE::FALL);
+		return;
+	}
+
+	if (true == IsLeftWall() && true == GameEngineInput::IsDown("Jump"))
+	{
+		ChangeState(STATEVALUE::LEFT_WALL_JUMP);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("Right_Move"))
+	{
+		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+
+		ChangeState(STATEVALUE::FALL);
+		return;
+	}
+}
+
+void Player_Zero::Left_Wall_End()
+{
+}
+
+void Player_Zero::Left_Wall_Jump_Start()
+{
+	AnimDirCheck("wall_Jump");
+}
+
+void Player_Zero::Left_Wall_Jump_Update(float _DeltaTime)
+{
+	float4 CurPos = GetPos();
+	if (true == IsTopWall())
+	{
+		while (false == IsTopWall())
+		{
+			SetMove(float4::Down * _DeltaTime);
+		}
+
+		ChangeState(STATEVALUE::FALL);
+		return;
+	}
+
+	if (true == m_AnimationRender->IsAnimationEnd())
+	{
+		if (true == IsLeftWall())
+		{
+			ChangeState(STATEVALUE::LEFT_WALL);
+			return;
+		}
+
+		if (true == IsFall())
+		{
+			ChangeState(STATEVALUE::FALL);
+			return;
+		}
+	}
+	SetMove(float4::Up * m_WallJumpPower * _DeltaTime);
+}
+
+void Player_Zero::Left_Wall_Jump_End()
 {
 }
