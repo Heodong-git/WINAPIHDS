@@ -38,10 +38,12 @@ public:
 
 protected:
 	void Start() override;
+	void Update(float _DeltaTime) override;
 
 private:
 	// 어차피 맵번호로 알 수 있으니까.
 	std::vector<GameEngineRender*> m_vecRender;
+	GameEngineRender* m_DebugRender = nullptr;
 	float4 m_FinalImageScale = { 19200 , 7200 };
 	float4 m_SettingImageScale = { 4800 , 1800 };
 	float4 m_ImageScaleX = { 4800 , 0 }; 
