@@ -90,6 +90,7 @@ private:
 	GameEngineSoundPlayer m_DashSound;
 	GameEngineSoundPlayer m_RecallSound;
 	GameEngineSoundPlayer m_JumpSound;
+	GameEngineSoundPlayer m_WallSound;
 	GameEngineSoundPlayer m_LandingSound;
 	
 	// 디버그용

@@ -449,7 +449,7 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 	}
 
 	// 여기까지가 점프 계산식인데.
-	m_JumpPower -= (m_GravityPower * 2.2f) * _DeltaTime;
+	m_JumpPower -= (m_GravityPower * 3.0f) * _DeltaTime;
 	SetMove(float4::Up * m_JumpPower * _DeltaTime);
 	
 	// 내 오른쪽이 벽이 아닐때만	
@@ -814,6 +814,9 @@ void Player_Zero::Jump_Attack_End()
 
 void Player_Zero::Right_Wall_Start()
 {
+	m_WallSound = GameEngineResources::GetInst().SoundPlayToControl("player_wall_effect_sound.wav");
+	m_WallSound.LoopCount(1);
+	m_WallSound.Volume(0.2f);
 	AnimDirCheck("wall");
 }
 
@@ -901,6 +904,9 @@ void Player_Zero::Right_Wall_Jump_End()
 
 void Player_Zero::Left_Wall_Start()
 {
+	m_WallSound = GameEngineResources::GetInst().SoundPlayToControl("player_wall_effect_sound.wav");
+	m_WallSound.LoopCount(1);
+	m_WallSound.Volume(0.2f);
 	AnimDirCheck("wall");
 }
 
