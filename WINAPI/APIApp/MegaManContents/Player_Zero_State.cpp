@@ -200,6 +200,12 @@ void Player_Zero::Idle_Start()
 
 void Player_Zero::Idle_Update(float _DeltaTime)
 {
+	if (true == IsFall())
+	{
+		ChangeState(STATEVALUE::FALL);
+		return;
+	}
+
 	// 내가 지금 땅에 박혀 있는 상태라면 올려준다. 
 	if (true == IsHitTheGround())
 	{
@@ -389,7 +395,6 @@ void Player_Zero::Jump_Start()
 	m_IsJumpMax = false;
 	m_JumpPower = 50.0f;
 
-	
 	AnimDirCheck("Jump");
 }
 
@@ -403,10 +408,22 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 	// 일정 높이까지 올라갔으면 낙하로 상태가 변경되어야 하는가? 
 	if (true == IsHitTheGround())
 	{
+		m_LandingSound = GameEngineResources::GetInst().SoundPlayToControl("player_landing_sound.wav");
+		m_LandingSound.LoopCount(1);
+		m_LandingSound.Volume(0.2f);
+
 		GroundCollisionCheck();
 		ChangeState(STATEVALUE::IDLE);
 		return;
 	}
+
+	// 점프상태에서 공격키를 입력하면 점프 공격 상태로 변경
+	if (true == GameEngineInput::IsDown("Attack"))
+	{
+		ChangeState(STATEVALUE::JUMP_ATTACK);
+		return;
+	}
+
 	// 점프키가 여전히 눌린상태라면 점프에 힘을 더해준다. 
 	if (false == m_IsJumpMax && true == GameEngineInput::IsPress("Jump"))
 	{
@@ -421,6 +438,7 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 		// 키가 눌려있다면 점프파워를 계속 증가시킨다. 
 		m_JumpPower += 60.0f;
 
+		// 여기서 이전 상태가 대시였을 경우에는 점프맥스파워의 값을 조정하면 될 거 같은데. 
 		// 점프파워가 일정수치이상 넘어갔다면
 		if (m_JumpPower >= m_JumpPowerMax)
 		{
@@ -433,13 +451,6 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 	// 여기까지가 점프 계산식인데.
 	m_JumpPower -= (m_GravityPower * 2.2f) * _DeltaTime;
 	SetMove(float4::Up * m_JumpPower * _DeltaTime);
-
-	// 점프상태에서 공격키를 입력하면 점프 공격 상태로 변경
-	if (true == GameEngineInput::IsDown("Attack"))
-	{
-		ChangeState(STATEVALUE::JUMP_ATTACK);
-		return;
-	}
 	
 	// 내 오른쪽이 벽이 아닐때만	
 	if (true == GameEngineInput::IsPress("Right_Move"))
@@ -479,9 +490,7 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 
 void Player_Zero::Jump_End()
 {
-	m_LandingSound = GameEngineResources::GetInst().SoundPlayToControl("player_landing_sound.wav");
-	m_LandingSound.LoopCount(1);
-	m_LandingSound.Volume(0.2f);
+
 }
 
 void Player_Zero::Fall_Start()
@@ -504,13 +513,29 @@ void Player_Zero::Fall_Update(float _DeltaTime)
 	// 내가 현재 땅이라면 아이들 상태로 변경해준다. 
 	if (true == IsGround())
 	{
+		m_LandingSound = GameEngineResources::GetInst().SoundPlayToControl("player_landing_sound.wav");
+		m_LandingSound.LoopCount(1);
+		m_LandingSound.Volume(0.2f);
+
 		ChangeState(STATEVALUE::IDLE);
 		return;
 	}
 	
+	if (true == GameEngineInput::IsPress("Attack"))
+	{
+		ChangeState(STATEVALUE::JUMP_ATTACK);
+		return;
+	}
+
 	if (true == IsRightWall() && true == GameEngineInput::IsPress("Right_Move"))
 	{
 		ChangeState(STATEVALUE::RIGHT_WALL);
+		return;
+	}
+
+	if (true == IsLeftWall() && true == GameEngineInput::IsPress("Left_Move"))
+	{
+		ChangeState(STATEVALUE::LEFT_WALL);
 		return;
 	}
 
@@ -537,9 +562,7 @@ void Player_Zero::Fall_Update(float _DeltaTime)
 
 void Player_Zero::Fall_End()
 {
-	m_LandingSound = GameEngineResources::GetInst().SoundPlayToControl("player_landing_sound.wav");
-	m_LandingSound.LoopCount(1);
-	m_LandingSound.Volume(0.2f);
+
 }
 
 void Player_Zero::Attack_First_Start()
@@ -652,6 +675,7 @@ void Player_Zero::Dash_Start()
 
 void Player_Zero::Dash_Update(float _DeltaTime)
 {
+	// 애니메이션이 끝나면 idle로 변경
 	if (true == m_AnimationRender->IsAnimationEnd())
 	{
 		ChangeState(STATEVALUE::IDLE);
@@ -674,9 +698,9 @@ void Player_Zero::Dash_Update(float _DeltaTime)
 	// 그냥이동이랑 똑같이하고 무브스피드를 대쉬스피드로 바꾸면 될 것 같다.  
 	if (true == GameEngineInput::IsPress("Dash") && true == GameEngineInput::IsPress("Right_Move"))
 	{
+		// 우측 대시를 하는 도중 벽을 만나게 되면 
 		if (true == IsRightWall())
 		{
-			SetMove(float4::Zero);
 			return;
 		}
 
@@ -695,12 +719,6 @@ void Player_Zero::Dash_Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsPress("Dash") && true == GameEngineInput::IsPress("Left_Move"))
 	{
-		if (true == IsRightWall())
-		{
-			SetMove(float4::Zero);
-			return;
-		}
-
 		if (true == IsLeftOver())
 		{
 			return;
@@ -742,9 +760,50 @@ void Player_Zero::Jump_Attack_Start()
 
 void Player_Zero::Jump_Attack_Update(float _DeltaTime)
 {
+	if (true == IsGround())
+	{
+		ChangeState(STATEVALUE::IDLE);
+		return;
+	}
+
+	Gravity(_DeltaTime);
+	GroundCollisionCheck();
+
 	if (true == m_AnimationRender->IsAnimationEnd())
 	{
 		ChangeState(STATEVALUE::FALL);
+		return;
+	}
+
+	// 내 오른쪽이 벽이 아닐때만	
+	if (true == GameEngineInput::IsPress("Right_Move"))
+	{
+		if (true == IsRightWall())
+		{
+			ChangeState(STATEVALUE::RIGHT_WALL);
+			return;
+		}
+
+		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("Left_Move"))
+	{
+		if (true == IsLeftOver())
+		{
+			return;
+		}
+
+		if (true == IsLeftWall())
+		{
+			ChangeState(STATEVALUE::LEFT_WALL);
+			return;
+		}
+
+		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		return;
 	}
 }
@@ -802,7 +861,8 @@ void Player_Zero::Right_Wall_Jump_Start()
 
 void Player_Zero::Right_Wall_Jump_Update(float _DeltaTime)
 {
-	float4 CurPos = GetPos();
+	// 만약 내 위가 벽인데 점프하려고 한다면
+	// 나의 위치를 내려준다. 
 	if (true == IsTopWall())
 	{
 		while (false == IsTopWall())
@@ -814,20 +874,24 @@ void Player_Zero::Right_Wall_Jump_Update(float _DeltaTime)
 		return;
 	}
 
+	// 애니메이션이 종료되었다면
 	if (true == m_AnimationRender->IsAnimationEnd())
 	{
+		// 애니메이션이 종료된시점에 내오른쪽이 벽이라면 RIHGTWALL 
 		if (true == IsRightWall())
 		{
 			ChangeState(STATEVALUE::RIGHT_WALL);
 			return;
 		}
 
+		// 내가 낙하상태라면 FALL
 		if (true == IsFall())
 		{
 			ChangeState(STATEVALUE::FALL);
 			return;
 		}
 	}
+
 	SetMove(float4::Up * m_WallJumpPower * _DeltaTime);
 }
 
@@ -848,6 +912,7 @@ void Player_Zero::Left_Wall_Update(float _DeltaTime)
 		ChangeState(STATEVALUE::IDLE);
 		return;
 	}
+
 	SetMove(float4::Down * (m_MoveSpeed * 0.5f) * _DeltaTime);
 
 	// 아래로 내려가다가 내 왼쪽이 벽이 아니게 되는 순간 폴
@@ -865,9 +930,8 @@ void Player_Zero::Left_Wall_Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsPress("Right_Move"))
 	{
-		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
-		GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
-
+		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
 		ChangeState(STATEVALUE::FALL);
 		return;
 	}
@@ -884,7 +948,6 @@ void Player_Zero::Left_Wall_Jump_Start()
 
 void Player_Zero::Left_Wall_Jump_Update(float _DeltaTime)
 {
-	float4 CurPos = GetPos();
 	if (true == IsTopWall())
 	{
 		while (false == IsTopWall())
@@ -910,6 +973,7 @@ void Player_Zero::Left_Wall_Jump_Update(float _DeltaTime)
 			return;
 		}
 	}
+
 	SetMove(float4::Up * m_WallJumpPower * _DeltaTime);
 }
 

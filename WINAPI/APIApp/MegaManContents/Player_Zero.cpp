@@ -164,12 +164,8 @@ bool Player_Zero::IsRightWall(float4 Pos)
 
 bool Player_Zero::IsLeftWall(float4 Pos)
 {
-	if (RGB(0, 0, 0) == GetColor() && RGB(255, 255, 255) == GetColor(float4::Left) &&
-		RGB(255,255,255) == GetColor(float4::Left + float4::Up) && RGB(255, 255, 255) == GetColor(float4::Left + float4::Down))
-	{
-		return true;
-	}
-	return false;
+	return (RGB(0, 0, 0) == GetColor() && RGB(255, 255, 255) == GetColor(float4::Left) &&
+		RGB(255, 255, 255) == GetColor(float4::Left + float4::Down) && RGB(255, 255, 255) == GetColor(float4::Left + float4::Up));
 }
 
 bool Player_Zero::IsTopWall(float4 Pos)
@@ -223,6 +219,12 @@ int Player_Zero::GetColor(float4 Pos)
 // 중력적용시 호출할 함수 
 void Player_Zero::Gravity(float _DeltaTime)
 {
+	if (m_StateValue == STATEVALUE::JUMP_ATTACK)
+	{
+		SetMove(float4::Down * (m_GravityPower / 2.5f) * _DeltaTime);
+		return;
+	}
+
 	SetMove(float4::Down * m_GravityPower * _DeltaTime);
 }
 
