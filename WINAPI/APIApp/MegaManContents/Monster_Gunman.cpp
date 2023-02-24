@@ -57,31 +57,32 @@ void Monster_GunMan::Start()
 void Monster_GunMan::Update(float _DeltaTime)
 {
 	// 단일 충돌체크 
-	if (true == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::PLAYER) }))
+	if (true == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::PLAYERATTACK) }))
 	{
-		// this->Death();
+		// 여기서 이펙트 같은거를 출력
+		this->Death();
 	}
 	
 
-	// 충돌시 코드 참고용
-	//if (true == BodyCollision->Collision({ .TargetGroup = static_cast<int>(BubbleCollisionOrder::Player) }))
-	//{
-	//	int a = 0;
-	//}
+	/* 충돌시 코드 참고용
+	if (true == BodyCollision->Collision({ .TargetGroup = static_cast<int>(BubbleCollisionOrder::Player) }))
+	{
+		int a = 0;
+	}
 
-	//std::vector<GameEngineCollision*> Collision;
-	//if (true == BodyCollision->Collision({ .TargetGroup = static_cast<int>(BubbleCollisionOrder::Player) }, Collision))
-	//{
-	//	for (size_t i = 0; i < Collision.size(); i++)
-	//	{
-	//		// Monster* FindMonster = Collision[i]->GetOwner<Monster>();
+	std::vector<GameEngineCollision*> Collision;
+	if (true == BodyCollision->Collision({ .TargetGroup = static_cast<int>(BubbleCollisionOrder::Player) }, Collision))
+	{
+		for (size_t i = 0; i < Collision.size(); i++)
+		{
+			 Monster* FindMonster = Collision[i]->GetOwner<Monster>();
 
-	//		GameEngineActor* ColActor = Collision[i]->GetActor();
+			GameEngineActor* ColActor = Collision[i]->GetActor();
 
 
-	//		int a = 0;
-	//	}
-	//}
+			int a = 0;
+		}
+	}*/
 }
 
 void Monster_GunMan::Render(float _DeltaTime)

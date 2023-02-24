@@ -600,11 +600,21 @@ void Player_Zero::Attack_First_Start()
 	m_SaberSound.LoopCount(1);
 	m_SaberSound.Volume(0.2f);
 	
+	// 여기서 애니메이션을 출력
 	AnimDirCheck("normal_attack_first");
 }
 
 void Player_Zero::Attack_First_Update(float _Time)
 {
+	const char* Dir = GetDirString().c_str();
+	// 여기서 현재 방향을 받아오고, 그 방향이 어디냐에 따라서 앞에다가 충돌체 생성
+	if (0 == strcmp(Dir, "Right_"))
+	{
+		// 지금 오른쪽이라는 얘기니까 오른쪽에 충돌체 만들어
+		m_SaberCollider->On();
+		m_SaberCollider->SetPosition(m_RightNormalAttackPos);
+	}
+
 	// 공격의 마지막 프레임에 도달하면 Idle 상태로 변경해준다. 
 	// 일단 임시로 적용해두고, 나중에 만들때 노말어택 1타, 23타 상태로 구분해서 적용한다. 
 	if (true == m_AnimationRender->IsAnimationEnd())
@@ -630,6 +640,7 @@ void Player_Zero::Attack_First_Update(float _Time)
 
 void Player_Zero::Attack_First_End()
 {
+	m_SaberCollider->Off();
 }
 
 void Player_Zero::Attack_Second_Start()
@@ -647,6 +658,15 @@ void Player_Zero::Attack_Second_Start()
 
 void Player_Zero::Attack_Second_Update(float _DeltaTime)
 {
+	// 여기서 현재 방향을 받아오고, 그 방향이 어디냐에 따라서 앞에다가 충돌체 생성
+	const char* Dir = GetDirString().c_str();
+	if (0 == strcmp(Dir, "Right_"))
+	{
+		// 지금 오른쪽이라는 얘기니까 오른쪽에 충돌체 만들어
+		m_SaberCollider->On();
+		m_SaberCollider->SetPosition(m_RightNormalAttackPos);
+	}
+
 	if (true == m_AnimationRender->IsAnimationEnd())
 	{
 		ChangeState(STATEVALUE::IDLE);
@@ -662,6 +682,7 @@ void Player_Zero::Attack_Second_Update(float _DeltaTime)
 
 void Player_Zero::Attack_Second_End()
 {
+	m_SaberCollider->Off();
 }
 
 void Player_Zero::Attack_Third_Start()
@@ -679,6 +700,15 @@ void Player_Zero::Attack_Third_Start()
 
 void Player_Zero::Attack_Third_Update(float _DeltaTime)
 {
+	// 여기서 현재 방향을 받아오고, 그 방향이 어디냐에 따라서 앞에다가 충돌체 생성
+	const char* Dir = GetDirString().c_str();
+	if (0 == strcmp(Dir, "Right_"))
+	{
+		// 지금 오른쪽이라는 얘기니까 오른쪽에 충돌체 만들어
+		m_SaberCollider->On();
+		m_SaberCollider->SetPosition(m_RightNormalAttackPos);
+	}
+
 	if (true == m_AnimationRender->IsAnimationEnd())
 	{
 		ChangeState(STATEVALUE::IDLE);
@@ -688,6 +718,7 @@ void Player_Zero::Attack_Third_Update(float _DeltaTime)
 
 void Player_Zero::Attack_Third_End()
 {
+	m_SaberCollider->Off();
 }
 
 void Player_Zero::Dash_Start()

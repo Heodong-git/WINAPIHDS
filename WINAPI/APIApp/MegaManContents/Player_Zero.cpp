@@ -106,9 +106,11 @@ void Player_Zero::Start()
 	m_Collider->SetDebugRenderType(CT_Rect);
 	m_Collider->SetPosition(float4{ 0, -80 });
 
-	// 여기서부터 다시
 	// 빔샤벨 컬라이더
 	m_SaberCollider = CreateCollision(COLORDER::PLAYERATTACK);
+	m_SaberCollider->SetDebugRenderType(CT_CirCle);
+	m_SaberCollider->SetScale({ 220, 220 });
+	m_SaberCollider->Off();
 }
 
 
