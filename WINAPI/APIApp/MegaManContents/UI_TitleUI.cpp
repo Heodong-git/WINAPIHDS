@@ -5,6 +5,9 @@
 #include <GameEngineCore/GameEngineRender.h>
 #include "ContentsEnum.h"
 
+// 디버그용헤더추가
+#include <GameEngineCore/GameEngineLevel.h>
+
 UI_TitleUI::UI_TitleUI()
 {
 }
@@ -114,4 +117,5 @@ void UI_TitleUI::Update(float _DeltaTime)
 
 void UI_TitleUI::Render(float _DeltaTime)
 {
+
 }

@@ -16,8 +16,6 @@ Ladder::~Ladder()
 void Ladder::Start()
 {
 	m_Collider = CreateCollision(COLORDER::OBJECT);
-	m_Collider->SetScale({ 50, 500 });
-	m_Collider->SetDebugRenderType(CT_Rect);
 }
 
 void Ladder::Render(float _DeltaTime)

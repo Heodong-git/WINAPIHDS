@@ -123,13 +123,13 @@ void SelectLevel::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("Change_SpacePortLevel"))
 	{
-		m_BGMSound.Stop();
-		m_SelectComplete = GameEngineResources::GetInst().SoundPlayToControl("player_select_complete.wav");
-		m_SelectComplete.LoopCount(1);
-		m_SelectComplete.Volume(0.2f);
-
 		if (ESelectPlayer::ZERO == m_MainSelectUI->GetSelectPlayer())
 		{
+			m_BGMSound.Stop();
+			m_SelectComplete = GameEngineResources::GetInst().SoundPlayToControl("player_select_complete.wav");
+			m_SelectComplete.LoopCount(1);
+			m_SelectComplete.Volume(0.2f);
+
 			m_ChangeLevel = true;
 		}
 	}

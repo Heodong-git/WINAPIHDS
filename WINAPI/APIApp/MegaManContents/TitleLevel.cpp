@@ -26,6 +26,7 @@ void TitleLevel::Loading()
 {
 	// ENTER <-- 정수 13
 	GameEngineInput::CreateKey("Change_Level", 13);
+	GameEngineInput::CreateKey("PlayEnter", '1');
 	GameEngineDirectory Directory;
 	// 상위폴더에 해당 디렉터리가 있는지 확인
 	Directory.MoveParentToDirectory("ContentsResources");
@@ -71,6 +72,8 @@ void TitleLevel::Loading()
 
 void TitleLevel::Update(float _DeltaTime)
 {
+	// -------------------------------------
+
 	// 타이틀레벨에서는 ENTER 키를 입력하면 SelectStage 로 Level 전환
 	if (true == GameEngineInput::IsDown("Change_Level"))
 	{

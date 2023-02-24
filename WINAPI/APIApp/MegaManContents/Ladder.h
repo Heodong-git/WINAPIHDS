@@ -16,6 +16,11 @@ public:
 	Ladder& operator=(const Ladder& _Other) = delete;
 	Ladder& operator=(Ladder&& _Other) noexcept = delete;
 
+	inline GameEngineCollision* GetCollider()
+	{
+		return m_Collider;
+	}
+
 protected:
 	void Start() override;
 	void Render(float _DeltaTime) override;

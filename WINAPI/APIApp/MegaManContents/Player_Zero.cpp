@@ -274,6 +274,9 @@ void Player_Zero::Render(float _DeltaTime)
 	std::string CameraText = "CameraPosition : ";
 	CameraText += GetLevel()->GetCameraPos().ToString();
 	GameEngineLevel::DebugTextPush(CameraText);
+
+	std::string Text = "Z꾹 : 대쉬 / X꾹 : 점프 / C : 공격 / 숫자2번 : 디버그";
+	GameEngineLevel::DebugTextPush(Text);
 }
 
 

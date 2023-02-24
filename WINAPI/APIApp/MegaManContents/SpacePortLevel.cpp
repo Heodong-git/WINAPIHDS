@@ -66,9 +66,9 @@ void SpacePortLevel::Update(float _DeltaTime)
 void SpacePortLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	// 사운드출력
-	/*BGMPlayer = GameEngineResources::GetInst().SoundPlayToControl("Spaceport_bgm.wav");
+	BGMPlayer = GameEngineResources::GetInst().SoundPlayToControl("Spaceport_bgm.wav");
 	BGMPlayer.LoopCount(100);
-	BGMPlayer.Volume(0.1f);*/
+	BGMPlayer.Volume(0.1f);
 
 	m_Player->ChangeState(STATEVALUE::RECALL);
 }
@@ -189,26 +189,51 @@ void SpacePortLevel::ActorLoad()
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 11027, 7058 });
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
-	Monster->SetPos({ 11327 , 7058 });
-	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 3186 , 7058 });
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 5366, 6825 });
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 5379, 6385 });
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 7242, 6544 });
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 8407, 7060 });
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 10162, 6839 });
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 12827, 6384 });
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 15259, 3932 });
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 15521, 5371 });
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 15544, 7073 });
 
-	GameEngineActor* NewActor = CreateActor<Ladder>(ZORDER::OBJECT);
-	NewActor->SetPos({ 15945, 6492 });
+	Ladder* NewLadder = CreateActor<Ladder>(ZORDER::OBJECT);
+	NewLadder->SetPos({ 15945, 6492 });
+	NewLadder->GetCollider()->SetScale({ 150, 900 });
+	NewLadder->GetCollider()->SetPosition({ 0, -16 });
+	NewLadder->GetCollider()->SetDebugRenderType(CT_Rect);
 
-	// 테스트용
-	GameEngineActor* NewActor1 = CreateActor<Ladder>(ZORDER::OBJECT);
-	NewActor1->SetPos(m_Player->GetPos() + float4{200, -300});
+	Ladder* NewLadder2 = CreateActor<Ladder>(ZORDER::OBJECT);
+	NewLadder2->SetPos({ 15004, 5662 });
+	NewLadder2->GetCollider()->SetScale({ 150, 400 });
+	NewLadder2->GetCollider()->SetPosition({ 0, 0 });
+	NewLadder2->GetCollider()->SetDebugRenderType(CT_Rect);
+
+	Ladder* NewLadder3 = CreateActor<Ladder>(ZORDER::OBJECT);
+	NewLadder3->SetPos({ 15275, 2620 });
+	NewLadder3->GetCollider()->SetScale({ 150, 400 });
+	NewLadder3->GetCollider()->SetPosition({ 0, 0 });
+	NewLadder3->GetCollider()->SetDebugRenderType(CT_Rect);
+
+	Ladder* NewLadder4 = CreateActor<Ladder>(ZORDER::OBJECT);
+	NewLadder4->SetPos({ 15410, 1136 });
+	NewLadder4->GetCollider()->SetScale({ 150, 250 });
+	NewLadder4->GetCollider()->SetPosition({ 0, 0 });
+	NewLadder4->GetCollider()->SetDebugRenderType(CT_Rect);
+
+	
 }
 void SpacePortLevel::CameraLoad()
 {
