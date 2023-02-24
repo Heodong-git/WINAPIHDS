@@ -13,6 +13,8 @@ public:
 	static unsigned int GetLenth(int _Value);
 	static const float PIE;
 	static const float PIE2;
+	static const float DegToRad;
+	static const float RadToDeg;
 
 private:
 	// 소멸자를 순수가상함수로 선언해줌으로써 

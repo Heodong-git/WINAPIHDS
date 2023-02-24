@@ -74,6 +74,7 @@ public:
 
 	GameEngineCollision* CreateCollision(int _GroupIndex = 0);
 
+
 protected:
 	// 클래스 생성 후 바로 해주어야할 일
 	// 렌더링이 필요하다면 GameEngineRender 생성 후 사용할 이미지, Order 체크

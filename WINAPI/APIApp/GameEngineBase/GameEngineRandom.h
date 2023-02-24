@@ -1,0 +1,51 @@
+#pragma once
+#include <random>
+
+// 설명 :
+class GameEngineRandom
+{
+public:
+	// 여러개 만들필요 없을 경우 이녀석 사용
+	static GameEngineRandom MainRandom;
+
+	// constrcuter destructer
+	GameEngineRandom();
+	~GameEngineRandom();
+
+	// delete Function
+	GameEngineRandom(const GameEngineRandom& _Other) = delete;
+	GameEngineRandom(GameEngineRandom&& _Other) noexcept = delete;
+	GameEngineRandom& operator=(const GameEngineRandom& _Other) = delete;
+	GameEngineRandom& operator=(GameEngineRandom&& _Other) noexcept = delete;
+
+	// 랜덤 int 값 
+	int RandomInt(int _Min, int _Max)
+	{
+		// 이게 Creater
+		std::uniform_int_distribution<int> Uniform(_Min, _Max);
+		return Uniform(MtGen);
+	}
+
+	// 랜덤 float 값
+	float RandomFloat(float _Min, float _Max)
+	{
+		std::uniform_real_distribution <float> Uniform(_Min, _Max);
+		return Uniform(MtGen);
+	}
+
+	// 시드값 세팅
+	void SetSeed(__int64 _Seed)
+	{
+		MtGen = std::mt19937_64(_Seed);
+	}
+
+protected:
+
+
+private:
+	// 랜덤 제너레이터 클래스와 => 여러개가 될수 있다.
+	// 메르센 트위스터 알고리즘을 사용한 제네러이터
+	std::mt19937_64 MtGen = std::mt19937_64();
+
+	// 랜덤 크리에이터 클래스 => 1개
+};

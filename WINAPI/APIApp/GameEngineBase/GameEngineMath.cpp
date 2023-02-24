@@ -5,6 +5,8 @@
 const float GameEngineMath::PIE = 3.141592653589793238462643383279502884197169399375105820974944f;
 // 2파이는 파이 * 2 
 const float GameEngineMath::PIE2 = PIE * 2.0f;
+const float GameEngineMath::DegToRad = GameEngineMath::PIE / 180;
+const float GameEngineMath::RadToDeg = 180 / GameEngineMath::PIE;
 
 // float4 클래스 내부에 선언된 static 변수 구현
 // 멤버변수들이 모두 public 이기 때문에 리스트이니셜라이저 문법을 통해 초기화 가능

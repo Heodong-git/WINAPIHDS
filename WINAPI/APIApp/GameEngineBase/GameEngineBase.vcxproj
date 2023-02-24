@@ -158,6 +158,10 @@
     <ClInclude Include="GameEngineFile.h" />
     <ClInclude Include="GameEngineMath.h" />
     <ClInclude Include="GameEnginePath.h" />
+    <ClInclude Include="GameEngineRandom.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameEngineString.h" />
     <ClInclude Include="GameEngineTime.h" />
   </ItemGroup>
@@ -167,6 +171,7 @@
     <ClCompile Include="GameEngineFile.cpp" />
     <ClCompile Include="GameEngineMath.cpp" />
     <ClCompile Include="GameEnginePath.cpp" />
+    <ClCompile Include="GameEngineRandom.cpp" />
     <ClCompile Include="GameEngineString.cpp" />
     <ClCompile Include="GameEngineTime.cpp" />
   </ItemGroup>
