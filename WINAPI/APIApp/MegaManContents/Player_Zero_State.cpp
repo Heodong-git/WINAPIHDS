@@ -402,6 +402,12 @@ void Player_Zero::Jump_Start()
 
 void Player_Zero::Jump_Update(float _DeltaTime)
 {
+	// 플레이어가 점프 상태일 때 위 방향키를 눌렀고, 누른 시점에 사다리와 충돌했다면 상태변경하면 될듯?
+	if (true == GameEngineInput::IsPress("Up_Move"))
+	{
+		// 여기서 충돌했다면~ 의 로직작성
+	}
+
 	if (true == IsTopWall())
 	{
 		while (false == IsTopWall())

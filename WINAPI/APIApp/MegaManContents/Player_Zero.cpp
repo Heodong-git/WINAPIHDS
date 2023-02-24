@@ -128,7 +128,10 @@ void Player_Zero::Update(float _DeltaTime)
 		DebugMove(_DeltaTime);
 		return;
 	}
-
+	// -----------------------------------------------------------------
+	 
+	 
+	 
 	// 현재 플레이어의 상태값에 따라 업데이트를 진행.
 	UpdateState(_DeltaTime);
 }

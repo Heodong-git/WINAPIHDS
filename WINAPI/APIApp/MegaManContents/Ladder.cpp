@@ -3,6 +3,7 @@
 #include <GameEnginePlatform/GameEngineImage.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCollision.h>
+#include "Player_Zero.h"
 #include "ContentsEnum.h"
 
 Ladder::Ladder()
@@ -33,4 +34,9 @@ void Ladder::Render(float _DeltaTime)
 		ActorPos.ix() + 5,
 		ActorPos.iy() + 5
 	);
+}
+
+void Ladder::Update(float _DeltaTime)
+{
+	
 }

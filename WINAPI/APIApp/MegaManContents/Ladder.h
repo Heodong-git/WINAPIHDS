@@ -24,6 +24,7 @@ public:
 protected:
 	void Start() override;
 	void Render(float _DeltaTime) override;
+	void Update(float _DeltaTime) override;
 
 private:
 	GameEngineCollision* m_Collider = nullptr;
