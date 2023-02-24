@@ -7,6 +7,7 @@ enum class ZORDER
 {
 	BACKGROUND,
 	MAP,
+	OBJECT,
 	MONSTER,
 	BOSS,
 	UI,
@@ -20,7 +21,8 @@ enum class COLORDER
 	PLAYER,
 	PLAYERATTACK,
 	MONSTER,
-	MONSTERATTACK
+	MONSTERATTACK,
+	OBJECT,
 };
 
 // 타이틀메뉴 

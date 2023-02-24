@@ -50,6 +50,9 @@
     <ClInclude Include="Boss_Colonel.h">
       <Filter>Monster</Filter>
     </ClInclude>
+    <ClInclude Include="Ladder.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndTitleLevel.cpp">
@@ -103,6 +106,9 @@
     <ClCompile Include="Boss_Colonel.cpp">
       <Filter>Monster</Filter>
     </ClCompile>
+    <ClCompile Include="Ladder.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Level">
@@ -128,6 +134,9 @@
     </Filter>
     <Filter Include="Effect">
       <UniqueIdentifier>{45e9794a-8312-4ee8-9120-56e4c81e35df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{7740dfcb-4ae9-4a31-bb8a-eade38bebbc4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

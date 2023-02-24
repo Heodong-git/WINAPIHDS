@@ -134,6 +134,7 @@ private:
 
 	// 왼쪽으로 못빠져나가게
 	bool IsLeftOver();
+	bool CameraPosCheck();
 
 	// 상태 업데이트 
 	void UpdateState(float _DeltaTime);

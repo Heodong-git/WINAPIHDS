@@ -188,6 +188,23 @@ bool Player_Zero::IsLeftOver()
 	return OverPos.x > NextPos.x;
 }
 
+bool Player_Zero::CameraPosCheck()
+{
+	float4 CameraPos = GetLevel()->GetCameraPos();
+	if (14829.0f < CameraPos.x || 60.0f > CameraPos.x)
+	{
+		return false;
+	}
+
+	if (700.0f > GetPos().x)
+	{
+		return false;
+	}
+
+
+	return true;
+}
+
 
 
 
@@ -252,6 +269,11 @@ void Player_Zero::Render(float _DeltaTime)
 
 	GameEngineLevel::DebugTextPush(PlayerText);
 	// GameEngineLevel::DebugTextPush(CameraMouseText);
+	// m_Collider->DebugRender();
+	
+	std::string CameraText = "CameraPosition : ";
+	CameraText += GetLevel()->GetCameraPos().ToString();
+	GameEngineLevel::DebugTextPush(CameraText);
 }
 
 

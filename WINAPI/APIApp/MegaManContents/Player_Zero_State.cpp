@@ -10,18 +10,12 @@
 
 #include "ContentsEnum.h"
 
-
-// 상태변경 함수
 void Player_Zero::ChangeState(STATEVALUE _State)
 {
-	// 플레이어의 다음 상태를 받아온다. 
 	m_NextState = _State;
-	// 플레이어의 이전 상태는 현재 상태가 된다. 
 	m_PrevState = m_StateValue;
-	// 현재 상태를 변경될 상태로 변경한다. 
 	m_StateValue = m_NextState;
 
-	// 다음 상태값이 무엇이냐에 따라서 Start 함수 호출
 	switch (m_NextState)
 	{
 	case STATEVALUE::RECALL:
@@ -315,7 +309,11 @@ void Player_Zero::Move_Update(float _DeltaTime)
 			GroundCollisionCheck();
 			// 이동연산 + 카메라이동 해주고 
 			SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
-			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+
+			if (true == CameraPosCheck())
+			{
+				GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+			}
 
 			AnimDirCheck("Move");
 			return;
@@ -344,7 +342,11 @@ void Player_Zero::Move_Update(float _DeltaTime)
 			Gravity(_DeltaTime);
 			GroundCollisionCheck();
 			SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
-			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+
+			if (true == CameraPosCheck())
+			{
+				GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+			}
 
 			AnimDirCheck("Move");
 			return;
@@ -398,14 +400,19 @@ void Player_Zero::Jump_Start()
 	AnimDirCheck("Jump");
 }
 
-// 점프업데이트
 void Player_Zero::Jump_Update(float _DeltaTime)
 {
-	// 업데이트에서 올려주는 작업을 안하면 어디서 해야하지
-	// 내가만약 쳐박혀 있다면. 이라는 코드가 있고. 
+	if (true == IsTopWall())
+	{
+		while (false == IsTopWall())
+		{
+			SetMove(float4::Down * _DeltaTime);
+		}
 
-	// 두번체크를함. 점프라는건 공중으로 뛰어오르는게 점프다. 
-	// 일정 높이까지 올라갔으면 낙하로 상태가 변경되어야 하는가? 
+		ChangeState(STATEVALUE::FALL);
+		return;
+	}
+
 	if (true == IsHitTheGround())
 	{
 		m_LandingSound = GameEngineResources::GetInst().SoundPlayToControl("player_landing_sound.wav");
@@ -436,7 +443,7 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 		}
 		
 		// 키가 눌려있다면 점프파워를 계속 증가시킨다. 
-		m_JumpPower += 60.0f;
+		m_JumpPower += 80.0f;
 
 		// 여기서 이전 상태가 대시였을 경우에는 점프맥스파워의 값을 조정하면 될 거 같은데. 
 		// 점프파워가 일정수치이상 넘어갔다면
@@ -447,9 +454,7 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 			m_IsJumpMax = true;
 		}
 	}
-
-	// 여기까지가 점프 계산식인데.
-	m_JumpPower -= (m_GravityPower * 3.0f) * _DeltaTime;
+	m_JumpPower -= (m_GravityPower * 2.4f) * _DeltaTime;
 	SetMove(float4::Up * m_JumpPower * _DeltaTime);
 	
 	// 내 오른쪽이 벽이 아닐때만	
@@ -460,9 +465,13 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 			ChangeState(STATEVALUE::RIGHT_WALL);
 			return;
 		}
-
+	
 		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
-		GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		if (true == CameraPosCheck())
+		{
+			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		}
+		
 		return;
 	}
 	
@@ -480,11 +489,14 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 		}
 
 		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
-		GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		if (true == CameraPosCheck())
+		{
+			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		}
+		
 		return;
 	}
 	
-
 	AnimDirCheck("Jump");
 }
 
@@ -544,7 +556,10 @@ void Player_Zero::Fall_Update(float _DeltaTime)
 	if (true != IsRightWall() && true == GameEngineInput::IsPress("Right_Move"))
 	{
 		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
-		GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		if (true == CameraPosCheck())
+		{
+			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		}
 		AnimDirCheck("Fall_end");
 		return;
 	}
@@ -552,7 +567,10 @@ void Player_Zero::Fall_Update(float _DeltaTime)
 	if (true != IsLeftWall() && true == GameEngineInput::IsPress("Left_Move"))
 	{
 		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
-		GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		if (true == CameraPosCheck())
+		{
+			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		}
 		AnimDirCheck("Fall_end");
 		return;
 	}
@@ -711,7 +729,10 @@ void Player_Zero::Dash_Update(float _DeltaTime)
 		
 		Gravity(_DeltaTime);
 		SetMove(float4::Right * m_DashSpeed * _DeltaTime);
-		GetLevel()->SetCameraMove(float4::Right * m_DashSpeed * _DeltaTime);
+		if (true == CameraPosCheck())
+		{
+			GetLevel()->SetCameraMove(float4::Right * m_DashSpeed * _DeltaTime);
+		}
 		GroundCollisionCheck();
 		
 		return;
@@ -731,7 +752,10 @@ void Player_Zero::Dash_Update(float _DeltaTime)
 
 		Gravity(_DeltaTime);
 		SetMove(float4::Left * m_DashSpeed * _DeltaTime);
-		GetLevel()->SetCameraMove(float4::Left * m_DashSpeed * _DeltaTime);
+		if (true == CameraPosCheck())
+		{
+		    GetLevel()->SetCameraMove(float4::Left * m_DashSpeed * _DeltaTime);	
+		}
 		GroundCollisionCheck();	
 		return;
 	}
@@ -785,7 +809,11 @@ void Player_Zero::Jump_Attack_Update(float _DeltaTime)
 		}
 
 		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
-		GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		if (true == CameraPosCheck())
+		{
+			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		}
+		
 		return;
 	}
 
@@ -803,7 +831,11 @@ void Player_Zero::Jump_Attack_Update(float _DeltaTime)
 		}
 
 		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
-		GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		if (true == CameraPosCheck())
+		{
+			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		}
+	
 		return;
 	}
 }
@@ -846,7 +878,10 @@ void Player_Zero::Right_Wall_Update(float _DeltaTime)
 	if (true == GameEngineInput::IsPress("Left_Move"))
 	{
 		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
-		GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		if (true == CameraPosCheck())
+		{
+			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		}
 
 		ChangeState(STATEVALUE::FALL);
 		return;
@@ -937,7 +972,11 @@ void Player_Zero::Left_Wall_Update(float _DeltaTime)
 	if (true == GameEngineInput::IsPress("Right_Move"))
 	{
 		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
-		GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		if(true == CameraPosCheck())
+		{
+			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		}
+		
 		ChangeState(STATEVALUE::FALL);
 		return;
 	}

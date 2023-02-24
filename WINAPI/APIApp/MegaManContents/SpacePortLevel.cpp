@@ -12,6 +12,7 @@
 #include "UI_PlayerHpBar.h"
 #include "Map_SpacePort.h"
 #include "Boss_Colonel.h"
+#include "Ladder.h"
 #include "ContentsEnum.h"
 
 SpacePortLevel::SpacePortLevel()
@@ -65,9 +66,9 @@ void SpacePortLevel::Update(float _DeltaTime)
 void SpacePortLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)
 {
 	// 사운드출력
-	BGMPlayer = GameEngineResources::GetInst().SoundPlayToControl("Spaceport_bgm.wav");
+	/*BGMPlayer = GameEngineResources::GetInst().SoundPlayToControl("Spaceport_bgm.wav");
 	BGMPlayer.LoopCount(100);
-	BGMPlayer.Volume(0.1f);
+	BGMPlayer.Volume(0.1f);*/
 
 	m_Player->ChangeState(STATEVALUE::RECALL);
 }
@@ -201,6 +202,13 @@ void SpacePortLevel::ActorLoad()
 	Monster->SetPos({ 15259, 3932 });
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 15521, 5371 });
+
+	GameEngineActor* NewActor = CreateActor<Ladder>(ZORDER::OBJECT);
+	NewActor->SetPos({ 15945, 6492 });
+
+	// 테스트용
+	GameEngineActor* NewActor1 = CreateActor<Ladder>(ZORDER::OBJECT);
+	NewActor1->SetPos(m_Player->GetPos() + float4{200, -300});
 }
 void SpacePortLevel::CameraLoad()
 {

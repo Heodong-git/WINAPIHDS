@@ -156,6 +156,10 @@
     <ClInclude Include="Boss_Colonel.h" />
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="EndTitleLevel.h" />
+    <ClInclude Include="Ladder.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Select_BackGround.h" />
     <ClInclude Include="MegaManCore.h" />
     <ClInclude Include="Monster_Gunman.h" />
@@ -174,6 +178,7 @@
   <ItemGroup>
     <ClCompile Include="Boss_Colonel.cpp" />
     <ClCompile Include="EndTitleLevel.cpp" />
+    <ClCompile Include="Ladder.cpp" />
     <ClCompile Include="Player_Zero_State.cpp" />
     <ClCompile Include="Select_BackGround.cpp" />
     <ClCompile Include="MegaManCore.cpp" />
