@@ -142,6 +142,11 @@ bool Player_Zero::IsHitTheGround(float4 Pos)
 	return RGB(255, 255, 255) == GetColor() && RGB(255, 255, 255) == GetColor(float4::Down);
 }
 
+bool Player_Zero::IsHitTheRightWall(float4 Pos)
+{
+	return RGB(255, 255, 255) == GetColor() && RGB(255,255,255) == GetColor(float4::Right);
+}
+
 bool Player_Zero::IsGround(float4 Pos)
 {
 	// 내가 검은색이고, 내 아래가 흰색이면 땅위에 서있는거야. 그게아니면 false
@@ -275,7 +280,7 @@ void Player_Zero::Render(float _DeltaTime)
 	CameraText += GetLevel()->GetCameraPos().ToString();
 	GameEngineLevel::DebugTextPush(CameraText);
 
-	std::string Text = "Z꾹 : 대쉬 / X꾹 : 점프 / C : 공격 / 숫자2번 : 디버그";
+	std::string Text = "방향키 + Z꾹 : 대쉬 / X꾹 : 점프 / C : 공격 / Q : 자유이동 / 숫자2번 : 충돌맵,충돌체 출력";
 	GameEngineLevel::DebugTextPush(Text);
 }
 

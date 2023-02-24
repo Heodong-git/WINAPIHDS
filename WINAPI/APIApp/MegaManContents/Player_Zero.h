@@ -119,6 +119,7 @@ private:
 	// --------------------------- ¸ÊÃæµ¹ÇÈ¼¿Ã¼Å© -------------------------
 	// ¶¥¿¡ ¹ÚÇû´ÂÁö Ã¼Å© 
 	bool IsHitTheGround(float4 Pos = float4::Zero);
+	bool IsHitTheRightWall(float4 Pos = float4::Zero);
 	// ¶¥Ã¼Å© 
 	bool IsGround(float4 Pos = float4::Zero);
 	// ³«ÇÏÃ¼Å©

@@ -465,6 +465,7 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 			ChangeState(STATEVALUE::RIGHT_WALL);
 			return;
 		}
+
 	
 		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
 		if (true == CameraPosCheck())
@@ -877,12 +878,6 @@ void Player_Zero::Right_Wall_Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsPress("Left_Move"))
 	{
-		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
-		if (true == CameraPosCheck())
-		{
-			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
-		}
-
 		ChangeState(STATEVALUE::FALL);
 		return;
 	}
@@ -911,6 +906,7 @@ void Player_Zero::Right_Wall_Jump_Update(float _DeltaTime)
 		ChangeState(STATEVALUE::FALL);
 		return;
 	}
+	
 
 	// 애니메이션이 종료되었다면
 	if (true == m_AnimationRender->IsAnimationEnd())
@@ -965,18 +961,17 @@ void Player_Zero::Left_Wall_Update(float _DeltaTime)
 
 	if (true == IsLeftWall() && true == GameEngineInput::IsDown("Jump"))
 	{
-		ChangeState(STATEVALUE::LEFT_WALL_JUMP);
-		return;
+		if (true == GameEngineInput::IsPress("Left_Move"))
+		{
+			ChangeState(STATEVALUE::LEFT_WALL_JUMP);
+			return;
+		}
 	}
 
+
+	// 자 지금 여기서 방향키를 누르면 바로 캐릭터가 떨어져서 fall 상태가 되니까 벽에서 점프가 잘안된다. 흠
 	if (true == GameEngineInput::IsPress("Right_Move"))
-	{
-		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
-		if(true == CameraPosCheck())
-		{
-			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
-		}
-		
+	{		
 		ChangeState(STATEVALUE::FALL);
 		return;
 	}
