@@ -614,6 +614,13 @@ void Player_Zero::Attack_First_Update(float _Time)
 		m_SaberCollider->On();
 		m_SaberCollider->SetPosition(m_RightNormalAttackPos);
 	}
+	
+	else if (0 == strcmp(Dir, "Left_"))
+	{
+		// 지금 오른쪽이라는 얘기니까 오른쪽에 충돌체 만들어
+		m_SaberCollider->On();
+		m_SaberCollider->SetPosition(m_LeftNormalAttackPos);
+	}
 
 	// 공격의 마지막 프레임에 도달하면 Idle 상태로 변경해준다. 
 	// 일단 임시로 적용해두고, 나중에 만들때 노말어택 1타, 23타 상태로 구분해서 적용한다. 
@@ -667,6 +674,13 @@ void Player_Zero::Attack_Second_Update(float _DeltaTime)
 		m_SaberCollider->SetPosition(m_RightNormalAttackPos);
 	}
 
+	else if (0 == strcmp(Dir, "Left_"))
+	{
+		// 지금 오른쪽이라는 얘기니까 오른쪽에 충돌체 만들어
+		m_SaberCollider->On();
+		m_SaberCollider->SetPosition(m_LeftNormalAttackPos);
+	}
+
 	if (true == m_AnimationRender->IsAnimationEnd())
 	{
 		ChangeState(STATEVALUE::IDLE);
@@ -707,6 +721,13 @@ void Player_Zero::Attack_Third_Update(float _DeltaTime)
 		// 지금 오른쪽이라는 얘기니까 오른쪽에 충돌체 만들어
 		m_SaberCollider->On();
 		m_SaberCollider->SetPosition(m_RightNormalAttackPos);
+	}
+
+	else if (0 == strcmp(Dir, "Left_"))
+	{
+		// 지금 오른쪽이라는 얘기니까 오른쪽에 충돌체 만들어
+		m_SaberCollider->On();
+		m_SaberCollider->SetPosition(m_LeftNormalAttackPos);
 	}
 
 	if (true == m_AnimationRender->IsAnimationEnd())

@@ -85,6 +85,7 @@ private:
 	GameEngineCollision* m_SaberCollider = nullptr;
 
 	float4 m_RightNormalAttackPos = float4{ 200, -75 };
+	float4 m_LeftNormalAttackPos = float4{ -200, -75 };
 
 	// 이게 맞나?ㅋㅋㅋㅋ 
 	GameEngineSoundPlayer m_AttackSound;
