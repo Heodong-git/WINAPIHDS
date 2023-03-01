@@ -16,7 +16,7 @@ Ladder::~Ladder()
 
 void Ladder::Start()
 {
-	m_Collider = CreateCollision(COLORDER::OBJECT);
+	m_Collider = CreateCollision(COLORDER::OBJECT_LADDER);
 }
 
 void Ladder::Render(float _DeltaTime)
@@ -38,5 +38,8 @@ void Ladder::Render(float _DeltaTime)
 
 void Ladder::Update(float _DeltaTime)
 {
-	
+	if (true == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::PLAYER) }))
+	{
+		int a = 0;
+	}
 }

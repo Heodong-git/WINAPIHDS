@@ -103,12 +103,12 @@ void Player_Zero::Start()
 	// 플레이어 컬라이더
 	m_Collider = CreateCollision(COLORDER::PLAYER);
 	m_Collider->SetScale({ 150, 150 });
-	m_Collider->SetDebugRenderType(CT_Rect);
+	//m_Collider->SetDebugRenderType(CT_Rect);
 	m_Collider->SetPosition(float4{ 0, -80 });
 
 	// 빔샤벨 컬라이더
 	m_SaberCollider = CreateCollision(COLORDER::PLAYERATTACK);
-	m_SaberCollider->SetDebugRenderType(CT_CirCle);
+	// m_SaberCollider->SetDebugRenderType(CT_CirCle);
 	m_SaberCollider->SetScale({ 220, 220 });
 	m_SaberCollider->Off();
 }
@@ -390,7 +390,7 @@ void Player_Zero::PlayerCreateAnimation()
 	// 사다리 타기
 	// 139 ~ 148 
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_rideup" , .ImageName = "player_zero_sprite_right.bmp",
-									   .Start = 139 , .End = 148 , .InterTime = 0.06f });
+									   .Start = 139 , .End = 148 , .InterTime = 0.08f });
 
 	// 사다리 마지막에  올라가는 모션
 	// 149 ~ 152 

@@ -212,28 +212,29 @@ void SpacePortLevel::ActorLoad()
 	Monster->SetPos({ 15544, 7073 });
 
 	Ladder* NewLadder = CreateActor<Ladder>(ZORDER::OBJECT);
-	NewLadder->SetPos({ 15945, 6492 });
-	NewLadder->GetCollider()->SetScale({ 150, 900 });
-	NewLadder->GetCollider()->SetPosition({ 0, -16 });
+	// NewLadder->SetPos({ 15945, 6492 });
+	NewLadder->SetPos(m_Player->GetPos() + float4{ 300 , -500 });
 	NewLadder->GetCollider()->SetDebugRenderType(CT_Rect);
-
+	NewLadder->GetCollider()->SetScale({ 150, 850 });
+	NewLadder->GetCollider()->SetPosition({ 0, -16 });
+	
 	Ladder* NewLadder2 = CreateActor<Ladder>(ZORDER::OBJECT);
 	NewLadder2->SetPos({ 15004, 5662 });
+	NewLadder2->GetCollider()->SetDebugRenderType(CT_Rect);
 	NewLadder2->GetCollider()->SetScale({ 150, 400 });
 	NewLadder2->GetCollider()->SetPosition({ 0, 0 });
-	NewLadder2->GetCollider()->SetDebugRenderType(CT_Rect);
 
 	Ladder* NewLadder3 = CreateActor<Ladder>(ZORDER::OBJECT);
 	NewLadder3->SetPos({ 15275, 2620 });
+	NewLadder3->GetCollider()->SetDebugRenderType(CT_Rect);
 	NewLadder3->GetCollider()->SetScale({ 150, 400 });
 	NewLadder3->GetCollider()->SetPosition({ 0, 0 });
-	NewLadder3->GetCollider()->SetDebugRenderType(CT_Rect);
 
 	Ladder* NewLadder4 = CreateActor<Ladder>(ZORDER::OBJECT);
 	NewLadder4->SetPos({ 15410, 1136 });
+	NewLadder4->GetCollider()->SetDebugRenderType(CT_Rect);
 	NewLadder4->GetCollider()->SetScale({ 150, 250 });
 	NewLadder4->GetCollider()->SetPosition({ 0, 0 });
-	NewLadder4->GetCollider()->SetDebugRenderType(CT_Rect);
 
 	
 }

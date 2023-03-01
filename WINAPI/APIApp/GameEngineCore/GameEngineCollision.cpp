@@ -127,7 +127,6 @@ bool GameEngineCollision::Collision(const CollisionCheckParameter& _Parameter)
 	// 충돌검사를 실행할 그룹을 받아온다.
 	std::list<GameEngineCollision*>& _TargetGroup = GetActor()->GetLevel()->Collisions[_Parameter.TargetGroup];
 
-
 	// 받아온 그룹을 순회하며 
 	for (GameEngineCollision* OtherCollision : _TargetGroup)
 	{

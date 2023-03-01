@@ -55,6 +55,5 @@ protected:
 private:
 	float4 Position = float4::Zero;
 	float4 Scale = float4::Zero;
-
 };
 

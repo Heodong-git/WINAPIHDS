@@ -20,6 +20,7 @@ enum class STATEVALUE
 	RIGHT_WALL_JUMP,
 	LEFT_WALL,
 	LEFT_WALL_JUMP,
+	RIDE_UP,
 };
 
 // 포인터변수를 선언하기 위해 클래스 전방선언
@@ -199,6 +200,10 @@ private:
 	void Left_Wall_Jump_Start();
 	void Left_Wall_Jump_Update(float _DeltaTime);
 	void Left_Wall_Jump_End();
+
+	void RideUp_Start();
+	void RideUp_Update(float _DeltaTime);
+	void RideUp_End();
 
 };
 

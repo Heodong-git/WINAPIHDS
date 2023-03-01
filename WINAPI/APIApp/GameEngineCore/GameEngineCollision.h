@@ -18,7 +18,6 @@ enum CollisionType
 class CollisionCheckParameter
 {
 public:
-	// 여러분들이 제대로 어떤 그룹과 충돌할지 안해주면
 	int TargetGroup = -342367842;
 	CollisionType TargetColType = CollisionType::CT_CirCle;
 	CollisionType ThisColType = CollisionType::CT_CirCle;
@@ -54,14 +53,11 @@ class CollisionFunctionInit;
 class GameEngineCollision : public GameEngineComponent
 {
 	friend CollisionFunctionInit;
-
 private:
 
-public:
-	// 현재로써는 원대원충돌만 구현 
+public: 
 	static bool CollisionCirCleToCirCle(const CollisionData& _Left, const CollisionData& _Right);
 	static bool CollisionCirCleToPoint(const CollisionData& _Left, const CollisionData& _Right);
-
 	static bool CollisionRectToRect(const CollisionData& _Left, const CollisionData& _Right);
 	static bool CollisionRectToPoint(const CollisionData& _Left, const CollisionData& _Right);
 

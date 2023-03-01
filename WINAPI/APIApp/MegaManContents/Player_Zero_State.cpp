@@ -60,6 +60,9 @@ void Player_Zero::ChangeState(STATEVALUE _State)
 	case STATEVALUE::LEFT_WALL_JUMP:
 		Left_Wall_Jump_Start();
 		break;
+	case STATEVALUE::RIDE_UP:
+		RideUp_Start();
+		break;
 	}
 
 	// 다음 상태의 Start 함수를 호출 한 이후에 
@@ -107,6 +110,9 @@ void Player_Zero::ChangeState(STATEVALUE _State)
 		break;
 	case STATEVALUE::LEFT_WALL_JUMP:
 		Left_Wall_Jump_End();
+		break;
+	case STATEVALUE::RIDE_UP:
+		RideUp_End();
 		break;
 	}
 }
@@ -157,6 +163,9 @@ void Player_Zero::UpdateState(float _DeltaTime)
 		break;
 	case STATEVALUE::LEFT_WALL_JUMP:
 		Left_Wall_Jump_Update(_DeltaTime);
+		break;
+	case STATEVALUE::RIDE_UP:
+		RideUp_Update(_DeltaTime);
 		break;
 	}
 }
@@ -274,6 +283,7 @@ void Player_Zero::Move_Update(float _DeltaTime)
 		{
 			return;
 		}
+
 		ChangeState(STATEVALUE::JUMP);
 		return;
 	}
@@ -402,10 +412,17 @@ void Player_Zero::Jump_Start()
 
 void Player_Zero::Jump_Update(float _DeltaTime)
 {
-	// 플레이어가 점프 상태일 때 위 방향키를 눌렀고, 누른 시점에 사다리와 충돌했다면 상태변경하면 될듯?
 	if (true == GameEngineInput::IsPress("Up_Move"))
 	{
-		// 여기서 충돌했다면~ 의 로직작성
+		// 점프상태에서 업무브 키를 누르고 있는 상태에서 
+		// 현재 내가 사다리의 충돌체와 충돌했다면 climb 상태로 변경
+		// 여기서 if 문사용
+		// 단일 충돌체크 
+		if (true == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::OBJECT_LADDER), .TargetColType = CT_Rect, .ThisColType = CT_Rect }))
+		{
+			ChangeState(STATEVALUE::RIDE_UP);
+			return;
+		}
 	}
 
 	if (true == IsTopWall())
@@ -1076,5 +1093,19 @@ void Player_Zero::Left_Wall_Jump_Update(float _DeltaTime)
 }
 
 void Player_Zero::Left_Wall_Jump_End()
+{
+}
+
+void Player_Zero::RideUp_Start()
+{
+	AnimDirCheck("rideup");
+}
+
+void Player_Zero::RideUp_Update(float _DeltaTime)
+{
+	
+}
+
+void Player_Zero::RideUp_End()
 {
 }
