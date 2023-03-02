@@ -201,7 +201,7 @@ bool Player_Zero::IsLeftOver()
 bool Player_Zero::CameraPosCheck()
 {
 	float4 CameraPos = GetLevel()->GetCameraPos();
-	if (14829.0f < CameraPos.x || 60.0f > CameraPos.x)
+	if (14800.0f < CameraPos.x || 60.0f > CameraPos.x)
 	{
 		return false;
 	}
@@ -389,8 +389,10 @@ void Player_Zero::PlayerCreateAnimation()
 	// 힘들다 ㅠ 
 	// 사다리 타기
 	// 139 ~ 148 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_rideup_start" , .ImageName = "player_zero_sprite_right.bmp",
+									   .Start = 139 , .End = 139 , .InterTime = 0.01f , .Loop = false });
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_rideup" , .ImageName = "player_zero_sprite_right.bmp",
-									   .Start = 139 , .End = 148 , .InterTime = 0.08f });
+									   .Start = 140 , .End = 148 , .InterTime = 0.08f });
 
 	// 사다리 마지막에  올라가는 모션
 	// 149 ~ 152 
@@ -500,15 +502,20 @@ void Player_Zero::PlayerCreateAnimation()
 	// 힘들다 ㅠ 
 	// 사다리 타기
 	// 139 ~ 148 0.06
+	// 사다리 타기
+	// 139 ~ 148 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "left_rideup_start" , .ImageName = "player_zero_sprite_left.bmp",
+									   .Start = 139 , .End = 139 , .InterTime = 0.01f , .Loop = false });
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_rideup" , .ImageName = "player_zero_sprite_left.bmp",
-									   .Start = 139 , .End = 148 , .InterTime = 0.06f });
-
+									   .Start = 140 , .End = 148 , .InterTime = 0.08f });	
 	// 사다리 마지막에  올라가는 모션
 	// 149 ~ 152 
 	// 나중에 다시 손봐야 할 수도. 픽셀 살짝 애매함
 	// 이건 나중에 다시 
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_rideup_end" , .ImageName = "player_zero_sprite_left.bmp",
 									   .Start = 149 , .End = 152 , .InterTime = 0.07f });
+
+
 
 	// 사다리 타는중 공격 
 	// 153 ~ 161 0.05

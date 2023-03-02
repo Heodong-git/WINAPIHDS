@@ -7,6 +7,7 @@
 #include <GameEngineCore/GameEngineRender.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCollision.h>
+#include "Ladder.h"
 
 #include "ContentsEnum.h"
 
@@ -417,9 +418,23 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 		// 점프상태에서 업무브 키를 누르고 있는 상태에서 
 		// 현재 내가 사다리의 충돌체와 충돌했다면 climb 상태로 변경
 		// 여기서 if 문사용
-		// 단일 충돌체크 
-		if (true == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::OBJECT_LADDER), .TargetColType = CT_Rect, .ThisColType = CT_Rect }))
+		// 단일 충돌체크 , 그리고 충돌한 녀석을 가져와서 그녀석의 x 축과 동일하게 플레이어의 x축 좌표를 변경한다
+		std::vector<GameEngineCollision*> vecCollision;
+		if (true == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::OBJECT_LADDER), .TargetColType = CT_Rect, .ThisColType = CT_Rect} , vecCollision))
 		{
+			// 여기서 x축 좌표를 충돌한 사다리녀석과 동일하게 변경해야함. 일단 이거부터
+			// 여기서 충돌체의 오너가 사다리오브젝트라면 x축의 위치를 동일하게 수정해준다. 
+			for (size_t i = 0; i < vecCollision.size(); ++i)
+			{
+				Ladder* ColLadder = vecCollision[i]->GetOwner<Ladder>();
+				if (nullptr != ColLadder)
+				{
+					float4 LadderPos = ColLadder->GetPos();
+					float LadderPosX = LadderPos.x;
+					float MovePosX = LadderPos.x - GetPos().x;
+					SetMove(float4{ MovePosX , 0 });
+				}
+			}
 			ChangeState(STATEVALUE::RIDE_UP);
 			return;
 		}
@@ -485,6 +500,7 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 	{
 		if (true == IsRightWall())
 		{
+			
 			ChangeState(STATEVALUE::RIGHT_WALL);
 			return;
 		}
@@ -538,6 +554,33 @@ void Player_Zero::Fall_Start()
 // 낙하 임시완료 
 void Player_Zero::Fall_Update(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsPress("Up_Move"))
+	{
+		// 점프상태에서 업무브 키를 누르고 있는 상태에서 
+		// 현재 내가 사다리의 충돌체와 충돌했다면 climb 상태로 변경
+		// 여기서 if 문사용
+		// 단일 충돌체크 , 그리고 충돌한 녀석을 가져와서 그녀석의 x 축과 동일하게 플레이어의 x축 좌표를 변경한다
+		std::vector<GameEngineCollision*> vecCollision;
+		if (true == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::OBJECT_LADDER), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, vecCollision))
+		{
+			// 여기서 x축 좌표를 충돌한 사다리녀석과 동일하게 변경해야함. 일단 이거부터
+			// 여기서 충돌체의 오너가 사다리오브젝트라면 x축의 위치를 동일하게 수정해준다. 
+			for (size_t i = 0; i < vecCollision.size(); ++i)
+			{
+				Ladder* ColLadder = vecCollision[i]->GetOwner<Ladder>();
+				if (nullptr != ColLadder)
+				{
+					float4 LadderPos = ColLadder->GetPos();
+					float LadderPosX = LadderPos.x;
+					float MovePosX = LadderPos.x - GetPos().x;
+					SetMove(float4{ MovePosX , 0 });
+				}
+			}
+			ChangeState(STATEVALUE::RIDE_UP);
+			return;
+		}
+	}
+
 	// 낙하상태일 경우 중력연산
 	Gravity(_DeltaTime);
 	
@@ -549,9 +592,12 @@ void Player_Zero::Fall_Update(float _DeltaTime)
 	// 내가 현재 땅이라면 아이들 상태로 변경해준다. 
 	if (true == IsGround())
 	{
-		m_LandingSound = GameEngineResources::GetInst().SoundPlayToControl("player_landing_sound.wav");
-		m_LandingSound.LoopCount(1);
-		m_LandingSound.Volume(0.2f);
+		if (m_PrevState != STATEVALUE::RIDE_UP)
+		{
+			m_LandingSound = GameEngineResources::GetInst().SoundPlayToControl("player_landing_sound.wav");
+			m_LandingSound.LoopCount(1);
+			m_LandingSound.Volume(0.2f);
+		}
 
 		ChangeState(STATEVALUE::IDLE);
 		return;
@@ -925,6 +971,8 @@ void Player_Zero::Right_Wall_Start()
 	m_WallSound = GameEngineResources::GetInst().SoundPlayToControl("player_wall_effect_sound.wav");
 	m_WallSound.LoopCount(1);
 	m_WallSound.Volume(0.2f);
+	
+	m_DirString = "Right_";
 	AnimDirCheck("wall");
 }
 
@@ -936,7 +984,19 @@ void Player_Zero::Right_Wall_Update(float _DeltaTime)
 		ChangeState(STATEVALUE::IDLE);
 		return;
 	}
+
 	SetMove(float4::Down * (m_MoveSpeed* 0.5f) * _DeltaTime);
+
+	if (true == GameEngineInput::IsPress("Left_Move"))
+	{
+		if (true == GameEngineInput::IsPress("Jump"))
+		{
+			ChangeState(STATEVALUE::JUMP);
+			return;
+		}
+
+		return;
+	}
 
 	// 아래로 내려가다가 내 오른쪽이 벽이 아니게 되는 순간 폴
 	if (false == IsRightWall())
@@ -1013,6 +1073,8 @@ void Player_Zero::Left_Wall_Start()
 	m_WallSound = GameEngineResources::GetInst().SoundPlayToControl("player_wall_effect_sound.wav");
 	m_WallSound.LoopCount(1);
 	m_WallSound.Volume(0.2f);
+
+	m_DirString = "Left_";
 	AnimDirCheck("wall");
 }
 
@@ -1022,6 +1084,17 @@ void Player_Zero::Left_Wall_Update(float _DeltaTime)
 	if (true == IsGround())
 	{
 		ChangeState(STATEVALUE::IDLE);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("Right_Move"))
+	{
+		if (true == GameEngineInput::IsPress("Jump"))
+		{
+			ChangeState(STATEVALUE::JUMP);
+			return;
+		}
+
 		return;
 	}
 
@@ -1098,12 +1171,49 @@ void Player_Zero::Left_Wall_Jump_End()
 
 void Player_Zero::RideUp_Start()
 {
-	AnimDirCheck("rideup");
+	AnimDirCheck("rideup_start");
 }
 
 void Player_Zero::RideUp_Update(float _DeltaTime)
 {
-	
+	// 사다리를 타고 있는 상태일 때 충돌상태가 해제되면 fall 상태로 변경
+	if (false == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::OBJECT_LADDER), .TargetColType = CT_Rect, .ThisColType = CT_Rect }))
+	{
+		if (true == IsGround())
+		{
+			ChangeState(STATEVALUE::IDLE);
+			return;
+		}
+		
+		ChangeState(STATEVALUE::FALL);
+		return;
+	}
+
+	// 일단 임시로 좌, 우키가 눌릴 경우 return; 
+	if (true == GameEngineInput::IsPress("Right_Move") || true == GameEngineInput::IsPress("Left_Move"))
+	{
+		return; 
+	}
+
+	if (false == GameEngineInput::IsPress("Up_Move") && false == GameEngineInput::IsPress("Down_Move"))
+	{
+		AnimDirCheck("rideup_start");
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("Up_Move"))
+	{
+		AnimDirCheck("rideup");
+		SetMove(float4::Up * m_MoveSpeed * _DeltaTime);
+		return;
+	}
+
+	if (true == GameEngineInput::IsPress("Down_Move"))
+	{
+		AnimDirCheck("rideup");
+		SetMove(float4::Down * m_MoveSpeed * _DeltaTime);
+		return;
+	}
 }
 
 void Player_Zero::RideUp_End()

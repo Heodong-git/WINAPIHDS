@@ -21,6 +21,10 @@ public:
 		return m_Collider;
 	}
 
+	inline bool IsCollision()
+	{
+		return m_IsCollision;
+	}
 protected:
 	void Start() override;
 	void Render(float _DeltaTime) override;
@@ -28,5 +32,5 @@ protected:
 
 private:
 	GameEngineCollision* m_Collider = nullptr;
-	
+	bool			     m_IsCollision = false;
 };

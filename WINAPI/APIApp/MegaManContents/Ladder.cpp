@@ -38,8 +38,13 @@ void Ladder::Render(float _DeltaTime)
 
 void Ladder::Update(float _DeltaTime)
 {
+	if (false == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::PLAYER) }))
+	{
+		m_IsCollision = false;
+	}
+
 	if (true == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::PLAYER) }))
 	{
-		int a = 0;
+		m_IsCollision = true;
 	}
 }

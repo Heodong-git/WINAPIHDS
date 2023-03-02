@@ -212,8 +212,8 @@ void SpacePortLevel::ActorLoad()
 	Monster->SetPos({ 15544, 7073 });
 
 	Ladder* NewLadder = CreateActor<Ladder>(ZORDER::OBJECT);
-	// NewLadder->SetPos({ 15945, 6492 });
-	NewLadder->SetPos(m_Player->GetPos() + float4{ 300 , -500 });
+	NewLadder->SetPos({ 15945, 6492 });
+	// NewLadder->SetPos(m_Player->GetPos() + float4{ 300 , -500 });
 	NewLadder->GetCollider()->SetDebugRenderType(CT_Rect);
 	NewLadder->GetCollider()->SetScale({ 150, 850 });
 	NewLadder->GetCollider()->SetPosition({ 0, -16 });
