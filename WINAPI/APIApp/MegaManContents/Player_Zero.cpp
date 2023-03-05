@@ -109,7 +109,7 @@ void Player_Zero::Start()
 	// ºö»þº§ ÄÃ¶óÀÌ´õ
 	m_SaberCollider = CreateCollision(COLORDER::PLAYERATTACK);
 	// m_SaberCollider->SetDebugRenderType(CT_CirCle);
-	m_SaberCollider->SetScale({ 220, 220 });
+	m_SaberCollider->SetScale({ 250, 250 });
 	m_SaberCollider->Off();
 }
 

@@ -65,6 +65,7 @@ private:
 	float		 m_JumpPower = 0.0f;
 	float		 m_JumpPowerMax = 750.0f;
 	float	     m_GravityPower = 750.0f;
+	float		 m_GravityMgf = 2.4f;
 	bool		 m_IsJumpMax = false;
 	float		 m_WallJumpPower = 700.0f;
 

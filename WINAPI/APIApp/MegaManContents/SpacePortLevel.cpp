@@ -13,6 +13,7 @@
 #include "Map_SpacePort.h"
 #include "Boss_Colonel.h"
 #include "Ladder.h"
+#include "Object_Door.h"
 #include "ContentsEnum.h"
 
 SpacePortLevel::SpacePortLevel()
@@ -349,6 +350,12 @@ void SpacePortLevel::ImageLoad()
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("effect_dash_left.bmp"));
 		Image->Cut(5, 2);
 	}
+
+	// 문
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("object_boss_door.bmp"));
+		Image->Cut(4, 4);
+	}
 }
 void SpacePortLevel::ActorLoad()
 {
@@ -359,7 +366,7 @@ void SpacePortLevel::ActorLoad()
 	m_Player->SetStartPos(m_Player->GetPos());
 	// 일단 플레이어 애니메이션부터 필요한거 다 진행하고나서 다시. 
 	GameEngineActor* Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);
-	Boss->SetPos({ 18587, 968 });
+	Boss->SetPos({ 18587, 978 });
 
 	/*GameEngineActor* PlayerHpBar = CreateActor<UI_PlayerHpBar>(ZORDER::UI);
 	PlayerHpBar->SetPos(m_Player->GetPos() + float4 { - 200 , - 350});*/
@@ -417,6 +424,8 @@ void SpacePortLevel::ActorLoad()
 	NewLadder4->GetCollider()->SetScale({ 150, 250 });
 	NewLadder4->GetCollider()->SetPosition({ 0, 0 });
 
+	Object_Door* NewDoor = CreateActor<Object_Door>(ZORDER::OBJECT);
+	NewDoor->SetPos(m_Player->GetPos() + float4{ 200 , 0 });
 	
 }
 void SpacePortLevel::CameraLoad()

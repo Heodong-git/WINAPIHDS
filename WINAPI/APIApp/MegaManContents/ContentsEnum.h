@@ -23,6 +23,7 @@ enum class COLORDER
 	MONSTER,
 	MONSTERATTACK,
 	OBJECT_LADDER,
+	OBJECT_DOOR,
 };
 
 // 타이틀메뉴 

@@ -506,7 +506,7 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 			m_IsJumpMax = true;
 		}
 	}
-	m_JumpPower -= (m_GravityPower * 2.4f) * _DeltaTime;
+	m_JumpPower -= (m_GravityPower * m_GravityMgf) * _DeltaTime;
 	SetMove(float4::Up * m_JumpPower * _DeltaTime);
 	
 	// 내 오른쪽이 벽이 아닐때만	
@@ -514,7 +514,6 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 	{
 		if (true == IsRightWall())
 		{
-			
 			ChangeState(STATEVALUE::RIGHT_WALL);
 			return;
 		}
@@ -922,6 +921,11 @@ void Player_Zero::Dash_Update(float _DeltaTime)
 			return;
 		}
 
+		if (true == IsLeftWall())
+		{
+			return;
+		}
+
 		if (true == GameEngineInput::IsPress("Right_Move"))
 		{
 			return;
@@ -972,8 +976,25 @@ void Player_Zero::Jump_Attack_Update(float _DeltaTime)
 		return;
 	}
 
+	const char* Dir = GetDirString().c_str();
+	if (0 == strcmp(Dir, "Right_"))
+	{
+		// 지금 오른쪽이라는 얘기니까 오른쪽에 충돌체 만들어
+		m_SaberCollider->On();
+		m_SaberCollider->SetPosition(m_RightNormalAttackPos);
+	}
+
+	else if (0 == strcmp(Dir, "Left_"))
+	{
+		// 지금 오른쪽이라는 얘기니까 오른쪽에 충돌체 만들어
+		m_SaberCollider->On();
+		m_SaberCollider->SetPosition(m_LeftNormalAttackPos);
+	}
+
 	Gravity(_DeltaTime);
 	GroundCollisionCheck();
+
+
 
 	if (true == m_AnimationRender->IsAnimationEnd())
 	{
@@ -1034,6 +1055,7 @@ void Player_Zero::Jump_Attack_Update(float _DeltaTime)
 
 void Player_Zero::Jump_Attack_End()
 {
+	m_SaberCollider->Off();
 }
 
 void Player_Zero::Right_Wall_Start()
