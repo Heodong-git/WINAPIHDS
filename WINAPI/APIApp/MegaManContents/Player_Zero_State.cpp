@@ -578,6 +578,7 @@ void Player_Zero::Fall_Start()
 void Player_Zero::Fall_Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsPress("Up_Move"))
+
 	{
 		// 점프상태에서 업무브 키를 누르고 있는 상태에서 
 		// 현재 내가 사다리의 충돌체와 충돌했다면 climb 상태로 변경
