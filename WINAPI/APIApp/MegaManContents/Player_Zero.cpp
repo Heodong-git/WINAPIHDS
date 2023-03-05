@@ -188,8 +188,6 @@ bool Player_Zero::IsTopWall(float4 Pos)
 }
 
 
-
-// 테스트용
 bool Player_Zero::IsLeftOver()
 {
 	float4 OverPos = m_StartPos;
@@ -201,16 +199,27 @@ bool Player_Zero::IsLeftOver()
 bool Player_Zero::CameraPosCheck()
 {
 	float4 CameraPos = GetLevel()->GetCameraPos();
-	if (14800.0f < CameraPos.x || 60.0f > CameraPos.x)
+
+	if (false == m_SpLevel->IsSectionClear())
 	{
-		return false;
+		if (14800.0f < CameraPos.x || 60.0f > CameraPos.x)
+		{
+			return false;
+		}
+
+		if (700.0f > GetPos().x)
+		{
+			return false;
+		}
 	}
 
-	if (700.0f > GetPos().x)
+	else if (true == m_SpLevel->IsSectionClear())
 	{
-		return false;
+		if (14800.0f > CameraPos.x || 17816.0f < CameraPos.x)
+		{
+			false;
+		}
 	}
-
 
 	return true;
 }

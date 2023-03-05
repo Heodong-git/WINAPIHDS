@@ -61,6 +61,187 @@ void SpacePortLevel::Update(float _DeltaTime)
 	{
 		DebugRenderSwitch();
 	}
+
+	// 카메라가 지정위치에 도착했다면 섹션클리어를 true 로 변경하여 아래 코드가 동작하지 않도록 처리한다. 
+	if (true == m_SectionClear)
+	{
+		return; 
+	}
+	// 여기서는 플레이어의 위치를 체크한다.
+	// 플레이어가 해당 값의 위치를 넘어섰다면 위로 올라가는 구역에 도착한 것이기 때문에 true 로 변경
+	if (GetCameraPos().x > 14800.0f)
+	{
+		m_HeightSection = true;
+		m_FirstSection = true;
+	}
+
+	// 첫번째 섹션에 도착했을 때 
+	// 플레이어의 y축 위치가 현재 카메라의 y축 위치를 넘어섰다면
+	// 카메라의 y축 값을 - 시켜서 다음섹션의 카메라 위치까지 이동시킨다. 
+	
+	// 여기서 플레이어가 마지막섹션까지도착했을때의 좌표를 가져와서 
+
+	if (true == m_FirstSection)
+	{
+		if (m_Player->GetPos().y <= 6600.0f)
+		{
+			float4 EndPosY = m_FirstSectionPos - float4{ 0, GameEngineWindow::GetScreenSize().y };
+
+			SetCameraMove(float4::Up * m_CameraMoveSpeed * _DeltaTime);
+
+			if (GetCameraPos().y <= EndPosY.y)
+			{
+				SetCameraPos(m_SecondSectionPos);
+				m_FirstSection = false;
+			}
+		}
+	}
+
+	// --------------------
+
+	bool PosCheck = 5000.0f < m_Player->GetPos().y;
+	bool PosCheck2 = 5680.0f >= m_Player->GetPos().y;
+	if (true == m_HeightSection && true == PosCheck && true == PosCheck2)
+	{
+		m_SecondSection = true;
+	}
+
+	if (true == m_SecondSection)
+	{
+		float4 EndPosY = m_SecondSectionPos - float4{ 0 , GameEngineWindow::GetScreenSize().half().y};
+		SetCameraMove(float4::Up * m_CameraMoveSpeed * _DeltaTime);
+		
+		if (GetCameraPos().y <= EndPosY.y)
+		{
+			SetCameraPos(m_ThirdSectionPos);
+			m_SecondSection = false;
+		}
+	}
+
+	// ---------------------- 
+
+	PosCheck = 4000.0f < m_Player->GetPos().y;
+	PosCheck2 = 5000.0f >= m_Player->GetPos().y;
+	if (true == m_HeightSection && true == PosCheck && true == PosCheck2)
+	{
+		m_ThirdSection = true;
+	}
+
+	if (true == m_ThirdSection)
+	{
+		float4 EndPosY = m_ThirdSectionPos - float4{ 0 , GameEngineWindow::GetScreenSize().y};
+		SetCameraMove(float4::Up * m_CameraMoveSpeed * _DeltaTime);
+
+		if (GetCameraPos().y <= EndPosY.y)
+		{
+			SetCameraPos(m_FourthSectionPos);
+			m_ThirdSection = false;
+		}
+	}	
+
+	// ------------------
+
+	PosCheck = 4000.0f > m_Player->GetPos().y;
+	PosCheck2 = 3400.0f <= m_Player->GetPos().y;
+	if (true == m_HeightSection && true == PosCheck && true == PosCheck2)
+	{
+		m_FourthSection = true;
+	}
+
+	if (true == m_FourthSection)
+	{
+		float4 EndPosY = m_FourthSectionPos - float4{ 0 , GameEngineWindow::GetScreenSize().half().y};
+		SetCameraMove(float4::Up * m_CameraMoveSpeed * _DeltaTime);
+
+		if (GetCameraPos().y <= EndPosY.y)
+		{
+			SetCameraPos(m_FifthSectionPos);
+			m_FourthSection = false;
+		}
+	}
+
+	PosCheck = 3400.0f > m_Player->GetPos().y;
+	PosCheck2 = 2640.0f <= m_Player->GetPos().y;
+	if (true == m_HeightSection && true == PosCheck && true == PosCheck2)
+	{
+		m_FifthSection = true;
+	}
+
+	if (true == m_FifthSection)
+	{
+		float4 EndPosY = m_FifthSectionPos - float4{ 0 , GameEngineWindow::GetScreenSize().y };
+		SetCameraMove(float4::Up * m_CameraMoveSpeed * _DeltaTime);
+
+		if (GetCameraPos().y <= EndPosY.y)
+		{
+			SetCameraPos(m_SixthSectionPos);
+			m_FifthSection = false;
+		}
+	}
+
+	// --------------------------------------
+
+	PosCheck = 2640.0f > m_Player->GetPos().y;
+	PosCheck2 = 1750.0f <= m_Player->GetPos().y;
+
+	if (true == m_HeightSection && true == PosCheck && true == PosCheck2)
+	{
+		m_SixthSection = true;
+	}
+
+	if (true == m_SixthSection)
+	{
+		SetCameraMove(float4::Up * m_CameraMoveSpeed * _DeltaTime);
+
+		if (GetCameraPos().y <= m_SeventhSectionPos.y)
+		{
+			SetCameraPos(m_SeventhSectionPos);
+			m_SixthSection = false;
+		}
+	}
+
+	// -----------------------------------------
+
+	PosCheck = 1750.0f > m_Player->GetPos().y;
+	PosCheck2 = 1230.0f <= m_Player->GetPos().y;
+	
+	if (true == m_HeightSection && true == PosCheck && true == PosCheck2)
+	{
+		m_SeventhSection = true;
+	}
+
+	if (true == m_SeventhSection)
+	{
+		SetCameraMove(float4::Up* m_CameraMoveSpeed* _DeltaTime);
+
+		if (GetCameraPos().y <= m_EighthSectionPos.y)
+		{
+			SetCameraPos(m_EighthSectionPos);
+			m_SeventhSection = false;
+		}
+	}
+
+	// ------------------------
+
+	PosCheck = 1230.0f > m_Player->GetPos().y;
+	if (true == m_HeightSection && true == PosCheck)
+	{
+		m_EightSection = true;
+	}
+
+	if (true == m_EightSection)
+	{
+		SetCameraMove(float4::Up* m_CameraMoveSpeed* _DeltaTime);
+
+		if (GetCameraPos().y <= m_NinthSectionPos.y)
+		{
+			SetCameraPos(m_NinthSectionPos);
+			m_EightSection = false;
+			m_HeightSection = false;
+			m_SectionClear = true;
+		}
+	}
+	
 }
 
 void SpacePortLevel::LevelChangeStart(GameEngineLevel* _PrevLevel)

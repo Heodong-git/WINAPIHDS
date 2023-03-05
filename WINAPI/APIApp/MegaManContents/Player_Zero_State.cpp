@@ -8,6 +8,8 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include "Ladder.h"
+#include "Effect_Dash.h"
+#include "SpacePortLevel.h"
 
 #include "ContentsEnum.h"
 
@@ -174,6 +176,7 @@ void Player_Zero::UpdateState(float _DeltaTime)
 // -----------------리콜 완료---------------------
 void Player_Zero::Recall_Start()
 {
+	m_SpLevel = dynamic_cast<SpacePortLevel*>(GetLevel());
 	m_RecallSound = GameEngineResources::GetInst().SoundPlayToControl("player_recall_sound.wav");
 	m_RecallSound.LoopCount(1);
 	m_RecallSound.Volume(0.2f);
@@ -321,7 +324,13 @@ void Player_Zero::Move_Update(float _DeltaTime)
 			// 이동연산 + 카메라이동 해주고 
 			SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
 
-			if (true == CameraPosCheck())
+			// 카메라위치계산값이 true, 내가 올라가는 구역이 아닐 경우에는 이렇게 처리.
+			if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection())
+			{
+				GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+			}
+
+			else if (true == m_SpLevel->IsSectionClear())
 			{
 				GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
 			}
@@ -354,7 +363,12 @@ void Player_Zero::Move_Update(float _DeltaTime)
 			GroundCollisionCheck();
 			SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
 
-			if (true == CameraPosCheck())
+			if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection())
+			{
+				GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+			}
+
+			else if (true == m_SpLevel->IsSectionClear())
 			{
 				GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 			}
@@ -507,7 +521,12 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 
 	
 		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
-		if (true == CameraPosCheck())
+		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection())
+		{
+			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		}
+
+		else if (true == m_SpLevel->IsSectionClear())
 		{
 			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
 		}
@@ -529,7 +548,12 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 		}
 
 		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
-		if (true == CameraPosCheck())
+		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection())
+		{
+			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		}
+
+		else if (true == m_SpLevel->IsSectionClear())
 		{
 			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		}
@@ -626,10 +650,16 @@ void Player_Zero::Fall_Update(float _DeltaTime)
 	if (true != IsRightWall() && true == GameEngineInput::IsPress("Right_Move"))
 	{
 		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
-		if (true == CameraPosCheck())
+		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection())
 		{
 			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
 		}
+
+		else if (true == m_SpLevel->IsSectionClear())
+		{
+			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		}
+
 		AnimDirCheck("Fall_end");
 		return;
 	}
@@ -637,7 +667,12 @@ void Player_Zero::Fall_Update(float _DeltaTime)
 	if (true != IsLeftWall() && true == GameEngineInput::IsPress("Left_Move"))
 	{
 		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
-		if (true == CameraPosCheck())
+		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection() )
+		{
+			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		}
+
+		else if (true == m_SpLevel->IsSectionClear())
 		{
 			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		}
@@ -810,17 +845,32 @@ void Player_Zero::Dash_Start()
 	m_DashSound = GameEngineResources::GetInst().SoundPlayToControl("player_dash_sound.wav");
 	m_DashSound.LoopCount(1);
 	m_DashSound.Volume(0.2f);
+
+	const char* Dir = GetDirString().c_str();
+	Effect_Dash* Dash = GetLevel()->CreateActor<Effect_Dash>(ZORDER::PLAYER_EFFECT);
+	if (0 == strcmp(Dir, "Right_"))
+	{
+		Dash->SetPos(GetPos() - m_DashDistance);
+		Dash->m_AnimationRender->ChangeAnimation("right_dash_effect");
+	}
+
+	else if (0 == strcmp(Dir, "Left_"))
+	{
+		Dash->SetPos(GetPos() + m_DashDistance);
+		Dash->m_AnimationRender->ChangeAnimation("left_dash_effect");
+	}
+	// 여기다가 
 	AnimDirCheck("Dash");
 }
 
 void Player_Zero::Dash_Update(float _DeltaTime)
 {
-	// 애니메이션이 끝나면 idle로 변경
-	if (true == m_AnimationRender->IsAnimationEnd())
-	{
-		ChangeState(STATEVALUE::IDLE);
-		return;
-	}
+	//// 애니메이션이 끝나면 idle로 변경
+	//if (true == m_AnimationRender->IsAnimationEnd())
+	//{
+	//	ChangeState(STATEVALUE::IDLE);
+	//	return;
+	//}
 
 	if (false == GameEngineInput::IsPress("Dash"))
 	{
@@ -851,9 +901,14 @@ void Player_Zero::Dash_Update(float _DeltaTime)
 		
 		Gravity(_DeltaTime);
 		SetMove(float4::Right * m_DashSpeed * _DeltaTime);
-		if (true == CameraPosCheck())
+		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection())
 		{
 			GetLevel()->SetCameraMove(float4::Right * m_DashSpeed * _DeltaTime);
+		}
+
+		else if (true == m_SpLevel->IsSectionClear())
+		{
+			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
 		}
 		GroundCollisionCheck();
 		
@@ -874,9 +929,14 @@ void Player_Zero::Dash_Update(float _DeltaTime)
 
 		Gravity(_DeltaTime);
 		SetMove(float4::Left * m_DashSpeed * _DeltaTime);
-		if (true == CameraPosCheck())
+		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection())
 		{
 		    GetLevel()->SetCameraMove(float4::Left * m_DashSpeed * _DeltaTime);	
+		}
+
+		else if (true == m_SpLevel->IsSectionClear())
+		{
+			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		}
 		GroundCollisionCheck();	
 		return;
@@ -931,9 +991,14 @@ void Player_Zero::Jump_Attack_Update(float _DeltaTime)
 		}
 
 		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
-		if (true == CameraPosCheck())
+		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection())
 		{
 			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
+		}
+
+		else if (true == m_SpLevel->IsSectionClear())
+		{
+			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		}
 		
 		return;
@@ -953,7 +1018,12 @@ void Player_Zero::Jump_Attack_Update(float _DeltaTime)
 		}
 
 		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
-		if (true == CameraPosCheck())
+		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection())
+		{
+			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
+		}
+
+		else if (true == m_SpLevel->IsSectionClear())
 		{
 			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		}
@@ -1087,6 +1157,8 @@ void Player_Zero::Left_Wall_Update(float _DeltaTime)
 		return;
 	}
 
+	SetMove(float4::Down * (m_MoveSpeed * 0.5f) * _DeltaTime);
+
 	if (true == GameEngineInput::IsPress("Right_Move"))
 	{
 		if (true == GameEngineInput::IsPress("Jump"))
@@ -1098,7 +1170,6 @@ void Player_Zero::Left_Wall_Update(float _DeltaTime)
 		return;
 	}
 
-	SetMove(float4::Down * (m_MoveSpeed * 0.5f) * _DeltaTime);
 
 	// 아래로 내려가다가 내 왼쪽이 벽이 아니게 되는 순간 폴
 	if (false == IsLeftWall())

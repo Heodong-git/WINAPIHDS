@@ -155,6 +155,10 @@
   <ItemGroup>
     <ClInclude Include="Boss_Colonel.h" />
     <ClInclude Include="ContentsEnum.h" />
+    <ClInclude Include="Effect_Dash.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="EndTitleLevel.h" />
     <ClInclude Include="Ladder.h">
       <SubType>
@@ -177,6 +181,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Boss_Colonel.cpp" />
+    <ClCompile Include="Effect_Dash.cpp" />
     <ClCompile Include="EndTitleLevel.cpp" />
     <ClCompile Include="Ladder.cpp" />
     <ClCompile Include="Player_Zero_State.cpp" />

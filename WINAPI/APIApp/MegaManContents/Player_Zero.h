@@ -23,8 +23,8 @@ enum class STATEVALUE
 	RIDE_UP,
 };
 
-// 포인터변수를 선언하기 위해 클래스 전방선언
 class GameEngineCollision;
+class SpacePortLevel;
 class Player_Zero : public GameEngineActor
 {
 	friend class SpacePortLevel;
@@ -69,6 +69,7 @@ private:
 	float		 m_WallJumpPower = 700.0f;
 
 	float        m_DashSpeed = 1000.0f;
+	float4       m_DashDistance = float4{ 150.0f , 0.0f };
 	float4	     m_StartPos = float4::Zero;
 
 	std::string  m_DirString = "Right_";
@@ -84,6 +85,8 @@ private:
 	GameEngineRender* m_AnimationRender = nullptr;
 	GameEngineCollision* m_Collider = nullptr;
 	GameEngineCollision* m_SaberCollider = nullptr;
+
+	SpacePortLevel* m_SpLevel = nullptr;
 
 	float4 m_RightNormalAttackPos = float4{ 200, -75 };
 	float4 m_LeftNormalAttackPos = float4{ -200, -75 };

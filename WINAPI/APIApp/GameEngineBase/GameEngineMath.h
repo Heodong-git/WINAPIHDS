@@ -123,6 +123,9 @@ public:
 	{
 		// 삼각형의 밑변과 높이를 알기 때문에 빗변의 길이를 알 수 있다.
 		// x * x + y * y = 빗변길이 제곱 
+
+		// sqrtf <--- 제곱근을 구해주는 함수
+		// 어떠한 값 A가 있을 때 b * b = A 라고 한다면, b를 구해주는 함수이다. 
 		return sqrtf(x * x + y * y);
 	}
 
@@ -136,8 +139,8 @@ public:
 		z /= SizeValue;
 	}
 
-
 	// 러프 
+	// 시작 위치, 종료위치, 
 	static float4 Lerp(const float4& Start, const float4& End, float Ratio)
 	{
 		// 1.5 + 0.5 * 2.5;
