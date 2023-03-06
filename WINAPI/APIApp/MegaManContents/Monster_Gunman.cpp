@@ -193,6 +193,4 @@ void Monster_GunMan::Render(float _DeltaTime)
 		ActorPos.ix() + 5,
 		ActorPos.iy() + 5
 	);
-
-	// m_Collider->DebugRender();
 }
