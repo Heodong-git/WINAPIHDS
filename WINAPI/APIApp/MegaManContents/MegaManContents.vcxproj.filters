@@ -65,6 +65,9 @@
     <ClInclude Include="Effect_Explosion.h">
       <Filter>Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Object_Bullet.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndTitleLevel.cpp">
@@ -132,6 +135,9 @@
     </ClCompile>
     <ClCompile Include="Effect_Explosion.cpp">
       <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Object_Bullet.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

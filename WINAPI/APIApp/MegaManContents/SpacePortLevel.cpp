@@ -14,6 +14,7 @@
 #include "Boss_Colonel.h"
 #include "Ladder.h"
 #include "Object_Door.h"
+#include "Object_Bullet.h"
 #include "ContentsEnum.h"
 
 SpacePortLevel::SpacePortLevel()
@@ -366,6 +367,11 @@ void SpacePortLevel::ImageLoad()
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("object_boss_door.bmp"));
 		Image->Cut(4, 4);
 	}
+	// monster 총알
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("gunman_bullet.bmp"));
+		Image->Cut(4, 1);
+	}
 }
 void SpacePortLevel::ActorLoad()
 {
@@ -376,14 +382,17 @@ void SpacePortLevel::ActorLoad()
 	m_Player->SetStartPos(m_Player->GetPos());
 
 	UI_PlayerHpBar* HpBar = CreateActor<UI_PlayerHpBar>(ZORDER::UI);
-	//HpBar->SetPos({ 200, 6710 });
 	HpBar->SetPos({ 100, 450 });
+	m_Player->SetHpBar(HpBar);
+	HpBar->SetPlayer(m_Player);
+
 	// 일단 플레이어 애니메이션부터 필요한거 다 진행하고나서 다시. 
 	GameEngineActor* Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);
-	Boss->SetPos({ 18587, 978 });
+	Boss->SetPos({ 18887, 978 });
 
-	/*GameEngineActor* PlayerHpBar = CreateActor<UI_PlayerHpBar>(ZORDER::UI);
-	PlayerHpBar->SetPos(m_Player->GetPos() + float4 { - 200 , - 350});*/
+	// 테스트
+	/*GameEngineActor* Bullet = CreateActor<Object_Bullet>(ZORDER::OBJECT);
+	Bullet->SetPos(m_Player->GetPos() + float4{ 300, 0 });*/
 
 	CreateActor<Map_SpacePort>();
 	Monster_GunMan* Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
@@ -406,6 +415,8 @@ void SpacePortLevel::ActorLoad()
 	Monster->SetPos({ 10162, 6839 });
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 12827, 6384 });
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 15149, 6021 });
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 15259, 3932 });
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
@@ -441,19 +452,19 @@ void SpacePortLevel::ActorLoad()
 	Object_Door* NewDoor = CreateActor<Object_Door>(ZORDER::OBJECT);
 	NewDoor->SetPos(m_Player->GetPos() + float4{ 400 , 0 });
 	NewDoor->GetCollider()->SetDebugRenderType(CT_Rect);
-	NewDoor->GetCollider()->SetScale({ 130, 350 });
+	NewDoor->GetCollider()->SetScale({ 50, 350 });
 	NewDoor->GetCollider()->SetPosition({ 0, -150 });
 
 	Object_Door* NewDoor2 = CreateActor<Object_Door>(ZORDER::OBJECT);
 	NewDoor2->SetPos(float4{ 16375, 975 });
 	NewDoor2->GetCollider()->SetDebugRenderType(CT_Rect);
-	NewDoor2->GetCollider()->SetScale({ 130, 350 });
+	NewDoor2->GetCollider()->SetScale({ 50, 350 });
 	NewDoor2->GetCollider()->SetPosition({ 0, -150 });
 
 	Object_Door* NewDoor3 = CreateActor<Object_Door>(ZORDER::OBJECT);
 	NewDoor3->SetPos(float4{ 17654, 975 });
 	NewDoor3->GetCollider()->SetDebugRenderType(CT_Rect);
-	NewDoor3->GetCollider()->SetScale({ 130, 350 });
+	NewDoor3->GetCollider()->SetScale({ 100, 350 });
 	NewDoor3->GetCollider()->SetPosition({ 0, -150 });
 
 	

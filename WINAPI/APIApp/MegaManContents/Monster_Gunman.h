@@ -22,6 +22,11 @@ public:
 	Monster_GunMan& operator=(const Monster_GunMan& _Other) = delete;
 	Monster_GunMan& operator=(Monster_GunMan&& _Other) noexcept = delete;
 
+	inline const std::string& GetDirString() const
+	{
+		return m_DirString;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -32,6 +37,10 @@ private:
 	std::string  m_DirString = "Left_";
 	GameEngineRender* m_AnimationRender = nullptr;
 	GameEngineCollision* m_Collider = nullptr;
+
+	float	    m_ShotRange = 800.0f;
+	float	    m_ShotCooldown = 0.0f;
+	float		m_ShotMaxCooldown = 2.5f;
 	
 	GunmanState m_PrevState = GunmanState::IDLE;
 	GunmanState m_CurState = GunmanState::IDLE;

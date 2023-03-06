@@ -22,13 +22,19 @@ enum class STATEVALUE
 	LEFT_WALL_JUMP,
 	RIDE_UP,
 	DOOR_CONTACT,
+	HIT,
 };
 
 class GameEngineCollision;
 class SpacePortLevel;
+class UI_PlayerHpBar;
 class Player_Zero : public GameEngineActor
 {
+	// 이럴꺼면 그냥 처음부터 Level에서 static 으로.. 받을걸 
 	friend class SpacePortLevel;
+	friend class Monster_GunMan;
+	friend class Object_Bullet;
+	friend class Object_Door;
 public:
 	// constrcuter destructer
 	Player_Zero();
@@ -51,6 +57,26 @@ public:
 		return m_DirString;
 	}
 
+	inline void Damage(int _Damage)
+	{
+		m_Hp -= _Damage;
+	}
+
+	inline void SetHpBar(UI_PlayerHpBar* _HpBar)
+	{
+		m_HpBar = _HpBar;
+	}
+
+	inline int GetHp() const
+	{
+		return m_Hp;
+	}
+
+	inline STATEVALUE GetState()
+	{
+		return m_PrevState;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -69,6 +95,12 @@ private:
 	float		 m_GravityMgf = 2.4f;
 	bool		 m_IsJumpMax = false;
 	float		 m_WallJumpPower = 700.0f;
+	bool		 m_IsHit = false;
+	float		 m_DoorCol_MoveSpeed = 100.0f;
+
+
+	UI_PlayerHpBar* m_HpBar = nullptr;
+	int			 m_Hp = 10;
 
 	float        m_DashSpeed = 1000.0f;
 	float4       m_DashDistance = float4{ 150.0f , 0.0f };
@@ -215,5 +247,8 @@ private:
 	void Door_Contact_Update(float _DeltaTime);
 	void Door_Contact_End();
 
+	void Hit_Start();
+	void Hit_Update(float _DeltaTime);
+	void Hit_End();
 };
 

@@ -419,7 +419,7 @@ void Player_Zero::PlayerCreateAnimation()
 	// 오른쪽 피격
 	// 162 ~ 165
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_hit" , .ImageName = "player_zero_sprite_right.bmp",
-									   .Start = 162 , .End = 165 , .InterTime = 0.14f });
+									   .Start = 162 , .End = 165 , .InterTime = 0.17f , .Loop = false });
 
 	// 일정체력 이하 아이들
 	// 166 ~ 169
@@ -536,7 +536,7 @@ void Player_Zero::PlayerCreateAnimation()
 	// 왼쪽 피격
 	// 162 ~ 165 0.14
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_hit" , .ImageName = "player_zero_sprite_left.bmp",
-									   .Start = 162 , .End = 165 , .InterTime = 0.014f });
+									   .Start = 162 , .End = 165 , .InterTime = 0.17f , .Loop = false } );
 
 	// 일정체력 이하 아이들
 	// 166 ~ 169 1.0

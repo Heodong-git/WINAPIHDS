@@ -3,6 +3,8 @@
 #include <GameEngineCore/GameEngineRender.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineLevel.h>
+#include "SpacePortLevel.h"
+#include "Player_Zero.h"
 #include "ContentsEnum.h"
 
 Object_Door::Object_Door()
@@ -34,11 +36,29 @@ void Object_Door::Start()
 
 void Object_Door::Update(float _DeltaTime)
 {
+	// 플레이어와 충돌이 시작되었을때 
 	if (true == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::PLAYER),  .TargetColType = CT_Rect , .ThisColType = CT_Rect}))
 	{
-		// 여기서 플레이어랑 충돌했을 때, 애니메이션이 문이 열리는 애니메이션으로 바뀌어야함
-		// 일단 애니메이션부터 변경
+		// 내 애니메이션을 변경하고
 		m_AnimationRender->ChangeAnimation("open_door");
+		// 레벨을 받아와서
+		SpacePortLevel* Level = dynamic_cast<SpacePortLevel*>(GetLevel());
+		// 예외처리하고
+		if (nullptr != Level)
+		{
+			// 플레이어 상태가 DOORCONTACT 상태가 아니라면
+			if (false == (STATEVALUE::DOOR_CONTACT == Level->GetPlayer()->GetState()))
+			{
+				// 플레이어의 상태를 DOORCONTACT 상태로 변경한다. 
+				Level->GetPlayer()->ChangeState(STATEVALUE::DOOR_CONTACT);
+				return;
+			}
+		}
+	}
+
+	else
+	{
+		m_AnimationRender->ChangeAnimation("close_door");
 		return;
 	}
 }

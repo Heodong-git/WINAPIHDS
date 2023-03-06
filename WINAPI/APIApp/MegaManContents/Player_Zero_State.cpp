@@ -70,6 +70,9 @@ void Player_Zero::ChangeState(STATEVALUE _State)
 	case STATEVALUE::DOOR_CONTACT:
 		Door_Contact_Start();
 		break;
+	case STATEVALUE::HIT:
+		Hit_Start();
+		break;
 	}
 
 	// 다음 상태의 Start 함수를 호출 한 이후에 
@@ -123,6 +126,10 @@ void Player_Zero::ChangeState(STATEVALUE _State)
 		break;
 	case STATEVALUE::DOOR_CONTACT:
 		Door_Contact_End();
+		break;
+	case STATEVALUE::HIT:
+		Hit_End();
+		break;
 	}
 }
 
@@ -179,6 +186,9 @@ void Player_Zero::UpdateState(float _DeltaTime)
 	case STATEVALUE::DOOR_CONTACT:
 		Door_Contact_Update(_DeltaTime);
 		break;
+	case STATEVALUE::HIT:
+		Hit_Update(_DeltaTime);
+		break;
 	}
 }
 
@@ -216,6 +226,12 @@ void Player_Zero::Idle_Start()
 
 void Player_Zero::Idle_Update(float _DeltaTime)
 {
+	if (true == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::OBJECT_BULLET), .TargetColType = CT_CirCle, .ThisColType = CT_CirCle }))
+	{
+		ChangeState(STATEVALUE::HIT);
+		return;
+	}
+
 	if (true == IsFall())
 	{
 		ChangeState(STATEVALUE::FALL);
@@ -1336,12 +1352,47 @@ void Player_Zero::RideUp_End()
 
 void Player_Zero::Door_Contact_Start()
 {
+	m_AnimationRender->ChangeAnimation("door_contact");
 }
 
 void Player_Zero::Door_Contact_Update(float _DeltaTime)
 {
+	// 충돌이 종료되면 아이들로 변경이고 
+	if (false == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::OBJECT_DOOR), .TargetColType = CT_Rect, .ThisColType = CT_Rect }))
+	{
+		// 나랑 충돌한 문의 충돌체를 Death 시키고 싶다.. 흠 
+		ChangeState(STATEVALUE::IDLE);
+		return;
+	}
+
+	// 카메라랑같이 오른쪽으로 이동시켜. 계속. 
+	SetMove((float4::Right * m_DoorCol_MoveSpeed) * _DeltaTime);
+	GetLevel()->SetCameraMove((float4::Right * m_DoorCol_MoveSpeed) * _DeltaTime);
 }
 
 void Player_Zero::Door_Contact_End()
+{
+}
+
+void Player_Zero::Hit_Start()
+{
+
+	AnimDirCheck("Hit");
+}
+
+void Player_Zero::Hit_Update(float _DeltaTime)
+{
+
+	if (true == m_AnimationRender->IsAnimationEnd())
+	{
+		ChangeState(STATEVALUE::IDLE);
+		return;
+	}
+
+	Gravity(_DeltaTime);
+	GroundCollisionCheck();
+}
+
+void Player_Zero::Hit_End()
 {
 }

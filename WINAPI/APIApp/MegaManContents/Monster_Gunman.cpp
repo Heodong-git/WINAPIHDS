@@ -6,8 +6,11 @@
 #include <GameEngineCore/GameEngineRender.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
+#include "SpacePortLevel.h"
+#include "Player_Zero.h"
 #include "Effect_Explosion.h"
 #include "Effect_Hit.h"
+#include "Object_Bullet.h"
 #include "ContentsEnum.h"
 
 float Monster_GunMan::Time = 0.0f;
@@ -63,6 +66,28 @@ void Monster_GunMan::Idle_Start()
 
 void Monster_GunMan::Idle_Update(float _DeltaTime)
 {
+	// 그냥 여기서 쿨타임을 감소시키고, 0이 됐다면 아래코드동작하는걸로 
+	m_ShotCooldown += _DeltaTime;
+	
+	if (m_ShotMaxCooldown <= m_ShotCooldown)
+	{
+		// 레벨을 받아오고 하... 
+		m_ShotCooldown = 0.0f;
+		SpacePortLevel* Level = dynamic_cast<SpacePortLevel*>(GetLevel());
+		// 범위안에 들어왔다면 shot state로 변경인데.. 흠
+		if (nullptr != Level)
+		{
+			float4 PlayerPos = Level->GetPlayer()->GetPos();
+			float Range = GetPos().x - PlayerPos.x;
+			float absRange = abs(Range);
+
+			if (absRange <= m_ShotRange)
+			{
+				ChangeState(GunmanState::SHOT);
+				return;
+			}
+		}
+	}
 }
 
 void Monster_GunMan::Idle_End()
@@ -71,10 +96,34 @@ void Monster_GunMan::Idle_End()
 
 void Monster_GunMan::Shot_Start()
 {
+	AnimDirCheck("Gunman_shot");
+
+	// 처음한발이 위치가 
+	const char* Dir = GetDirString().c_str();
+	if (0 == strcmp(Dir, "Right_"))
+	{
+		Object_Bullet* NewBullet = GetLevel()->CreateActor<Object_Bullet>();
+		NewBullet->SetMoveDir(float4::Right);
+		NewBullet->SetPos(GetPos() + float4{ 130, -160 });
+	}
+
+	else if (0 == strcmp(Dir, "Left_"))
+	{
+		Object_Bullet* NewBullet = GetLevel()->CreateActor<Object_Bullet>();
+		NewBullet->SetMoveDir(float4::Left);
+		NewBullet->SetPos(GetPos() + float4{ -130, -160 });
+	}
+
 }
 
 void Monster_GunMan::Shot_Update(float _DeltaTime)
 {
+	
+	if (true == m_AnimationRender->IsAnimationEnd())
+	{
+		ChangeState(GunmanState::IDLE);
+		return;
+	}
 }
 
 void Monster_GunMan::Shot_End()
@@ -104,7 +153,7 @@ void Monster_GunMan::Start()
 	m_AnimationRender->CreateAnimation({ .AnimationName = "Left_Gunman_idle" , .ImageName = "spaceport_gunman_left.bmp" ,
 								.Start = 1 , .End = 7 , .InterTime = 0.16f });
 	m_AnimationRender->CreateAnimation({ .AnimationName = "Left_Gunman_Shot" , .ImageName = "spaceport_gunman_left.bmp" ,
-								.Start = 8 , .End = 11 , .InterTime = 0.15f });
+								.Start = 8 , .End = 11 , .InterTime = 0.08f , .Loop = false });
 	m_AnimationRender->CreateAnimation({ .AnimationName = "Left_Gunman_Move" , .ImageName = "spaceport_gunman_left.bmp" ,
 								.Start = 12 , .End = 18 , .InterTime = 0.08f });
 	m_AnimationRender->CreateAnimation({ .AnimationName = "Left_Gunman_throw" , .ImageName = "spaceport_gunman_left.bmp" ,
@@ -130,7 +179,22 @@ void Monster_GunMan::AnimDirCheck(const std::string_view& _AnimationName)
 	m_AnimationRender->ChangeAnimation(m_DirString + _AnimationName.data());
 
 	// 플레이어의 위치가 나보다 왼쪽에 있다면 ~ 오른쪽에 있다면 ~ 코드 작성해야함 
-	
+	SpacePortLevel* Level = dynamic_cast<SpacePortLevel*>(GetLevel());
+		// 범위안에 들어왔다면 shot state로 변경인데.. 흠
+	if (nullptr != Level)
+	{
+		float4 PlayerPos = Level->GetPlayer()->GetPos();
+		float Range = GetPos().x - PlayerPos.x;
+		if (0 <= Range)
+		{
+			m_DirString = "Left_";
+		}
+
+		else if (0 > Range)
+		{
+			m_DirString = "Right_";
+		}
+	}
 	
 	// 변경 이후 
 	// 만약 이전 방향문자열이 현재 방향문자열과 다르다면
@@ -159,14 +223,36 @@ void Monster_GunMan::Update(float _DeltaTime)
 
 	}
 	
-
-	/* 충돌시 코드 참고용
-	if (true == BodyCollision->Collision({ .TargetGroup = static_cast<int>(BubbleCollisionOrder::Player) }))
+	// 충돌시 코드 참고용
+	if (true == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::PLAYER) }))
 	{
-		int a = 0;
+		SpacePortLevel* Level = dynamic_cast<SpacePortLevel*>(GetLevel());
+		// 범위안에 들어왔다면 shot state로 변경인데.. 흠
+		if (nullptr != Level)
+		{
+			Player_Zero* Player = Level->GetPlayer();
+			float4 PlayerPos = Player->GetPos();
+			float Range = GetPos().x - PlayerPos.x;
+
+			if (Range >0.0f)
+			{
+				Player->SetMove(float4::Left * 100.0f);
+				Player->ChangeState(STATEVALUE::HIT);
+				GetLevel()->SetCameraMove(float4::Left * 100.0f);
+				return;
+			}
+
+			else if (Range <= 0.0f)
+			{
+				Player->SetMove(float4::Right * 100.0f);
+				Player->ChangeState(STATEVALUE::HIT);
+				GetLevel()->SetCameraMove(float4::Right * 100.0f);
+				return;
+			}
+		}
 	}
 
-	std::vector<GameEngineCollision*> Collision;
+	/*std::vector<GameEngineCollision*> Collision;
 	if (true == BodyCollision->Collision({ .TargetGroup = static_cast<int>(BubbleCollisionOrder::Player) }, Collision))
 	{
 		for (size_t i = 0; i < Collision.size(); i++)
