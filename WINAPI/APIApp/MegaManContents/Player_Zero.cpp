@@ -103,13 +103,11 @@ void Player_Zero::Start()
 	// 플레이어 컬라이더
 	m_Collider = CreateCollision(COLORDER::PLAYER);
 	m_Collider->SetScale({ 150, 150 });
-	//m_Collider->SetDebugRenderType(CT_Rect);
 	m_Collider->SetPosition(float4{ 0, -80 });
 
 	// 빔샤벨 컬라이더
 	m_SaberCollider = CreateCollision(COLORDER::PLAYERATTACK);
-	// m_SaberCollider->SetDebugRenderType(CT_CirCle);
-	m_SaberCollider->SetScale({ 250, 250 });
+	m_SaberCollider->SetScale(m_SaberColliderScale);
 	m_SaberCollider->Off();
 }
 

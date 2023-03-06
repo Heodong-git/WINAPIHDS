@@ -39,13 +39,13 @@ public:
 	Player_Zero& operator=(const Player_Zero& _Other) = delete;
 	Player_Zero& operator=(Player_Zero&& _Other) noexcept = delete;
 
-	void SetStartPos(float4 _Pos)
+	inline void SetStartPos(float4 _Pos)
 	{
 		m_StartPos = _Pos;
 	}
 
 	// 이펙트클래스에서 출력시 방향을 받아와야함 
-	const std::string& GetDirString() const
+	inline const std::string& GetDirString() const
 	{
 		return m_DirString;
 	}
@@ -86,6 +86,7 @@ private:
 	GameEngineRender* m_AnimationRender = nullptr;
 	GameEngineCollision* m_Collider = nullptr;
 	GameEngineCollision* m_SaberCollider = nullptr;
+	float4				 m_SaberColliderScale = float4{ 250, 250 };
 
 	SpacePortLevel* m_SpLevel = nullptr;
 

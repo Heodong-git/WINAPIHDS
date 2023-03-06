@@ -10,6 +10,7 @@
 #include "Ladder.h"
 #include "Effect_Dash.h"
 #include "SpacePortLevel.h"
+#include "Object_Door.h"
 
 #include "ContentsEnum.h"
 
@@ -817,6 +818,7 @@ void Player_Zero::Attack_Third_Update(float _DeltaTime)
 	if (0 == strcmp(Dir, "Right_"))
 	{
 		// 지금 오른쪽이라는 얘기니까 오른쪽에 충돌체 만들어
+		m_SaberCollider->SetScale(float4{ 300, 300 });
 		m_SaberCollider->On();
 		m_SaberCollider->SetPosition(m_RightNormalAttackPos);
 	}
@@ -824,6 +826,7 @@ void Player_Zero::Attack_Third_Update(float _DeltaTime)
 	else if (0 == strcmp(Dir, "Left_"))
 	{
 		// 지금 오른쪽이라는 얘기니까 오른쪽에 충돌체 만들어
+		m_SaberCollider->SetScale(float4{ 300, 300 });
 		m_SaberCollider->On();
 		m_SaberCollider->SetPosition(m_LeftNormalAttackPos);
 	}
@@ -838,6 +841,7 @@ void Player_Zero::Attack_Third_Update(float _DeltaTime)
 void Player_Zero::Attack_Third_End()
 {
 	m_SaberCollider->Off();
+	m_SaberCollider->SetScale(m_SaberColliderScale);
 }
 
 void Player_Zero::Dash_Start()
@@ -865,12 +869,20 @@ void Player_Zero::Dash_Start()
 
 void Player_Zero::Dash_Update(float _DeltaTime)
 {
-	//// 애니메이션이 끝나면 idle로 변경
-	//if (true == m_AnimationRender->IsAnimationEnd())
-	//{
-	//	ChangeState(STATEVALUE::IDLE);
-	//	return;
-	//}
+	std::vector<GameEngineCollision*> vecCollision;
+	if (true == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::OBJECT_DOOR), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, vecCollision))
+	{
+		// 여기서 x축 좌표를 충돌한 사다리녀석과 동일하게 변경해야함. 일단 이거부터
+		// 여기서 충돌체의 오너가 사다리오브젝트라면 x축의 위치를 동일하게 수정해준다. 
+		for (size_t i = 0; i < vecCollision.size(); ++i)
+		{
+			Object_Door* ColDoor = vecCollision[i]->GetOwner<Object_Door>();
+			if (nullptr != ColDoor)
+			{
+				int a = 0;
+			}
+		}
+	}
 
 	if (false == GameEngineInput::IsPress("Dash"))
 	{
