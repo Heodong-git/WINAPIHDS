@@ -3,6 +3,8 @@
 #include <GameEngineCore/GameEngineResources.h>
 #include <string>
 
+// 보스방입장하고나서부터 카메라, 플레이어 어떻게 움직일지부터 내일 다시. 
+
 enum class STATEVALUE
 {
 	NONE,		         // 기본
