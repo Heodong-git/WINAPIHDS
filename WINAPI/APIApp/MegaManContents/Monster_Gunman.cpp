@@ -5,6 +5,9 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineRender.h>
 #include <GameEngineCore/GameEngineCollision.h>
+
+#include "Effect_Explosion.h"
+#include "Effect_Hit.h"
 #include "ContentsEnum.h"
 
 float Monster_GunMan::Time = 0.0f;
@@ -20,11 +23,7 @@ void Monster_GunMan::ChangeState(GunmanState _State)
 	
 	switch (m_NextState)
 	{
-	case GunmanState::NONE:
-		break;
 	case GunmanState::IDLE:
-		break;
-	case GunmanState::MOVE:
 		break;
 	case GunmanState::SHOT:
 		break;
@@ -34,11 +33,7 @@ void Monster_GunMan::ChangeState(GunmanState _State)
 	
 	switch (m_PrevState)
 	{
-	case GunmanState::NONE:
-		break;
 	case GunmanState::IDLE:
-		break;
-	case GunmanState::MOVE:
 		break;
 	case GunmanState::SHOT:
 		break;
@@ -47,11 +42,7 @@ void Monster_GunMan::ChangeState(GunmanState _State)
 	}
 }
 
-
-
-
-Monster_GunMan::Monster_GunMan() :
-	m_Render(nullptr)
+Monster_GunMan::Monster_GunMan()
 {
 }
 
@@ -61,9 +52,6 @@ Monster_GunMan::~Monster_GunMan()
 
 void Monster_GunMan::Start()
 {
-	
-	m_Dir = float4::Left;
-
 	// 렌더생성 , 생성시 사용할 이미지, Zorder 값 입력
 	m_Render = CreateRender(ZORDER::MONSTER);
 	// 렌더링시 x축 y축의 크기설정
@@ -102,7 +90,14 @@ void Monster_GunMan::Update(float _DeltaTime)
 	if (true == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::PLAYERATTACK) }))
 	{
 		// 여기서 이펙트 같은거를 출력
+		Effect_Hit* Hit_Effect = GetLevel()->CreateActor<Effect_Hit>();
+		Hit_Effect->SetPos(GetPos() + float4 { -30, - 100});
+
 		this->Death();
+		
+		Effect_Explosion* E_Effect = GetLevel()->CreateActor<Effect_Explosion>();
+		E_Effect->SetPos(GetPos());
+
 	}
 	
 

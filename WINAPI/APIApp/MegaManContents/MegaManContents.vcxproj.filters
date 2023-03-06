@@ -59,6 +59,12 @@
     <ClInclude Include="Object_Door.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="Effect_Hit.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_Explosion.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndTitleLevel.cpp">
@@ -120,6 +126,12 @@
     </ClCompile>
     <ClCompile Include="Object_Door.cpp">
       <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_Hit.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_Explosion.cpp">
+      <Filter>Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

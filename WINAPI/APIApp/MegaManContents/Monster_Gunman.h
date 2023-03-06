@@ -4,9 +4,7 @@
 
 enum class GunmanState
 {
-	NONE,
 	IDLE,
-	MOVE,
 	SHOT,
 };
 
@@ -31,13 +29,13 @@ protected:
 
 private:
 	static float Time;
-	float4 m_Dir;
+	float4 m_Dir = float4::Left;
 	GameEngineRender* m_Render = nullptr;
 	GameEngineCollision* m_Collider = nullptr;
 	
-	GunmanState m_PrevState = GunmanState::NONE;
-	GunmanState m_CurState = GunmanState::NONE;
-	GunmanState m_NextState = GunmanState::NONE;
+	GunmanState m_PrevState = GunmanState::IDLE;
+	GunmanState m_CurState = GunmanState::IDLE;
+	GunmanState m_NextState = GunmanState::IDLE;
 	
 	void ChangeState(GunmanState _State);
 };

@@ -350,6 +350,16 @@ void SpacePortLevel::ImageLoad()
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("effect_dash_left.bmp"));
 		Image->Cut(5, 2);
 	}
+	// Å¸°Ý ÀÌÆåÆ®
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("effect_hit.bmp"));
+		Image->Cut(5, 2);
+	}
+	// Æø¹ß ÀÌÆåÆ®
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("effect_explosion.bmp"));
+		Image->Cut(8, 2);
+	}
 
 	// ¹®
 	{

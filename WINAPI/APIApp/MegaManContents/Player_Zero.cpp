@@ -380,6 +380,10 @@ void Player_Zero::PlayerCreateAnimation()
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_dash" , .ImageName = "player_zero_sprite_right.bmp",
 									   .Start = 111 , .End = 121 , .InterTime = 0.07f });
 
+	// 문이랑 충돌하면~ 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "door_contact" , .ImageName = "player_zero_sprite_right.bmp" ,
+									   .Start = 116, .End = 116, .InterTime = 0.1f , .Loop = false });
+
 	// 오른쪽 벽타는 모션
 	// 122~126
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_wall" , .ImageName = "player_zero_sprite_right.bmp",

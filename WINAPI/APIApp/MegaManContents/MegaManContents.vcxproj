@@ -159,6 +159,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Effect_Explosion.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_Hit.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="EndTitleLevel.h" />
     <ClInclude Include="Ladder.h">
       <SubType>
@@ -186,6 +194,8 @@
   <ItemGroup>
     <ClCompile Include="Boss_Colonel.cpp" />
     <ClCompile Include="Effect_Dash.cpp" />
+    <ClCompile Include="Effect_Explosion.cpp" />
+    <ClCompile Include="Effect_Hit.cpp" />
     <ClCompile Include="EndTitleLevel.cpp" />
     <ClCompile Include="Ladder.cpp" />
     <ClCompile Include="Object_Door.cpp" />

@@ -13,6 +13,7 @@ enum class ZORDER
 	UI,
 	PLAYER,
 	PLAYER_EFFECT,
+	EFFECT,
 	UI_Text
 };
 
