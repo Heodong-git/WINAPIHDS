@@ -232,7 +232,7 @@ void SpacePortLevel::Update(float _DeltaTime)
 
 	if (true == m_EightSection)
 	{
-		SetCameraMove(float4::Up* m_CameraMoveSpeed* _DeltaTime);
+		SetCameraMove(float4::Up* m_CameraMoveSpeed* (_DeltaTime * 2.0f));
 
 		if (GetCameraPos().y <= m_NinthSectionPos.y)
 		{

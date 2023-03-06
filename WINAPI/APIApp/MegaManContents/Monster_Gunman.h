@@ -29,14 +29,25 @@ protected:
 
 private:
 	static float Time;
-	float4 m_Dir = float4::Left;
-	GameEngineRender* m_Render = nullptr;
+	std::string  m_DirString = "Left_";
+	GameEngineRender* m_AnimationRender = nullptr;
 	GameEngineCollision* m_Collider = nullptr;
 	
 	GunmanState m_PrevState = GunmanState::IDLE;
 	GunmanState m_CurState = GunmanState::IDLE;
 	GunmanState m_NextState = GunmanState::IDLE;
 	
+	void AnimDirCheck(const std::string_view& _AnimationName);
+
 	void ChangeState(GunmanState _State);
+	void UpdateState(float _DeltaTime);
+
+	void Idle_Start();
+	void Idle_Update(float _DeltaTime);
+	void Idle_End();
+
+	void Shot_Start();
+	void Shot_Update(float _DeltaTime);
+	void Shot_End();
 };
 

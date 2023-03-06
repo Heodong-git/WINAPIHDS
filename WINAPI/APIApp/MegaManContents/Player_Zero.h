@@ -21,6 +21,7 @@ enum class STATEVALUE
 	LEFT_WALL,
 	LEFT_WALL_JUMP,
 	RIDE_UP,
+	DOOR_CONTACT,
 };
 
 class GameEngineCollision;
@@ -209,6 +210,10 @@ private:
 	void RideUp_Start();
 	void RideUp_Update(float _DeltaTime);
 	void RideUp_End();
+
+	void Door_Contact_Start();
+	void Door_Contact_Update(float _DeltaTime);
+	void Door_Contact_End();
 
 };
 

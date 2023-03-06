@@ -67,6 +67,9 @@ void Player_Zero::ChangeState(STATEVALUE _State)
 	case STATEVALUE::RIDE_UP:
 		RideUp_Start();
 		break;
+	case STATEVALUE::DOOR_CONTACT:
+		Door_Contact_Start();
+		break;
 	}
 
 	// 다음 상태의 Start 함수를 호출 한 이후에 
@@ -118,6 +121,8 @@ void Player_Zero::ChangeState(STATEVALUE _State)
 	case STATEVALUE::RIDE_UP:
 		RideUp_End();
 		break;
+	case STATEVALUE::DOOR_CONTACT:
+		Door_Contact_End();
 	}
 }
 
@@ -170,6 +175,9 @@ void Player_Zero::UpdateState(float _DeltaTime)
 		break;
 	case STATEVALUE::RIDE_UP:
 		RideUp_Update(_DeltaTime);
+		break;
+	case STATEVALUE::DOOR_CONTACT:
+		Door_Contact_Update(_DeltaTime);
 		break;
 	}
 }
@@ -1323,5 +1331,17 @@ void Player_Zero::RideUp_Update(float _DeltaTime)
 }
 
 void Player_Zero::RideUp_End()
+{
+}
+
+void Player_Zero::Door_Contact_Start()
+{
+}
+
+void Player_Zero::Door_Contact_Update(float _DeltaTime)
+{
+}
+
+void Player_Zero::Door_Contact_End()
 {
 }
