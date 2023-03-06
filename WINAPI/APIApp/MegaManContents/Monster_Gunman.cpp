@@ -8,6 +8,48 @@
 #include "ContentsEnum.h"
 
 float Monster_GunMan::Time = 0.0f;
+
+void Monster_GunMan::ChangeState(GunmanState _State)
+{
+	// 인자값으로 다음상태를 설정
+	m_NextState = _State;
+	// 이전상태는 현재상태
+	m_PrevState = m_CurState;
+	// 현재 상태는 다음상태
+	m_CurState = m_NextState;
+	
+	switch (m_NextState)
+	{
+	case GunmanState::NONE:
+		break;
+	case GunmanState::IDLE:
+		break;
+	case GunmanState::MOVE:
+		break;
+	case GunmanState::SHOT:
+		break;
+	default:
+		break;
+	}
+	
+	switch (m_PrevState)
+	{
+	case GunmanState::NONE:
+		break;
+	case GunmanState::IDLE:
+		break;
+	case GunmanState::MOVE:
+		break;
+	case GunmanState::SHOT:
+		break;
+	default:
+		break;
+	}
+}
+
+
+
+
 Monster_GunMan::Monster_GunMan() :
 	m_Render(nullptr)
 {

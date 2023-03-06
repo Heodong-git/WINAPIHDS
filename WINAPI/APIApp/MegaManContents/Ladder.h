@@ -25,6 +25,7 @@ public:
 	{
 		return m_IsCollision;
 	}
+
 protected:
 	void Start() override;
 	void Render(float _DeltaTime) override;

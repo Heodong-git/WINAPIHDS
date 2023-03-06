@@ -78,5 +78,8 @@ private:
 	bool				m_EightSection = false;
 	bool				m_NinthSection = false;
 	bool				m_SectionClear = false;
+
+	// 보스룸 진입시 사용
+	bool				m_BossSection = false;
 };
 

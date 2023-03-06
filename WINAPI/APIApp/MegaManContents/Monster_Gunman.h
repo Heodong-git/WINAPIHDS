@@ -1,6 +1,15 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 
+
+enum class GunmanState
+{
+	NONE,
+	IDLE,
+	MOVE,
+	SHOT,
+};
+
 class GameEngineCollision;
 class Monster_GunMan : public GameEngineActor
 {
@@ -25,6 +34,11 @@ private:
 	float4 m_Dir;
 	GameEngineRender* m_Render = nullptr;
 	GameEngineCollision* m_Collider = nullptr;
-
+	
+	GunmanState m_PrevState = GunmanState::NONE;
+	GunmanState m_CurState = GunmanState::NONE;
+	GunmanState m_NextState = GunmanState::NONE;
+	
+	void ChangeState(GunmanState _State);
 };
 

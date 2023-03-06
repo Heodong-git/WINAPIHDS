@@ -18,6 +18,16 @@ public:
 	Object_Door& operator=(const Object_Door& _Other) = delete;
 	Object_Door& operator=(Object_Door&& _Other) noexcept = delete;
 
+	inline GameEngineCollision* GetCollider()
+	{
+		return m_Collider;
+	}
+
+	inline bool IsCollision()
+	{
+		return m_IsCollision;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -27,4 +37,6 @@ private:
 	GameEngineRender* m_AnimationRender = nullptr;
 	GameEngineCollision* m_Collider = nullptr;
 	GameEngineSoundPlayer m_OpenSound;
+
+	bool				m_IsCollision = false;
 };
