@@ -5,6 +5,7 @@
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineResources.h>
 #include <GameEngineCore/GameEngineCore.h>
+#include <GameEngineCore/GameEngineRender.h>
 
 #include "Player_Zero.h"
 #include "Monster_Gunman.h"
@@ -64,6 +65,35 @@ void SpacePortLevel::Update(float _DeltaTime)
 		DebugRenderSwitch();
 	}
 
+	// 섹션을 모두 클리어 한상태고, 플레이어가 지정 위치를 
+	if (true == m_SectionClear && m_Player->GetPos().x >= m_BossContactXPos)
+	{
+
+		// 플레이어가 y축 섹션을 모두 클리어하고 보스방의 위치에 도달했다면
+		// 여기서 플레이어의 IsBosscontact 변수 등을 만들어서 true 로 변경한다. 
+		if (false == m_Player->IsBossContact())
+		{
+			m_Player->SetBossContact(true);
+		}
+		
+		if (GetCameraPos().x < m_BossSectionPos.x)
+		{
+			SetCameraMove(float4::Right * m_CameraMoveSpeed * _DeltaTime);
+			m_Player->m_AnimationRender->ChangeAnimation("right_move");
+			m_Player->SetMove(float4::Right * m_BossRoomSpeed * _DeltaTime);
+			return;
+		}
+
+		else if (GetCameraPos().x >= m_BossSectionPos.x)
+		{
+			SetCameraPos(m_BossSectionPos);
+			return;
+		}
+		
+		return;
+	}
+
+
 	// 카메라가 지정위치에 도착했다면 섹션클리어를 true 로 변경하여 아래 코드가 동작하지 않도록 처리한다. 
 	if (true == m_SectionClear)
 	{
@@ -71,7 +101,7 @@ void SpacePortLevel::Update(float _DeltaTime)
 	}
 	// 여기서는 플레이어의 위치를 체크한다.
 	// 플레이어가 해당 값의 위치를 넘어섰다면 위로 올라가는 구역에 도착한 것이기 때문에 true 로 변경
-	if (GetCameraPos().x > 14800.0f)
+	if (GetCameraPos().x > m_SectionClearXPos)
 	{
 		m_HeightSection = true;
 		m_FirstSection = true;
@@ -99,6 +129,7 @@ void SpacePortLevel::Update(float _DeltaTime)
 		}
 	}
 
+	
 	// --------------------
 
 	bool PosCheck = 5000.0f < m_Player->GetPos().y;
@@ -449,11 +480,11 @@ void SpacePortLevel::ActorLoad()
 	NewLadder4->GetCollider()->SetScale({ 150, 250 });
 	NewLadder4->GetCollider()->SetPosition({ 0, 0 });
 
-	Object_Door* NewDoor = CreateActor<Object_Door>(ZORDER::OBJECT);
+	/*Object_Door* NewDoor = CreateActor<Object_Door>(ZORDER::OBJECT);
 	NewDoor->SetPos(m_Player->GetPos() + float4{ 400 , 0 });
 	NewDoor->GetCollider()->SetDebugRenderType(CT_Rect);
 	NewDoor->GetCollider()->SetScale({ 50, 350 });
-	NewDoor->GetCollider()->SetPosition({ 0, -150 });
+	NewDoor->GetCollider()->SetPosition({ 0, -150 });*/
 
 	Object_Door* NewDoor2 = CreateActor<Object_Door>(ZORDER::OBJECT);
 	NewDoor2->SetPos(float4{ 16375, 975 });

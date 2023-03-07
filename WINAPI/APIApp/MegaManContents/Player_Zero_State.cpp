@@ -226,6 +226,7 @@ void Player_Zero::Idle_Start()
 
 void Player_Zero::Idle_Update(float _DeltaTime)
 {
+
 	if (true == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::OBJECT_BULLET), .TargetColType = CT_CirCle, .ThisColType = CT_CirCle }))
 	{
 		ChangeState(STATEVALUE::HIT);
@@ -350,12 +351,12 @@ void Player_Zero::Move_Update(float _DeltaTime)
 			SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
 
 			// 카메라위치계산값이 true, 내가 올라가는 구역이 아닐 경우에는 이렇게 처리.
-			if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection())
+			if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection() && false == m_IsBossContact)
 			{
 				GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
 			}
 
-			else if (true == m_SpLevel->IsSectionClear())
+			else if (true == m_SpLevel->IsSectionClear() && false == m_IsBossContact)
 			{
 				GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
 			}
@@ -388,12 +389,12 @@ void Player_Zero::Move_Update(float _DeltaTime)
 			GroundCollisionCheck();
 			SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
 
-			if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection())
+			if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection() && false == m_IsBossContact)
 			{
 				GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 			}
 
-			else if (true == m_SpLevel->IsSectionClear())
+			else if (true == m_SpLevel->IsSectionClear() && false == m_IsBossContact)
 			{
 				GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 			}
@@ -545,12 +546,12 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 
 	
 		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
-		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection())
+		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection() && false == m_IsBossContact)
 		{
 			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
 		}
 
-		else if (true == m_SpLevel->IsSectionClear())
+		else if (true == m_SpLevel->IsSectionClear() && false == m_IsBossContact)
 		{
 			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
 		}
@@ -572,12 +573,12 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 		}
 
 		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
-		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection())
+		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection() && false == m_IsBossContact)
 		{
 			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		}
 
-		else if (true == m_SpLevel->IsSectionClear())
+		else if (true == m_SpLevel->IsSectionClear() && false == m_IsBossContact)
 		{
 			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		}
@@ -675,12 +676,12 @@ void Player_Zero::Fall_Update(float _DeltaTime)
 	if (true != IsRightWall() && true == GameEngineInput::IsPress("Right_Move"))
 	{
 		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
-		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection())
+		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection() && false == m_IsBossContact)
 		{
 			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
 		}
 
-		else if (true == m_SpLevel->IsSectionClear())
+		else if (true == m_SpLevel->IsSectionClear() && false == m_IsBossContact)
 		{
 			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
 		}
@@ -692,12 +693,12 @@ void Player_Zero::Fall_Update(float _DeltaTime)
 	if (true != IsLeftWall() && true == GameEngineInput::IsPress("Left_Move"))
 	{
 		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
-		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection() )
+		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection() && false == m_IsBossContact)
 		{
 			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		}
 
-		else if (true == m_SpLevel->IsSectionClear())
+		else if (true == m_SpLevel->IsSectionClear() && false == m_IsBossContact)
 		{
 			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		}
@@ -937,12 +938,12 @@ void Player_Zero::Dash_Update(float _DeltaTime)
 		
 		Gravity(_DeltaTime);
 		SetMove(float4::Right * m_DashSpeed * _DeltaTime);
-		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection())
+		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection() && false == m_IsBossContact)
 		{
 			GetLevel()->SetCameraMove(float4::Right * m_DashSpeed * _DeltaTime);
 		}
 
-		else if (true == m_SpLevel->IsSectionClear())
+		else if (true == m_SpLevel->IsSectionClear() && false == m_IsBossContact)
 		{
 			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
 		}
@@ -969,13 +970,13 @@ void Player_Zero::Dash_Update(float _DeltaTime)
 		}
 
 		Gravity(_DeltaTime);
-		SetMove(float4::Left * m_DashSpeed * _DeltaTime);
-		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection())
+		SetMove(float4::Left * m_DashSpeed * _DeltaTime); 
+		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection() && false == m_IsBossContact)
 		{
 		    GetLevel()->SetCameraMove(float4::Left * m_DashSpeed * _DeltaTime);	
 		}
 
-		else if (true == m_SpLevel->IsSectionClear())
+		else if (true == m_SpLevel->IsSectionClear() && false == m_IsBossContact)
 		{
 			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		}
@@ -1049,12 +1050,12 @@ void Player_Zero::Jump_Attack_Update(float _DeltaTime)
 		}
 
 		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
-		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection())
+		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection() && false == m_IsBossContact)
 		{
 			GetLevel()->SetCameraMove(float4::Right * m_MoveSpeed * _DeltaTime);
 		}
 
-		else if (true == m_SpLevel->IsSectionClear())
+		else if (true == m_SpLevel->IsSectionClear() && false == m_IsBossContact)
 		{
 			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		}
@@ -1076,12 +1077,12 @@ void Player_Zero::Jump_Attack_Update(float _DeltaTime)
 		}
 
 		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
-		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection())
+		if (true == CameraPosCheck() && true != m_SpLevel->IsHeightSection() && false == m_IsBossContact)
 		{
 			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		}
 
-		else if (true == m_SpLevel->IsSectionClear())
+		else if (true == m_SpLevel->IsSectionClear() && false == m_IsBossContact)
 		{
 			GetLevel()->SetCameraMove(float4::Left * m_MoveSpeed * _DeltaTime);
 		}

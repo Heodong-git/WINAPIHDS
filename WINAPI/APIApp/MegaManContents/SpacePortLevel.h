@@ -36,6 +36,11 @@ public:
 		return m_SectionClear;
 	}
 
+	inline float4 GetBossSectionPos() const
+	{
+		return m_BossSectionPos;
+	}
+
 protected:
 	virtual void Loading() override;
 	virtual void Update(float _DeltaTime) override;
@@ -59,14 +64,20 @@ private:
 	float4		 m_SeventhSectionPos = float4{ 14800, 1580 };
 	float4		 m_EighthSectionPos = float4{ 14800, 960 };
 	float4		 m_NinthSectionPos = float4{ 14800, 150 };
+	float4		 m_BossSectionPos = float4{ 17750 , 150 };
+
+	float		 m_SectionClearXPos = 14800.0f;
+	float		 m_BossContactXPos = 17775.0f;
 
 	float		 m_CameraMoveSpeed = 500.0f;
+	float        m_BossRoomSpeed = 100.0f;
 
 	void SoundLoad();
 	void ImageLoad();
 	void ActorLoad();
 	void CameraLoad();
 
+	// ÈÄ... 
 	bool				m_HeightSection = false;
 	bool				m_FirstSection = false;
 	bool				m_SecondSection = false;

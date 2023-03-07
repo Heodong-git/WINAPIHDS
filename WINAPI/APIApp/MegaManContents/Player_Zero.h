@@ -18,7 +18,7 @@ enum class STATEVALUE
 	ATTACK_THIRD,
 	DASH,		         // 대쉬 
 	JUMP_ATTACK,		 // 점프공격
-	RIGHT_WALL,				 // 벽타기
+	RIGHT_WALL,		     // 벽타기
 	RIGHT_WALL_JUMP,
 	LEFT_WALL,
 	LEFT_WALL_JUMP,
@@ -79,6 +79,21 @@ public:
 		return m_PrevState;
 	}
 
+	inline void SetBossContact(bool _Value)
+	{
+		m_IsBossContact = true;
+	}
+
+	inline bool IsBossContact()
+	{
+		return m_IsBossContact;
+	}
+
+	inline float GetMoveSpeed()
+	{
+		return m_MoveSpeed;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -99,6 +114,8 @@ private:
 	float		 m_WallJumpPower = 700.0f;
 	bool		 m_IsHit = false;
 	float		 m_DoorCol_MoveSpeed = 100.0f;
+
+	bool		 m_IsBossContact = false;
 
 
 	UI_PlayerHpBar* m_HpBar = nullptr;
