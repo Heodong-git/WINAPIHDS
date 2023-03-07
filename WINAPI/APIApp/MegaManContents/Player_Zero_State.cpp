@@ -376,6 +376,8 @@ void Player_Zero::Move_Update(float _DeltaTime)
 			return;
 		}
 
+		// 여기서 현재 보스방일 경우의 범위를 정해서 벗어났다면 retrun 하자 
+
 		// 왼쪽키가 눌린상태에서 우측키를 누르면 아무동작도 하지 않음
 		if (true == GameEngineInput::IsPress("Right_Move"))
 		{

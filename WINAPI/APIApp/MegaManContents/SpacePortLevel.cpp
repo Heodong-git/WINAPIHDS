@@ -87,6 +87,7 @@ void SpacePortLevel::Update(float _DeltaTime)
 		else if (GetCameraPos().x >= m_BossSectionPos.x)
 		{
 			SetCameraPos(m_BossSectionPos);
+			m_Player->ChangeState(STATEVALUE::IDLE);
 			return;
 		}
 		
