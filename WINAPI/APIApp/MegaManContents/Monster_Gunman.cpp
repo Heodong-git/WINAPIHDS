@@ -88,6 +88,8 @@ void Monster_GunMan::Idle_Update(float _DeltaTime)
 			}
 		}
 	}
+
+	AnimDirCheck("Gunman_Idle");
 }
 
 void Monster_GunMan::Idle_End()

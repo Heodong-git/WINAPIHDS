@@ -379,6 +379,10 @@ void SpacePortLevel::ImageLoad()
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("spaceport_colonel_left.bmp"));
 		Image->Cut(8, 6);
 	}
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("spaceport_colonel_right.bmp"));
+		Image->Cut(8, 6);
+	}
 
 	// ╦С╫╨ем
 

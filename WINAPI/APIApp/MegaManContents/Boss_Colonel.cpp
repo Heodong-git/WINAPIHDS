@@ -2,13 +2,13 @@
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineRender.h>
 #include <GameEngineCore/GameEngineLevel.h>
+#include <time.h>
 #include "SpacePortLevel.h"
 #include "Effect_Hit.h"
 #include "Effect_Boss_Hit.h"
 #include "Effect_Explosion.h"
 #include "Player_Zero.h"
 #include "UI_PlayerHpBar.h"
-#include <time.h>
 #include "ContentsEnum.h"
 
 Boss_Colonel::Boss_Colonel()
@@ -121,25 +121,20 @@ void Boss_Colonel::AnimDirCheck(const std::string_view& _AnimationName)
 	// 범위안에 들어왔다면 shot state로 변경인데.. 흠
 	if (nullptr != Level)
 	{
+		// 플레이어 위치를 받아왔어
 		float4 PlayerPos = Level->GetPlayer()->GetPos();
-		float Range = PlayerPos.x - GetPos().x;
-		if (0 <= Range)
+		float Range = GetPos().x - PlayerPos.x;
+		if (0 >= Range)
 		{
-			m_DirString = "Left_";
+			m_DirString = "Right_";
 		}
 
-		else if (0 > Range)
+		else if (0 < Range)
 		{
 			m_DirString = "Left_";
 		}
 	}
 
-	// 변경 이후 
-	// 만약 이전 방향문자열이 현재 방향문자열과 다르다면
-	if (PrevDirString != m_DirString)
-	{
-		m_AnimationRender->ChangeAnimation(m_DirString + _AnimationName.data());
-	}
 }
 
 void Boss_Colonel::ChangeState(BOSSSTATE _State)
@@ -237,10 +232,10 @@ void Boss_Colonel::AnimationCreate()
 								.Start = 0 , .End = 4 , .InterTime = 0.15f });
 	// 기본자세 
 	m_AnimationRender->CreateAnimation({ .AnimationName = "Left_Colonel_idle" , .ImageName = "spaceport_colonel_left.bmp" ,
-								.Start = 2 , .End = 3 , .InterTime = 0.2f });
+								.Start = 2 , .End = 4 , .InterTime = 0.2f });
 	// 텔레포트 left 
 	m_AnimationRender->CreateAnimation({ .AnimationName = "Left_Colonel_Teleport" , .ImageName = "spaceport_colonel_left.bmp" ,
-								.Start = 4 , .End = 8 , .InterTime = 0.14f , .Loop = true });
+								.Start = 5 , .End = 8 , .InterTime = 0.14f , .Loop = true });
 	// 평타 1타
 	m_AnimationRender->CreateAnimation({ .AnimationName = "Left_Colonel_first_attack" , .ImageName = "spaceport_colonel_left.bmp" ,
 								.Start = 9 , .End = 13 , .InterTime = 0.08f });
@@ -255,6 +250,32 @@ void Boss_Colonel::AnimationCreate()
 
 	// 데스 
 	m_AnimationRender->CreateAnimation({ .AnimationName = "Left_Colonel_Death" , .ImageName = "spaceport_colonel_left.bmp" ,
+							.Start = 45 , .End = 45 , .InterTime = 0.08f , .Loop = false });
+
+
+	// 오른쪽 -----------------------------------------
+
+	// 전투시작모션
+	m_AnimationRender->CreateAnimation({ .AnimationName = "Right_Colonel_Start" , .ImageName = "spaceport_colonel_right.bmp" ,
+								.Start = 0 , .End = 4 , .InterTime = 0.15f });
+
+	// 기본자세 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_Colonel_idle" , .ImageName = "spaceport_colonel_right.bmp" ,
+								.Start = 2 , .End = 4 , .InterTime = 0.2f });
+
+	// 텔레포트 right 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_Colonel_Teleport" , .ImageName = "spaceport_colonel_right.bmp" ,
+								.Start = 5 , .End = 8, .InterTime = 0.14f , .Loop = false });
+
+	// 공격1타 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_Colonel_first_attack" , .ImageName = "spaceport_colonel_right.bmp" ,
+								.Start = 9 , .End = 13, .InterTime = 0.08f , .Loop = false });
+
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_Colonel_second_attack" , .ImageName = "spaceport_colonel_right.bmp" ,
+								.Start = 14 , .End = 19, .InterTime = 0.08f , .Loop = false });
+
+	// 데스 
+	m_AnimationRender->CreateAnimation({ .AnimationName = "right_Colonel_Death" , .ImageName = "spaceport_colonel_right.bmp" ,
 							.Start = 45 , .End = 45 , .InterTime = 0.08f , .Loop = false });
 
 	
@@ -285,6 +306,8 @@ void Boss_Colonel::Idle_Start()
 
 void Boss_Colonel::Idle_Update(float _DeltaTime)
 {
+	AnimDirCheck("Colonel_idle");
+
 	if (true == IsHpZero())
 	{
 		ChangeState(BOSSSTATE::DEATH);
@@ -327,8 +350,7 @@ void Boss_Colonel::Idle_Update(float _DeltaTime)
 	}
 
 	// 랜덤한 패턴을 사용하는 코드 작성
-	
-
+	// 내일 여기서부터 다시 고고 
 }
 
 void Boss_Colonel::Idle_End()
