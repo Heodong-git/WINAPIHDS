@@ -18,6 +18,11 @@ public:
 	Effect_Explosion& operator=(const Effect_Explosion& _Other) = delete;
 	Effect_Explosion& operator=(Effect_Explosion&& _Other) noexcept = delete;
 
+	GameEngineRender* GetAnimationRender()
+	{
+		return m_AnimationRender;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

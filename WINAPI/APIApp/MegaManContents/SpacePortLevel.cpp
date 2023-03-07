@@ -16,6 +16,7 @@
 #include "Ladder.h"
 #include "Object_Door.h"
 #include "Object_Bullet.h"
+#include "Effect_Explosion.h"
 #include "ContentsEnum.h"
 
 SpacePortLevel::SpacePortLevel()
@@ -40,6 +41,15 @@ void SpacePortLevel::Loading()
 
 void SpacePortLevel::Update(float _DeltaTime)
 {
+	// 여기서 ㄱㄱ 
+	if (true == m_Boss->IsHpZero())
+	{
+		// 나중에 생각해 막혔으면 일단.
+		return;
+	}
+	
+
+
 	float CameraMoveSpeed = 1000.0f;
 
 	if (GameEngineInput::IsPress("CameraLeftMove"))
@@ -65,9 +75,15 @@ void SpacePortLevel::Update(float _DeltaTime)
 		DebugRenderSwitch();
 	}
 
-	// 섹션을 모두 클리어 한상태고, 플레이어가 지정 위치를 
+	// 섹션을 모두 클리어 한상태고, 플레이어의 X 위치가 일정 위치를 넘어섰다면 진입
 	if (true == m_SectionClear && m_Player->GetPos().x >= m_BossContactXPos)
 	{
+		// 현재 보스와 싸우는 상태가 되었다면 카메라가 고정되고 플레이어가 제위치에 도착한거임
+		// 리턴시킨다. 
+		if (true == m_Player->IsBossFight())
+		{
+			return;
+		}
 
 		// 플레이어가 y축 섹션을 모두 클리어하고 보스방의 위치에 도달했다면
 		// 여기서 플레이어의 IsBosscontact 변수 등을 만들어서 true 로 변경한다. 
@@ -86,8 +102,10 @@ void SpacePortLevel::Update(float _DeltaTime)
 
 		else if (GetCameraPos().x >= m_BossSectionPos.x)
 		{
+			// 카메라를 보스방중앙에 고정시킨다.  
 			SetCameraPos(m_BossSectionPos);
 			m_Player->ChangeState(STATEVALUE::IDLE);
+			m_Player->SetBossFight(true);
 			return;
 		}
 		
@@ -388,6 +406,15 @@ void SpacePortLevel::ImageLoad()
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("effect_hit.bmp"));
 		Image->Cut(5, 2);
 	}
+	// 타격 이펙트2
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("effect_blade_left.bmp"));
+		Image->Cut(5, 3);
+	}
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("effect_blade_right.bmp"));
+		Image->Cut(5, 3);
+	}
 	// 폭발 이펙트
 	{
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("effect_explosion.bmp"));
@@ -404,6 +431,7 @@ void SpacePortLevel::ImageLoad()
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("gunman_bullet.bmp"));
 		Image->Cut(4, 1);
 	}
+
 }
 void SpacePortLevel::ActorLoad()
 {
@@ -413,14 +441,22 @@ void SpacePortLevel::ActorLoad()
 	m_Player->SetPos({ 400, 7060 });
 	m_Player->SetStartPos(m_Player->GetPos());
 
-	UI_PlayerHpBar* HpBar = CreateActor<UI_PlayerHpBar>(ZORDER::UI);
-	HpBar->SetPos({ 100, 450 });
-	m_Player->SetHpBar(HpBar);
-	HpBar->SetPlayer(m_Player);
+	// 일단 플레이어 애니메이션부터 필요한거 다 진행하고나서 다시. 
+	m_Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);
+	m_Boss->SetPos(m_Player->GetPos() + float4 { 300, 0 });
 
 	// 일단 플레이어 애니메이션부터 필요한거 다 진행하고나서 다시. 
-	GameEngineActor* Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);
+	Boss_Colonel* Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);
 	Boss->SetPos({ 18887, 978 });
+
+	UI_PlayerHpBar* HpBar = CreateActor<UI_PlayerHpBar>(ZORDER::UI);
+	HpBar->SetPos({ 100, 450 });
+	//m_Player->SetHpBar(HpBar);
+	HpBar->SetPlayer(m_Player);
+	HpBar->SetBoss(m_Boss);
+	HpBar->GetBossHpRender()->SetPosition({ 1100 , 0 });
+
+	Boss->SetHpBar(HpBar);
 
 	// 테스트
 	/*GameEngineActor* Bullet = CreateActor<Object_Bullet>(ZORDER::OBJECT);

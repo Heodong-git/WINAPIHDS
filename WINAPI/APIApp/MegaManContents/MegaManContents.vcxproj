@@ -155,6 +155,10 @@
   <ItemGroup>
     <ClInclude Include="Boss_Colonel.h" />
     <ClInclude Include="ContentsEnum.h" />
+    <ClInclude Include="Effect_Boss_Hit.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Effect_Dash.h">
       <SubType>
       </SubType>
@@ -184,7 +188,6 @@
     <ClInclude Include="MegaManCore.h" />
     <ClInclude Include="Monster_Gunman.h" />
     <ClInclude Include="Monster_NightMareVirus.h" />
-    <ClInclude Include="Monster_Sigma.h" />
     <ClInclude Include="Player_Zero.h" />
     <ClInclude Include="SelectLevel.h" />
     <ClInclude Include="SpacePortLevel.h" />
@@ -197,6 +200,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Boss_Colonel.cpp" />
+    <ClCompile Include="Effect_Boss_Hit.cpp" />
     <ClCompile Include="Effect_Dash.cpp" />
     <ClCompile Include="Effect_Explosion.cpp" />
     <ClCompile Include="Effect_Hit.cpp" />
@@ -209,7 +213,6 @@
     <ClCompile Include="MegaManCore.cpp" />
     <ClCompile Include="Monster_Gunman.cpp" />
     <ClCompile Include="Monster_NightMareVirus.cpp" />
-    <ClCompile Include="Monster_Sigma.cpp" />
     <ClCompile Include="Player_Zero.cpp" />
     <ClCompile Include="SelectLevel.cpp" />
     <ClCompile Include="SpacePortLevel.cpp" />

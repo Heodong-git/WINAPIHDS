@@ -222,6 +222,29 @@ bool Player_Zero::CameraPosCheck()
 	return true;
 }
 
+bool Player_Zero::IsBossRoomLeftOver()
+{
+	float NextPosX = GetPos().x + float4::Left.x;
+	
+	if (NextPosX <= m_LeftMaxPosX)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool Player_Zero::IsBossRoomRightOver()
+{
+	float NextPosX = GetPos().x + float4::Right.x;
+	
+	if (NextPosX >= m_RightMaxPosX)
+	{
+		return true;
+	}
+	return false;
+}
+
 
 
 

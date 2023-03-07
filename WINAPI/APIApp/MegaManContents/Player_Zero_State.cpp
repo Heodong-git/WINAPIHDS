@@ -292,6 +292,7 @@ void Player_Zero::Move_Update(float _DeltaTime)
 {
 	// 내가 땅에 박혀있으면 한번올려주고, 내가 땅이 아니면 fall 상태로 변경
 	GroundCollisionCheck();
+
 	if (true != IsGround())
 	{
 		ChangeState(STATEVALUE::FALL);
@@ -335,6 +336,12 @@ void Player_Zero::Move_Update(float _DeltaTime)
 	// 우측키가 눌려있다면 
 	if (true == GameEngineInput::IsPress("Right_Move"))
 	{
+		// 내가지금 보스방이고, 다음 이동 위치가 우측 X값의 범위를 넘어섰다면 이동하지 않고 return 
+		if (true == m_IsBossFight && true == IsBossRoomRightOver())
+		{
+			return;
+		}
+
 		// 우측키가 눌린상태에서 좌측키를 입력하면 return
 		if (true == GameEngineInput::IsPress("Left_Move"))
 		{
@@ -370,6 +377,10 @@ void Player_Zero::Move_Update(float _DeltaTime)
 	// 왼쪽무브
 	if (true == GameEngineInput::IsPress("Left_Move"))
 	{
+		if (true == m_IsBossFight && true == IsBossRoomLeftOver())
+		{
+			return;
+		}
 		// 왼쪽못나가게 체크해주고
 		if (true == IsLeftOver())
 		{
@@ -927,6 +938,11 @@ void Player_Zero::Dash_Update(float _DeltaTime)
 	// 그냥이동이랑 똑같이하고 무브스피드를 대쉬스피드로 바꾸면 될 것 같다.  
 	if (true == GameEngineInput::IsPress("Dash") && true == GameEngineInput::IsPress("Right_Move"))
 	{
+		if (true == m_IsBossFight && true == IsBossRoomRightOver())
+		{
+			return;
+		}
+
 		// 우측 대시를 하는 도중 벽을 만나게 되면 
 		if (true == IsRightWall())
 		{
@@ -956,6 +972,10 @@ void Player_Zero::Dash_Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsPress("Dash") && true == GameEngineInput::IsPress("Left_Move"))
 	{
+		if (true == m_IsBossFight && true == IsBossRoomLeftOver())
+		{
+			return;
+		}
 		if (true == IsLeftOver())
 		{
 			return;

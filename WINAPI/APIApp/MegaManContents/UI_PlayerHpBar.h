@@ -18,6 +18,7 @@ enum class HPSTATE
 
 class GameEngineRender;
 class Player_Zero;
+class Boss_Colonel;
 class UI_PlayerHpBar: public GameEngineActor
 {
 public:
@@ -36,13 +37,27 @@ public:
 		m_Player = _Player;
 	}
 
+	void SetBoss(Boss_Colonel* _Boss)
+	{
+		m_Boss = _Boss;
+	}
+
+	GameEngineRender* GetBossHpRender()
+	{
+		return m_BossHpRender;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override;
 
 private:
-	GameEngineRender* m_AnimationRender = nullptr;
+	GameEngineRender* m_PlayerHpRender = nullptr;
+	GameEngineRender* m_BossHpRender = nullptr;
 	Player_Zero* m_Player = nullptr;
+	Boss_Colonel* m_Boss = nullptr;
+
+	void PlayerHpCheck();
+	void BossHpCheck();
 };
 

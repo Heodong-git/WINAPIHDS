@@ -22,9 +22,6 @@
     <ClInclude Include="Monster_NightMareVirus.h">
       <Filter>Monster</Filter>
     </ClInclude>
-    <ClInclude Include="Monster_Sigma.h">
-      <Filter>Monster</Filter>
-    </ClInclude>
     <ClInclude Include="TitleLevel.h">
       <Filter>Level</Filter>
     </ClInclude>
@@ -68,6 +65,9 @@
     <ClInclude Include="Object_Bullet.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="Effect_Boss_Hit.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndTitleLevel.cpp">
@@ -89,9 +89,6 @@
       <Filter>Monster</Filter>
     </ClCompile>
     <ClCompile Include="Monster_NightMareVirus.cpp">
-      <Filter>Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="Monster_Sigma.cpp">
       <Filter>Monster</Filter>
     </ClCompile>
     <ClCompile Include="SpacePortLevel.cpp">
@@ -138,6 +135,9 @@
     </ClCompile>
     <ClCompile Include="Object_Bullet.cpp">
       <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_Boss_Hit.cpp">
+      <Filter>Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

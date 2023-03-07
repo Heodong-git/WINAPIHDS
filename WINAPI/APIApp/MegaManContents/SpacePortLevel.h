@@ -3,6 +3,7 @@
 #include <GameEngineCore/GameEngineResources.h>
 
 class Player_Zero;
+class Boss_Colonel;
 class SpacePortLevel : public GameEngineLevel
 {
 public:
@@ -53,6 +54,7 @@ private:
 	// 사운드재생용 
 	GameEngineSoundPlayer BGMPlayer;
 	Player_Zero* m_Player = nullptr;
+	Boss_Colonel* m_Boss = nullptr;
 	// 시작카메라좌표
 	float4	     m_StartCameraPos = float4::Zero;
 	float4		 m_FirstSectionPos = float4{ 14800, 6240 };

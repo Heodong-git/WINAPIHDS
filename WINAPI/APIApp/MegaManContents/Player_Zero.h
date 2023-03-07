@@ -94,6 +94,21 @@ public:
 		return m_MoveSpeed;
 	}
 
+	inline void SetBossFight(bool _Value)
+	{
+		m_IsBossFight = _Value;
+	}
+
+	inline bool IsBossFight()
+	{
+		return m_IsBossFight;
+	}
+
+	GameEngineCollision* GetSaberCollider() const
+	{
+		return m_SaberCollider;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -115,7 +130,12 @@ private:
 	bool		 m_IsHit = false;
 	float		 m_DoorCol_MoveSpeed = 100.0f;
 
+	// 수치확인해서 초기화 
+	float		 m_LeftMaxPosX = 17800.0f;
+	float		 m_RightMaxPosX = 19050.0f;
+
 	bool		 m_IsBossContact = false;
+	bool		 m_IsBossFight = false;
 
 
 	UI_PlayerHpBar* m_HpBar = nullptr;
@@ -197,6 +217,10 @@ private:
 	// 왼쪽으로 못빠져나가게
 	bool IsLeftOver();
 	bool CameraPosCheck();
+
+	// 보스방일 경우에 왼쪽 오른쪽을 전부 체크해야함
+	bool IsBossRoomLeftOver();
+	bool IsBossRoomRightOver();
 
 	// 상태 업데이트 
 	void UpdateState(float _DeltaTime);
