@@ -5,9 +5,9 @@ enum class BOSSSTATE
 {
 	START,
 	IDLE,
-	TELEPORT,
 	FIRST_ATTACK,
 	SECOND_ATTACK,
+	TELEPORT,
 	LIGHTNING_PATTERN,
 	DEATH,
 	NONE,
@@ -62,11 +62,10 @@ private:
 	float  m_MaxInvincibility = 0.45f;
 	int	   m_Hp = 10;
 	
-	bool   m_Teleport = false;
-	bool   m_Lightning = false;
+	bool   m_SkillUse = false;
 
-	float   m_TeleportCoolDown = 5.0f;
-	float   m_LightningCoolDown = 6.0f;
+	float   m_SkillCoolDown = 4.0f;
+	float   m_SkillCoolDownMax = 4.0f;
 
 	UI_PlayerHpBar* m_HpBar = nullptr;
 	bool		  m_Invincibility = false;

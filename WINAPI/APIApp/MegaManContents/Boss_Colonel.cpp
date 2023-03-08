@@ -2,6 +2,7 @@
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineRender.h>
 #include <GameEngineCore/GameEngineLevel.h>
+#include <GameEngineBase/GameEngineRandom.h>
 #include <time.h>
 #include "SpacePortLevel.h"
 #include "Effect_Hit.h"
@@ -314,27 +315,17 @@ void Boss_Colonel::Idle_Update(float _DeltaTime)
 		return;
 	}
 
-	if (true == m_Teleport)
+	if (true == m_SkillUse)
 	{
-		m_TeleportCoolDown -= _DeltaTime;
+		m_SkillCoolDown -= _DeltaTime;
 
-		if (m_TeleportCoolDown <= 0.0f)
+		if (m_SkillCoolDown <= 0.0f)
 		{
-			m_TeleportCoolDown = 0.0f;
-			m_Teleport = false;
+			m_SkillCoolDown = m_SkillCoolDownMax;
+			m_SkillUse = false;
 		}
 	}
 
-	if (true == m_Lightning)
-	{
-		m_LightningCoolDown -= _DeltaTime;
-
-		if (m_LightningCoolDown <= 0.0f)
-		{
-			m_LightningCoolDown = 0.0f;
-			m_Lightning = false;
-		}
-	}
 
 	// 여기서 스타트 모션이 끝나면 Hp바를 보이게해 
 	if (nullptr != m_HpBar && false == m_HpBar->GetBossHpRender()->IsUpdate())
@@ -346,11 +337,41 @@ void Boss_Colonel::Idle_Update(float _DeltaTime)
 			{
 				m_HpBar->GetBossHpRender()->On();
 			}
+
 		}
 	}
 
-	// 랜덤한 패턴을 사용하는 코드 작성
-	// 내일 여기서부터 다시 고고 
+	if (false == m_HpBar->GetBossHpRender()->IsUpdate())
+	{
+		return;
+	}
+
+	int RandomValue = GameEngineRandom::MainRandom.RandomInt(static_cast<int>(BOSSSTATE::TELEPORT), static_cast<int>(BOSSSTATE::LIGHTNING_PATTERN));
+	switch (static_cast<BOSSSTATE>(RandomValue))
+	{
+	
+	case BOSSSTATE::TELEPORT:
+	{
+		if (false == m_SkillUse)
+		{
+			m_SkillUse = true;
+			ChangeState(BOSSSTATE::TELEPORT);
+			return;
+		}
+	}
+		break;
+	case BOSSSTATE::LIGHTNING_PATTERN:
+	{
+		if (false == m_SkillUse)
+		{
+			m_SkillUse = true;
+			ChangeState(BOSSSTATE::LIGHTNING_PATTERN);
+			return;
+		}
+	}
+		break;
+	}
+	
 }
 
 void Boss_Colonel::Idle_End()

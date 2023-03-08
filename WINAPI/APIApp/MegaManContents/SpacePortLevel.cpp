@@ -447,20 +447,19 @@ void SpacePortLevel::ActorLoad()
 
 	// 일단 플레이어 애니메이션부터 필요한거 다 진행하고나서 다시. 
 	m_Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);
-	m_Boss->SetPos(m_Player->GetPos() + float4 { 300, 0 });
+	m_Boss->SetPos(m_Player->GetPos() + float4 { 18887, 978 });
 
 	// 일단 플레이어 애니메이션부터 필요한거 다 진행하고나서 다시. 
-	Boss_Colonel* Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);
-	Boss->SetPos({ 18887, 978 });
+	/*Boss_Colonel* Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);
+	Boss->SetPos({ 18887, 978 });*/
 
 	UI_PlayerHpBar* HpBar = CreateActor<UI_PlayerHpBar>(ZORDER::UI);
 	HpBar->SetPos({ 100, 450 });
-	//m_Player->SetHpBar(HpBar);
 	HpBar->SetPlayer(m_Player);
 	HpBar->SetBoss(m_Boss);
 	HpBar->GetBossHpRender()->SetPosition({ 1100 , 0 });
 
-	Boss->SetHpBar(HpBar);
+	m_Boss->SetHpBar(HpBar);
 
 	// 테스트
 	/*GameEngineActor* Bullet = CreateActor<Object_Bullet>(ZORDER::OBJECT);
