@@ -17,6 +17,7 @@
 #include "Object_Door.h"
 #include "Object_Bullet.h"
 #include "Effect_Explosion.h"
+#include "Effect_Lightning.h"
 #include "ContentsEnum.h"
 
 SpacePortLevel::SpacePortLevel()
@@ -42,15 +43,44 @@ void SpacePortLevel::Loading()
 void SpacePortLevel::Update(float _DeltaTime)
 {
 	// 여기서 ㄱㄱ 
-	if (true == m_Boss->IsHpZero())
+	if (false == m_Boss->GetCollider()->IsUpdate())
 	{
-		// 나중에 생각해 막혔으면 일단.
+		BGMPlayer.Stop();
+
+		if (false == m_StageClearBGM)
+		{
+			m_StageClearBGM = true;
+			m_ClearBGM = GameEngineResources::GetInst().SoundPlayToControl("Stage_clear.wav");
+			m_ClearBGM.LoopCount(1);
+			m_ClearBGM.Volume(0.2f);
+		}
+
+		m_LevelChangeCount -= _DeltaTime;
+
+		if (0.0f > m_LevelChangeCount)
+		{
+			m_LevelChangeCount = 0.0f;
+			if (m_Player->GetState() != STATEVALUE::STAGE_CLEAR)
+			{
+				m_Player->ChangeState(STATEVALUE::STAGE_CLEAR);
+			}
+		}
+
 		return;
 	}
 	
+	if (true == m_Player->IsBossContact() && false == m_BossRoomSound)
+	{
+		m_BossRoomSound = true;
+		// 여기서 보스방 사운드 출력한다 
+		BGMPlayer.Stop();
+		BGMPlayer = GameEngineResources::GetInst().SoundPlayToControl("Boss_Stage_bgm.wav");
+		BGMPlayer.LoopCount(100);
+		BGMPlayer.Volume(0.1f);
+	}
 
 
-	float CameraMoveSpeed = 1000.0f;
+	/*float CameraMoveSpeed = 1000.0f;
 
 	if (GameEngineInput::IsPress("CameraLeftMove"))
 	{
@@ -67,7 +97,7 @@ void SpacePortLevel::Update(float _DeltaTime)
 	if (GameEngineInput::IsPress("CameraUpMove"))
 	{
 		SetCameraMove(float4::Up * _DeltaTime * CameraMoveSpeed);
-	}
+	}*/
 
 	// q 키가 눌렸다면 디버그모드 on , off 
 	if (GameEngineInput::IsDown("DebugRenderSwitch"))
@@ -316,6 +346,7 @@ void SpacePortLevel::SoundLoad()
 	Dir.Move("SpaceportLevel");
 
 	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("Spaceport_bgm.wav"));
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("Boss_stage_bgm.wav"));
 	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_attack_first.wav"));
 	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_attack_second.wav"));
 	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_attack_third.wav"));
@@ -326,6 +357,16 @@ void SpacePortLevel::SoundLoad()
 	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_wall_jump_sound.wav"));
 	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_wall_effect_sound.wav"));
 	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_landing_sound.wav"));	
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_clear.wav"));
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_ready.wav"));
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_hit.wav"));
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_bighit.wav"));
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("player_tiring.wav"));
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("fire.wav"));
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("open_door.wav"));
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("close_door.wav"));
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("hit_sound.wav"));
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("stage_clear.wav"));
 }
 
 
@@ -424,6 +465,11 @@ void SpacePortLevel::ImageLoad()
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("effect_explosion.bmp"));
 		Image->Cut(8, 2);
 	}
+	// 전격 이펙트
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("effect_lightning.bmp"));
+		Image->Cut(3, 1);
+	}
 
 	// 문
 	{
@@ -435,6 +481,8 @@ void SpacePortLevel::ImageLoad()
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("gunman_bullet.bmp"));
 		Image->Cut(4, 1);
 	}
+
+
 
 }
 void SpacePortLevel::ActorLoad()
@@ -529,16 +577,14 @@ void SpacePortLevel::ActorLoad()
 	Object_Door* NewDoor2 = CreateActor<Object_Door>(ZORDER::OBJECT);
 	NewDoor2->SetPos(float4{ 16375, 975 });
 	NewDoor2->GetCollider()->SetDebugRenderType(CT_Rect);
-	NewDoor2->GetCollider()->SetScale({ 50, 350 });
+	NewDoor2->GetCollider()->SetScale({ 150, 350 });
 	NewDoor2->GetCollider()->SetPosition({ 0, -150 });
 
 	Object_Door* NewDoor3 = CreateActor<Object_Door>(ZORDER::OBJECT);
 	NewDoor3->SetPos(float4{ 17654, 975 });
 	NewDoor3->GetCollider()->SetDebugRenderType(CT_Rect);
-	NewDoor3->GetCollider()->SetScale({ 100, 350 });
-	NewDoor3->GetCollider()->SetPosition({ 0, -150 });
-
-	
+	NewDoor3->GetCollider()->SetScale({ 150, 350 });
+	NewDoor3->GetCollider()->SetPosition({ 0, -150 });	
 }
 void SpacePortLevel::CameraLoad()
 {

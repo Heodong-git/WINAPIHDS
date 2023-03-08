@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 #include <GameEngineCore/GameEngineResources.h>
+#include <GameEngineCore/GameEngineResources.h>
 
 // Ό³Έν :
 class GameEngineRender;
@@ -36,7 +37,8 @@ protected:
 private:
 	GameEngineRender* m_AnimationRender = nullptr;
 	GameEngineCollision* m_Collider = nullptr;
-	GameEngineSoundPlayer m_OpenSound;
+	GameEngineSoundPlayer m_Sound;
 
+	bool			    m_Open = false;
 	bool				m_IsCollision = false;
 };

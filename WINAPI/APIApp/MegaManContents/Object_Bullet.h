@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
+#include <GameEngineCore/GameEngineResources.h>
 
 // Ό³Έν :
 class Object_Bullet : public GameEngineActor
@@ -28,6 +29,7 @@ protected:
 private:
 	GameEngineRender* m_AnimationRender = nullptr;
 	GameEngineCollision* m_Collider = nullptr;
+	GameEngineSoundPlayer m_Sound;
 
 	float4				m_MoveDir = float4::Left;
 	float				m_MoveSpeed = 700.0f;

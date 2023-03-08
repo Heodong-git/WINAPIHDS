@@ -8,6 +8,7 @@
 #include "Effect_Hit.h"
 #include "Effect_Boss_Hit.h"
 #include "Effect_Explosion.h"
+#include "Effect_Lightning.h"
 #include "Player_Zero.h"
 #include "UI_PlayerHpBar.h"
 #include "ContentsEnum.h"
@@ -41,9 +42,6 @@ void Boss_Colonel::Start()
 void Boss_Colonel::Update(float _DeltaTime)
 {
 	// 여기서 플레이어가 fight 상태가 아니라면 업데이트 하지말고 return 
-
-	UpdateState(_DeltaTime);
-
 	if (true == m_Invincibility)
 	{
 		if (m_InvincibilityTime >= m_MaxInvincibility)
@@ -70,8 +68,15 @@ void Boss_Colonel::Update(float _DeltaTime)
 				// 플레이어의 x 축위치가 
 				float4 PlayerPos = Level->GetPlayer()->GetPos();
 				float Range = GetPos().x - PlayerPos.x;
+
+				m_Sound = GameEngineResources::GetInst().SoundPlayToControl("hit_sound.wav");
+				m_Sound.LoopCount(1);
+				m_Sound.Volume(0.2f);
+
 				if (0 <= Range)
 				{
+					
+
 					Effect_Boss_Hit* Effect = GetLevel()->CreateActor<Effect_Boss_Hit>();
 					Effect->SetPos(GetPos() + float4{ -70, -150 });
 					Effect->GetEffectRender()->ChangeAnimation("right_blade_hit_effect");
@@ -92,7 +97,7 @@ void Boss_Colonel::Update(float _DeltaTime)
 		}
 	}
 
-	
+	UpdateState(_DeltaTime);
 }
 
 void Boss_Colonel::Render(float _DeltaTime)
@@ -125,14 +130,14 @@ void Boss_Colonel::AnimDirCheck(const std::string_view& _AnimationName)
 		// 플레이어 위치를 받아왔어
 		float4 PlayerPos = Level->GetPlayer()->GetPos();
 		float Range = GetPos().x - PlayerPos.x;
-		if (0 >= Range)
-		{
-			m_DirString = "Right_";
-		}
-
-		else if (0 < Range)
+		if (0 < Range)
 		{
 			m_DirString = "Left_";
+		}
+
+		else
+		{
+			m_DirString = "Right_";
 		}
 	}
 
@@ -392,11 +397,24 @@ void Boss_Colonel::Teleport_Update(float _DeltaTime)
 		// 범위안에 들어왔다면 shot state로 변경인데.. 흠
 		if (nullptr != Level)
 		{
-			// 플레이어 x축만 가지고 어떻게 안되나?? 어 흠
-			// 일단 이렇게해 
 			float4 PlayerPos = Level->GetPlayer()->GetPos();
 			float PlayerPosX = PlayerPos.x;
-			SetPos(PlayerPos + float4 { 200, 0 });
+
+			int RandomValue = GameEngineRandom::MainRandom.RandomInt(1, 2);
+			
+			if (1 == RandomValue)
+			{
+				float4 MovePos = PlayerPos + float4{ 150, 0 };
+				SetPos({ MovePos.x , GetPos().y });
+				
+			}
+
+			else if (2 == RandomValue)
+			{
+				float4 MovePos = PlayerPos + float4{ -150, 0 };
+				SetPos({ MovePos.x , GetPos().y });
+			}
+			
 		}
 		ChangeState(BOSSSTATE::FIRST_ATTACK);
 		return;
@@ -419,10 +437,29 @@ void Boss_Colonel::First_Attack_Update(float _DeltaTime)
 		ChangeState(BOSSSTATE::SECOND_ATTACK);
 		return;
 	}
-
+	AnimDirCheck("colonel_first_attack");
 	// 여기서는 플레이어처럼 충돌체 만들어야함 
-	m_AttackCollider->On();
-	m_AttackCollider->SetPosition(float4{ -150, -100 });
+
+	// 플레이어의 위치가 나보다 왼쪽에 있다면 ~ 오른쪽에 있다면 ~ 코드 작성해야함 
+	SpacePortLevel* Level = dynamic_cast<SpacePortLevel*>(GetLevel());
+	// 범위안에 들어왔다면 shot state로 변경인데.. 흠
+	if (nullptr != Level)
+	{
+		// 플레이어 위치를 받아왔어
+		float4 PlayerPos = Level->GetPlayer()->GetPos();
+		float Range = GetPos().x - PlayerPos.x;
+		if (0 < Range)
+		{
+			m_AttackCollider->SetPosition(float4{ -150, -100 });
+			m_AttackCollider->On();
+		}
+
+		else
+		{
+			m_AttackCollider->SetPosition(float4{ 150, -100 });
+			m_AttackCollider->On();
+		}
+	}
 }
 
 void Boss_Colonel::First_Attack_End()
@@ -443,9 +480,26 @@ void Boss_Colonel::Second_Attack_Update(float _DeltaTime)
 		return;
 	}
 
-	// 여기서는 플레이어처럼 충돌체 만들어야함 
-	m_AttackCollider->On();
-	m_AttackCollider->SetPosition(float4{ -150, -100 });
+	AnimDirCheck("colonel_second_attack");
+	SpacePortLevel* Level = dynamic_cast<SpacePortLevel*>(GetLevel());
+	// 범위안에 들어왔다면 shot state로 변경인데.. 흠
+	if (nullptr != Level)
+	{
+		// 플레이어 위치를 받아왔어
+		float4 PlayerPos = Level->GetPlayer()->GetPos();
+		float Range = GetPos().x - PlayerPos.x;
+		if (0 < Range)
+		{
+			m_AttackCollider->SetPosition(float4{ -150, -100 });
+			m_AttackCollider->On();
+		}
+
+		else
+		{
+			m_AttackCollider->SetPosition(float4{ 150, -100 });
+			m_AttackCollider->On();
+		}
+	}
 }
 
 void Boss_Colonel::Second_Attack_End()
@@ -457,12 +511,38 @@ void Boss_Colonel::First_Pattern_Start()
 {
 	// 일단 임시로 이걸로해놓고 
 	m_AnimationRender->ChangeAnimation("left_colonel_lightning");
+
+	if (false == m_Lightning)
+	{
+		Effect_Lightning* Effect = GetLevel()->CreateActor<Effect_Lightning>();
+		Effect->SetPos(GetPos() + float4{ -30 , -470 });
+		
+		m_Lightning = true;
+	}
 }
 
 void Boss_Colonel::First_Pattern_Update(float _DeltaTime)
 {
 	if (true == m_AnimationRender->IsAnimationEnd())
 	{
+		// 애니메이션이 끝나면 맵의 특정 위치에 라이트닝이펙트생성
+		// 위치 6개 확인해서 적고 ㄱㄱ 
+		// 17809 , 978
+		Effect_Lightning* Effect = GetLevel()->CreateActor<Effect_Lightning>();
+		Effect->SetPos(float4 { 17809 , 978});
+
+		Effect = GetLevel()->CreateActor<Effect_Lightning>();
+		Effect->SetPos(float4{ 18109 , 978 });
+
+		Effect = GetLevel()->CreateActor<Effect_Lightning>();
+		Effect->SetPos(float4{ 18409 , 978 });
+
+		Effect = GetLevel()->CreateActor<Effect_Lightning>();
+		Effect->SetPos(float4{ 18709 , 978 });
+
+		Effect = GetLevel()->CreateActor<Effect_Lightning>();
+		Effect->SetPos(float4{ 19009 , 978 });
+		
 		ChangeState(BOSSSTATE::IDLE);
 		return;
 	}
@@ -470,6 +550,7 @@ void Boss_Colonel::First_Pattern_Update(float _DeltaTime)
 
 void Boss_Colonel::First_Pattern_End()
 {
+	m_Lightning = false;
 }
 
 void Boss_Colonel::Death_Start()

@@ -33,6 +33,9 @@ void Monster_GunMan::ChangeState(GunmanState _State)
 	case GunmanState::SHOT:
 		Shot_Start();
 		break;
+	case GunmanState::MOVE:
+		Move_Start();
+		break;
 	}
 
 	switch (m_PrevState)
@@ -42,6 +45,9 @@ void Monster_GunMan::ChangeState(GunmanState _State)
 		break;
 	case GunmanState::SHOT:
 		Shot_End();
+		break;
+	case GunmanState::MOVE:
+		Move_End();
 		break;
 	}
 }
@@ -55,6 +61,9 @@ void Monster_GunMan::UpdateState(float _DeltaTime)
 		break;
 	case GunmanState::SHOT:
 		Shot_Update(_DeltaTime);
+		break;
+	case GunmanState::MOVE:
+		Move_Update(_DeltaTime);
 		break;
 	}
 }
@@ -132,6 +141,18 @@ void Monster_GunMan::Shot_End()
 {
 }
 
+void Monster_GunMan::Move_Start()
+{
+}
+
+void Monster_GunMan::Move_Update(float _DeltaTime)
+{
+}
+
+void Monster_GunMan::Move_End()
+{
+}
+
 Monster_GunMan::Monster_GunMan()
 {
 }
@@ -164,7 +185,7 @@ void Monster_GunMan::Start()
 	m_AnimationRender->CreateAnimation({ .AnimationName = "Right_Gunman_idle" , .ImageName = "spaceport_gunman_right.bmp" ,
 								.Start = 1 , .End = 7 , .InterTime = 0.16f });
 	m_AnimationRender->CreateAnimation({ .AnimationName = "Right_Gunman_Shot" , .ImageName = "spaceport_gunman_right.bmp" ,
-								.Start = 8 , .End = 11 , .InterTime = 0.15f });
+								.Start = 8 , .End = 11 , .InterTime = 0.15f , .Loop = false });
 	m_AnimationRender->CreateAnimation({ .AnimationName = "Right_Gunman_Move" , .ImageName = "spaceport_gunman_right.bmp" ,
 								.Start = 12 , .End = 18 , .InterTime = 0.1f });
 	m_AnimationRender->CreateAnimation({ .AnimationName = "Right_Gunman_throw" , .ImageName = "spaceport_gunman_right.bmp" ,
@@ -220,6 +241,10 @@ void Monster_GunMan::Update(float _DeltaTime)
 
 		this->Death();
 		
+		m_Sound = GameEngineResources::GetInst().SoundPlayToControl("fire.wav");
+		m_Sound.LoopCount(1);
+		m_Sound.Volume(0.2f);
+
 		Effect_Explosion* E_Effect = GetLevel()->CreateActor<Effect_Explosion>();
 		E_Effect->SetPos(GetPos());
 

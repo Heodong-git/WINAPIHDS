@@ -41,6 +41,15 @@ void Object_Door::Update(float _DeltaTime)
 	{
 		// 내 애니메이션을 변경하고
 		m_AnimationRender->ChangeAnimation("open_door");
+		
+		if (false == m_Open)
+		{
+			m_Sound = GameEngineResources::GetInst().SoundPlayToControl("open_door.wav");
+			m_Sound.LoopCount(1);
+			m_Sound.Volume(0.2f);
+
+			m_Open = true;
+		}
 		// 레벨을 받아와서
 		SpacePortLevel* Level = dynamic_cast<SpacePortLevel*>(GetLevel());
 		// 예외처리하고
@@ -58,6 +67,14 @@ void Object_Door::Update(float _DeltaTime)
 
 	else
 	{
+		if (m_Open == true)
+		{
+			m_Sound = GameEngineResources::GetInst().SoundPlayToControl("close_door.wav");
+			m_Sound.LoopCount(1);
+			m_Sound.Volume(0.2f);
+
+			m_Open = false;
+		}
 		m_AnimationRender->ChangeAnimation("close_door");
 		return;
 	}

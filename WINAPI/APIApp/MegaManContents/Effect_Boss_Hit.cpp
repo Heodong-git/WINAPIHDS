@@ -18,9 +18,9 @@ void Effect_Boss_Hit::Start()
 	m_EffectRender->SetScale(float4{ 500, 500 });
 
 	m_EffectRender->CreateAnimation({ .AnimationName = "left_blade_hit_effect" , .ImageName = "effect_blade_left.bmp",
-									   .Start = 8 , .End = 12 , .InterTime = 0.08f , .Loop = false });
+									   .Start = 8 , .End = 12 , .InterTime = 0.06f , .Loop = false });
 	m_EffectRender->CreateAnimation({ .AnimationName = "right_blade_hit_effect" , .ImageName = "effect_blade_right.bmp",
-									   .Start = 8 , .End = 12 , .InterTime = 0.08f , .Loop = false });
+									   .Start = 8 , .End = 12 , .InterTime = 0.06f , .Loop = false });
 }
 
 void Effect_Boss_Hit::Update(float _DeltaTime)

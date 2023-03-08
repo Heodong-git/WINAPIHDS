@@ -101,7 +101,12 @@ void UI_PlayerHpBar::Render(float _DeltaTime)
 
 void UI_PlayerHpBar::PlayerHpCheck()
 {
-	const int PlayerHp = m_Player->GetHp();
+	int PlayerHp = m_Player->GetHp();
+
+	if (PlayerHp <= 0)
+	{
+		PlayerHp = 0;
+	}
 
 	switch (static_cast<HPSTATE>(PlayerHp))
 	{
@@ -143,7 +148,7 @@ void UI_PlayerHpBar::PlayerHpCheck()
 			// 요기는 ChangeStateDeath 만들고
 			// 죽는애니메이션 출력하고 
 			// 애니메이션 출력끝나면 Death 로 변경? 하면되나?
-			m_Player->Death();
+			// m_Player->Death();
 		}
 	}
 	break;
@@ -152,7 +157,12 @@ void UI_PlayerHpBar::PlayerHpCheck()
 
 void UI_PlayerHpBar::BossHpCheck()
 {
-	const int BossHp = m_Boss->GetHp();
+	int BossHp = m_Boss->GetHp();
+
+	if (0 >= BossHp)
+	{
+		BossHp = 0;
+	}
 
 	switch (static_cast<HPSTATE>(BossHp))
 	{

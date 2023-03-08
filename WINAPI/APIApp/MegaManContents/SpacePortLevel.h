@@ -22,6 +22,11 @@ public:
 		return m_Player;
 	}
 
+	inline Boss_Colonel* GetBoss()
+	{
+		return m_Boss;
+	}
+
 	inline float4 GetStartCameraPos()
 	{
 		return m_StartCameraPos;
@@ -42,6 +47,11 @@ public:
 		return m_BossSectionPos;
 	}
 
+	inline bool IsStageClear()
+	{
+		return m_StageClearBGM;
+	}
+
 protected:
 	virtual void Loading() override;
 	virtual void Update(float _DeltaTime) override;
@@ -53,6 +63,7 @@ protected:
 private:
 	// 사운드재생용 
 	GameEngineSoundPlayer BGMPlayer;
+	GameEngineSoundPlayer m_ClearBGM;
 	Player_Zero* m_Player = nullptr;
 	Boss_Colonel* m_Boss = nullptr;
 	// 시작카메라좌표
@@ -74,6 +85,9 @@ private:
 	float		 m_CameraMoveSpeed = 500.0f;
 	float        m_BossRoomSpeed = 100.0f;
 
+	bool		 m_StageClearBGM = false;
+	float		 m_LevelChangeCount = 7.0f;
+
 	void SoundLoad();
 	void ImageLoad();
 	void ActorLoad();
@@ -94,5 +108,6 @@ private:
 
 	// 보스룸 진입시 사용
 	bool				m_BossSection = false;
+	bool				m_BossRoomSound = false;
 };
 

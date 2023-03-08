@@ -1,11 +1,13 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
+#include <GameEngineCore/GameEngineResources.h>
 
 
 enum class GunmanState
 {
 	IDLE,
 	SHOT,
+	MOVE,
 };
 
 class GameEngineCollision;
@@ -41,10 +43,14 @@ private:
 	float	    m_ShotRange = 800.0f;
 	float	    m_ShotCooldown = 0.0f;
 	float		m_ShotMaxCooldown = 2.5f;
+
+	float		m_MoveRange = 200.0f;
 	
 	GunmanState m_PrevState = GunmanState::IDLE;
 	GunmanState m_CurState = GunmanState::IDLE;
 	GunmanState m_NextState = GunmanState::IDLE;
+
+	GameEngineSoundPlayer m_Sound;
 	
 	void AnimDirCheck(const std::string_view& _AnimationName);
 
@@ -58,5 +64,9 @@ private:
 	void Shot_Start();
 	void Shot_Update(float _DeltaTime);
 	void Shot_End();
+
+	void Move_Start();
+	void Move_Update(float _DeltaTime);
+	void Move_End();
 };
 

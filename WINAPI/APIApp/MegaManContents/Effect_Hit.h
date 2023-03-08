@@ -22,10 +22,6 @@ public:
 		return m_HitRender;
 	}
 
-	GameEngineRender* GetBossHitRender() const
-	{
-		return m_BossHitRender;
-	}
 
 protected:
 	void Start() override;
@@ -33,6 +29,4 @@ protected:
 
 private:
 	GameEngineRender* m_HitRender = nullptr;
-	GameEngineRender* m_BossHitRender = nullptr;
-
 };

@@ -68,6 +68,12 @@
     <ClInclude Include="Effect_Boss_Hit.h">
       <Filter>Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Effect_Lightning.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_wall.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndTitleLevel.cpp">
@@ -137,6 +143,12 @@
       <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="Effect_Boss_Hit.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_Lightning.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_wall.cpp">
       <Filter>Effect</Filter>
     </ClCompile>
   </ItemGroup>

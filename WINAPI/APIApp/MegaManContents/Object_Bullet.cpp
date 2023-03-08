@@ -49,6 +49,10 @@ void Object_Bullet::Update(float _DeltaTime)
 		Effect_Hit* Hit_Effect = GetLevel()->CreateActor<Effect_Hit>();
 		Hit_Effect->SetPos(GetPos());
 
+		m_Sound = GameEngineResources::GetInst().SoundPlayToControl("fire.wav");
+		m_Sound.LoopCount(1);
+		m_Sound.Volume(0.2f);
+
 		this->Death();
 
 		Effect_Explosion* E_Effect = GetLevel()->CreateActor<Effect_Explosion>();

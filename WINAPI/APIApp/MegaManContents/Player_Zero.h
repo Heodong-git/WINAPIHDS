@@ -25,6 +25,8 @@ enum class STATEVALUE
 	RIDE_UP,
 	DOOR_CONTACT,
 	HIT,
+	BIGHIT,
+	STAGE_CLEAR
 };
 
 class GameEngineCollision;
@@ -37,6 +39,8 @@ class Player_Zero : public GameEngineActor
 	friend class Monster_GunMan;
 	friend class Object_Bullet;
 	friend class Object_Door;
+	friend class Effect_Lightning;
+
 public:
 	// constrcuter destructer
 	Player_Zero();
@@ -137,6 +141,8 @@ private:
 	bool		 m_IsBossContact = false;
 	bool		 m_IsBossFight = false;
 
+	bool		 m_IsTiring = false;
+
 
 	UI_PlayerHpBar* m_HpBar = nullptr;
 	int			 m_Hp = 10;
@@ -173,6 +179,9 @@ private:
 	GameEngineSoundPlayer m_JumpSound;
 	GameEngineSoundPlayer m_WallSound;
 	GameEngineSoundPlayer m_LandingSound;
+	GameEngineSoundPlayer m_ClearSound;
+	GameEngineSoundPlayer m_ReadySound;
+	GameEngineSoundPlayer m_HitSound;
 	
 	// 디버그용
 	inline void DebugSwitch()
@@ -221,6 +230,10 @@ private:
 	// 보스방일 경우에 왼쪽 오른쪽을 전부 체크해야함
 	bool IsBossRoomLeftOver();
 	bool IsBossRoomRightOver();
+	bool IsTiring()
+	{
+		return GetHp() <= 4;
+	}
 
 	// 상태 업데이트 
 	void UpdateState(float _DeltaTime);
@@ -293,5 +306,13 @@ private:
 	void Hit_Start();
 	void Hit_Update(float _DeltaTime);
 	void Hit_End();
+
+	void BigHit_Start();
+	void BigHit_Update(float _DeltaTime);
+	void BigHit_End();
+
+	void StageClear_Start();
+	void StageClear_Update(float _DeltaTime);
+	void StageClear_End();
 };
 

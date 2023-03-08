@@ -3,6 +3,7 @@
 #include <GameEngineBase/GameEnginePath.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEngineCore/GameEngineCore.h>
 #include <GameEngineCore/GameEngineResources.h>
 #include <GameEngineCore/GameEngineRender.h>
 #include <GameEngineCore/GameEngineLevel.h>
@@ -73,6 +74,12 @@ void Player_Zero::ChangeState(STATEVALUE _State)
 	case STATEVALUE::HIT:
 		Hit_Start();
 		break;
+	case STATEVALUE::BIGHIT:
+		BigHit_Start();
+		break;
+	case STATEVALUE::STAGE_CLEAR:
+		StageClear_Start();
+		break;
 	}
 
 	// 다음 상태의 Start 함수를 호출 한 이후에 
@@ -129,6 +136,12 @@ void Player_Zero::ChangeState(STATEVALUE _State)
 		break;
 	case STATEVALUE::HIT:
 		Hit_End();
+		break;
+	case STATEVALUE::BIGHIT:
+		BigHit_End();
+		break;
+	case STATEVALUE::STAGE_CLEAR:
+		StageClear_End();
 		break;
 	}
 }
@@ -189,16 +202,32 @@ void Player_Zero::UpdateState(float _DeltaTime)
 	case STATEVALUE::HIT:
 		Hit_Update(_DeltaTime);
 		break;
+	case STATEVALUE::BIGHIT:
+		BigHit_Update(_DeltaTime);
+		break;
+	case STATEVALUE::STAGE_CLEAR:
+		StageClear_Update(_DeltaTime);
+		break;
 	}
 }
 
 // -----------------리콜 완료---------------------
 void Player_Zero::Recall_Start()
 {
-	m_SpLevel = dynamic_cast<SpacePortLevel*>(GetLevel());
+	// 아 여기서 그냥 받고있었는데 왜 계속받아서썼지?? ㅋㅋㅋㅋㅋㅋ 
+	SpacePortLevel* Level = dynamic_cast<SpacePortLevel*>(GetLevel());
+	if (nullptr != Level && nullptr == m_SpLevel)
+	{
+		m_SpLevel = Level;
+	}
+
+	m_ReadySound = GameEngineResources::GetInst().SoundPlayToControl("player_ready.wav");
+	m_ReadySound.LoopCount(1);
+	m_ReadySound.Volume(0.2f);
 	m_RecallSound = GameEngineResources::GetInst().SoundPlayToControl("player_recall_sound.wav");
 	m_RecallSound.LoopCount(1);
 	m_RecallSound.Volume(0.2f);
+
 	// 플레이어 방향체크 + 애니메이션 출력
 	AnimDirCheck("recall");
 }
@@ -220,12 +249,33 @@ void Player_Zero::Recall_End()
 
 void Player_Zero::Idle_Start()
 {
-	// 방향체크 후 애니메이션 출력
+	if (true == IsTiring())
+	{
+		if (false == m_IsTiring)
+		{
+			m_ReadySound = GameEngineResources::GetInst().SoundPlayToControl("player_tiring.wav");
+			m_ReadySound.LoopCount(1);
+			m_ReadySound.Volume(0.2f);
+			m_IsTiring = true;
+		}
+		AnimDirCheck("Idle_tiring");
+		return;
+	}
+
 	AnimDirCheck("Idle");
 }
 
 void Player_Zero::Idle_Update(float _DeltaTime)
 {
+	SpacePortLevel* Level = dynamic_cast<SpacePortLevel*>(GetLevel());
+	if (nullptr != Level)
+	{
+		if (true == Level->IsStageClear())
+		{
+			return;
+		}
+	}
+
 
 	if (true == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::OBJECT_BULLET), .TargetColType = CT_CirCle, .ThisColType = CT_CirCle }))
 	{
@@ -1399,7 +1449,9 @@ void Player_Zero::Door_Contact_End()
 
 void Player_Zero::Hit_Start()
 {
-
+	m_HitSound = GameEngineResources::GetInst().SoundPlayToControl("player_hit.wav");
+	m_HitSound.LoopCount(1);
+	m_HitSound.Volume(0.2f);
 	AnimDirCheck("Hit");
 }
 
@@ -1417,5 +1469,60 @@ void Player_Zero::Hit_Update(float _DeltaTime)
 }
 
 void Player_Zero::Hit_End()
+{
+}
+
+void Player_Zero::BigHit_Start()
+{
+	if (false == m_IsHit)
+	{
+		m_HitSound = GameEngineResources::GetInst().SoundPlayToControl("player_bighit.wav");
+		m_HitSound.LoopCount(1);
+		m_HitSound.Volume(0.2f);
+	}
+	AnimDirCheck("big_hit");
+}
+
+void Player_Zero::BigHit_Update(float _DeltaTime)
+{
+	if (true == m_AnimationRender->IsAnimationEnd())
+	{
+		ChangeState(STATEVALUE::IDLE);
+		return;
+	}
+
+	m_IsHit = true;
+
+	Gravity(_DeltaTime);
+	GroundCollisionCheck();
+}
+
+void Player_Zero::BigHit_End()
+{
+	m_IsHit = false;
+}
+
+void Player_Zero::StageClear_Start()
+{
+	m_ClearSound = GameEngineResources::GetInst().SoundPlayToControl("player_clear.wav");
+	m_ClearSound.LoopCount(1);
+	m_ClearSound.Volume(0.2f);
+
+	m_AnimationRender->ChangeAnimation("left_exit");
+}
+
+void Player_Zero::StageClear_Update(float _DeltaTime)
+{
+	if (true == m_AnimationRender->IsAnimationEnd())
+	{
+		// 여기서 레벨체인지 호출
+		this->Death();
+		GameEngineCore::GetInst()->ChangeLevel("TitleLevel");
+		return;
+	}
+
+}
+
+void Player_Zero::StageClear_End()
 {
 }

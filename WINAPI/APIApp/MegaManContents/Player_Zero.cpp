@@ -1,15 +1,15 @@
 #include "Player_Zero.h"
 #include <GameEngineBase/GameEngineMath.h>
+#include <GameEngineBase/GameEngineTime.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineResources.h>
 #include <GameEngineCore/GameEngineRender.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineLevel.h>
+
 #include "SpacePortLevel.h"
-
-#include <GameEngineBase/GameEngineTime.h>
-
+#include "Boss_Colonel.h"
 #include "ContentsEnum.h"
 
 Player_Zero::Player_Zero()
@@ -102,7 +102,7 @@ void Player_Zero::Start()
 
 	// 플레이어 컬라이더
 	m_Collider = CreateCollision(COLORDER::PLAYER);
-	m_Collider->SetScale({ 150, 150 });
+	m_Collider->SetScale({ 100, 150 });
 	m_Collider->SetPosition(float4{ 0, -80 });
 
 	// 빔샤벨 컬라이더
@@ -131,7 +131,14 @@ void Player_Zero::Update(float _DeltaTime)
 	// -----------------------------------------------------------------
 	 
 	 
-	 
+	// 여기서 보스공격과 충돌했는지 확인
+	if (true == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::BOSSATTACK) }))
+	{
+		ChangeState(STATEVALUE::BIGHIT);
+	}
+
+
+
 	// 현재 플레이어의 상태값에 따라 업데이트를 진행.
 	UpdateState(_DeltaTime);
 }
@@ -442,17 +449,17 @@ void Player_Zero::PlayerCreateAnimation()
 	// 오른쪽 피격
 	// 162 ~ 165
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_hit" , .ImageName = "player_zero_sprite_right.bmp",
-									   .Start = 162 , .End = 165 , .InterTime = 0.17f , .Loop = false });
+									   .Start = 162 , .End = 165 , .InterTime = 0.2f , .Loop = false });
 
 	// 일정체력 이하 아이들
 	// 166 ~ 169
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_idle_tiring" , .ImageName = "player_zero_sprite_right.bmp",
-									   .Start = 166 , .End = 169 , .InterTime = 1.0f });
+									   .Start = 166 , .End = 169 , .InterTime = 0.2f });
 
 	// 쎄게 피격
 	// 170 ~ 176
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_big_hit" , .ImageName = "player_zero_sprite_right.bmp",
-									   .Start = 170 , .End = 176 , .InterTime = 0.15f });
+									   .Start = 170 , .End = 176 , .InterTime = 0.15f , .Loop = false});
 
 	// exit 
 	// 177 ~ 189
@@ -564,15 +571,15 @@ void Player_Zero::PlayerCreateAnimation()
 	// 일정체력 이하 아이들
 	// 166 ~ 169 1.0
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_idle_tiring" , .ImageName = "player_zero_sprite_left.bmp",
-									   .Start = 166 , .End = 169 , .InterTime = 1.0f });
+									   .Start = 166 , .End = 169 , .InterTime = 0.2f });
 
 	// 쎄게 피격
 	// 170 ~ 176 0.15
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_big_hit" , .ImageName = "player_zero_sprite_left.bmp",
-									   .Start = 170 , .End = 175 , .InterTime = 0.15f });
+									   .Start = 170 , .End = 176 , .InterTime = 0.15f, .Loop = false });
 
 	// exit 
 	// 177 ~ 189 0.09
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_exit" , .ImageName = "player_zero_sprite_left.bmp",
-									   .Start = 177 , .End = 189 , .InterTime = 0.09f });
+									   .Start = 177 , .End = 189 , .InterTime = 0.09f , .Loop = false });
 }

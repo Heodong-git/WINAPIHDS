@@ -1,5 +1,7 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
+#include <GameEngineCore/GameEngineResources.h>
+
 
 enum class BOSSSTATE
 {
@@ -52,6 +54,11 @@ public:
 		m_HpBar = _UI;
 	}
 
+	inline GameEngineCollision* GetCollider()
+	{
+		return m_Collider;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -64,8 +71,13 @@ private:
 	
 	bool   m_SkillUse = false;
 
-	float   m_SkillCoolDown = 4.0f;
-	float   m_SkillCoolDownMax = 4.0f;
+	float   m_SkillCoolDown = 3.0f;
+	float   m_SkillCoolDownMax = 3.0f;
+
+	bool   m_Lightning = false;
+
+	
+	GameEngineSoundPlayer m_Sound;
 
 	UI_PlayerHpBar* m_HpBar = nullptr;
 	bool		  m_Invincibility = false;
