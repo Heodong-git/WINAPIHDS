@@ -341,6 +341,8 @@ void Boss_Colonel::Idle_Update(float _DeltaTime)
 		}
 	}
 
+
+	float4 Pos = GetPos();
 	if (false == m_HpBar->GetBossHpRender()->IsUpdate())
 	{
 		return;

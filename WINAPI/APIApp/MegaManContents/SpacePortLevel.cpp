@@ -447,7 +447,7 @@ void SpacePortLevel::ActorLoad()
 
 	// 일단 플레이어 애니메이션부터 필요한거 다 진행하고나서 다시. 
 	m_Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);
-	m_Boss->SetPos(m_Player->GetPos() + float4 { 18887, 978 });
+	m_Boss->SetPos(float4 { 18887, 978 });
 
 	// 일단 플레이어 애니메이션부터 필요한거 다 진행하고나서 다시. 
 	/*Boss_Colonel* Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);
