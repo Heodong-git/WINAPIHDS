@@ -399,7 +399,7 @@ void Player_Zero::PlayerCreateAnimation()
 
 	// 오른쪽 대쉬 111 ~ 121 
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_dash" , .ImageName = "player_zero_sprite_right.bmp",
-									   .Start = 111 , .End = 121 , .InterTime = 0.05f });
+									   .Start = 111 , .End = 121 , .InterTime = 0.06f });
 
 	// 문이랑 충돌하면~ 
 	m_AnimationRender->CreateAnimation({ .AnimationName = "door_contact" , .ImageName = "player_zero_sprite_right.bmp" ,
@@ -516,7 +516,7 @@ void Player_Zero::PlayerCreateAnimation()
 
 	// 왼쪽 대쉬 111 ~ 121 0.05
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_dash" , .ImageName = "player_zero_sprite_left.bmp",
-									   .Start = 111 , .End = 121 , .InterTime = 0.05f });
+									   .Start = 111 , .End = 121 , .InterTime = 0.06f });
 
 	// 왼쪽 벽타는 모션
 	// 122~126
