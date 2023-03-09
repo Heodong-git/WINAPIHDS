@@ -29,13 +29,15 @@ public:
 		return m_DirString;
 	}
 
+	void ChangeState(GunmanState _State);
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) override;
 
 private:
-	static float Time;
+	float   m_MoveTime = 0.0f;
 	std::string  m_DirString = "Left_";
 	GameEngineRender* m_AnimationRender = nullptr;
 	GameEngineCollision* m_Collider = nullptr;
@@ -45,6 +47,8 @@ private:
 	float		m_ShotMaxCooldown = 2.5f;
 
 	float		m_MoveRange = 200.0f;
+
+	float		m_MoveSpeed = 300.0f;
 	
 	GunmanState m_PrevState = GunmanState::IDLE;
 	GunmanState m_CurState = GunmanState::IDLE;
@@ -53,8 +57,6 @@ private:
 	GameEngineSoundPlayer m_Sound;
 	
 	void AnimDirCheck(const std::string_view& _AnimationName);
-
-	void ChangeState(GunmanState _State);
 	void UpdateState(float _DeltaTime);
 
 	void Idle_Start();

@@ -27,7 +27,7 @@ void Effect_Lightning::Start()
 
 	m_Collider = CreateCollision(COLORDER::BOSSATTACK);
 	m_Collider->SetDebugRenderType(CT_Rect);
-	m_Collider->SetScale(float4{ 70, 1000 });
+	m_Collider->SetScale(float4{ 40, 1000 });
 	m_Collider->SetPosition(float4{ 0 , -500 });
 
 	m_AnimationRender->SetPosition(float4{ 0 , -m_Collider->GetScale().hy()});
@@ -74,14 +74,14 @@ void Effect_Lightning::Update(float _DeltaTime)
 
 void Effect_Lightning::Render(float _DeltaTime)
 {
-	// µð¹ö±ë¿ë
-	HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
-	float4 ActorPos = GetPos() - GetLevel()->GetCameraPos();
+	//// µð¹ö±ë¿ë
+	//HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
+	//float4 ActorPos = GetPos() - GetLevel()->GetCameraPos();
 
-	Rectangle(DoubleDC,
-		ActorPos.ix() - 5,
-		ActorPos.iy() - 5,
-		ActorPos.ix() + 5,
-		ActorPos.iy() + 5
-	);
+	//Rectangle(DoubleDC,
+	//	ActorPos.ix() - 5,
+	//	ActorPos.iy() - 5,
+	//	ActorPos.ix() + 5,
+	//	ActorPos.iy() + 5
+	//);
 }

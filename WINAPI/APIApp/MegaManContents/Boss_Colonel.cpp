@@ -70,9 +70,9 @@ void Boss_Colonel::Update(float _DeltaTime)
 				float4 PlayerPos = Level->GetPlayer()->GetPos();
 				float Range = GetPos().x - PlayerPos.x;
 
-				m_Sound = GameEngineResources::GetInst().SoundPlayToControl("hit_sound.wav");
+				/*m_Sound = GameEngineResources::GetInst().SoundPlayToControl("hit_sound.wav");
 				m_Sound.LoopCount(1);
-				m_Sound.Volume(0.2f);
+				m_Sound.Volume(0.2f);*/
 
 				if (0 <= Range)
 				{
@@ -108,16 +108,16 @@ void Boss_Colonel::Update(float _DeltaTime)
 
 void Boss_Colonel::Render(float _DeltaTime)
 {
-	// µð¹ö±ë¿ë
-	HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
-	float4 ActorPos = GetPos() - GetLevel()->GetCameraPos();
+	//// µð¹ö±ë¿ë
+	//HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
+	//float4 ActorPos = GetPos() - GetLevel()->GetCameraPos();
 
-	Rectangle(DoubleDC,
-		ActorPos.ix() - 5,
-		ActorPos.iy() - 5,
-		ActorPos.ix() + 5,
-		ActorPos.iy() + 5
-	);
+	//Rectangle(DoubleDC,
+	//	ActorPos.ix() - 5,
+	//	ActorPos.iy() - 5,
+	//	ActorPos.ix() + 5,
+	//	ActorPos.iy() + 5
+	//);
 
 }
 

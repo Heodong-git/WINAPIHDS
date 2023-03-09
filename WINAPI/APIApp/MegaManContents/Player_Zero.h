@@ -40,6 +40,7 @@ class Player_Zero : public GameEngineActor
 	friend class Object_Bullet;
 	friend class Object_Door;
 	friend class Effect_Lightning;
+	friend class Monster_Ball;
 
 public:
 	// constrcuter destructer

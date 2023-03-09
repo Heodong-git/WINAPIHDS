@@ -21,19 +21,19 @@ void Ladder::Start()
 
 void Ladder::Render(float _DeltaTime)
 {
-	// 디버깅용
-	HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
+	//// 디버깅용
+	//HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
 
-	// 위치세팅필요
-	// 15949, 6492 
-	float4 ActorPos = GetPos() - GetLevel()->GetCameraPos();
+	//// 위치세팅필요
+	//// 15949, 6492 
+	//float4 ActorPos = GetPos() - GetLevel()->GetCameraPos();
 
-	Rectangle(DoubleDC,
-		ActorPos.ix() - 5,
-		ActorPos.iy() - 5,
-		ActorPos.ix() + 5,
-		ActorPos.iy() + 5
-	);
+	//Rectangle(DoubleDC,
+	//	ActorPos.ix() - 5,
+	//	ActorPos.iy() - 5,
+	//	ActorPos.ix() + 5,
+	//	ActorPos.iy() + 5
+	//);
 }
 
 void Ladder::Update(float _DeltaTime)

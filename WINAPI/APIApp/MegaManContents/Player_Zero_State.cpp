@@ -12,6 +12,7 @@
 #include "Effect_Dash.h"
 #include "SpacePortLevel.h"
 #include "Object_Door.h"
+#include "Effect_wall.h"
 
 #include "ContentsEnum.h"
 
@@ -1188,8 +1189,9 @@ void Player_Zero::Right_Wall_Start()
 	m_WallSound.LoopCount(1);
 	m_WallSound.Volume(0.2f);
 	
-	//m_DirString = "Right_";
 	m_AnimationRender->ChangeAnimation("right_wall");
+	Effect_wall* effect = GetLevel()->CreateActor<Effect_wall>(ZORDER::EFFECT);
+	effect->SetPos(GetPos() + float4 { 0, -100});
 }
 
 void Player_Zero::Right_Wall_Update(float _DeltaTime)
@@ -1200,6 +1202,7 @@ void Player_Zero::Right_Wall_Update(float _DeltaTime)
 		ChangeState(STATEVALUE::IDLE);
 		return;
 	}
+
 
 	SetMove(float4::Down * (m_MoveSpeed* 0.5f) * _DeltaTime);
 
@@ -1290,8 +1293,9 @@ void Player_Zero::Left_Wall_Start()
 	m_WallSound.LoopCount(1);
 	m_WallSound.Volume(0.2f);
 
-	m_DirString = "Left_";
 	m_AnimationRender->ChangeAnimation("left_wall");
+	Effect_wall* effect = GetLevel()->CreateActor<Effect_wall>(ZORDER::EFFECT);
+	effect->SetPos(GetPos() + float4{ 0, -100 });
 }
 
 void Player_Zero::Left_Wall_Update(float _DeltaTime)

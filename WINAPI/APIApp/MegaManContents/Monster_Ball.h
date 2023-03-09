@@ -1,6 +1,9 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
+#include <GameEngineCore/GameEngineResources.h>
 
+class GameEngineRender;
+class GameEngineCollision;
 class Monster_Ball : public GameEngineActor
 {
 public:
@@ -21,7 +24,12 @@ protected:
 
 private:
 	GameEngineRender* AnimationRender = nullptr;
+	GameEngineCollision* m_Collider = nullptr;
 	static float Time;
+
+	GameEngineSoundPlayer m_Sound;
 	
+	float m_MoveSpeed = 500.0f;
+	float m_Range = 800.0f;
 };
 

@@ -13,8 +13,6 @@
 #include "Object_Bullet.h"
 #include "ContentsEnum.h"
 
-float Monster_GunMan::Time = 0.0f;
-
 void Monster_GunMan::ChangeState(GunmanState _State)
 {
 	// 인자값으로 다음상태를 설정
@@ -143,10 +141,28 @@ void Monster_GunMan::Shot_End()
 
 void Monster_GunMan::Move_Start()
 {
+	AnimDirCheck("gunman_Move");
 }
 
 void Monster_GunMan::Move_Update(float _DeltaTime)
 {
+	m_MoveTime += _DeltaTime;
+	if (3 >= m_MoveTime)
+	{
+		m_AnimationRender->ChangeAnimation("Left_gunman_move");
+		SetMove(float4::Left * m_MoveSpeed * _DeltaTime);
+	}
+
+	else if (3 < m_MoveTime)
+	{
+		m_AnimationRender->ChangeAnimation("right_gunman_move");
+		SetMove(float4::Right * m_MoveSpeed * _DeltaTime);
+	}
+
+	if (6 <= m_MoveTime)
+	{
+		m_MoveTime -= m_MoveTime;
+	}
 }
 
 void Monster_GunMan::Move_End()
@@ -178,7 +194,7 @@ void Monster_GunMan::Start()
 	m_AnimationRender->CreateAnimation({ .AnimationName = "Left_Gunman_Shot" , .ImageName = "spaceport_gunman_left.bmp" ,
 								.Start = 8 , .End = 11 , .InterTime = 0.08f , .Loop = false });
 	m_AnimationRender->CreateAnimation({ .AnimationName = "Left_Gunman_Move" , .ImageName = "spaceport_gunman_left.bmp" ,
-								.Start = 12 , .End = 18 , .InterTime = 0.08f });
+								.Start = 12 , .End = 18 , .InterTime = 0.06f });
 	m_AnimationRender->CreateAnimation({ .AnimationName = "Left_Gunman_throw" , .ImageName = "spaceport_gunman_left.bmp" ,
 								.Start = 19 , .End = 25 , .InterTime = 0.1f });
 
@@ -187,7 +203,7 @@ void Monster_GunMan::Start()
 	m_AnimationRender->CreateAnimation({ .AnimationName = "Right_Gunman_Shot" , .ImageName = "spaceport_gunman_right.bmp" ,
 								.Start = 8 , .End = 11 , .InterTime = 0.15f , .Loop = false });
 	m_AnimationRender->CreateAnimation({ .AnimationName = "Right_Gunman_Move" , .ImageName = "spaceport_gunman_right.bmp" ,
-								.Start = 12 , .End = 18 , .InterTime = 0.1f });
+								.Start = 12 , .End = 18 , .InterTime = 0.06f });
 	m_AnimationRender->CreateAnimation({ .AnimationName = "Right_Gunman_throw" , .ImageName = "spaceport_gunman_right.bmp" ,
 								.Start = 19 , .End = 25 , .InterTime = 0.1f });
 
@@ -296,14 +312,14 @@ void Monster_GunMan::Update(float _DeltaTime)
 
 void Monster_GunMan::Render(float _DeltaTime)
 {
-	// 디버깅용
-	HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
-	float4 ActorPos = GetPos() - GetLevel()->GetCameraPos();
+	//// 디버깅용
+	//HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
+	//float4 ActorPos = GetPos() - GetLevel()->GetCameraPos();
 
-	Rectangle(DoubleDC,
-		ActorPos.ix() - 5,
-		ActorPos.iy() - 5,
-		ActorPos.ix() + 5,
-		ActorPos.iy() + 5
-	);
+	//Rectangle(DoubleDC,
+	//	ActorPos.ix() - 5,
+	//	ActorPos.iy() - 5,
+	//	ActorPos.ix() + 5,
+	//	ActorPos.iy() + 5
+	//);
 }

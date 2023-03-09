@@ -87,16 +87,16 @@ void UI_PlayerHpBar::Update(float _DeltaTime)
 
 void UI_PlayerHpBar::Render(float _DeltaTime)
 {
-	// µð¹ö±ë¿ë
-	HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
-	float4 ActorPos = GetPos();
+	//// µð¹ö±ë¿ë
+	//HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
+	//float4 ActorPos = GetPos();
 
-	Rectangle(DoubleDC,
-		ActorPos.ix() - 5,
-		ActorPos.iy() - 5,
-		ActorPos.ix() + 5,
-		ActorPos.iy() + 5
-	);
+	//Rectangle(DoubleDC,
+	//	ActorPos.ix() - 5,
+	//	ActorPos.iy() - 5,
+	//	ActorPos.ix() + 5,
+	//	ActorPos.iy() + 5
+	//);
 }
 
 void UI_PlayerHpBar::PlayerHpCheck()

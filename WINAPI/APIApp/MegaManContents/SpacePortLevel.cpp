@@ -18,7 +18,9 @@
 #include "Object_Bullet.h"
 #include "Effect_Explosion.h"
 #include "Effect_Lightning.h"
+#include "Effect_wall.h"
 #include "ContentsEnum.h"
+
 
 SpacePortLevel::SpacePortLevel()
 {
@@ -80,7 +82,7 @@ void SpacePortLevel::Update(float _DeltaTime)
 	}
 
 
-	/*float CameraMoveSpeed = 1000.0f;
+	float CameraMoveSpeed = 1000.0f;
 
 	if (GameEngineInput::IsPress("CameraLeftMove"))
 	{
@@ -97,7 +99,7 @@ void SpacePortLevel::Update(float _DeltaTime)
 	if (GameEngineInput::IsPress("CameraUpMove"))
 	{
 		SetCameraMove(float4::Up * _DeltaTime * CameraMoveSpeed);
-	}*/
+	}
 
 	// q 키가 눌렸다면 디버그모드 on , off 
 	if (GameEngineInput::IsDown("DebugRenderSwitch"))
@@ -481,11 +483,20 @@ void SpacePortLevel::ImageLoad()
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("gunman_bullet.bmp"));
 		Image->Cut(4, 1);
 	}
+	// 몬스터 ball
 	{
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Monster_ball.bmp"));
 		Image->Cut(5, 1);
 	}
-
+	// 벽 이펙트
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("effect_wall_slip_left.bmp"));
+		Image->Cut(8, 1);
+	}
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("effect_wall_slip_right.bmp"));
+		Image->Cut(8, 1);
+	}
 
 }
 void SpacePortLevel::ActorLoad()
@@ -496,16 +507,21 @@ void SpacePortLevel::ActorLoad()
 	m_Player->SetPos({ 400, 7060 });
 	m_Player->SetStartPos(m_Player->GetPos());
 
-	// 일단 플레이어 애니메이션부터 필요한거 다 진행하고나서 다시. 
 	m_Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);
-	m_Boss->SetPos(float4 { 18887, 978 });
+	m_Boss->SetPos(float4{ 18887, 978 });
 
-	/*GameEngineActor* Ball = CreateActor<Monster_Ball>(ZORDER::MONSTER);
-	Ball->SetPos(m_Player->GetPos() + float4{ 200, 0 });*/
-
-	// 일단 플레이어 애니메이션부터 필요한거 다 진행하고나서 다시. 
-	/*Boss_Colonel* Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);
-	Boss->SetPos({ 18887, 978 });*/
+	GameEngineActor* Ball = CreateActor<Monster_Ball>(ZORDER::MONSTER);
+	Ball->SetPos(float4 { 9187, 6827 });
+	Ball = CreateActor<Monster_Ball>(ZORDER::MONSTER);
+	Ball->SetPos(float4 { 10199 , 6451});
+	Ball = CreateActor<Monster_Ball>(ZORDER::MONSTER);
+	Ball->SetPos(float4 { 11707 , 6477});
+	Ball = CreateActor<Monster_Ball>(ZORDER::MONSTER);
+	Ball->SetPos(float4{ 12447 , 6610 });
+	Ball = CreateActor<Monster_Ball>(ZORDER::MONSTER);
+	Ball->SetPos(float4{ 15854 , 6641 });
+	Ball = CreateActor<Monster_Ball>(ZORDER::MONSTER);
+	Ball->SetPos(float4{ 4155 , 6831 });
 
 	UI_PlayerHpBar* HpBar = CreateActor<UI_PlayerHpBar>(ZORDER::UI);
 	HpBar->SetPos({ 100, 450 });
@@ -538,16 +554,24 @@ void SpacePortLevel::ActorLoad()
 	Monster->SetPos({ 9142, 7060 });
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 10162, 6839 });
+
+	// 움직이는몹
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 11656, 7058 });
+	Monster->ChangeState(GunmanState::MOVE);
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 12827, 6384 });
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
-	Monster->SetPos({ 15149, 6021 });
+	Monster->SetPos({ 15800, 6021 });
+	Monster->ChangeState(GunmanState::MOVE);
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 15259, 3932 });
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 15521, 5371 });
 	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
 	Monster->SetPos({ 15544, 7073 });
+	Monster = CreateActor<Monster_GunMan>(ZORDER::MONSTER);
+	Monster->SetPos({ 16068, 978 });
 
 	Ladder* NewLadder = CreateActor<Ladder>(ZORDER::OBJECT);
 	NewLadder->SetPos({ 15945, 6492 });
