@@ -320,12 +320,20 @@ void Player_Zero::Idle_Update(float _DeltaTime)
 		return;
 	}
 
-	// 대쉬
-	if (true == GameEngineInput::IsPress("Dash"))
+	if (true == GameEngineInput::IsPress("Dash") && true == GameEngineInput::IsPress("Left_Move"))
 	{
 		ChangeState(STATEVALUE::DASH);
 		return;
 	}
+
+	// 대쉬
+	if (true == GameEngineInput::IsPress("Dash") && true == GameEngineInput::IsPress("Right_Move"))
+	{
+		ChangeState(STATEVALUE::DASH);
+		return;
+	}
+
+
 }
 
 void Player_Zero::Idle_End()
@@ -957,6 +965,12 @@ void Player_Zero::Dash_Start()
 
 void Player_Zero::Dash_Update(float _DeltaTime)
 {
+	if (true == IsFall())
+	{
+		ChangeState(STATEVALUE::FALL);
+		return;
+	}
+
 	std::vector<GameEngineCollision*> vecCollision;
 	if (true == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::OBJECT_DOOR), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, vecCollision))
 	{
@@ -1174,8 +1188,8 @@ void Player_Zero::Right_Wall_Start()
 	m_WallSound.LoopCount(1);
 	m_WallSound.Volume(0.2f);
 	
-	m_DirString = "Right_";
-	AnimDirCheck("wall");
+	//m_DirString = "Right_";
+	m_AnimationRender->ChangeAnimation("right_wall");
 }
 
 void Player_Zero::Right_Wall_Update(float _DeltaTime)
@@ -1277,7 +1291,7 @@ void Player_Zero::Left_Wall_Start()
 	m_WallSound.Volume(0.2f);
 
 	m_DirString = "Left_";
-	AnimDirCheck("wall");
+	m_AnimationRender->ChangeAnimation("left_wall");
 }
 
 void Player_Zero::Left_Wall_Update(float _DeltaTime)

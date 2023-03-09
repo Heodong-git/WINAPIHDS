@@ -123,7 +123,7 @@ private:
 	// 디버그용 변수
 	bool		 m_DebugMode = false;
 	// ---------------------------------
-	float	     m_MoveSpeed = 500.0f;
+	float	     m_MoveSpeed = 600.0f;
 	bool		 m_IsJump = false;  
 	float		 m_JumpPower = 0.0f;
 	float		 m_JumpPowerMax = 750.0f;

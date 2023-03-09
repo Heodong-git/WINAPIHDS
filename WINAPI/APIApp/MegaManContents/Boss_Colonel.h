@@ -70,12 +70,9 @@ private:
 	int	   m_Hp = 10;
 	
 	bool   m_SkillUse = false;
-
-	float   m_SkillCoolDown = 3.0f;
-	float   m_SkillCoolDownMax = 3.0f;
-
+	float  m_SkillCoolDown = 3.0f;
+	float  m_SkillCoolDownMax = 3.0f;
 	bool   m_Lightning = false;
-
 	
 	GameEngineSoundPlayer m_Sound;
 

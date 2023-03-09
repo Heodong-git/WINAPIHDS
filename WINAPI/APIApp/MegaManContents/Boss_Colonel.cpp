@@ -41,6 +41,7 @@ void Boss_Colonel::Start()
 
 void Boss_Colonel::Update(float _DeltaTime)
 {
+
 	// 여기서 플레이어가 fight 상태가 아니라면 업데이트 하지말고 return 
 	if (true == m_Invincibility)
 	{
@@ -95,6 +96,11 @@ void Boss_Colonel::Update(float _DeltaTime)
 				}
 			}
 		}
+	}
+
+	if (true == IsHpZero())
+	{
+		ChangeState(BOSSSTATE::DEATH);
 	}
 
 	UpdateState(_DeltaTime);
@@ -314,11 +320,6 @@ void Boss_Colonel::Idle_Update(float _DeltaTime)
 {
 	AnimDirCheck("Colonel_idle");
 
-	if (true == IsHpZero())
-	{
-		ChangeState(BOSSSTATE::DEATH);
-		return;
-	}
 
 	if (true == m_SkillUse)
 	{
@@ -561,7 +562,10 @@ void Boss_Colonel::Death_Start()
 void Boss_Colonel::Death_Update(float _DeltaTime)
 {
 	// 일단 충돌체를 Off 
-	m_Collider->Off();
+	if (true == m_Collider->IsUpdate())
+	{
+		m_Collider->Off();
+	}
 }
 
 void Boss_Colonel::Death_End()
