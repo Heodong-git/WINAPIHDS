@@ -500,8 +500,8 @@ void SpacePortLevel::ActorLoad()
 	m_Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);
 	m_Boss->SetPos(float4 { 18887, 978 });
 
-	GameEngineActor* Ball = CreateActor<Monster_Ball>(ZORDER::MONSTER);
-	Ball->SetPos(m_Player->GetPos() + float4{ 200, 0 });
+	/*GameEngineActor* Ball = CreateActor<Monster_Ball>(ZORDER::MONSTER);
+	Ball->SetPos(m_Player->GetPos() + float4{ 200, 0 });*/
 
 	// 일단 플레이어 애니메이션부터 필요한거 다 진행하고나서 다시. 
 	/*Boss_Colonel* Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);
