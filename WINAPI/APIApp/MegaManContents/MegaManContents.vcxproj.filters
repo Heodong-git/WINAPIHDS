@@ -19,7 +19,7 @@
     <ClInclude Include="Monster_Gunman.h">
       <Filter>Monster</Filter>
     </ClInclude>
-    <ClInclude Include="Monster_NightMareVirus.h">
+    <ClInclude Include="Monster_Ball.h">
       <Filter>Monster</Filter>
     </ClInclude>
     <ClInclude Include="TitleLevel.h">
@@ -94,7 +94,7 @@
     <ClCompile Include="Monster_Gunman.cpp">
       <Filter>Monster</Filter>
     </ClCompile>
-    <ClCompile Include="Monster_NightMareVirus.cpp">
+    <ClCompile Include="Monster_Ball.cpp">
       <Filter>Monster</Filter>
     </ClCompile>
     <ClCompile Include="SpacePortLevel.cpp">

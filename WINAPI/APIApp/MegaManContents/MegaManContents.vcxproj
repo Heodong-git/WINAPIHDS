@@ -195,7 +195,7 @@
     <ClInclude Include="Select_BackGround.h" />
     <ClInclude Include="MegaManCore.h" />
     <ClInclude Include="Monster_Gunman.h" />
-    <ClInclude Include="Monster_NightMareVirus.h" />
+    <ClInclude Include="Monster_Ball.h" />
     <ClInclude Include="Player_Zero.h" />
     <ClInclude Include="SelectLevel.h" />
     <ClInclude Include="SpacePortLevel.h" />
@@ -222,7 +222,7 @@
     <ClCompile Include="Select_BackGround.cpp" />
     <ClCompile Include="MegaManCore.cpp" />
     <ClCompile Include="Monster_Gunman.cpp" />
-    <ClCompile Include="Monster_NightMareVirus.cpp" />
+    <ClCompile Include="Monster_Ball.cpp" />
     <ClCompile Include="Player_Zero.cpp" />
     <ClCompile Include="SelectLevel.cpp" />
     <ClCompile Include="SpacePortLevel.cpp" />

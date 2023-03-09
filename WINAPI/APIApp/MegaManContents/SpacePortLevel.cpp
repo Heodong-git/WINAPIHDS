@@ -9,7 +9,7 @@
 
 #include "Player_Zero.h"
 #include "Monster_Gunman.h"
-#include "Monster_NightMareVirus.h"
+#include "Monster_Ball.h"
 #include "UI_PlayerHpBar.h"
 #include "Map_SpacePort.h"
 #include "Boss_Colonel.h"
@@ -481,7 +481,10 @@ void SpacePortLevel::ImageLoad()
 		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("gunman_bullet.bmp"));
 		Image->Cut(4, 1);
 	}
-
+	{
+		GameEngineImage* Image = GameEngineResources::GetInst().ImageLoad(Directory.GetPlusFileName("Monster_ball.bmp"));
+		Image->Cut(5, 1);
+	}
 
 
 }
@@ -496,6 +499,9 @@ void SpacePortLevel::ActorLoad()
 	// 일단 플레이어 애니메이션부터 필요한거 다 진행하고나서 다시. 
 	m_Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);
 	m_Boss->SetPos(float4 { 18887, 978 });
+
+	GameEngineActor* Ball = CreateActor<Monster_Ball>(ZORDER::MONSTER);
+	Ball->SetPos(m_Player->GetPos() + float4{ 200, 0 });
 
 	// 일단 플레이어 애니메이션부터 필요한거 다 진행하고나서 다시. 
 	/*Boss_Colonel* Boss = CreateActor<Boss_Colonel>(ZORDER::BOSS);
