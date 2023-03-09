@@ -75,9 +75,7 @@ private:
 	bool   m_Lightning = false;
 
 	bool    m_TeleportAttack = false;
-	float   m_TeleportCoolTime = 0.0f;
-	float	m_TeleportCoolTimeMax = 1.5f;
-	
+
 	GameEngineSoundPlayer m_Sound;
 
 	UI_PlayerHpBar* m_HpBar = nullptr;

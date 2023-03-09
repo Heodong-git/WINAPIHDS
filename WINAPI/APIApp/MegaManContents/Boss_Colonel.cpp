@@ -247,7 +247,7 @@ void Boss_Colonel::AnimationCreate()
 								.Start = 2 , .End = 4 , .InterTime = 0.2f });
 	// 텔레포트 left 
 	m_AnimationRender->CreateAnimation({ .AnimationName = "Left_Colonel_Teleport" , .ImageName = "spaceport_colonel_left.bmp" ,
-								.Start = 5 , .End = 8 , .InterTime = 0.14f , .Loop = true });
+								.Start = 5 , .End = 8 , .InterTime = 0.14f , .Loop = false });
 	// 평타 1타
 	m_AnimationRender->CreateAnimation({ .AnimationName = "Left_Colonel_first_attack" , .ImageName = "spaceport_colonel_left.bmp" ,
 								.Start = 9 , .End = 13 , .InterTime = 0.08f });
@@ -290,7 +290,9 @@ void Boss_Colonel::AnimationCreate()
 	m_AnimationRender->CreateAnimation({ .AnimationName = "right_Colonel_Death" , .ImageName = "spaceport_colonel_right.bmp" ,
 							.Start = 45 , .End = 45 , .InterTime = 0.08f , .Loop = false });
 
-	
+	// 텔포딜레이 애니메이션
+	m_AnimationRender->CreateAnimation({ .AnimationName = "colonel_delay" , .ImageName = "spaceport_colonel_right.bmp" ,
+							.Start = 46 , .End = 47 , .InterTime = 0.5f , .Loop = false });
 }
 
 void Boss_Colonel::Start_Start()
@@ -387,13 +389,16 @@ void Boss_Colonel::Idle_End()
 void Boss_Colonel::Teleport_Start()
 {
 	AnimDirCheck("colonel_teleport");
+	m_Sound = GameEngineResources::GetInst().SoundPlayToControl("teleport.wav");
+	m_Sound.LoopCount(1);
+	m_Sound.Volume(0.2f);
 }
 
 void Boss_Colonel::Teleport_Update(float _DeltaTime)
 {
+	
 	if (true == m_AnimationRender->IsAnimationEnd())
 	{
-
 		// 순간이동 애니메이션이 끝나면 플레이어의 앞, 혹은 뒤로 이동해서 공격
 		SpacePortLevel* Level = dynamic_cast<SpacePortLevel*>(GetLevel());
 		// 범위안에 들어왔다면 shot state로 변경인데.. 흠
@@ -430,12 +435,11 @@ void Boss_Colonel::Teleport_End()
 void Boss_Colonel::First_Attack_Start()
 {
 	AnimDirCheck("colonel_first_attack");
+	
 }
 
 void Boss_Colonel::First_Attack_Update(float _DeltaTime)
 {
-	m_TeleportCoolTime += _DeltaTime;
-
 	if (true == m_AnimationRender->IsAnimationEnd())
 	{
 		ChangeState(BOSSSTATE::SECOND_ATTACK);
@@ -514,6 +518,9 @@ void Boss_Colonel::First_Pattern_Start()
 {
 	// 일단 임시로 이걸로해놓고 
 	m_AnimationRender->ChangeAnimation("left_colonel_lightning");
+	m_Sound = GameEngineResources::GetInst().SoundPlayToControl("lightning.wav");
+	m_Sound.LoopCount(1);
+	m_Sound.Volume(0.2f);
 
 	if (false == m_Lightning)
 	{

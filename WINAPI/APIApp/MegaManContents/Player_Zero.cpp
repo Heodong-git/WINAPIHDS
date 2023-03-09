@@ -540,7 +540,7 @@ void Player_Zero::PlayerCreateAnimation()
 	// 왼쪽 벽타기 중 점프
 	// 127 ~ 129 0.07
 	m_AnimationRender->CreateAnimation({ .AnimationName = "left_wall_jump" , .ImageName = "player_zero_sprite_left.bmp",
-									   .Start = 126 , .End = 129 , .InterTime = 0.07f , .Loop = false });
+									   .Start = 127 , .End = 129 , .InterTime = 0.13f , .Loop = false });
 
 	// 왼쪽 벽타기 중 공격 
 	// 130 ~ 138 

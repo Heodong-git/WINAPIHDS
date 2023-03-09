@@ -484,32 +484,6 @@ void Player_Zero::Move_End()
 
 }
 
-// 쌤코드 점프스타트
-//m_Jump = true;
-//IsJumpMax = false;
-//
-//m_JumpPower = 50.0f;
-//m_GravityPower = 800.0f;
-
-
-// 쌤코드 점프업데이트
-	//if (false == IsJumpMax && true == GameEngineInput::IsPress("Jump"))
-	//{
-	//	// 키가 눌려있다면 점프파워를 계속 증가시킨다. 
-	//	m_JumpPower += 500.0f * _DeltaTime;
-
-	//	// 점프파워가 일정수치이상 넘어갔다면
-	//	if (m_JumpPower >= 100.0f)
-	//	{
-	//		// 점프파워를 ?
-	//		m_JumpPower = 100.0f;
-	//		IsJumpMax = true;
-	//	}
-	// 
-	//m_MoveDir += float4::Up * m_JumpPower;
-	//m_JumpPower -= m_GravityPower * _DeltaTime;
-
-
 void Player_Zero::Jump_Start()
 {
 	// 사운드출력
@@ -609,7 +583,7 @@ void Player_Zero::Jump_Update(float _DeltaTime)
 	
 	// 내 오른쪽이 벽이 아닐때만	
 	if (true == GameEngineInput::IsPress("Right_Move"))
-	{
+	{		
 		if (true == IsRightWall())
 		{
 			ChangeState(STATEVALUE::RIGHT_WALL);
