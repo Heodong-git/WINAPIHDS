@@ -370,6 +370,7 @@ void SpacePortLevel::SoundLoad()
 	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("hit_sound.wav"));
 	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("stage_clear.wav"));
 	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("lightning.wav"));
+	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("lightning_sound.wav"));
 	GameEngineResources::GetInst().SoundLoad(Dir.GetPlusFileName("teleport.wav"));
 }
 

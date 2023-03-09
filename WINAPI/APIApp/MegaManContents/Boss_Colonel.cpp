@@ -535,6 +535,9 @@ void Boss_Colonel::First_Pattern_Update(float _DeltaTime)
 {
 	if (true == m_AnimationRender->IsAnimationEnd())
 	{
+		m_Sound = GameEngineResources::GetInst().SoundPlayToControl("lightning_sound.wav");
+		m_Sound.LoopCount(1);
+		m_Sound.Volume(0.3f);
 		// 애니메이션이 끝나면 맵의 특정 위치에 라이트닝이펙트생성
 		// 위치 6개 확인해서 적고 ㄱㄱ 
 		// 17809 , 978
