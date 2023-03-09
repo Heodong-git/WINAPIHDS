@@ -972,7 +972,7 @@ void Player_Zero::Dash_Update(float _DeltaTime)
 	}
 
 	std::vector<GameEngineCollision*> vecCollision;
-	if (true == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::OBJECT_DOOR), .TargetColType = CT_Rect, .ThisColType = CT_Rect }, vecCollision))
+	if (true == m_Collider->Collision({ .TargetGroup = static_cast<int>(COLORDER::OBJECT_DOOR), .TargetColType = CT_CirCle, .ThisColType = CT_CirCle }, vecCollision))
 	{
 		// 여기서 x축 좌표를 충돌한 사다리녀석과 동일하게 변경해야함. 일단 이거부터
 		// 여기서 충돌체의 오너가 사다리오브젝트라면 x축의 위치를 동일하게 수정해준다. 
@@ -1527,6 +1527,7 @@ void Player_Zero::StageClear_Start()
 
 void Player_Zero::StageClear_Update(float _DeltaTime)
 {
+
 	if (true == m_AnimationRender->IsAnimationEnd())
 	{
 		// 여기서 레벨체인지 호출

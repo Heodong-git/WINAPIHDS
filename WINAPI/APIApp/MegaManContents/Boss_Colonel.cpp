@@ -393,6 +393,7 @@ void Boss_Colonel::Teleport_Update(float _DeltaTime)
 {
 	if (true == m_AnimationRender->IsAnimationEnd())
 	{
+
 		// 순간이동 애니메이션이 끝나면 플레이어의 앞, 혹은 뒤로 이동해서 공격
 		SpacePortLevel* Level = dynamic_cast<SpacePortLevel*>(GetLevel());
 		// 범위안에 들어왔다면 shot state로 변경인데.. 흠
@@ -407,7 +408,6 @@ void Boss_Colonel::Teleport_Update(float _DeltaTime)
 			{
 				float4 MovePos = PlayerPos + float4{ 150, 0 };
 				SetPos({ MovePos.x , GetPos().y });
-				
 			}
 
 			else if (2 == RandomValue)
@@ -417,6 +417,7 @@ void Boss_Colonel::Teleport_Update(float _DeltaTime)
 			}
 			
 		}
+
 		ChangeState(BOSSSTATE::FIRST_ATTACK);
 		return;
 	}
@@ -433,11 +434,14 @@ void Boss_Colonel::First_Attack_Start()
 
 void Boss_Colonel::First_Attack_Update(float _DeltaTime)
 {
+	m_TeleportCoolTime += _DeltaTime;
+
 	if (true == m_AnimationRender->IsAnimationEnd())
 	{
 		ChangeState(BOSSSTATE::SECOND_ATTACK);
 		return;
 	}
+
 	AnimDirCheck("colonel_first_attack");
 	// 여기서는 플레이어처럼 충돌체 만들어야함 
 
@@ -452,13 +456,11 @@ void Boss_Colonel::First_Attack_Update(float _DeltaTime)
 		if (0 < Range)
 		{
 			m_AttackCollider->SetPosition(float4{ -150, -100 });
-			m_AttackCollider->On();
 		}
 
 		else
 		{
 			m_AttackCollider->SetPosition(float4{ 150, -100 });
-			m_AttackCollider->On();
 		}
 	}
 }

@@ -103,6 +103,7 @@ void Player_Zero::Start()
 	// 플레이어 컬라이더
 	m_Collider = CreateCollision(COLORDER::PLAYER);
 	m_Collider->SetScale({ 100, 150 });
+	m_Collider->SetDebugRenderType(CT_CirCle);
 	m_Collider->SetPosition(float4{ 0, -80 });
 
 	// 빔샤벨 컬라이더
@@ -296,34 +297,39 @@ void Player_Zero::Gravity(float _DeltaTime)
 void Player_Zero::Render(float _DeltaTime)
 {
 	// 디버깅용
-	HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
-	float4 ActorPos = GetPos() -GetLevel()->GetCameraPos();
-
-	Rectangle(DoubleDC,
-		ActorPos.ix() - 5,
-		ActorPos.iy() - 5,
-		ActorPos.ix() + 5,
-		ActorPos.iy() + 5
-	);
 
 	// m_Collider->DebugRender();
 	// 디버그용 위치출력시 참고할 코드 
-	std::string PlayerText = "PlayerPosition : ";
-	PlayerText += GetPos().ToString();
 
-	/*std::string CameraMouseText = "MousePositionCamera : ";
-	CameraMouseText += GetLevel()->GetMousePosToCamera().ToString();*/
+	if (true == m_DebugMode)
+	{
+		HDC DoubleDC = GameEngineWindow::GetDoubleBufferImage()->GetImageDC();
+		float4 ActorPos = GetPos() - GetLevel()->GetCameraPos();
 
-	GameEngineLevel::DebugTextPush(PlayerText);
-	// GameEngineLevel::DebugTextPush(CameraMouseText);
-	// m_Collider->DebugRender();
-	
-	std::string CameraText = "CameraPosition : ";
-	CameraText += GetLevel()->GetCameraPos().ToString();
-	GameEngineLevel::DebugTextPush(CameraText);
+		Rectangle(DoubleDC,
+			ActorPos.ix() - 5,
+			ActorPos.iy() - 5,
+			ActorPos.ix() + 5,
+			ActorPos.iy() + 5
+		);
 
-	std::string Text = "방향키 + Z꾹 : 대쉬 / X꾹 : 점프 / C : 공격 / Q : 자유이동 / 숫자2번 : 충돌맵,충돌체 출력";
-	GameEngineLevel::DebugTextPush(Text);
+		std::string PlayerText = "PlayerPosition : ";
+		PlayerText += GetPos().ToString();
+
+		/*std::string CameraMouseText = "MousePositionCamera : ";
+		CameraMouseText += GetLevel()->GetMousePosToCamera().ToString();*/
+
+		GameEngineLevel::DebugTextPush(PlayerText);
+		// GameEngineLevel::DebugTextPush(CameraMouseText);
+		// m_Collider->DebugRender();
+
+		std::string CameraText = "CameraPosition : ";
+		CameraText += GetLevel()->GetCameraPos().ToString();
+		GameEngineLevel::DebugTextPush(CameraText);
+
+		std::string Text = "방향키 + Z꾹 : 대쉬 / X꾹 : 점프 / C : 공격 / Q : 자유이동 / 숫자2번 : 충돌맵,충돌체 출력";
+		GameEngineLevel::DebugTextPush(Text);
+	}
 }
 
 
