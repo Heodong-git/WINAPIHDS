@@ -281,7 +281,9 @@ void Monster_GunMan::Update(float _DeltaTime)
 			{
 				Player->SetMove(float4::Left * 100.0f);
 				Player->ChangeState(STATEVALUE::HIT);
+				Player->Damage(1);
 				GetLevel()->SetCameraMove(float4::Left * 100.0f);
+				
 				return;
 			}
 
@@ -289,6 +291,7 @@ void Monster_GunMan::Update(float _DeltaTime)
 			{
 				Player->SetMove(float4::Right * 100.0f);
 				Player->ChangeState(STATEVALUE::HIT);
+				Player->Damage(1);
 				GetLevel()->SetCameraMove(float4::Right * 100.0f);
 				return;
 			}
