@@ -1,7 +1,7 @@
 #pragma once
 #include <random>
 
-// 설명 :
+// 랜덤한 값을 만들어낼 때 사용하기 위한 클래스 
 class GameEngineRandom
 {
 public:

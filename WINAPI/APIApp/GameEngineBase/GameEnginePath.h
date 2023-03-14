@@ -48,5 +48,3 @@ private:
 	// std::filesystem::path <--- 데이터타입
 	std::filesystem::path Path;
 };
-
-// std::filesystem 

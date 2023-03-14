@@ -2,9 +2,6 @@
 #include <chrono>
 #include <Windows.h>
 
-// 크로노를 사용하려고 했으나, 현재 우리가 배우긴 어려운 부분이 있어서 
-// window 의 기능 사용
-
 class GameEngineTime
 {
 public:
@@ -45,4 +42,4 @@ private:
 // FPS : 초당 프레임 값  
 // DeltaTime : 프레임 당 걸리는 시간  
 
-// 게임에서 사용할 DeltaTime를 구하고 사용하기 위해서. 
+// 게임에서 사용할 DeltaTime를 구하고 사용하기 위해서
